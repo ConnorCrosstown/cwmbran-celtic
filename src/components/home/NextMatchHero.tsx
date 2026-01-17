@@ -58,6 +58,9 @@ export default function NextMatchHero({ fixture, admission }: NextMatchHeroProps
   }
 
   const opponent = getOpponent(fixture);
+  const isWomensGame = fixture.homeTeam.includes('Ladies') || fixture.awayTeam.includes('Ladies') ||
+                       fixture.competition.includes('Adran') || fixture.competition.includes('Women');
+  const teamLabel = isWomensGame ? "Cwmbran Celtic Women" : "Cwmbran Celtic";
 
   return (
     <>
@@ -67,10 +70,14 @@ export default function NextMatchHero({ fixture, admission }: NextMatchHeroProps
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             {/* Match Info */}
             <div className="flex items-center gap-4 md:gap-6">
+              {/* Team Badge */}
+              <span className={`text-[10px] font-bold px-2 py-1 rounded ${isWomensGame ? 'bg-pink-500/80' : 'bg-celtic-yellow text-celtic-dark'}`}>
+                {isWomensGame ? "WOMEN'S" : "MEN'S"}
+              </span>
               <div className="text-center lg:text-left">
                 <p className="text-celtic-yellow text-xs uppercase tracking-wide mb-1">Next Home Game</p>
                 <p className="font-bold text-lg md:text-xl">
-                  Cwmbran Celtic <span className="text-gray-300 font-normal">vs</span> {opponent}
+                  {teamLabel} <span className="text-gray-300 font-normal">vs</span> {opponent}
                 </p>
                 <p className="text-gray-300 text-sm">
                   {formatMatchDateLong(fixture.date)} • {fixture.time} • {fixture.venue}
