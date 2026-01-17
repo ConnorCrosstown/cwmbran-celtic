@@ -103,9 +103,9 @@ First Team Manager`;
   );
 
   return (
-    <div className="min-h-screen bg-gray-300 print:bg-white">
+    <div className="min-h-screen bg-gray-300 print:bg-white" id="programme-container">
       {/* Control Bar - Hidden when printing */}
-      <div className="sticky top-0 z-50 bg-celtic-dark text-white py-3 print:hidden shadow-lg">
+      <div className="sticky top-0 z-50 bg-celtic-dark text-white py-3 print:hidden shadow-lg no-print">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <button
             onClick={onBack}
@@ -125,7 +125,7 @@ First Team Manager`;
       </div>
 
       {/* Instructions - Hidden when printing */}
-      <div className="bg-celtic-blue/10 border-b border-celtic-blue/20 py-2 print:hidden">
+      <div className="bg-celtic-blue/10 border-b border-celtic-blue/20 py-2 print:hidden no-print">
         <div className="container mx-auto px-4 text-center text-sm text-celtic-dark">
           <strong>Tip:</strong> Click &quot;Print / Save as PDF&quot; then select &quot;Save as PDF&quot; as the destination. Use A4 paper size for best results.
         </div>
@@ -1124,44 +1124,127 @@ First Team Manager`;
       {/* Print Styles */}
       <style jsx global>{`
         @media print {
+          /* Page setup */
           @page {
-            size: A4;
+            size: A4 portrait;
             margin: 0;
           }
-          html, body {
-            width: 210mm;
-            height: 297mm;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-          }
-          body {
+
+          /* Reset everything */
+          *, *::before, *::after {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
           }
-          .programme-page {
+
+          html {
             width: 210mm;
-            height: 297mm;
-            max-height: 297mm;
-            page-break-after: always;
-            break-after: page;
-            page-break-inside: avoid;
-            break-inside: avoid;
-            overflow: hidden;
+            margin: 0;
+            padding: 0;
           }
-          .programme-page:last-child {
-            page-break-after: avoid;
+
+          body {
+            width: 210mm;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
           }
-          .aspect-\\[1\\/1\\.414\\] {
-            aspect-ratio: auto !important;
+
+          /* Hide EVERYTHING by default */
+          body > * {
+            display: none !important;
+          }
+
+          /* Show only our programme container */
+          body > div:has(.programme-page),
+          body > main:has(.programme-page) {
+            display: block !important;
+          }
+
+          /* Hide navigation, header, footer elements */
+          header, footer, nav,
+          [role="navigation"],
+          .print\\:hidden,
+          .sticky,
+          button,
+          a[href]:not(.programme-page a) {
+            display: none !important;
+          }
+
+          /* Programme pages */
+          .programme-page {
+            display: block !important;
+            width: 210mm !important;
+            min-height: 297mm !important;
             height: 297mm !important;
             max-height: 297mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
             overflow: hidden !important;
+            box-shadow: none !important;
+            border: none !important;
           }
-          /* Hide any content that overflows */
+
+          .programme-page:last-child {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+
+          /* Fix aspect ratio container */
+          .programme-page > .aspect-\\[1\\/1\\.414\\],
+          .programme-page > div[class*="aspect"] {
+            aspect-ratio: unset !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+          }
+
+          /* Ensure backgrounds print */
+          .programme-page,
           .programme-page * {
-            overflow: hidden;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* Hide control bar and tips */
+          .bg-celtic-dark,
+          .bg-celtic-blue\\/10 {
+            display: none !important;
+          }
+
+          /* Ensure images load */
+          img {
+            max-width: 100% !important;
+            page-break-inside: avoid !important;
+          }
+
+          /* Remove shadows and margins between pages */
+          .shadow-xl {
+            box-shadow: none !important;
+          }
+
+          .mb-8 {
+            margin-bottom: 0 !important;
+          }
+
+          /* Container fixes */
+          .max-w-\\[210mm\\] {
+            max-width: none !important;
+            width: 210mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
+          .py-8 {
+            padding: 0 !important;
+          }
+
+          .bg-gray-300 {
+            background: white !important;
           }
         }
       `}</style>
