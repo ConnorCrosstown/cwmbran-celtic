@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { oppositionTeams } from '@/data/opposition-data';
 import ProgrammePreview from '@/components/programme/ProgrammePreview';
 
@@ -17,6 +18,7 @@ export default function ProgrammeGeneratorPage() {
     managersNotes: '',
     teamNews: '',
     matchSponsor: '',
+    coverImage: '',
   });
 
   // Simple password check (in production, use proper auth)
@@ -34,6 +36,20 @@ export default function ProgrammeGeneratorPage() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          coverImage: reader.result as string
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handlePreview = () => {
@@ -205,10 +221,52 @@ export default function ProgrammeGeneratorPage() {
             </div>
           </div>
 
-          {/* Manager's Notes */}
+          {/* Cover Image */}
           <div className="card p-4 md:p-6 mb-4">
             <h2 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
               <span className="w-8 h-8 bg-celtic-blue rounded-full flex items-center justify-center text-white text-sm">2</span>
+              Cover Photo
+              <span className="text-xs font-normal text-gray-500">(optional)</span>
+            </h2>
+
+            <div className="flex gap-4 items-start">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Upload a match photo for the cover
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-celtic-blue file:text-white hover:file:bg-celtic-blue-dark file:cursor-pointer"
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  Recommended: Action shot from a recent match. Leave blank for default gradient background.
+                </p>
+              </div>
+              {formData.coverImage && (
+                <div className="w-32 h-20 rounded-lg overflow-hidden border-2 border-celtic-blue relative">
+                  <Image
+                    src={formData.coverImage}
+                    alt="Cover preview"
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    onClick={() => setFormData({ ...formData, coverImage: '' })}
+                    className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Manager's Notes */}
+          <div className="card p-4 md:p-6 mb-4">
+            <h2 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
+              <span className="w-8 h-8 bg-celtic-blue rounded-full flex items-center justify-center text-white text-sm">3</span>
               Manager&apos;s Notes
             </h2>
 
@@ -231,7 +289,7 @@ export default function ProgrammeGeneratorPage() {
           {/* Team News */}
           <div className="card p-4 md:p-6 mb-4">
             <h2 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-celtic-blue rounded-full flex items-center justify-center text-white text-sm">3</span>
+              <span className="w-8 h-8 bg-celtic-blue rounded-full flex items-center justify-center text-white text-sm">4</span>
               Team News
             </h2>
 
@@ -256,7 +314,7 @@ export default function ProgrammeGeneratorPage() {
             <p className="text-sm text-gray-600 mb-3">The following will be added automatically:</p>
             <ul className="text-sm text-gray-600 space-y-1">
               <li className="flex items-center gap-2">
-                <span className="text-green-600">✓</span> Full squad list with photos
+                <span className="text-green-600">✓</span> Full squad list with tick boxes for lineup
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-600">✓</span> Current league table
