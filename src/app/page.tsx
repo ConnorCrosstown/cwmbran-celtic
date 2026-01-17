@@ -50,7 +50,7 @@ export default async function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-celtic-dark dark:text-white mb-4">Our Teams</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Follow both our Men&apos;s and Ladies teams competing in the Welsh football pyramid
+              Follow both our Men&apos;s and Women&apos;s teams competing in the Welsh football pyramid
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -64,9 +64,9 @@ export default async function HomePage() {
               href="/teams/mens"
             />
 
-            {/* Ladies Team */}
+            {/* Women's Team */}
             <TeamCard
-              teamName="Ladies"
+              teamName="Women's Team"
               teamType="ladies"
               league="Genero Adran South"
               position={ladiesPosition}

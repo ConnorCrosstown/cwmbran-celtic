@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
     href: '/teams',
     children: [
       { label: "Men's First Team", href: '/teams/mens' },
-      { label: 'Ladies', href: '/teams/ladies' },
+      { label: "Women's Team", href: '/teams/ladies' },
     ],
   },
   {

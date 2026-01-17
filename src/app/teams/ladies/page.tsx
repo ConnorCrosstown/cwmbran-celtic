@@ -5,8 +5,8 @@ import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import { getLadiesLeagueTable } from '@/lib/comet';
 
 export const metadata: Metadata = {
-  title: 'Ladies Team',
-  description: 'Meet the Cwmbran Celtic Ladies team. View fixtures, results, and league position in the Genero Adran South.',
+  title: "Women's Team",
+  description: "Meet the Cwmbran Celtic Women's team. View fixtures, results, and league position in the Genero Adran South.",
 };
 
 export default async function LadiesTeamPage() {
@@ -23,7 +23,7 @@ export default async function LadiesTeamPage() {
       <section className="bg-celtic-blue text-white py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Cwmbran Celtic Ladies</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">Cwmbran Celtic Women</h1>
             <p className="text-lg text-gray-200 mb-6">
               Competing in the Genero Adran South
             </p>
@@ -59,7 +59,7 @@ export default async function LadiesTeamPage() {
 
             <div className="card p-6 mb-8">
               <p className="text-gray-700 mb-4">
-                Cwmbran Celtic Ladies compete in the Genero Adran South, part of the FAW Women&apos;s
+                Cwmbran Celtic Women compete in the Genero Adran South, part of the FAW Women&apos;s
                 pyramid system. The team trains regularly and plays home games at the Avondale Motor Park Arena.
               </p>
               <p className="text-gray-700">

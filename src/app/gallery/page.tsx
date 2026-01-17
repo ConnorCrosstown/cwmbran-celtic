@@ -29,7 +29,7 @@ function getCategoryBadge(category: string): { label: string; color: string } {
 function getTeamBadge(team?: string): { label: string; color: string; textColor: string } | null {
   if (!team || team === 'both') return null;
   return team === 'ladies'
-    ? { label: 'Ladies', color: 'bg-celtic-yellow', textColor: 'text-celtic-dark' }
+    ? { label: "Women's", color: 'bg-celtic-yellow', textColor: 'text-celtic-dark' }
     : { label: "Men's", color: 'bg-celtic-blue', textColor: 'text-white' };
 }
 

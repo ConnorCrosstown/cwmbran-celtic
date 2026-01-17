@@ -39,8 +39,8 @@ const timeline = [
   },
   {
     year: '2020',
-    title: 'Ladies Section',
-    description: 'The club established a thriving ladies section, competing in the Genero Adran South.',
+    title: "Women's Section",
+    description: "The club established a thriving women's section, competing in the Genero Adran South.",
   },
   {
     year: '2024',

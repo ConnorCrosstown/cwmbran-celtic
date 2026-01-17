@@ -24,14 +24,14 @@ export const mockAlbums: GalleryAlbum[] = [
   {
     id: '2',
     slug: 'ladies-vs-abergavenny-jan-2025',
-    title: 'Ladies Draw at Abergavenny',
+    title: "Women's Team Draw at Abergavenny",
     description: 'Photos from our dramatic 2-2 draw away at Abergavenny.',
     coverImage: '/images/gallery/ladies-1.jpg',
     date: toTimestamp('2025-01-12'),
     category: 'match',
     team: 'ladies',
     images: [
-      { id: '2-1', src: '/images/gallery/ladies-1.jpg', alt: 'Ladies team', category: 'match', team: 'ladies' },
+      { id: '2-1', src: '/images/gallery/ladies-1.jpg', alt: "Women's team", category: 'match', team: 'ladies' },
       { id: '2-2', src: '/images/gallery/ladies-2.jpg', alt: 'Match action', category: 'match', team: 'ladies' },
       { id: '2-3', src: '/images/gallery/ladies-3.jpg', alt: 'Goal celebration', category: 'match', team: 'ladies' },
     ],

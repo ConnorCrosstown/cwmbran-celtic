@@ -49,7 +49,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-400 text-sm mb-5 leading-relaxed max-w-sm">
               The home of football in Cwmbran. Competing in the JD Cymru South (Men&apos;s)
-              and Genero Adran South (Ladies). Come support your local club!
+              and Genero Adran South (Women&apos;s). Come support your local club!
             </p>
             <div className="mb-6">
               <p className="text-gray-400 text-sm">

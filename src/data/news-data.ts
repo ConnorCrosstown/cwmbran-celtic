@@ -27,16 +27,16 @@ export const mockNews: NewsArticle[] = [
   {
     id: '2',
     slug: 'ladies-team-extend-unbeaten-run',
-    title: 'Ladies Extend Unbeaten Run to Seven Games',
-    excerpt: 'Another impressive performance sees the Ladies maintain their promotion push.',
+    title: "Women's Team Extend Unbeaten Run to Seven Games",
+    excerpt: "Another impressive performance sees the Women's team maintain their promotion push.",
     content: `
-      <p>Cwmbran Celtic Ladies continued their fantastic form with a hard-fought 2-2 draw away at Abergavenny on Sunday.</p>
+      <p>Cwmbran Celtic Women continued their fantastic form with a hard-fought 2-2 draw away at Abergavenny on Sunday.</p>
 
-      <p>Despite going 2-0 down early in the second half, the Ladies showed tremendous spirit to fight back and claim a valuable point that extends their unbeaten run to seven games in all competitions.</p>
+      <p>Despite going 2-0 down early in the second half, the team showed tremendous spirit to fight back and claim a valuable point that extends their unbeaten run to seven games in all competitions.</p>
 
       <p>Goals from captain Morgan and midfielder Evans earned the draw, with Evans' 89th-minute equaliser sparking wild celebrations among the travelling supporters.</p>
 
-      <p>The Ladies sit 3rd in the Genero Adran South and remain firmly in the promotion race.</p>
+      <p>The Women's team sit 3rd in the Genero Adran South and remain firmly in the promotion race.</p>
     `,
     category: 'match-report',
     team: 'ladies',

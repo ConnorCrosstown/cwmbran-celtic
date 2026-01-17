@@ -53,7 +53,7 @@ function getCategoryBadge(category: string): { label: string; color: string } {
 function getTeamBadge(team?: string): { label: string; color: string } | null {
   if (!team || team === 'both') return null;
   return team === 'ladies'
-    ? { label: 'Ladies', color: 'bg-purple-600' }
+    ? { label: "Women's", color: 'bg-purple-600' }
     : { label: "Men's", color: 'bg-celtic-blue' };
 }
 

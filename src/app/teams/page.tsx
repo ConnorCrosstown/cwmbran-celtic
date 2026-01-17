@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Our Teams',
-  description: 'Explore all Cwmbran Celtic AFC teams including Men\'s First Team, Ladies, Development Squad, and Walking Football.',
+  description: 'Explore all Cwmbran Celtic AFC teams including Men\'s First Team, Women\'s Team, Development Squad, and Walking Football.',
 };
 
 const teams = [
@@ -15,7 +15,7 @@ const teams = [
     color: 'bg-celtic-blue',
   },
   {
-    name: 'Ladies',
+    name: "Women's Team",
     href: '/teams/ladies',
     description: 'Competing in the Genero Adran South league',
     league: 'Genero Adran South',
