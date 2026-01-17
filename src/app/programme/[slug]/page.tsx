@@ -7,12 +7,28 @@ import Link from 'next/link';
 import { getOppositionById } from '@/data/opposition-data';
 import { mockSquad, mockLeagueTable, mockResults, mockFixtures, clubInfo, sponsors } from '@/data/mock-data';
 
+interface ProgrammeData {
+  opponent: string;
+  date: string;
+  kickoff: string;
+  competition: string;
+  matchdayNumber: string;
+  managersNotes: string;
+  teamNews: string;
+  matchSponsor: string;
+  coverImage: string;
+  actionImage: string;
+  status?: 'draft' | 'published';
+}
+
 export default function ShareableProgrammePage() {
   const params = useParams();
   const slug = params.slug as string;
   const [currentPage, setCurrentPage] = useState(0);
   const [shareUrl, setShareUrl] = useState('');
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [programmeData, setProgrammeData] = useState<ProgrammeData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Parse slug: format is "YYYY-MM-DD-opponent-id"
   const parts = slug?.split('-') || [];
@@ -23,7 +39,20 @@ export default function ShareableProgrammePage() {
 
   useEffect(() => {
     setShareUrl(window.location.href);
-  }, []);
+
+    // Load programme data from localStorage
+    const programmeKey = `programme-${slug}`;
+    const savedData = localStorage.getItem(programmeKey);
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setProgrammeData(parsed);
+      } catch (e) {
+        // Use defaults if parse fails
+      }
+    }
+    setIsLoading(false);
+  }, [slug]);
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
@@ -95,6 +124,19 @@ export default function ShareableProgrammePage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#1e3a8a' }}>
+        <div className="text-center">
+          <div className="w-16 h-16 mb-4 mx-auto">
+            <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={64} height={64} className="animate-pulse" />
+          </div>
+          <p style={{ color: '#ffffff' }}>Loading programme...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!opposition) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#1e3a8a' }}>
@@ -111,37 +153,53 @@ export default function ShareableProgrammePage() {
     switch (pages[currentPage]) {
       case 'cover':
         return (
-          <div className="h-full flex flex-col justify-between p-6 text-center relative" style={{ backgroundColor: '#1e3a8a' }}>
-            <div>
+          <div className="h-full flex flex-col justify-between p-6 text-center relative overflow-hidden">
+            {/* Background - either uploaded image or solid color */}
+            {programmeData?.coverImage ? (
+              <>
+                <div className="absolute inset-0">
+                  <Image src={programmeData.coverImage} alt="" fill className="object-cover" />
+                </div>
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(30,58,138,0.85) 0%, rgba(30,58,138,0.7) 50%, rgba(30,58,138,0.9) 100%)' }} />
+              </>
+            ) : (
+              <div className="absolute inset-0" style={{ backgroundColor: '#1e3a8a' }} />
+            )}
+
+            {/* Content */}
+            <div className="relative z-10">
               <p className="text-[10px] uppercase tracking-[0.3em] mb-1" style={{ color: '#facc15' }}>Official Match Programme</p>
-              <p className="text-xs font-semibold" style={{ color: '#ffffff' }}>JD Cymru South</p>
+              <p className="text-xs font-semibold" style={{ color: '#ffffff' }}>{programmeData?.competition || 'JD Cymru South'}</p>
             </div>
 
-            <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="flex-1 flex flex-col items-center justify-center relative z-10">
               <div className="w-24 h-24 mb-4">
                 <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={96} height={96} className="object-contain w-full h-full" />
               </div>
-              <h1 className="text-2xl font-black mb-2" style={{ color: '#ffffff' }}>CWMBRAN CELTIC</h1>
+              <h1 className="text-2xl font-black mb-2" style={{ color: '#ffffff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>CWMBRAN CELTIC</h1>
               <div className="flex items-center justify-center gap-2 mb-2">
                 <div className="h-0.5 w-8" style={{ backgroundColor: '#facc15' }} />
                 <span className="text-lg font-bold" style={{ color: '#facc15' }}>VS</span>
                 <div className="h-0.5 w-8" style={{ backgroundColor: '#facc15' }} />
               </div>
-              <h2 className="text-xl font-black" style={{ color: '#ffffff' }}>{opposition.name.toUpperCase()}</h2>
+              <h2 className="text-xl font-black" style={{ color: '#ffffff', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{opposition.name.toUpperCase()}</h2>
               {opposition.nickname && (
                 <p className="text-sm italic mt-1" style={{ color: '#facc15' }}>&ldquo;{opposition.nickname}&rdquo;</p>
               )}
             </div>
 
-            <div className="rounded-lg p-3" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+            <div className="relative z-10 rounded-lg p-3" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
               <p className="text-xs" style={{ color: '#ffffff' }}>{formatDate(date)}</p>
-              <p className="text-xl font-black" style={{ color: '#facc15' }}>15:00</p>
+              <p className="text-xl font-black" style={{ color: '#facc15' }}>{programmeData?.kickoff || '15:00'}</p>
               <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>Avondale Motor Park Arena</p>
             </div>
           </div>
         );
 
       case 'managers-notes':
+        const defaultNotes = `Good afternoon and welcome to the Avondale Motor Park Arena for today's fixture against ${opposition.name}.\n\nThank you for your continued support - it means the world to everyone at the club. The lads have been working hard in training and we're looking forward to putting on a performance for you today.\n\nEnjoy the game!`;
+        const notesText = programmeData?.managersNotes || defaultNotes;
+
         return (
           <div className="h-full flex flex-col p-5" style={{ backgroundColor: '#ffffff' }}>
             <h2 className="text-lg font-black mb-3 pb-2 border-b-4" style={{ color: '#0f172a', borderColor: '#1e3a8a' }}>MANAGER&apos;S NOTES</h2>
@@ -154,16 +212,14 @@ export default function ShareableProgrammePage() {
                 <p className="text-xs" style={{ color: '#6b7280' }}>First Team Manager</p>
               </div>
             </div>
-            <div className="flex-1 rounded-lg p-4" style={{ backgroundColor: '#f3f4f6' }}>
-              <p className="text-xs leading-relaxed" style={{ color: '#374151' }}>
-                Good afternoon and welcome to the Avondale Motor Park Arena for today&apos;s fixture against {opposition.name}.
-              </p>
-              <p className="text-xs leading-relaxed mt-3" style={{ color: '#374151' }}>
-                Thank you for your continued support - it means the world to everyone at the club. The lads have been working hard in training and we&apos;re looking forward to putting on a performance for you today.
-              </p>
-              <p className="text-xs leading-relaxed mt-3" style={{ color: '#374151' }}>
-                Enjoy the game!
-              </p>
+            <div className="flex-1 rounded-lg p-4 overflow-y-auto" style={{ backgroundColor: '#f3f4f6' }}>
+              {notesText.split('\n').map((paragraph, idx) => (
+                paragraph.trim() && (
+                  <p key={idx} className="text-xs leading-relaxed mb-2" style={{ color: '#374151' }}>
+                    {paragraph}
+                  </p>
+                )
+              ))}
               <p className="text-xs mt-4 font-semibold" style={{ color: '#1e3a8a' }}>Simon Berry</p>
             </div>
           </div>
@@ -378,37 +434,48 @@ export default function ShareableProgrammePage() {
 
       case 'form-guide':
         return (
-          <div className="h-full flex flex-col p-5" style={{ backgroundColor: '#ffffff' }}>
-            <h2 className="text-lg font-black mb-3 pb-2 border-b-4" style={{ color: '#0f172a', borderColor: '#1e3a8a' }}>FORM GUIDE</h2>
-            <div className="flex-1 space-y-3">
-              <div>
-                <p className="text-[10px] font-bold uppercase mb-2" style={{ color: '#6b7280' }}>Recent Results</p>
-                {recentResults.slice(0, 4).map((r, i) => {
-                  const home = r.homeTeam.includes('Cwmbran Celtic');
-                  const celticScore = home ? r.homeScore : r.awayScore;
-                  const oppScore = home ? r.awayScore : r.homeScore;
-                  const res = celticScore > oppScore ? 'W' : celticScore < oppScore ? 'L' : 'D';
-                  return (
-                    <div key={i} className="flex items-center gap-2 p-1.5 rounded mb-1" style={{ backgroundColor: '#f3f4f6' }}>
-                      <span className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: res === 'W' ? '#22c55e' : res === 'L' ? '#ef4444' : '#9ca3af', color: '#fff' }}>{res}</span>
-                      <span className="flex-1 text-[10px]" style={{ color: '#111827' }}>{home ? r.awayTeam : r.homeTeam}</span>
-                      <span className="text-xs font-bold" style={{ color: '#111827' }}>{celticScore}-{oppScore}</span>
-                    </div>
-                  );
-                })}
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase mb-2" style={{ color: '#6b7280' }}>Up Next</p>
-                {upcomingFixtures.slice(0, 3).map((f, i) => {
-                  const home = f.homeTeam.includes('Cwmbran Celtic');
-                  const d = new Date(f.date);
-                  return (
-                    <div key={i} className="flex items-center justify-between p-1.5 rounded mb-1" style={{ backgroundColor: '#f3f4f6' }}>
-                      <span className="text-[10px]" style={{ color: '#111827' }}>{home ? f.awayTeam : f.homeTeam}</span>
-                      <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: '#1e3a8a', color: '#fff' }}>{d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
-                    </div>
-                  );
-                })}
+          <div className="h-full flex flex-col p-5 relative overflow-hidden" style={{ backgroundColor: '#ffffff' }}>
+            {/* Action image background if available */}
+            {programmeData?.actionImage && (
+              <>
+                <div className="absolute inset-0 opacity-10">
+                  <Image src={programmeData.actionImage} alt="" fill className="object-cover" />
+                </div>
+              </>
+            )}
+
+            <div className="relative z-10">
+              <h2 className="text-lg font-black mb-3 pb-2 border-b-4" style={{ color: '#0f172a', borderColor: '#1e3a8a' }}>FORM GUIDE</h2>
+              <div className="flex-1 space-y-3">
+                <div>
+                  <p className="text-[10px] font-bold uppercase mb-2" style={{ color: '#6b7280' }}>Recent Results</p>
+                  {recentResults.slice(0, 4).map((r, i) => {
+                    const home = r.homeTeam.includes('Cwmbran Celtic');
+                    const celticScore = home ? r.homeScore : r.awayScore;
+                    const oppScore = home ? r.awayScore : r.homeScore;
+                    const res = celticScore > oppScore ? 'W' : celticScore < oppScore ? 'L' : 'D';
+                    return (
+                      <div key={i} className="flex items-center gap-2 p-1.5 rounded mb-1" style={{ backgroundColor: 'rgba(243,244,246,0.95)' }}>
+                        <span className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: res === 'W' ? '#22c55e' : res === 'L' ? '#ef4444' : '#9ca3af', color: '#fff' }}>{res}</span>
+                        <span className="flex-1 text-[10px]" style={{ color: '#111827' }}>{home ? r.awayTeam : r.homeTeam}</span>
+                        <span className="text-xs font-bold" style={{ color: '#111827' }}>{celticScore}-{oppScore}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div>
+                  <p className="text-[10px] font-bold uppercase mb-2" style={{ color: '#6b7280' }}>Up Next</p>
+                  {upcomingFixtures.slice(0, 3).map((f, i) => {
+                    const home = f.homeTeam.includes('Cwmbran Celtic');
+                    const d = new Date(f.date);
+                    return (
+                      <div key={i} className="flex items-center justify-between p-1.5 rounded mb-1" style={{ backgroundColor: 'rgba(243,244,246,0.95)' }}>
+                        <span className="text-[10px]" style={{ color: '#111827' }}>{home ? f.awayTeam : f.homeTeam}</span>
+                        <span className="text-[9px] px-2 py-0.5 rounded" style={{ backgroundColor: '#1e3a8a', color: '#fff' }}>{d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

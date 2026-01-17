@@ -1,15 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { oppositionTeams } from '@/data/opposition-data';
+import { oppositionTeams, getOppositionById } from '@/data/opposition-data';
 import ProgrammePreview from '@/components/programme/ProgrammePreview';
+
+interface ProgrammeData {
+  opponent: string;
+  date: string;
+  kickoff: string;
+  competition: string;
+  matchdayNumber: string;
+  managersNotes: string;
+  teamNews: string;
+  matchSponsor: string;
+  coverImage: string;
+  actionImage: string;
+  status?: 'draft' | 'published';
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface SavedProgramme {
+  id: string;
+  data: ProgrammeData;
+}
 
 export default function ProgrammeGeneratorPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [showPreview, setShowPreview] = useState(false);
-  const [formData, setFormData] = useState({
+  const [showSavedList, setShowSavedList] = useState(false);
+  const [savedProgrammes, setSavedProgrammes] = useState<SavedProgramme[]>([]);
+  const [formData, setFormData] = useState<ProgrammeData>({
     opponent: '',
     date: '',
     kickoff: '15:00',
@@ -20,7 +43,33 @@ export default function ProgrammeGeneratorPage() {
     matchSponsor: '',
     coverImage: '',
     actionImage: '',
+    status: 'draft',
   });
+
+  // Load saved programmes from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      loadSavedProgrammes();
+    }
+  }, []);
+
+  const loadSavedProgrammes = () => {
+    const programmes: SavedProgramme[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith('programme-')) {
+        try {
+          const data = JSON.parse(localStorage.getItem(key) || '');
+          programmes.push({ id: key, data });
+        } catch (e) {
+          // Skip invalid entries
+        }
+      }
+    }
+    // Sort by date (newest first)
+    programmes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+    setSavedProgrammes(programmes);
+  };
 
   // Simple password check (in production, use proper auth)
   const handleLogin = (e: React.FormEvent) => {
@@ -58,7 +107,62 @@ export default function ProgrammeGeneratorPage() {
       alert('Please select an opponent and date');
       return;
     }
+    // Auto-save as draft before preview
+    saveProgramme('draft');
     setShowPreview(true);
+  };
+
+  const saveProgramme = (status: 'draft' | 'published') => {
+    if (!formData.opponent || !formData.date) {
+      alert('Please select an opponent and date');
+      return;
+    }
+    const programmeKey = `programme-${formData.date}-${formData.opponent}`;
+    const dataToSave = {
+      ...formData,
+      status,
+      updatedAt: new Date().toISOString(),
+      createdAt: formData.createdAt || new Date().toISOString(),
+    };
+    localStorage.setItem(programmeKey, JSON.stringify(dataToSave));
+    setFormData(dataToSave);
+    loadSavedProgrammes();
+
+    if (status === 'published') {
+      alert('Programme published! The digital link is now active.');
+    } else {
+      alert('Draft saved!');
+    }
+  };
+
+  const loadProgramme = (programme: SavedProgramme) => {
+    setFormData(programme.data);
+    setShowSavedList(false);
+  };
+
+  const deleteProgramme = (id: string) => {
+    if (confirm('Are you sure you want to delete this programme?')) {
+      localStorage.removeItem(id);
+      loadSavedProgrammes();
+    }
+  };
+
+  const clearForm = () => {
+    if (confirm('Clear the form and start fresh?')) {
+      setFormData({
+        opponent: '',
+        date: '',
+        kickoff: '15:00',
+        competition: 'JD Cymru South',
+        matchdayNumber: '',
+        managersNotes: '',
+        teamNews: '',
+        matchSponsor: '',
+        coverImage: '',
+        actionImage: '',
+        status: 'draft',
+      });
+    }
   };
 
   if (!isAuthenticated) {
@@ -101,13 +205,126 @@ export default function ProgrammeGeneratorPage() {
     );
   }
 
+  // Saved Programmes List View
+  if (showSavedList) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <div className="bg-celtic-blue text-white py-4">
+          <div className="container mx-auto px-4 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold">Saved Programmes</h1>
+              <p className="text-sm text-gray-200">{savedProgrammes.length} programmes saved</p>
+            </div>
+            <button
+              onClick={() => setShowSavedList(false)}
+              className="px-4 py-2 bg-white/20 rounded-lg text-sm font-semibold hover:bg-white/30"
+            >
+              Back to Editor
+            </button>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 py-6">
+          <div className="max-w-2xl mx-auto space-y-3">
+            {savedProgrammes.length === 0 ? (
+              <div className="card p-8 text-center">
+                <p className="text-gray-500">No saved programmes yet</p>
+                <button
+                  onClick={() => setShowSavedList(false)}
+                  className="mt-4 px-4 py-2 bg-celtic-blue text-white rounded-lg text-sm font-semibold"
+                >
+                  Create New Programme
+                </button>
+              </div>
+            ) : (
+              savedProgrammes.map((prog) => {
+                const opp = getOppositionById(prog.data.opponent);
+                const dateStr = new Date(prog.data.date).toLocaleDateString('en-GB', {
+                  weekday: 'short',
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                });
+                return (
+                  <div key={prog.id} className="card p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {prog.data.coverImage ? (
+                        <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
+                          <Image src={prog.data.coverImage} alt="" width={48} height={48} className="object-cover w-full h-full" />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 bg-celtic-blue rounded flex items-center justify-center flex-shrink-0">
+                          <span className="text-celtic-yellow text-lg">📄</span>
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-bold text-celtic-dark">vs {opp?.name || prog.data.opponent}</p>
+                        <p className="text-xs text-gray-500">{dateStr} • {prog.data.kickoff}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full ${prog.data.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                            {prog.data.status === 'published' ? 'Published' : 'Draft'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => loadProgramme(prog)}
+                        className="px-3 py-1.5 bg-celtic-blue text-white rounded text-xs font-semibold"
+                      >
+                        Edit
+                      </button>
+                      {prog.data.status === 'published' && (
+                        <a
+                          href={`/programme/${prog.data.date}-${prog.data.opponent}`}
+                          target="_blank"
+                          className="px-3 py-1.5 bg-celtic-yellow text-celtic-dark rounded text-xs font-semibold"
+                        >
+                          View
+                        </a>
+                      )}
+                      <button
+                        onClick={() => deleteProgramme(prog.id)}
+                        className="px-3 py-1.5 bg-red-100 text-red-600 rounded text-xs font-semibold hover:bg-red-200"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <div className="bg-celtic-blue text-white py-4">
-        <div className="container mx-auto px-4">
-          <h1 className="text-xl font-bold">Programme Generator</h1>
-          <p className="text-sm text-gray-200">Create match day programmes in minutes</p>
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold">Programme Generator</h1>
+            <p className="text-sm text-gray-200">
+              {formData.status === 'published' ? 'Editing published programme' : formData.opponent ? 'Editing draft' : 'Create new programme'}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowSavedList(true)}
+              className="px-3 py-2 bg-white/20 rounded-lg text-sm font-semibold hover:bg-white/30 flex items-center gap-1"
+            >
+              <span>📁</span> Saved ({savedProgrammes.length})
+            </button>
+            <button
+              onClick={clearForm}
+              className="px-3 py-2 bg-white/20 rounded-lg text-sm font-semibold hover:bg-white/30"
+            >
+              New
+            </button>
+          </div>
         </div>
       </div>
 
@@ -377,20 +594,41 @@ export default function ProgrammeGeneratorPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <button
-              onClick={handlePreview}
-              className="flex-1 bg-white border-2 border-celtic-blue text-celtic-blue py-3 px-6 rounded-lg font-semibold hover:bg-celtic-blue/5 transition-colors flex items-center justify-center gap-2"
+              onClick={() => saveProgramme('draft')}
+              className="bg-gray-100 border-2 border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm"
             >
-              <span>👁</span> Preview PDF
+              <span>💾</span> Save Draft
+            </button>
+            <button
+              onClick={() => saveProgramme('published')}
+              className="bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2 text-sm"
+            >
+              <span>✓</span> Publish
             </button>
             <button
               onClick={handlePreview}
-              className="flex-1 bg-celtic-blue text-white py-3 px-6 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors flex items-center justify-center gap-2"
+              className="bg-white border-2 border-celtic-blue text-celtic-blue py-3 px-4 rounded-lg font-semibold hover:bg-celtic-blue/5 transition-colors flex items-center justify-center gap-2 text-sm"
             >
-              <span>📄</span> Print / Save PDF
+              <span>👁</span> Preview
+            </button>
+            <button
+              onClick={handlePreview}
+              className="bg-celtic-blue text-white py-3 px-4 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors flex items-center justify-center gap-2 text-sm"
+            >
+              <span>📄</span> Print PDF
             </button>
           </div>
+
+          {/* Status indicator */}
+          {formData.status && (
+            <div className="mt-3 text-center">
+              <span className={`text-sm px-3 py-1 rounded-full ${formData.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                {formData.status === 'published' ? 'Published - digital link is live' : 'Draft - not yet published'}
+              </span>
+            </div>
+          )}
 
           {/* Shareable Link Section */}
           {formData.opponent && formData.date && (
