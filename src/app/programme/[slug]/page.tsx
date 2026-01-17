@@ -7,17 +7,51 @@ import Link from 'next/link';
 import { getOppositionById } from '@/data/opposition-data';
 import { mockSquad, mockLeagueTable, mockResults, mockFixtures } from '@/data/mock-data';
 
+interface SquadPlayer {
+  squadNo: number;
+  firstName: string;
+  lastName: string;
+  position: string;
+}
+
 interface ProgrammeData {
+  // Match details
   opponent: string;
   date: string;
   kickoff: string;
   competition: string;
   matchdayNumber: string;
+  venue: 'home' | 'away';
+
+  // Team selection
+  team: 'mens' | 'womens' | 'development';
+  startingXI: number[];
+  substitutes: number[];
+  captain: number | null;
+
+  // Match officials
+  referee: string;
+  assistantRef1: string;
+  assistantRef2: string;
+  fourthOfficial: string;
+
+  // Sponsors & extras
+  matchSponsor: string;
+  mascotSponsor: string;
+  matchballSponsor: string;
+  programmePrice: string;
+
+  // Content
   managersNotes: string;
   teamNews: string;
-  matchSponsor: string;
+  specialNotes: string;
+  playerToWatch: number | null;
+
+  // Images
   coverImage: string;
   actionImage: string;
+
+  // Meta
   status?: 'draft' | 'published';
 }
 
@@ -64,11 +98,12 @@ export default function ShareableProgrammePage() {
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
   };
 
-  // Squad groups
-  const goalkeepers = mockSquad.results.filter(p => p.position === 'Goalkeeper');
-  const defenders = mockSquad.results.filter(p => p.position.includes('Back'));
-  const midfielders = mockSquad.results.filter(p => p.position.includes('Midfield') || p.position.includes('Wing'));
-  const forwards = mockSquad.results.filter(p => p.position === 'Striker' || p.position === 'Forward');
+  // Squad - type assertion
+  const squad = mockSquad.results as SquadPlayer[];
+  const goalkeepers = squad.filter(p => p.position === 'Goalkeeper');
+  const defenders = squad.filter(p => p.position.includes('Back'));
+  const midfielders = squad.filter(p => p.position.includes('Midfield') || p.position.includes('Wing'));
+  const forwards = squad.filter(p => p.position === 'Striker' || p.position === 'Forward');
 
   // Results & fixtures
   const recentResults = mockResults.results
@@ -224,7 +259,7 @@ export default function ShareableProgrammePage() {
 
               {/* Price badge */}
               <div className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#facc15' }}>
-                <span className="text-[10px] font-black" style={{ color: '#0a1628' }}>FREE</span>
+                <span className="text-[10px] font-black" style={{ color: '#0a1628' }}>{programmeData?.programmePrice || 'FREE'}</span>
               </div>
             </div>
           </div>
@@ -273,24 +308,40 @@ export default function ShareableProgrammePage() {
                 <div className="grid grid-cols-3 gap-2 text-[9px]">
                   <div>
                     <p style={{ color: '#6b7280' }}>Referee</p>
-                    <p className="font-semibold" style={{ color: '#0a1628' }}>TBC</p>
+                    <p className="font-semibold" style={{ color: '#0a1628' }}>{programmeData?.referee || 'TBC'}</p>
                   </div>
                   <div>
                     <p style={{ color: '#6b7280' }}>Assistant 1</p>
-                    <p className="font-semibold" style={{ color: '#0a1628' }}>TBC</p>
+                    <p className="font-semibold" style={{ color: '#0a1628' }}>{programmeData?.assistantRef1 || 'TBC'}</p>
                   </div>
                   <div>
                     <p style={{ color: '#6b7280' }}>Assistant 2</p>
-                    <p className="font-semibold" style={{ color: '#0a1628' }}>TBC</p>
+                    <p className="font-semibold" style={{ color: '#0a1628' }}>{programmeData?.assistantRef2 || 'TBC'}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Match Sponsor */}
-              {programmeData?.matchSponsor && (
-                <div className="p-3 rounded" style={{ backgroundColor: '#facc15' }}>
-                  <p className="text-[9px] font-bold uppercase mb-1" style={{ color: '#0a1628' }}>Today's Match Sponsor</p>
-                  <p className="text-sm font-black" style={{ color: '#0a1628' }}>{programmeData.matchSponsor}</p>
+              {/* Sponsors */}
+              {(programmeData?.matchSponsor || programmeData?.matchballSponsor || programmeData?.mascotSponsor) && (
+                <div className="p-3 rounded mb-3" style={{ backgroundColor: '#facc15' }}>
+                  {programmeData?.matchSponsor && (
+                    <div className="mb-2">
+                      <p className="text-[9px] font-bold uppercase" style={{ color: '#0a1628' }}>Match Sponsor</p>
+                      <p className="text-sm font-black" style={{ color: '#0a1628' }}>{programmeData.matchSponsor}</p>
+                    </div>
+                  )}
+                  {programmeData?.matchballSponsor && (
+                    <div className="mb-2">
+                      <p className="text-[9px] font-bold uppercase" style={{ color: '#0a1628' }}>Matchball Sponsor</p>
+                      <p className="text-xs font-bold" style={{ color: '#0a1628' }}>{programmeData.matchballSponsor}</p>
+                    </div>
+                  )}
+                  {programmeData?.mascotSponsor && (
+                    <div>
+                      <p className="text-[9px] font-bold uppercase" style={{ color: '#0a1628' }}>Mascot Sponsor</p>
+                      <p className="text-xs font-bold" style={{ color: '#0a1628' }}>{programmeData.mascotSponsor}</p>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -372,6 +423,14 @@ export default function ShareableProgrammePage() {
                 <div className="mt-3 p-3 rounded" style={{ backgroundColor: '#fef3c7' }}>
                   <h3 className="text-[10px] font-bold uppercase mb-1" style={{ color: '#0a1628' }}>Team News</h3>
                   <p className="text-[10px]" style={{ color: '#374151' }}>{programmeData.teamNews}</p>
+                </div>
+              )}
+
+              {/* Special Notes */}
+              {programmeData?.specialNotes && (
+                <div className="mt-3 p-3 rounded" style={{ backgroundColor: '#0a1628' }}>
+                  <h3 className="text-[10px] font-bold uppercase mb-1" style={{ color: '#facc15' }}>Announcement</h3>
+                  <p className="text-[10px]" style={{ color: '#ffffff' }}>{programmeData.specialNotes}</p>
                 </div>
               )}
             </div>
@@ -515,12 +574,23 @@ export default function ShareableProgrammePage() {
 
       // ==================== TODAY'S MATCH ====================
       case 'todays-match':
+        // Get starting XI players from programme data, or use default
+        const startingXIPlayers = programmeData?.startingXI?.length === 11
+          ? programmeData.startingXI.map(no => squad.find(p => p.squadNo === no)).filter(Boolean)
+          : [...goalkeepers.slice(0, 1), ...defenders.slice(0, 4), ...midfielders.slice(0, 4), ...forwards.slice(0, 2)];
+
+        const subsPlayers = programmeData?.substitutes?.length
+          ? programmeData.substitutes.map(no => squad.find(p => p.squadNo === no)).filter(Boolean)
+          : [];
+
+        const isHome = programmeData?.venue !== 'away';
+
         return (
           <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
             {/* Header */}
             <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
               <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                Today's Match
+                Today&apos;s Match
               </p>
             </div>
 
@@ -532,7 +602,7 @@ export default function ShareableProgrammePage() {
                     <Image src="/images/club-logo.webp" alt="Celtic" width={40} height={40} className="object-contain" />
                   </div>
                   <p className="text-[10px] font-black" style={{ color: '#0a1628' }}>CELTIC</p>
-                  <p className="text-[8px]" style={{ color: '#6b7280' }}>Home</p>
+                  <p className="text-[8px]" style={{ color: '#6b7280' }}>{isHome ? 'Home' : 'Away'}</p>
                 </div>
                 <div className="px-3">
                   <p className="text-lg font-black" style={{ color: '#facc15' }}>VS</p>
@@ -542,32 +612,45 @@ export default function ShareableProgrammePage() {
                     <span className="text-[10px] font-bold" style={{ color: '#6b7280' }}>{opposition.name.substring(0, 2).toUpperCase()}</span>
                   </div>
                   <p className="text-[10px] font-black" style={{ color: '#0a1628' }}>{opposition.name.split(' ')[0].toUpperCase()}</p>
-                  <p className="text-[8px]" style={{ color: '#6b7280' }}>Away</p>
+                  <p className="text-[8px]" style={{ color: '#6b7280' }}>{isHome ? 'Away' : 'Home'}</p>
                 </div>
               </div>
 
               {/* Team sheets */}
               <div className="grid grid-cols-2 gap-2">
-                {/* Home */}
+                {/* Home - Celtic */}
                 <div className="rounded overflow-hidden" style={{ backgroundColor: '#0a1628' }}>
                   <div className="p-2 text-center" style={{ backgroundColor: '#facc15' }}>
                     <p className="text-[9px] font-bold" style={{ color: '#0a1628' }}>CWMBRAN CELTIC</p>
                   </div>
                   <div className="p-2">
-                    {[...goalkeepers.slice(0, 1), ...defenders.slice(0, 4), ...midfielders.slice(0, 4), ...forwards.slice(0, 2)].map((p, i) => (
+                    {startingXIPlayers.map((p) => p && (
                       <div key={p.squadNo} className="flex items-center gap-1 py-0.5">
                         <span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>{p.squadNo}</span>
-                        <span className="text-[8px]" style={{ color: '#ffffff' }}>{p.firstName[0]}. {p.lastName}</span>
+                        <span className="text-[8px]" style={{ color: '#ffffff' }}>
+                          {p.firstName[0]}. {p.lastName}
+                          {programmeData?.captain === p.squadNo && <span style={{ color: '#facc15' }}> (C)</span>}
+                        </span>
                       </div>
                     ))}
                     <div className="mt-2 pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
                       <p className="text-[7px]" style={{ color: 'rgba(255,255,255,0.5)' }}>SUBS</p>
-                      <p className="text-[7px]" style={{ color: 'rgba(255,255,255,0.4)' }}>12. ___  14. ___  15. ___</p>
+                      {subsPlayers.length > 0 ? (
+                        <div className="flex flex-wrap gap-x-2">
+                          {subsPlayers.map(p => p && (
+                            <span key={p.squadNo} className="text-[7px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                              {p.squadNo}. {p.lastName}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-[7px]" style={{ color: 'rgba(255,255,255,0.4)' }}>12. ___  14. ___  15. ___</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* Away */}
+                {/* Away - Opposition */}
                 <div className="rounded overflow-hidden" style={{ backgroundColor: '#f3f4f6' }}>
                   <div className="p-2 text-center" style={{ backgroundColor: '#374151' }}>
                     <p className="text-[9px] font-bold" style={{ color: '#ffffff' }}>{opposition.name.toUpperCase()}</p>
