@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { sponsors } from '@/data/mock-data';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
 
 export const metadata: Metadata = {
   title: 'Our Sponsors',
@@ -24,21 +26,32 @@ export default function SponsorsPage() {
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="section-title">Main Sponsor</h2>
+            <h2 className="section-title">Stadium Partner</h2>
 
             <a
               href={sponsors.main.url || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className="card p-12 inline-block hover:shadow-lg transition-shadow"
+              className="card p-8 md:p-12 inline-block hover:shadow-lg transition-shadow max-w-md"
             >
-              <div className="text-3xl font-bold text-celtic-blue mb-4">
-                {sponsors.main.name}
-              </div>
-              <p className="text-gray-600">Stadium Naming Rights Partner</p>
+              {sponsors.main.logo ? (
+                <div className="h-24 md:h-32 flex items-center justify-center mb-4">
+                  <img
+                    src={sponsors.main.logo}
+                    alt={sponsors.main.name}
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="text-3xl font-bold text-celtic-blue mb-4">
+                  {sponsors.main.name}
+                </div>
+              )}
+              <p className="text-gray-600 dark:text-gray-400 font-semibold">{sponsors.main.name}</p>
+              <p className="text-sm text-gray-500">Stadium Naming Rights Partner</p>
             </a>
 
-            <p className="mt-8 text-gray-600 max-w-2xl mx-auto">
+            <p className="mt-8 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               We are proud to have {sponsors.main.name} as our main sponsor. Their support
               enables us to maintain our facilities and develop football in the Cwmbran community.
             </p>
@@ -46,13 +59,13 @@ export default function SponsorsPage() {
         </div>
       </section>
 
-      {/* Partners */}
-      <section className="py-12 md:py-16 bg-gray-100">
+      {/* Club Partners */}
+      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="section-title text-center">Club Partners</h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {sponsors.partners.map((sponsor, index) => (
                 sponsor.url ? (
                   <a
@@ -62,19 +75,41 @@ export default function SponsorsPage() {
                     rel="noopener noreferrer"
                     className="card p-6 text-center hover:shadow-lg transition-shadow group"
                   >
-                    <div className="h-16 flex items-center justify-center mb-3">
-                      <span className="text-celtic-dark font-semibold group-hover:text-celtic-blue transition-colors">
-                        {sponsor.name}
-                      </span>
-                    </div>
+                    {sponsor.logo ? (
+                      <div className="h-20 flex items-center justify-center mb-3">
+                        <img
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-20 flex items-center justify-center mb-3">
+                        <span className="text-celtic-dark dark:text-white font-semibold group-hover:text-celtic-blue transition-colors">
+                          {sponsor.name}
+                        </span>
+                      </div>
+                    )}
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{sponsor.name}</p>
                   </a>
                 ) : (
                   <div key={index} className="card p-6 text-center">
-                    <div className="h-16 flex items-center justify-center mb-3">
-                      <span className="text-celtic-dark font-semibold">
-                        {sponsor.name}
-                      </span>
-                    </div>
+                    {sponsor.logo ? (
+                      <div className="h-20 flex items-center justify-center mb-3">
+                        <img
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-20 flex items-center justify-center mb-3">
+                        <span className="text-celtic-dark dark:text-white font-semibold">
+                          {sponsor.name}
+                        </span>
+                      </div>
+                    )}
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{sponsor.name}</p>
                   </div>
                 )
               ))}
@@ -83,7 +118,7 @@ export default function SponsorsPage() {
         </div>
       </section>
 
-      {/* Advertisers */}
+      {/* Programme & Pitch Advertisers */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
@@ -93,9 +128,18 @@ export default function SponsorsPage() {
               {sponsors.advertisers.map((sponsor, index) => (
                 <div
                   key={index}
-                  className="bg-gray-100 rounded-lg p-4 text-center"
+                  className="card p-4 text-center"
                 >
-                  <span className="text-sm text-gray-700 font-medium">
+                  {sponsor.logo ? (
+                    <div className="h-16 flex items-center justify-center mb-2">
+                      <img
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </div>
+                  ) : null}
+                  <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                     {sponsor.name}
                   </span>
                 </div>
@@ -211,6 +255,9 @@ export default function SponsorsPage() {
           </Link>
         </div>
       </section>
+
+      {/* Celtic Bond */}
+      <CelticBondBanner variant="full" />
     </>
   );
 }

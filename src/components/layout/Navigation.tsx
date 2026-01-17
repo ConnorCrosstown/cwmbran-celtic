@@ -14,12 +14,13 @@ const navItems: NavItem[] = [
   { label: 'News', href: '/news' },
   { label: 'Fixtures', href: '/fixtures' },
   { label: 'Teams', href: '/teams' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Community', href: '/community' },
+  { label: 'Tickets', href: '/tickets' },
+  { label: 'Events', href: '/events' },
+  { label: 'Shop', href: '/shop' },
   { label: 'Visit Us', href: '/visit' },
   { label: 'The Club', href: '/club' },
   { label: 'Celtic Bond', href: '/celtic-bond' },
-  { label: 'Shop', href: 'https://rhino.direct/pages/cwmbran-celtic-club-shop', external: true },
+  { label: 'Celtic Card', href: '/celtic-card' },
   { label: 'Contact', href: '/contact' },
 ];
 
