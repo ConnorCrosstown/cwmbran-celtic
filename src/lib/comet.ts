@@ -334,3 +334,17 @@ export function getResultOutcome(result: Result): 'W' | 'D' | 'L' {
 export function getScoreDisplay(result: Result): string {
   return `${result.homeScore} - ${result.awayScore}`;
 }
+
+/**
+ * Check if result was a home game for Cwmbran Celtic
+ */
+export function isHomeResult(result: Result): boolean {
+  return result.homeTeam.includes('Cwmbran');
+}
+
+/**
+ * Get opponent name from result
+ */
+export function getOpponentFromResult(result: Result): string {
+  return isHomeResult(result) ? result.awayTeam : result.homeTeam;
+}
