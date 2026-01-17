@@ -29,6 +29,7 @@ const navItems: NavItem[] = [
     children: [
       { label: 'Buy Tickets', href: '/tickets' },
       { label: 'Visit Us', href: '/visit' },
+      { label: 'Match Programme', href: '/programme' },
       { label: 'Events', href: '/events' },
     ],
   },
@@ -38,7 +39,9 @@ const navItems: NavItem[] = [
     children: [
       { label: 'About Us', href: '/club' },
       { label: 'Club History', href: '/club/history' },
+      { label: 'Club Officials', href: '/club/officials' },
       { label: 'Season Archives', href: '/club/archives' },
+      { label: 'Club Documents', href: '/club/documents' },
       { label: 'Community', href: '/community' },
       { label: 'Sponsors', href: '/sponsors' },
       { label: 'Contact', href: '/contact' },
