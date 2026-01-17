@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getOppositionById } from '@/data/opposition-data';
 import { mockSquad, mockLeagueTable, mockResults, mockFixtures } from '@/data/mock-data';
+import CoverPage from '@/components/programme/CoverPage';
 
 interface SquadPlayer {
   squadNo: number;
@@ -178,6 +179,7 @@ export default function ShareableProgrammePage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [shareUrl, setShareUrl] = useState('');
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [programmeData, setProgrammeData] = useState<ProgrammeData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -242,6 +244,29 @@ export default function ShareableProgrammePage() {
     setShowShareMenu(false);
   };
 
+  const downloadPDF = async () => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch(`/api/programme/pdf?slug=${slug}`);
+      if (!response.ok) throw new Error('Failed to generate PDF');
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `cwmbran-celtic-programme-${slug}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('Failed to download PDF. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   const pages = [
     'cover',
     'managers-notes',
@@ -293,151 +318,13 @@ export default function ShareableProgrammePage() {
       // ==================== PAGE 1: COVER ====================
       case 'cover':
         return (
-          <div className="h-full relative overflow-hidden">
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              {programmeData?.coverImage ? (
-                <Image src={programmeData.coverImage} alt="" fill className="object-cover" />
-              ) : (
-                <Image src="/images/gallery/match-1.jpg" alt="" fill className="object-cover" />
-              )}
-              {/* Gradient overlay matching PDF */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: `linear-gradient(180deg,
-                    rgba(30,58,95,0.4) 0%,
-                    rgba(30,58,95,0.35) 25%,
-                    rgba(30,58,95,0.5) 50%,
-                    rgba(30,58,95,0.75) 75%,
-                    rgba(30,58,95,0.9) 100%
-                  )`
-                }}
-              />
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 h-full flex flex-col">
-              {/* Top badges */}
-              <div className="flex justify-between items-start p-5">
-                {/* Official Programme Badge */}
-                <div
-                  className="px-4 py-3 rounded-xl"
-                  style={{ backgroundColor: COLORS.yellow }}
-                >
-                  <p
-                    className="text-[10px] font-bold uppercase tracking-widest"
-                    style={{ color: COLORS.navy, letterSpacing: '0.1em' }}
-                  >
-                    Official Match Programme
-                  </p>
-                  <p
-                    className="text-base font-bold mt-0.5"
-                    style={{ color: COLORS.navy }}
-                  >
-                    JD Cymru South
-                  </p>
-                </div>
-
-                {/* Kickoff Time */}
-                <div
-                  className="w-24 h-24 rounded-xl flex flex-col items-center justify-center"
-                  style={{ backgroundColor: COLORS.yellow }}
-                >
-                  <p
-                    className="text-4xl font-black"
-                    style={{ color: COLORS.navy }}
-                  >
-                    {programmeData?.kickoff || '15:00'}
-                  </p>
-                  <p
-                    className="text-[10px] font-bold uppercase tracking-wider mt-1"
-                    style={{ color: COLORS.navy }}
-                  >
-                    Kick-Off
-                  </p>
-                </div>
-              </div>
-
-              {/* Center content */}
-              <div className="flex-1 flex flex-col items-center justify-center text-center px-8">
-                {/* Club crest */}
-                <div className="w-36 h-36 mb-8 drop-shadow-2xl">
-                  <Image
-                    src="/images/club-logo.webp"
-                    alt="Cwmbran Celtic"
-                    width={144}
-                    height={144}
-                    className="object-contain"
-                  />
-                </div>
-
-                {/* Team names */}
-                <h1
-                  className="text-4xl font-black uppercase tracking-wide"
-                  style={{ color: COLORS.white, textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
-                >
-                  Cwmbran Celtic
-                </h1>
-
-                <div className="flex items-center gap-4 my-5">
-                  <div className="h-0.5 w-16" style={{ backgroundColor: COLORS.yellow }} />
-                  <span
-                    className="text-xl font-semibold lowercase"
-                    style={{ color: COLORS.yellow }}
-                  >
-                    vs
-                  </span>
-                  <div className="h-0.5 w-16" style={{ backgroundColor: COLORS.yellow }} />
-                </div>
-
-                <h2
-                  className="text-3xl font-black uppercase tracking-wide"
-                  style={{ color: COLORS.white, textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}
-                >
-                  {opposition.name}
-                </h2>
-
-                {opposition.nickname && (
-                  <p
-                    className="text-xl italic mt-3"
-                    style={{ color: COLORS.yellow }}
-                  >
-                    "{opposition.nickname}"
-                  </p>
-                )}
-              </div>
-
-              {/* Bottom bar */}
-              <div
-                className="flex justify-between items-center px-6 py-5"
-                style={{ backgroundColor: 'rgba(15,40,71,0.95)' }}
-              >
-                <div>
-                  <p
-                    className="text-[10px] uppercase font-bold tracking-widest mb-1"
-                    style={{ color: COLORS.yellow }}
-                  >
-                    Date
-                  </p>
-                  <p className="text-sm font-semibold" style={{ color: COLORS.white }}>
-                    {formatDate(date)}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p
-                    className="text-[10px] uppercase font-bold tracking-widest mb-1"
-                    style={{ color: COLORS.yellow }}
-                  >
-                    Venue
-                  </p>
-                  <p className="text-sm font-semibold" style={{ color: COLORS.white }}>
-                    Avondale Motor Park Arena
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <CoverPage
+            opposition={opposition}
+            date={date}
+            kickoff={programmeData?.kickoff || '15:00'}
+            coverImage={programmeData?.coverImage}
+            forPrint={false}
+          />
         );
 
       // ==================== PAGE 2: MANAGER'S NOTES ====================
@@ -1591,13 +1478,23 @@ export default function ShareableProgrammePage() {
           <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Page {currentPage + 1} of {totalPages}
           </p>
-          <button
-            onClick={() => setShowShareMenu(!showShareMenu)}
-            className="px-4 py-2 rounded-lg text-xs font-bold transition-colors"
-            style={{ backgroundColor: COLORS.yellow, color: COLORS.navy }}
-          >
-            Share
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={downloadPDF}
+              disabled={isDownloading}
+              className="px-4 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+              style={{ backgroundColor: COLORS.white, color: COLORS.navy }}
+            >
+              {isDownloading ? 'Saving...' : 'Save PDF'}
+            </button>
+            <button
+              onClick={() => setShowShareMenu(!showShareMenu)}
+              className="px-4 py-2 rounded-lg text-xs font-bold transition-colors"
+              style={{ backgroundColor: COLORS.yellow, color: COLORS.navy }}
+            >
+              Share
+            </button>
+          </div>
         </div>
 
         {/* Share menu */}

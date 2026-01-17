@@ -1074,10 +1074,17 @@ export default function ProgrammeGeneratorPage() {
               👁 Preview
             </button>
             <button
-              onClick={handlePreview}
+              onClick={() => {
+                if (!formData.opponent || !formData.date) {
+                  alert('Please select an opponent and date first');
+                  return;
+                }
+                saveProgramme('draft');
+                window.open(`/programme/${formData.date}-${formData.opponent}/print`, '_blank');
+              }}
               className="bg-celtic-blue text-white py-2.5 px-3 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors flex items-center justify-center gap-1 text-sm"
             >
-              📄 PDF
+              Preview Print
             </button>
           </div>
 
