@@ -382,18 +382,78 @@ export default function ProgrammeGeneratorPage() {
               onClick={handlePreview}
               className="flex-1 bg-white border-2 border-celtic-blue text-celtic-blue py-3 px-6 rounded-lg font-semibold hover:bg-celtic-blue/5 transition-colors flex items-center justify-center gap-2"
             >
-              <span>👁</span> Preview Programme
+              <span>👁</span> Preview PDF
             </button>
             <button
               onClick={handlePreview}
               className="flex-1 bg-celtic-blue text-white py-3 px-6 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors flex items-center justify-center gap-2"
             >
-              <span>📄</span> Generate PDF
+              <span>📄</span> Print / Save PDF
             </button>
           </div>
 
+          {/* Shareable Link Section */}
+          {formData.opponent && formData.date && (
+            <div className="mt-4 card p-4 bg-celtic-yellow/10 border-celtic-yellow">
+              <h3 className="font-bold text-celtic-dark mb-2 flex items-center gap-2">
+                <span>🔗</span> Digital Programme Link
+              </h3>
+              <p className="text-xs text-gray-600 mb-3">
+                Share this link on WhatsApp, social media, or embed on the website:
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  readOnly
+                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/programme/${formData.date}-${formData.opponent}`}
+                  className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm"
+                />
+                <button
+                  onClick={() => {
+                    const url = `${window.location.origin}/programme/${formData.date}-${formData.opponent}`;
+                    navigator.clipboard.writeText(url);
+                    alert('Link copied!');
+                  }}
+                  className="px-4 py-2 bg-celtic-blue text-white rounded-lg text-sm font-semibold hover:bg-celtic-blue-dark"
+                >
+                  Copy
+                </button>
+              </div>
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={() => {
+                    const url = `${window.location.origin}/programme/${formData.date}-${formData.opponent}`;
+                    const text = `Check out the match day programme for Cwmbran Celtic! 🔵🟡`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text + '\n' + url)}`, '_blank');
+                  }}
+                  className="flex-1 py-2 rounded-lg text-white text-sm font-semibold flex items-center justify-center gap-2"
+                  style={{ backgroundColor: '#25D366' }}
+                >
+                  <span>📱</span> WhatsApp
+                </button>
+                <button
+                  onClick={() => {
+                    const url = `${window.location.origin}/programme/${formData.date}-${formData.opponent}`;
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent('Match day programme for Cwmbran Celtic! #UpTheCeltic 🔵🟡')}&url=${encodeURIComponent(url)}`, '_blank');
+                  }}
+                  className="flex-1 py-2 rounded-lg text-white text-sm font-semibold flex items-center justify-center gap-2"
+                  style={{ backgroundColor: '#1DA1F2' }}
+                >
+                  <span>𝕏</span> Twitter
+                </button>
+                <a
+                  href={`/programme/${formData.date}-${formData.opponent}`}
+                  target="_blank"
+                  className="flex-1 py-2 rounded-lg bg-celtic-blue text-white text-sm font-semibold flex items-center justify-center gap-2"
+                >
+                  <span>👁</span> View
+                </a>
+              </div>
+            </div>
+          )}
+
           <p className="text-center text-xs text-gray-500 mt-4">
-            Programme will be generated as an A5 PDF, ready for printing or digital sharing
+            Use &quot;Print / Save PDF&quot; for printable A4 format, or share the digital link for mobile viewing
           </p>
         </div>
       </div>
