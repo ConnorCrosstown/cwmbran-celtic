@@ -206,77 +206,84 @@ export default function ShareableProgrammePage() {
       case 'cover':
         return (
           <div className="h-full relative overflow-hidden">
-            {/* Background - Action photo with gradient */}
+            {/* Background - Action photo */}
             <div className="absolute inset-0">
               {programmeData?.coverImage ? (
                 <Image src={programmeData.coverImage} alt="" fill className="object-cover" />
               ) : (
-                <div className="w-full h-full" style={{ backgroundColor: '#3a5a40' }} />
+                // Default action shot - match photo
+                <Image src="/images/gallery/match-1.jpg" alt="" fill className="object-cover" />
               )}
-              {/* Dark gradient overlay */}
+              {/* Blue gradient overlay - matches PDF exactly */}
               <div className="absolute inset-0" style={{
-                background: 'linear-gradient(180deg, rgba(15,39,68,0.4) 0%, rgba(15,39,68,0.2) 40%, rgba(15,39,68,0.8) 100%)'
+                background: 'linear-gradient(180deg, rgba(30,58,95,0.3) 0%, rgba(30,58,95,0.4) 30%, rgba(30,58,95,0.7) 70%, rgba(30,58,95,0.85) 100%)'
               }} />
             </div>
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col p-4">
+            <div className="relative z-10 h-full flex flex-col">
               {/* Top Row - Badge and Kickoff */}
-              <div className="flex justify-between items-start">
-                {/* Left: Official Programme badge */}
-                <div className="px-3 py-2 rounded" style={{ backgroundColor: COLORS.yellow }}>
-                  <p className="text-[8px] font-bold uppercase tracking-wider" style={{ color: COLORS.navy }}>
+              <div className="flex justify-between items-start p-4">
+                {/* Left: Official Programme badge - rounded corners */}
+                <div className="px-4 py-3 rounded-lg" style={{ backgroundColor: COLORS.yellow }}>
+                  <p className="text-[9px] font-bold uppercase tracking-widest" style={{ color: COLORS.navy }}>
                     Official Match Programme
                   </p>
-                  <p className="text-[10px] font-bold" style={{ color: COLORS.navy }}>
+                  <p className="text-sm font-bold mt-0.5" style={{ color: COLORS.navy }}>
                     JD Cymru South
                   </p>
                 </div>
 
-                {/* Right: Kickoff time */}
-                <div className="px-4 py-2 rounded text-center" style={{ backgroundColor: COLORS.yellow }}>
-                  <p className="text-2xl font-black" style={{ color: COLORS.navy }}>
+                {/* Right: Kickoff time - square shape */}
+                <div className="w-20 h-20 rounded-lg flex flex-col items-center justify-center" style={{ backgroundColor: COLORS.yellow }}>
+                  <p className="text-3xl font-black leading-none" style={{ color: COLORS.navy }}>
                     {programmeData?.kickoff || '15:00'}
                   </p>
-                  <p className="text-[8px] font-bold uppercase" style={{ color: COLORS.navy }}>Kick-Off</p>
+                  <p className="text-[9px] font-bold uppercase tracking-wide mt-1" style={{ color: COLORS.navy }}>Kick-Off</p>
                 </div>
               </div>
 
               {/* Center - Club crest and match info */}
-              <div className="flex-1 flex flex-col items-center justify-center text-center">
-                <div className="w-24 h-24 mb-4">
-                  <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={96} height={96} className="object-contain drop-shadow-xl" />
+              <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
+                {/* Club Crest - larger */}
+                <div className="w-32 h-32 mb-6">
+                  <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={128} height={128} className="object-contain drop-shadow-2xl" />
                 </div>
 
-                <h1 className="text-3xl font-black tracking-tight mb-2" style={{ color: COLORS.white, textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
+                {/* Club Name */}
+                <h1 className="text-4xl font-black tracking-tight" style={{ color: COLORS.white }}>
                   CWMBRAN CELTIC
                 </h1>
 
-                <div className="flex items-center gap-3 my-2">
-                  <div className="h-px w-8" style={{ backgroundColor: COLORS.yellow }} />
-                  <span className="text-sm font-bold" style={{ color: COLORS.yellow }}>vs</span>
-                  <div className="h-px w-8" style={{ backgroundColor: COLORS.yellow }} />
+                {/* VS divider */}
+                <div className="flex items-center gap-4 my-4">
+                  <div className="h-0.5 w-12" style={{ backgroundColor: COLORS.yellow }} />
+                  <span className="text-lg font-bold" style={{ color: COLORS.yellow }}>vs</span>
+                  <div className="h-0.5 w-12" style={{ backgroundColor: COLORS.yellow }} />
                 </div>
 
-                <h2 className="text-2xl font-black tracking-tight" style={{ color: COLORS.white, textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
+                {/* Opposition Name */}
+                <h2 className="text-3xl font-black tracking-tight" style={{ color: COLORS.white }}>
                   {opposition.name.toUpperCase()}
                 </h2>
+
+                {/* Nickname in quotes */}
                 {opposition.nickname && (
-                  <p className="text-sm italic mt-1" style={{ color: COLORS.yellow }}>
+                  <p className="text-lg italic mt-2" style={{ color: COLORS.yellow }}>
                     "{opposition.nickname}"
                   </p>
                 )}
               </div>
 
-              {/* Bottom - Date and Venue bar */}
-              <div className="flex justify-between items-end px-2 py-3 rounded" style={{ backgroundColor: 'rgba(15,39,68,0.9)' }}>
+              {/* Bottom - Date and Venue bar - full width, no rounded corners */}
+              <div className="flex justify-between items-center px-6 py-4" style={{ backgroundColor: 'rgba(15,39,68,0.95)' }}>
                 <div>
-                  <p className="text-[8px] uppercase font-bold" style={{ color: COLORS.yellow }}>Date</p>
-                  <p className="text-xs font-bold" style={{ color: COLORS.white }}>{formatDate(date)}</p>
+                  <p className="text-[10px] uppercase font-bold tracking-wider" style={{ color: COLORS.yellow }}>Date</p>
+                  <p className="text-sm font-semibold mt-0.5" style={{ color: COLORS.white }}>{formatDate(date)}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[8px] uppercase font-bold" style={{ color: COLORS.yellow }}>Venue</p>
-                  <p className="text-xs font-bold" style={{ color: COLORS.white }}>Avondale Motor Park Arena</p>
+                  <p className="text-[10px] uppercase font-bold tracking-wider" style={{ color: COLORS.yellow }}>Venue</p>
+                  <p className="text-sm font-semibold mt-0.5" style={{ color: COLORS.white }}>Avondale Motor Park Arena</p>
                 </div>
               </div>
             </div>
