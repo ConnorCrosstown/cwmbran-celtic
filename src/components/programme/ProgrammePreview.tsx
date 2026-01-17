@@ -165,16 +165,16 @@ First Team Manager`;
               )}
 
               {/* Cover Content */}
-              <div className="relative h-full flex flex-col p-10 text-white">
+              <div className="relative h-full flex flex-col p-10">
                 {/* Header Bar */}
                 <div className="flex justify-between items-start">
-                  <div className="bg-black/50 backdrop-blur-sm rounded-lg px-4 py-2">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-celtic-yellow font-semibold">Official Match Programme</p>
-                    <p className="text-sm font-bold text-white">{data.competition}</p>
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2">
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: '#facc15' }}>Official Match Programme</p>
+                    <p className="text-sm font-bold" style={{ color: '#ffffff' }}>{data.competition}</p>
                   </div>
-                  <div className="bg-celtic-yellow rounded-lg px-4 py-2 text-center">
-                    <p className="text-2xl font-black text-gray-900">{data.kickoff}</p>
-                    <p className="text-[10px] uppercase tracking-wider font-semibold text-gray-800">Kick-off</p>
+                  <div className="rounded-lg px-4 py-2 text-center" style={{ backgroundColor: '#facc15' }}>
+                    <p className="text-2xl font-black" style={{ color: '#0f172a' }}>{data.kickoff}</p>
+                    <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#374151' }}>Kick-off</p>
                   </div>
                 </div>
 
@@ -191,35 +191,35 @@ First Team Manager`;
                   </div>
 
                   {/* Team Names */}
-                  <h1 className="text-4xl font-black tracking-tight mb-3 text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>CWMBRAN CELTIC</h1>
+                  <h1 className="text-4xl font-black tracking-tight mb-3" style={{ color: '#ffffff', textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>CWMBRAN CELTIC</h1>
                   <div className="flex items-center gap-4 mb-3">
-                    <div className="h-[2px] w-16 bg-celtic-yellow" />
-                    <span className="text-2xl font-bold text-celtic-yellow">VS</span>
-                    <div className="h-[2px] w-16 bg-celtic-yellow" />
+                    <div className="h-[2px] w-16" style={{ backgroundColor: '#facc15' }} />
+                    <span className="text-2xl font-bold" style={{ color: '#facc15' }}>VS</span>
+                    <div className="h-[2px] w-16" style={{ backgroundColor: '#facc15' }} />
                   </div>
-                  <h2 className="text-3xl font-black tracking-tight text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{opposition?.name?.toUpperCase() || 'OPPOSITION'}</h2>
+                  <h2 className="text-3xl font-black tracking-tight" style={{ color: '#ffffff', textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>{opposition?.name?.toUpperCase() || 'OPPOSITION'}</h2>
                   {opposition?.nickname && (
-                    <p className="text-lg text-celtic-yellow mt-2 italic font-semibold">&ldquo;{opposition.nickname}&rdquo;</p>
+                    <p className="text-lg mt-2 italic font-semibold" style={{ color: '#facc15' }}>&ldquo;{opposition.nickname}&rdquo;</p>
                   )}
                 </div>
 
                 {/* Footer */}
                 <div className="mt-auto">
                   {/* Match Details Bar */}
-                  <div className="bg-black/50 backdrop-blur-sm rounded-lg p-4 mb-4">
+                  <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 mb-4">
                     <div className="flex justify-between items-center text-sm">
                       <div>
-                        <p className="text-celtic-yellow text-[10px] uppercase tracking-wider font-semibold">Date</p>
-                        <p className="font-semibold text-white">{formatDate(data.date)}</p>
+                        <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>Date</p>
+                        <p className="font-semibold" style={{ color: '#ffffff' }}>{formatDate(data.date)}</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-celtic-yellow text-[10px] uppercase tracking-wider font-semibold">Venue</p>
-                        <p className="font-semibold text-white">Avondale Motor Park Arena</p>
+                        <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>Venue</p>
+                        <p className="font-semibold" style={{ color: '#ffffff' }}>Avondale Motor Park Arena</p>
                       </div>
                       {data.matchdayNumber && (
                         <div className="text-right">
-                          <p className="text-celtic-yellow text-[10px] uppercase tracking-wider font-semibold">Match Day</p>
-                          <p className="font-black text-white text-xl">{data.matchdayNumber}</p>
+                          <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>Match Day</p>
+                          <p className="font-black text-xl" style={{ color: '#ffffff' }}>{data.matchdayNumber}</p>
                         </div>
                       )}
                     </div>
@@ -228,8 +228,8 @@ First Team Manager`;
                   {/* Sponsor */}
                   {data.matchSponsor && (
                     <div className="text-center border-t border-white/30 pt-4">
-                      <p className="text-[10px] uppercase tracking-[0.15em] text-celtic-yellow mb-1 font-semibold">Today&apos;s Match Sponsor</p>
-                      <p className="font-bold text-lg text-white">{data.matchSponsor}</p>
+                      <p className="text-[10px] uppercase tracking-[0.15em] mb-1 font-semibold" style={{ color: '#facc15' }}>Today&apos;s Match Sponsor</p>
+                      <p className="font-bold text-lg" style={{ color: '#ffffff' }}>{data.matchSponsor}</p>
                     </div>
                   )}
                 </div>
@@ -538,24 +538,24 @@ First Team Manager`;
                     </div>
 
                     {opposition.headToHead && (
-                      <div className="bg-celtic-blue rounded-lg p-4 text-white">
-                        <h3 className="font-bold text-xs text-celtic-yellow mb-3 uppercase tracking-wider">Head to Head Record</h3>
+                      <div className="rounded-lg p-4" style={{ backgroundColor: '#1e3a8a' }}>
+                        <h3 className="font-bold text-xs mb-3 uppercase tracking-wider" style={{ color: '#facc15' }}>Head to Head Record</h3>
                         <div className="grid grid-cols-2 gap-2">
-                          <div className="bg-white/20 rounded p-2 text-center">
-                            <p className="text-2xl font-black text-white">{opposition.headToHead.played}</p>
-                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Played</p>
+                          <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.played}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Played</p>
                           </div>
-                          <div className="bg-green-500/40 rounded p-2 text-center">
-                            <p className="text-2xl font-black text-white">{opposition.headToHead.celticWins}</p>
-                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Celtic Wins</p>
+                          <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(34,197,94,0.5)' }}>
+                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.celticWins}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Celtic Wins</p>
                           </div>
-                          <div className="bg-white/20 rounded p-2 text-center">
-                            <p className="text-2xl font-black text-white">{opposition.headToHead.draws}</p>
-                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Draws</p>
+                          <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.draws}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Draws</p>
                           </div>
-                          <div className="bg-red-500/40 rounded p-2 text-center">
-                            <p className="text-2xl font-black text-white">{opposition.headToHead.oppositionWins}</p>
-                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Losses</p>
+                          <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(239,68,68,0.5)' }}>
+                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.oppositionWins}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Losses</p>
                           </div>
                         </div>
                       </div>
@@ -730,9 +730,9 @@ First Team Manager`;
               <div className={`grid grid-cols-2 gap-6 ${data.actionImage ? '' : 'flex-1'}`}>
                 {/* Recent Results */}
                 <div>
-                  <div className="flex items-center gap-3 mb-4 pb-3 border-b-4 border-celtic-blue">
-                    <div className="w-2 h-10 bg-celtic-yellow rounded-full" />
-                    <h2 className="text-xl font-black text-celtic-dark tracking-tight">RECENT RESULTS</h2>
+                  <div className="flex items-center gap-3 mb-4 pb-3 border-b-4" style={{ borderColor: '#1e3a8a' }}>
+                    <div className="w-2 h-10 rounded-full" style={{ backgroundColor: '#facc15' }} />
+                    <h2 className="text-xl font-black tracking-tight" style={{ color: '#0f172a' }}>RECENT RESULTS</h2>
                   </div>
                   <div className="space-y-3">
                     {recentResults.map((result, idx) => {
@@ -744,20 +744,23 @@ First Team Manager`;
                       const date = new Date(result.date);
 
                       return (
-                        <div key={idx} className="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
-                          <span className={`w-10 h-10 rounded-lg flex items-center justify-center text-white font-black text-sm ${
-                            resultType === 'W' ? 'bg-green-500' :
-                            resultType === 'L' ? 'bg-red-500' : 'bg-gray-400'
-                          }`}>
+                        <div key={idx} className="flex items-center gap-3 rounded-lg p-3" style={{ backgroundColor: '#f3f4f6' }}>
+                          <span
+                            className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-sm"
+                            style={{
+                              backgroundColor: resultType === 'W' ? '#22c55e' : resultType === 'L' ? '#ef4444' : '#9ca3af',
+                              color: '#ffffff'
+                            }}
+                          >
                             {resultType}
                           </span>
                           <div className="flex-1 min-w-0">
-                            <p className="font-bold text-sm truncate">{opponent}</p>
-                            <p className="text-[11px] text-gray-500">
+                            <p className="font-bold text-sm truncate" style={{ color: '#111827' }}>{opponent}</p>
+                            <p className="text-[11px]" style={{ color: '#6b7280' }}>
                               {isCelticHome ? 'Home' : 'Away'} • {date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                             </p>
                           </div>
-                          <span className="font-black text-lg">{celticScore}-{oppScore}</span>
+                          <span className="font-black text-lg" style={{ color: '#111827' }}>{celticScore}-{oppScore}</span>
                         </div>
                       );
                     })}
@@ -766,9 +769,9 @@ First Team Manager`;
 
                 {/* Upcoming Fixtures */}
                 <div>
-                  <div className="flex items-center gap-3 mb-4 pb-3 border-b-4 border-celtic-blue">
-                    <div className="w-2 h-10 bg-celtic-yellow rounded-full" />
-                    <h2 className="text-xl font-black text-celtic-dark tracking-tight">UP NEXT</h2>
+                  <div className="flex items-center gap-3 mb-4 pb-3 border-b-4" style={{ borderColor: '#1e3a8a' }}>
+                    <div className="w-2 h-10 rounded-full" style={{ backgroundColor: '#facc15' }} />
+                    <h2 className="text-xl font-black tracking-tight" style={{ color: '#0f172a' }}>UP NEXT</h2>
                   </div>
                   <div className="space-y-3">
                     {upcomingFixtures.map((fixture, idx) => {
@@ -777,16 +780,16 @@ First Team Manager`;
                       const date = new Date(fixture.date);
 
                       return (
-                        <div key={idx} className="bg-gray-100 rounded-lg p-3">
+                        <div key={idx} className="rounded-lg p-3" style={{ backgroundColor: '#f3f4f6' }}>
                           <div className="flex justify-between items-center">
                             <div className="flex-1">
-                              <p className="font-bold text-sm text-gray-900">{opponent}</p>
-                              <p className="text-[11px] text-gray-600">
+                              <p className="font-bold text-sm" style={{ color: '#111827' }}>{opponent}</p>
+                              <p className="text-[11px]" style={{ color: '#4b5563' }}>
                                 {isCelticHome ? 'Home' : 'Away'} • {fixture.time}
                               </p>
                             </div>
-                            <div className="bg-celtic-blue text-white px-3 py-2 rounded text-center">
-                              <p className="font-bold text-sm">{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</p>
+                            <div className="px-3 py-2 rounded text-center" style={{ backgroundColor: '#1e3a8a' }}>
+                              <p className="font-bold text-sm" style={{ color: '#ffffff' }}>{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</p>
                             </div>
                           </div>
                         </div>
@@ -818,32 +821,24 @@ First Team Manager`;
 
           {/* ==================== PAGE 8: CELTIC BOND ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
-            <div className="aspect-[1/1.414] relative overflow-hidden">
-              {/* Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-celtic-yellow via-yellow-400 to-celtic-yellow">
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-celtic-blue blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-                  <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-celtic-blue blur-3xl transform -translate-x-1/2 translate-y-1/2" />
-                </div>
-              </div>
-
+            <div className="aspect-[1/1.414] relative overflow-hidden" style={{ backgroundColor: '#fde047' }}>
               {/* Content */}
               <div className="relative h-full flex flex-col p-8">
                 {/* Header */}
                 <div className="text-center mb-6">
-                  <div className="inline-block bg-celtic-blue text-white px-6 py-2 rounded-full mb-4">
-                    <p className="text-xs uppercase tracking-wider font-bold">Support Your Club</p>
+                  <div className="inline-block px-6 py-2 rounded-full mb-4" style={{ backgroundColor: '#1e3a8a' }}>
+                    <p className="text-xs uppercase tracking-wider font-bold" style={{ color: '#ffffff' }}>Support Your Club</p>
                   </div>
-                  <h2 className="text-4xl font-black text-celtic-blue tracking-tight mb-2">CELTIC BOND</h2>
-                  <p className="text-lg text-gray-800 font-semibold">Help Build Our Future</p>
+                  <h2 className="text-4xl font-black tracking-tight mb-2" style={{ color: '#1e3a8a' }}>CELTIC BOND</h2>
+                  <p className="text-lg font-semibold" style={{ color: '#374151' }}>Help Build Our Future</p>
                 </div>
 
                 {/* Main Content */}
                 <div className="flex-1 flex flex-col gap-4">
                   {/* What is Celtic Bond */}
-                  <div className="bg-white/80 rounded-xl p-5 shadow-sm">
-                    <h3 className="font-bold text-celtic-blue mb-2 text-sm uppercase tracking-wider">What is the Celtic Bond?</h3>
-                    <p className="text-gray-700 text-sm leading-relaxed">
+                  <div className="rounded-xl p-5 shadow-sm" style={{ backgroundColor: 'rgba(255,255,255,0.9)' }}>
+                    <h3 className="font-bold mb-2 text-sm uppercase tracking-wider" style={{ color: '#1e3a8a' }}>What is the Celtic Bond?</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: '#374151' }}>
                       The Celtic Bond is a monthly lottery that helps fund essential club improvements and community projects.
                       For just £5 per month, you could win cash prizes while supporting your local football club.
                     </p>
@@ -851,57 +846,57 @@ First Team Manager`;
 
                   {/* Prize Info */}
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="bg-celtic-blue rounded-xl p-4 text-center text-white">
-                      <p className="text-3xl font-black">£100</p>
-                      <p className="text-xs uppercase tracking-wider font-semibold text-celtic-yellow">1st Prize</p>
+                    <div className="rounded-xl p-4 text-center" style={{ backgroundColor: '#1e3a8a' }}>
+                      <p className="text-3xl font-black" style={{ color: '#ffffff' }}>£100</p>
+                      <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>1st Prize</p>
                     </div>
-                    <div className="bg-celtic-blue/90 rounded-xl p-4 text-center text-white">
-                      <p className="text-2xl font-black">£50</p>
-                      <p className="text-xs uppercase tracking-wider font-semibold text-celtic-yellow">2nd Prize</p>
+                    <div className="rounded-xl p-4 text-center" style={{ backgroundColor: '#2563eb' }}>
+                      <p className="text-2xl font-black" style={{ color: '#ffffff' }}>£50</p>
+                      <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>2nd Prize</p>
                     </div>
-                    <div className="bg-celtic-blue/80 rounded-xl p-4 text-center text-white">
-                      <p className="text-2xl font-black">£25</p>
-                      <p className="text-xs uppercase tracking-wider font-semibold text-celtic-yellow">3rd Prize</p>
+                    <div className="rounded-xl p-4 text-center" style={{ backgroundColor: '#3b82f6' }}>
+                      <p className="text-2xl font-black" style={{ color: '#ffffff' }}>£25</p>
+                      <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>3rd Prize</p>
                     </div>
                   </div>
 
                   {/* Benefits */}
-                  <div className="bg-white/80 rounded-xl p-5 shadow-sm">
-                    <h3 className="font-bold text-celtic-blue mb-3 text-sm uppercase tracking-wider">Your Support Helps Fund:</h3>
+                  <div className="rounded-xl p-5 shadow-sm" style={{ backgroundColor: 'rgba(255,255,255,0.9)' }}>
+                    <h3 className="font-bold mb-3 text-sm uppercase tracking-wider" style={{ color: '#1e3a8a' }}>Your Support Helps Fund:</h3>
                     <div className="grid grid-cols-2 gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
-                        <span className="text-sm text-gray-700">Pitch maintenance</span>
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: '#22c55e', color: '#ffffff' }}>✓</span>
+                        <span className="text-sm" style={{ color: '#374151' }}>Pitch maintenance</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
-                        <span className="text-sm text-gray-700">Youth development</span>
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: '#22c55e', color: '#ffffff' }}>✓</span>
+                        <span className="text-sm" style={{ color: '#374151' }}>Youth development</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
-                        <span className="text-sm text-gray-700">Kit & equipment</span>
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: '#22c55e', color: '#ffffff' }}>✓</span>
+                        <span className="text-sm" style={{ color: '#374151' }}>Kit & equipment</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
-                        <span className="text-sm text-gray-700">Ground improvements</span>
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs" style={{ backgroundColor: '#22c55e', color: '#ffffff' }}>✓</span>
+                        <span className="text-sm" style={{ color: '#374151' }}>Ground improvements</span>
                       </div>
                     </div>
                   </div>
 
                   {/* How to Join */}
-                  <div className="bg-celtic-blue rounded-xl p-5 text-white">
-                    <h3 className="font-bold text-celtic-yellow mb-2 text-sm uppercase tracking-wider">How to Join</h3>
-                    <p className="text-sm mb-3">
-                      Sign up online at <span className="font-bold text-celtic-yellow">cwmbranceltic.com/celtic-bond</span> or speak to a committee member on match day.
+                  <div className="rounded-xl p-5" style={{ backgroundColor: '#1e3a8a' }}>
+                    <h3 className="font-bold mb-2 text-sm uppercase tracking-wider" style={{ color: '#facc15' }}>How to Join</h3>
+                    <p className="text-sm mb-3" style={{ color: '#ffffff' }}>
+                      Sign up online at <span className="font-bold" style={{ color: '#facc15' }}>cwmbranceltic.com/celtic-bond</span> or speak to a committee member on match day.
                     </p>
-                    <div className="flex items-center justify-between bg-white/10 rounded-lg p-3">
+                    <div className="flex items-center justify-between rounded-lg p-3" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
                       <div>
-                        <p className="text-celtic-yellow font-bold text-xl">Only £5</p>
-                        <p className="text-xs text-white/80">per month</p>
+                        <p className="font-bold text-xl" style={{ color: '#facc15' }}>Only £5</p>
+                        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>per month</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold">Monthly Draw</p>
-                        <p className="text-xs text-white/80">Results on social media</p>
+                        <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>Monthly Draw</p>
+                        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>Results on social media</p>
                       </div>
                     </div>
                   </div>
@@ -909,10 +904,10 @@ First Team Manager`;
 
                 {/* Footer */}
                 <div className="mt-4 text-center">
-                  <p className="text-sm text-gray-700 font-semibold">
+                  <p className="text-sm font-semibold" style={{ color: '#374151' }}>
                     Thank you to all our Celtic Bond members!
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs mt-1" style={{ color: '#4b5563' }}>
                     #UpTheCeltic
                   </p>
                 </div>
