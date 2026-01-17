@@ -83,32 +83,19 @@ Enjoy the game!
 Simon Berry
 First Team Manager`;
 
-  // Player row component with checkbox
-  const PlayerRow = ({ player, showPhoto = false }: { player: typeof mockSquad.results[0], showPhoto?: boolean }) => (
-    <div className="flex items-center gap-2 py-1 border-b border-gray-100 last:border-0">
+  // Player row component with checkbox - compact version for PDF
+  const PlayerRow = ({ player }: { player: typeof mockSquad.results[0] }) => (
+    <div className="flex items-center gap-1.5 py-0.5">
       {/* Checkbox for lineup */}
-      <div className="w-4 h-4 border-2 border-gray-300 rounded flex-shrink-0 print:border-gray-400" />
+      <div className="w-3.5 h-3.5 border-2 border-gray-400 rounded-sm flex-shrink-0" />
 
       {/* Squad number */}
-      <span className="w-6 h-6 bg-celtic-blue text-white rounded flex items-center justify-center text-[11px] font-bold flex-shrink-0">
+      <span className="w-5 h-5 bg-celtic-blue text-white rounded flex items-center justify-center text-[10px] font-bold flex-shrink-0">
         {player.squadNo}
       </span>
 
-      {/* Photo (optional) */}
-      {showPhoto && (
-        <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-          <Image
-            src={player.photo}
-            alt={`${player.firstName} ${player.lastName}`}
-            width={32}
-            height={32}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-
       {/* Name */}
-      <span className="text-[12px] text-gray-800 font-medium">
+      <span className="text-[11px] text-gray-800 font-medium leading-tight">
         {player.firstName} {player.lastName}
       </span>
     </div>
@@ -159,7 +146,8 @@ First Team Manager`;
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-celtic-blue via-celtic-blue/70 to-transparent" />
+                  {/* Stronger gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-celtic-dark via-celtic-blue/80 to-celtic-blue/40" />
                 </div>
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue via-celtic-blue-dark to-celtic-blue">
@@ -311,28 +299,28 @@ First Team Manager`;
           </div>
 
           {/* ==================== PAGE 3: SQUAD LIST WITH CHECKBOXES ==================== */}
-          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
-            <div className="aspect-[1/1.414] p-10 flex flex-col">
+          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page overflow-hidden">
+            <div className="aspect-[1/1.414] p-6 flex flex-col">
               {/* Header */}
-              <div className="flex items-center gap-4 mb-4 pb-4 border-b-4 border-celtic-blue">
-                <div className="w-3 h-12 bg-celtic-yellow rounded-full" />
+              <div className="flex items-center gap-3 mb-3 pb-2 border-b-4 border-celtic-blue">
+                <div className="w-2 h-8 bg-celtic-yellow rounded-full" />
                 <div>
-                  <h2 className="text-2xl font-black text-celtic-dark tracking-tight">CWMBRAN CELTIC SQUAD</h2>
-                  <p className="text-xs text-gray-500">Tick the players in today&apos;s starting lineup</p>
+                  <h2 className="text-xl font-black text-celtic-dark tracking-tight">CWMBRAN CELTIC SQUAD</h2>
+                  <p className="text-[10px] text-gray-500">Tick the players in today&apos;s starting lineup</p>
                 </div>
               </div>
 
-              {/* Squad Grid */}
-              <div className="flex-1 grid grid-cols-2 gap-x-8 gap-y-2">
+              {/* Squad Grid - 2 columns */}
+              <div className="flex-1 grid grid-cols-2 gap-x-6 gap-y-1">
                 {/* Left Column: Goalkeepers & Defenders */}
-                <div>
+                <div className="space-y-2">
                   {/* Goalkeepers */}
-                  <div className="mb-4">
-                    <div className="bg-celtic-blue text-white px-3 py-2 rounded-t-lg">
-                      <h3 className="font-bold text-sm uppercase tracking-wider">Goalkeepers</h3>
+                  <div>
+                    <div className="bg-celtic-blue text-white px-2 py-1 rounded-t">
+                      <h3 className="font-bold text-[10px] uppercase tracking-wider">Goalkeepers</h3>
                     </div>
-                    <div className="border border-t-0 border-gray-200 rounded-b-lg p-2 bg-gray-50/50">
-                      {goalkeepers.map(player => (
+                    <div className="border border-t-0 border-gray-200 rounded-b px-2 py-1 bg-gray-50/50">
+                      {goalkeepers.slice(0, 2).map(player => (
                         <PlayerRow key={player.squadNo} player={player} />
                       ))}
                     </div>
@@ -340,26 +328,11 @@ First Team Manager`;
 
                   {/* Defenders */}
                   <div>
-                    <div className="bg-celtic-blue text-white px-3 py-2 rounded-t-lg">
-                      <h3 className="font-bold text-sm uppercase tracking-wider">Defenders</h3>
+                    <div className="bg-celtic-blue text-white px-2 py-1 rounded-t">
+                      <h3 className="font-bold text-[10px] uppercase tracking-wider">Defenders</h3>
                     </div>
-                    <div className="border border-t-0 border-gray-200 rounded-b-lg p-2 bg-gray-50/50">
-                      {defenders.slice(0, 8).map(player => (
-                        <PlayerRow key={player.squadNo} player={player} />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column: Midfielders & Forwards */}
-                <div>
-                  {/* Midfielders */}
-                  <div className="mb-4">
-                    <div className="bg-celtic-blue text-white px-3 py-2 rounded-t-lg">
-                      <h3 className="font-bold text-sm uppercase tracking-wider">Midfielders</h3>
-                    </div>
-                    <div className="border border-t-0 border-gray-200 rounded-b-lg p-2 bg-gray-50/50">
-                      {midfielders.slice(0, 10).map(player => (
+                    <div className="border border-t-0 border-gray-200 rounded-b px-2 py-1 bg-gray-50/50">
+                      {defenders.slice(0, 6).map(player => (
                         <PlayerRow key={player.squadNo} player={player} />
                       ))}
                     </div>
@@ -367,26 +340,60 @@ First Team Manager`;
 
                   {/* Forwards */}
                   <div>
-                    <div className="bg-celtic-blue text-white px-3 py-2 rounded-t-lg">
-                      <h3 className="font-bold text-sm uppercase tracking-wider">Forwards</h3>
+                    <div className="bg-celtic-blue text-white px-2 py-1 rounded-t">
+                      <h3 className="font-bold text-[10px] uppercase tracking-wider">Forwards</h3>
                     </div>
-                    <div className="border border-t-0 border-gray-200 rounded-b-lg p-2 bg-gray-50/50">
-                      {forwards.slice(0, 6).map(player => (
+                    <div className="border border-t-0 border-gray-200 rounded-b px-2 py-1 bg-gray-50/50">
+                      {forwards.slice(0, 4).map(player => (
                         <PlayerRow key={player.squadNo} player={player} />
                       ))}
                     </div>
                   </div>
                 </div>
+
+                {/* Right Column: Midfielders */}
+                <div className="space-y-2">
+                  {/* Midfielders */}
+                  <div>
+                    <div className="bg-celtic-blue text-white px-2 py-1 rounded-t">
+                      <h3 className="font-bold text-[10px] uppercase tracking-wider">Midfielders</h3>
+                    </div>
+                    <div className="border border-t-0 border-gray-200 rounded-b px-2 py-1 bg-gray-50/50">
+                      {midfielders.slice(0, 10).map(player => (
+                        <PlayerRow key={player.squadNo} player={player} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Substitutes / Notes area */}
+                  <div className="bg-gray-100 rounded p-2">
+                    <p className="text-[9px] text-gray-500 uppercase tracking-wider font-semibold mb-1">Substitutes</p>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-1">
+                        <div className="w-3 h-3 border border-gray-300 rounded-sm" />
+                        <span className="text-[10px] text-gray-400">_________________</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-3 h-3 border border-gray-300 rounded-sm" />
+                        <span className="text-[10px] text-gray-400">_________________</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-3 h-3 border border-gray-300 rounded-sm" />
+                        <span className="text-[10px] text-gray-400">_________________</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Management */}
-              <div className="mt-4 pt-4 border-t-2 border-gray-200">
-                <div className="flex items-center justify-between bg-celtic-dark text-white rounded-lg p-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-celtic-yellow font-bold">MANAGEMENT:</span>
-                    <span>Simon Berry (Manager)</span>
+              {/* Management Footer */}
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <div className="flex items-center justify-between bg-celtic-dark text-white rounded px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-celtic-yellow font-bold text-xs">MANAGER:</span>
+                    <span className="text-xs">Simon Berry</span>
                   </div>
-                  <div className="text-celtic-yellow text-sm">
+                  <div className="text-celtic-yellow text-xs font-bold">
                     #UpTheCeltic
                   </div>
                 </div>
@@ -773,6 +780,9 @@ First Team Manager`;
           html, body {
             width: 210mm;
             height: 297mm;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
           }
           body {
             -webkit-print-color-adjust: exact !important;
@@ -782,10 +792,12 @@ First Team Manager`;
           .programme-page {
             width: 210mm;
             height: 297mm;
+            max-height: 297mm;
             page-break-after: always;
             break-after: page;
             page-break-inside: avoid;
             break-inside: avoid;
+            overflow: hidden;
           }
           .programme-page:last-child {
             page-break-after: avoid;
@@ -793,6 +805,12 @@ First Team Manager`;
           .aspect-\\[1\\/1\\.414\\] {
             aspect-ratio: auto !important;
             height: 297mm !important;
+            max-height: 297mm !important;
+            overflow: hidden !important;
+          }
+          /* Hide any content that overflows */
+          .programme-page * {
+            overflow: hidden;
           }
         }
       `}</style>
