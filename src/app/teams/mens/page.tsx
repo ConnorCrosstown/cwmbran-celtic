@@ -148,6 +148,42 @@ export default async function MensTeamPage() {
         </div>
       </section>
 
+      {/* About */}
+      <section className="py-6 md:py-8">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">About the Team</h2>
+
+            <div className="card p-4 mb-4">
+              <p className="text-sm text-gray-700 mb-2">
+                Cwmbran Celtic Men&apos;s First Team compete in the JD Cymru South, the third tier of
+                Welsh football. The club has a proud history dating back to 1924 and plays home games
+                at the Avondale Motor Park Arena.
+              </p>
+              <p className="text-sm text-gray-700">
+                We&apos;re always looking for talented players to strengthen our squad. If you&apos;re interested
+                in joining, get in touch with us.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="card p-4">
+                <h3 className="font-bold text-sm mb-2">Training</h3>
+                <p className="text-xs text-gray-600">
+                  Training sessions are held weekly. Contact us for current times and location.
+                </p>
+              </div>
+              <div className="card p-4">
+                <h3 className="font-bold text-sm mb-2">Home Games</h3>
+                <p className="text-xs text-gray-600">
+                  Home matches are played at the Avondale Motor Park Arena. Check fixtures for kick-off times.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Squad */}
       <section className="py-4 md:py-6">
         <div className="container mx-auto px-4">
