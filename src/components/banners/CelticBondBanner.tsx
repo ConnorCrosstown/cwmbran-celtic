@@ -54,7 +54,7 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
           <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
             Join the Celtic Bond
           </h2>
-          <p className="text-lg text-white/90 mb-6 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-200 mb-6 max-w-2xl mx-auto">
             Support Cwmbran Celtic AFC and be in with a chance to win cash prizes every month.
             Just £10 per month helps the club thrive!
           </p>
@@ -70,7 +70,7 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
               Join Celtic Bond
             </Link>
           </div>
-          <p className="text-sm text-white/80 mt-4">
+          <p className="text-sm text-gray-300 mt-4">
             Monthly prize draws with cash prizes up to £100!
           </p>
         </div>
