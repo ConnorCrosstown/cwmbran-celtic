@@ -47,42 +47,83 @@
    FORCE WHITE TEXT ON BLUE BACKGROUNDS
    ======================================== */
 
-/* Force text-white class to actually be white */
-.text-white {
-  color: #ffffff !important;
-}
-
-/* Force gray text colors */
-.text-gray-100 { color: #f3f4f6 !important; }
-.text-gray-200 { color: #e5e7eb !important; }
-.text-gray-300 { color: #d1d5db !important; }
-.text-gray-400 { color: #9ca3af !important; }
-
-/* Blue background sections - force white text */
-[class*="bg-celtic-blue"],
-[class*="from-celtic-blue"],
-[class*="from-slate-900"] {
+/* Section-level blue backgrounds get white text */
+section[class*="bg-celtic-blue"],
+section[class*="from-celtic-blue"],
+section[class*="from-slate-900"],
+header[class*="bg-celtic-blue"],
+footer[class*="from-slate-900"],
+div.bg-celtic-blue,
+div.bg-celtic-blue-dark {
   color: #ffffff;
 }
 
-[class*="bg-celtic-blue"] h1,
-[class*="bg-celtic-blue"] h2,
-[class*="bg-celtic-blue"] h3,
-[class*="bg-celtic-blue"] h4,
-[class*="bg-celtic-blue"] h5,
-[class*="bg-celtic-blue"] h6,
-[class*="from-celtic-blue"] h1,
-[class*="from-celtic-blue"] h2,
-[class*="from-celtic-blue"] h3,
-[class*="from-celtic-blue"] h4,
-[class*="from-celtic-blue"] h5,
-[class*="from-celtic-blue"] h6 {
+/* Direct children of blue sections */
+section[class*="bg-celtic-blue"] > div,
+section[class*="from-celtic-blue"] > div {
+  color: #ffffff;
+}
+
+section[class*="bg-celtic-blue"] h1,
+section[class*="bg-celtic-blue"] h2,
+section[class*="bg-celtic-blue"] > div h1,
+section[class*="bg-celtic-blue"] > div h2,
+section[class*="bg-celtic-blue"] > div p,
+section[class*="from-celtic-blue"] h1,
+section[class*="from-celtic-blue"] h2,
+section[class*="from-celtic-blue"] > div h1,
+section[class*="from-celtic-blue"] > div h2,
+section[class*="from-celtic-blue"] > div p {
   color: #ffffff !important;
 }
 
-[class*="bg-celtic-blue"] p,
-[class*="from-celtic-blue"] p {
+/* Text that should be slightly dimmed on blue backgrounds */
+section[class*="bg-celtic-blue"] .text-gray-200,
+section[class*="bg-celtic-blue"] .text-gray-300,
+section[class*="from-celtic-blue"] .text-gray-200,
+section[class*="from-celtic-blue"] .text-gray-300 {
   color: #e5e7eb !important;
+}
+
+/* Cards should NOT inherit white text - reset to dark */
+.card, .card-static {
+  color: #1e293b;
+}
+
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+.card-static h1, .card-static h2, .card-static h3, .card-static h4 {
+  color: #0f172a;
+}
+
+.card p, .card-static p {
+  color: #475569;
+}
+
+/* Blue header inside cards - white text */
+.card > div[class*="bg-celtic-blue"],
+.card-static > div[class*="bg-celtic-blue"] {
+  color: #ffffff !important;
+}
+
+.card > div[class*="bg-celtic-blue"] h3,
+.card > div[class*="bg-celtic-blue"] p {
+  color: #ffffff !important;
+}
+
+/* Buttons with blue background inside cards should have white text */
+.card a[class*="bg-celtic-blue"],
+.card button[class*="bg-celtic-blue"],
+a.bg-celtic-blue,
+button.bg-celtic-blue {
+  color: #ffffff !important;
+}
+
+/* Outline buttons should keep their blue text */
+.card a[class*="border-celtic-blue"]:not([class*="bg-celtic-blue"]),
+.card button[class*="border-celtic-blue"]:not([class*="bg-celtic-blue"]),
+a.border-celtic-blue:not(.bg-celtic-blue),
+button.border-celtic-blue:not(.bg-celtic-blue) {
+  color: #1e3a8a !important;
 }
 
 /* ========================================
