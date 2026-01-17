@@ -11,10 +11,10 @@ export default function TicketsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-celtic-blue text-white py-12 md:py-16">
+      <section className="bg-celtic-blue py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Tickets</h1>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#ffffff' }}>Tickets</h1>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#e5e7eb' }}>
             Get your tickets for Cwmbran Celtic home matches at the Avondale Motor Park Arena
           </p>
         </div>

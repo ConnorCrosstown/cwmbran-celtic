@@ -47,9 +47,9 @@ export default async function FixturesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-celtic-blue text-white py-8 md:py-12">
+      <section className="bg-celtic-blue py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold">Fixtures & Results</h1>
+          <h1 className="text-3xl md:text-4xl font-bold" style={{ color: '#ffffff' }}>Fixtures & Results</h1>
         </div>
       </section>
 

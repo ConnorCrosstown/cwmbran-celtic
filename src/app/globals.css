@@ -44,6 +44,63 @@
 }
 
 /* ========================================
+   FORCE WHITE TEXT ON BLUE BACKGROUNDS
+   ======================================== */
+
+/* Fix Tailwind v4 text color issues on blue backgrounds */
+.bg-celtic-blue,
+.bg-celtic-blue-dark,
+.from-celtic-blue,
+.from-celtic-blue-dark,
+.via-celtic-blue,
+.via-celtic-blue-dark,
+.from-slate-900,
+.bg-gradient-to-r.from-celtic-blue,
+.bg-gradient-to-b.from-slate-900 {
+  color: #ffffff;
+}
+
+.bg-celtic-blue h1,
+.bg-celtic-blue h2,
+.bg-celtic-blue h3,
+.bg-celtic-blue h4,
+.bg-celtic-blue p,
+.bg-celtic-blue span,
+.bg-celtic-blue-dark h1,
+.bg-celtic-blue-dark h2,
+.bg-celtic-blue-dark h3,
+.bg-celtic-blue-dark h4,
+.bg-celtic-blue-dark p,
+.bg-celtic-blue-dark span {
+  color: inherit;
+}
+
+/* Override text-white and text-gray classes on blue backgrounds */
+.bg-celtic-blue .text-white,
+.bg-celtic-blue .text-gray-200,
+.bg-celtic-blue .text-gray-300,
+.bg-celtic-blue .text-gray-400,
+.bg-celtic-blue-dark .text-white,
+.bg-celtic-blue-dark .text-gray-200,
+.bg-celtic-blue-dark .text-gray-300,
+.bg-celtic-blue-dark .text-gray-400 {
+  color: #ffffff !important;
+}
+
+/* Slightly dimmed text for secondary content */
+.bg-celtic-blue .text-gray-200,
+.bg-celtic-blue .text-gray-300,
+.bg-celtic-blue-dark .text-gray-200,
+.bg-celtic-blue-dark .text-gray-300 {
+  color: #e5e7eb !important;
+}
+
+.bg-celtic-blue .text-gray-400,
+.bg-celtic-blue-dark .text-gray-400 {
+  color: #d1d5db !important;
+}
+
+/* ========================================
    BASE STYLES & TYPOGRAPHY
    ======================================== */
 

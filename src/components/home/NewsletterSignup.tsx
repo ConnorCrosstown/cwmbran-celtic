@@ -21,10 +21,10 @@ export default function NewsletterSignup() {
     <section className="bg-celtic-blue py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: '#ffffff' }}>
             Stay Updated
           </h2>
-          <p className="text-gray-300 mb-6">
+          <p className="mb-6" style={{ color: '#e5e7eb' }}>
             Get the latest news, match updates, and exclusive content delivered to your inbox.
           </p>
 
@@ -52,7 +52,7 @@ export default function NewsletterSignup() {
             </form>
           )}
 
-          <p className="text-xs text-gray-400 mt-4">
+          <p className="text-xs mt-4" style={{ color: '#d1d5db' }}>
             We respect your privacy. Unsubscribe at any time.
           </p>
         </div>
