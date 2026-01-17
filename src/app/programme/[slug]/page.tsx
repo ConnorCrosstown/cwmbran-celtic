@@ -15,44 +15,76 @@ interface SquadPlayer {
 }
 
 interface ProgrammeData {
-  // Match details
   opponent: string;
   date: string;
   kickoff: string;
   competition: string;
   matchdayNumber: string;
   venue: 'home' | 'away';
-
-  // Team selection
   team: 'mens' | 'womens' | 'development';
   startingXI: number[];
   substitutes: number[];
   captain: number | null;
-
-  // Match officials
   referee: string;
   assistantRef1: string;
   assistantRef2: string;
   fourthOfficial: string;
-
-  // Sponsors & extras
   matchSponsor: string;
   mascotSponsor: string;
   matchballSponsor: string;
   programmePrice: string;
-
-  // Content
   managersNotes: string;
   teamNews: string;
   specialNotes: string;
   playerToWatch: number | null;
-
-  // Images
   coverImage: string;
   actionImage: string;
-
-  // Meta
   status?: 'draft' | 'published';
+}
+
+// Design constants matching PDF
+const COLORS = {
+  navy: '#1e3a5f',
+  navyDark: '#0f2744',
+  yellow: '#facc15',
+  white: '#ffffff',
+  gray: '#6b7280',
+  grayLight: '#f3f4f6',
+  grayBorder: '#e5e7eb',
+};
+
+// Reusable page header component (yellow bar on left)
+function PageHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div className="flex items-start gap-3 mb-6">
+      <div className="w-1 self-stretch rounded-full" style={{ backgroundColor: COLORS.yellow }} />
+      <div>
+        <h1 className="text-xl font-black uppercase tracking-tight" style={{ color: COLORS.navy }}>
+          {title}
+        </h1>
+        {subtitle && (
+          <p className="text-xs" style={{ color: COLORS.gray }}>{subtitle}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Sponsor footer for pages
+function SponsorFooter() {
+  return (
+    <div className="mt-auto pt-4 border-t" style={{ borderColor: COLORS.grayBorder }}>
+      <p className="text-[10px] text-center uppercase tracking-wider mb-2" style={{ color: COLORS.gray }}>
+        Principal Partner
+      </p>
+      <div className="flex items-center justify-center">
+        <div className="px-4 py-2">
+          <p className="text-sm font-black" style={{ color: COLORS.navy }}>AVONDALE</p>
+          <p className="text-[10px] font-bold" style={{ color: COLORS.yellow }}>VEHICLE HIRE</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ShareableProgrammePage() {
@@ -64,11 +96,9 @@ export default function ShareableProgrammePage() {
   const [programmeData, setProgrammeData] = useState<ProgrammeData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Parse slug: format is "YYYY-MM-DD-opponent-id"
   const parts = slug?.split('-') || [];
   const date = parts.slice(0, 3).join('-');
   const opponentId = parts.slice(3).join('-');
-
   const opposition = getOppositionById(opponentId);
 
   useEffect(() => {
@@ -98,14 +128,12 @@ export default function ShareableProgrammePage() {
     return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
   };
 
-  // Squad - type assertion
   const squad = mockSquad.results as SquadPlayer[];
   const goalkeepers = squad.filter(p => p.position === 'Goalkeeper');
   const defenders = squad.filter(p => p.position.includes('Back'));
   const midfielders = squad.filter(p => p.position.includes('Midfield') || p.position.includes('Wing'));
   const forwards = squad.filter(p => p.position === 'Striker' || p.position === 'Forward');
 
-  // Results & fixtures
   const recentResults = mockResults.results
     .filter(r => (r.homeTeam.includes('Cwmbran Celtic') || r.awayTeam.includes('Cwmbran Celtic')) && !r.homeTeam.includes('Ladies'))
     .slice(0, 5);
@@ -114,7 +142,6 @@ export default function ShareableProgrammePage() {
     .filter(f => !f.homeTeam.includes('Ladies'))
     .slice(0, 5);
 
-  // Share functions
   const shareWhatsApp = () => {
     const text = `Match Day Programme: Cwmbran Celtic vs ${opposition?.name}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text + '\n' + shareUrl)}`, '_blank');
@@ -131,42 +158,27 @@ export default function ShareableProgrammePage() {
     alert('Link copied!');
   };
 
-  // Pages - Professional programme structure
+  // 10 pages matching PDF exactly
   const pages = [
     'cover',
-    'welcome',
     'managers-notes',
-    'squad-gk-def',
-    'squad-mid-fwd',
+    'squad',
     'todays-match',
-    'opposition',
-    'head-to-head',
+    'history',
+    'visitors',
     'league-table',
-    'form-guide',
-    'club-history',
+    'results-fixtures',
     'celtic-bond',
-    'sponsors',
     'back-cover'
   ];
 
   const totalPages = pages.length;
-
-  const nextPage = () => {
-    if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1);
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 1);
-  };
-
-  // Paper texture overlay style
-  const paperTexture = {
-    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E")`,
-  };
+  const nextPage = () => { if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1); };
+  const prevPage = () => { if (currentPage > 0) setCurrentPage(currentPage - 1); };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0a1628' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: COLORS.navyDark }}>
         <div className="text-center">
           <div className="w-16 h-16 mb-4 mx-auto animate-pulse">
             <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={64} height={64} />
@@ -179,10 +191,10 @@ export default function ShareableProgrammePage() {
 
   if (!opposition) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0a1628' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: COLORS.navyDark }}>
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4" style={{ color: '#ffffff' }}>Programme Not Found</h1>
-          <Link href="/" className="underline" style={{ color: '#facc15' }}>Return to Homepage</Link>
+          <h1 className="text-2xl font-bold mb-4" style={{ color: COLORS.white }}>Programme Not Found</h1>
+          <Link href="/" className="underline" style={{ color: COLORS.yellow }}>Return to Homepage</Link>
         </div>
       </div>
     );
@@ -190,444 +202,238 @@ export default function ShareableProgrammePage() {
 
   const renderPage = () => {
     switch (pages[currentPage]) {
-      // ==================== COVER ====================
+      // ==================== PAGE 1: COVER ====================
       case 'cover':
         return (
-          <div className="h-full relative overflow-hidden" style={{ backgroundColor: '#facc15' }}>
-            {/* Yellow Background */}
-            <div className="absolute inset-0" style={{ backgroundColor: '#facc15' }} />
+          <div className="h-full relative overflow-hidden">
+            {/* Background - Action photo with gradient */}
+            <div className="absolute inset-0">
+              {programmeData?.coverImage ? (
+                <Image src={programmeData.coverImage} alt="" fill className="object-cover" />
+              ) : (
+                <div className="w-full h-full" style={{ backgroundColor: '#3a5a40' }} />
+              )}
+              {/* Dark gradient overlay */}
+              <div className="absolute inset-0" style={{
+                background: 'linear-gradient(180deg, rgba(15,39,68,0.4) 0%, rgba(15,39,68,0.2) 40%, rgba(15,39,68,0.8) 100%)'
+              }} />
+            </div>
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col">
-              {/* Header - Club Name */}
-              <div className="pt-3 px-3 text-center">
-                <h1 className="text-[28px] leading-none font-black tracking-tight" style={{
-                  color: '#1e56a0',
-                  textShadow: '2px 2px 0px rgba(255,255,255,0.5)',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
-                  CWMBRAN
-                </h1>
-                <h1 className="text-[28px] leading-none font-black tracking-tight -mt-1" style={{
-                  color: '#1e56a0',
-                  textShadow: '2px 2px 0px rgba(255,255,255,0.5)',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
-                }}>
-                  CELTIC FC
-                </h1>
-              </div>
-
-              {/* League & Price Row */}
-              <div className="flex items-center justify-between px-3 mt-1">
-                <div className="flex items-center gap-1.5">
-                  {/* JD Sports logo placeholder */}
-                  <div className="w-6 h-6 rounded flex items-center justify-center" style={{ backgroundColor: '#000' }}>
-                    <span className="text-[8px] font-bold text-white">JD</span>
-                  </div>
-                  {/* Cymru South logo placeholder */}
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#1e56a0' }}>
-                    <span className="text-[5px] font-bold text-white text-center leading-tight">CYMRU<br/>SOUTH</span>
-                  </div>
+            <div className="relative z-10 h-full flex flex-col p-4">
+              {/* Top Row - Badge and Kickoff */}
+              <div className="flex justify-between items-start">
+                {/* Left: Official Programme badge */}
+                <div className="px-3 py-2 rounded" style={{ backgroundColor: COLORS.yellow }}>
+                  <p className="text-[8px] font-bold uppercase tracking-wider" style={{ color: COLORS.navy }}>
+                    Official Match Programme
+                  </p>
+                  <p className="text-[10px] font-bold" style={{ color: COLORS.navy }}>
+                    JD Cymru South
+                  </p>
                 </div>
-                <div className="text-right">
-                  <p className="text-[8px] font-bold" style={{ color: '#1e56a0' }}>OFFICIAL MATCH PROGRAMME</p>
-                  <p className="text-[10px] font-black" style={{ color: '#1e56a0' }}>{programmeData?.programmePrice || '£1.50'}</p>
-                  <p className="text-[7px]" style={{ color: '#1e56a0' }}>SEASON 2024/2025</p>
+
+                {/* Right: Kickoff time */}
+                <div className="px-4 py-2 rounded text-center" style={{ backgroundColor: COLORS.yellow }}>
+                  <p className="text-2xl font-black" style={{ color: COLORS.navy }}>
+                    {programmeData?.kickoff || '15:00'}
+                  </p>
+                  <p className="text-[8px] font-bold uppercase" style={{ color: COLORS.navy }}>Kick-Off</p>
                 </div>
               </div>
 
-              {/* Website */}
-              <div className="text-center -mt-0.5">
-                <p className="text-[7px] font-medium" style={{ color: '#1e56a0' }}>WWW.CWMBRANCLTIC.COM</p>
-              </div>
+              {/* Center - Club crest and match info */}
+              <div className="flex-1 flex flex-col items-center justify-center text-center">
+                <div className="w-24 h-24 mb-4">
+                  <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={96} height={96} className="object-contain drop-shadow-xl" />
+                </div>
 
-              {/* Main Action Image */}
-              <div className="flex-1 mx-2 mt-1 relative overflow-hidden rounded-sm" style={{ minHeight: '45%' }}>
-                {programmeData?.coverImage ? (
-                  <Image
-                    src={programmeData.coverImage}
-                    alt="Match action"
-                    fill
-                    className="object-cover object-center"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: '#4a7c59' }}>
-                    {/* Placeholder pitch pattern */}
-                    <div className="text-center">
-                      <div className="w-20 h-20 mx-auto mb-2 opacity-50">
-                        <Image src="/images/club-logo.webp" alt="" width={80} height={80} className="object-contain" />
-                      </div>
-                      <p className="text-[10px] font-medium text-white/70">Action Photo</p>
-                    </div>
-                  </div>
+                <h1 className="text-3xl font-black tracking-tight mb-2" style={{ color: COLORS.white, textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
+                  CWMBRAN CELTIC
+                </h1>
+
+                <div className="flex items-center gap-3 my-2">
+                  <div className="h-px w-8" style={{ backgroundColor: COLORS.yellow }} />
+                  <span className="text-sm font-bold" style={{ color: COLORS.yellow }}>vs</span>
+                  <div className="h-px w-8" style={{ backgroundColor: COLORS.yellow }} />
+                </div>
+
+                <h2 className="text-2xl font-black tracking-tight" style={{ color: COLORS.white, textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
+                  {opposition.name.toUpperCase()}
+                </h2>
+                {opposition.nickname && (
+                  <p className="text-sm italic mt-1" style={{ color: COLORS.yellow }}>
+                    "{opposition.nickname}"
+                  </p>
                 )}
               </div>
 
-              {/* Match Info Strip */}
-              <div className="mx-2 mt-1 p-2 rounded-sm flex items-center justify-between" style={{ backgroundColor: '#1e56a0' }}>
-                {/* Home Badge */}
-                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: '#fff' }}>
-                  <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={40} height={40} className="object-contain w-full h-full p-0.5" />
+              {/* Bottom - Date and Venue bar */}
+              <div className="flex justify-between items-end px-2 py-3 rounded" style={{ backgroundColor: 'rgba(15,39,68,0.9)' }}>
+                <div>
+                  <p className="text-[8px] uppercase font-bold" style={{ color: COLORS.yellow }}>Date</p>
+                  <p className="text-xs font-bold" style={{ color: COLORS.white }}>{formatDate(date)}</p>
                 </div>
-
-                {/* Match Details */}
-                <div className="flex-1 text-center px-2">
-                  <p className="text-[9px] font-bold text-white">CWMBRAN CELTIC v</p>
-                  <p className="text-[11px] font-black text-white">{opposition.name.toUpperCase()}</p>
-                  <p className="text-[7px] text-white/90 mt-0.5">
-                    {formatDate(date).toUpperCase()}, K.O. {programmeData?.kickoff || '15:00'}
-                  </p>
-                  <p className="text-[7px] text-white/80">AVONDALE MOTORPOINT ARENA</p>
-                </div>
-
-                {/* Away Badge */}
-                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#fff' }}>
-                  <span className="text-[8px] font-bold text-center" style={{ color: '#1e56a0' }}>
-                    {opposition.name.split(' ').map(w => w[0]).join('')}
-                  </span>
-                </div>
-              </div>
-
-              {/* Main Sponsor */}
-              <div className="mx-2 mt-1 p-2 text-center rounded-sm" style={{ backgroundColor: '#1e56a0' }}>
-                <p className="text-[14px] font-black italic text-white tracking-wide">AVONDALE</p>
-                <p className="text-[10px] font-bold" style={{ color: '#facc15' }}>MOTOR PARK</p>
-                <p className="text-[6px] text-white/80">THE UK'S VAN SUPERSTORE</p>
-              </div>
-
-              {/* Partner Logos Footer */}
-              <div className="flex items-center justify-between px-3 py-1.5" style={{ backgroundColor: '#0a1628' }}>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#333' }}>
-                    <span className="text-[5px] text-white font-bold">RHINO</span>
-                  </div>
-                  <div className="w-8 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#1e56a0' }}>
-                    <span className="text-[5px] text-white">Cofficology</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#c41e3a' }}>
-                    <span className="text-[5px] text-white font-bold">EnerSys</span>
-                  </div>
-                  <div className="w-8 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#333' }}>
-                    <span className="text-[5px] text-white">Endurance</span>
-                  </div>
+                <div className="text-right">
+                  <p className="text-[8px] uppercase font-bold" style={{ color: COLORS.yellow }}>Venue</p>
+                  <p className="text-xs font-bold" style={{ color: COLORS.white }}>Avondale Motor Park Arena</p>
                 </div>
               </div>
             </div>
           </div>
         );
 
-      // ==================== WELCOME PAGE ====================
-      case 'welcome':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header bar */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                Welcome to The Avondale Motor Park Arena
-              </p>
-            </div>
-
-            <div className="flex-1 p-4 overflow-hidden">
-              {/* Chairman's message */}
-              <div className="mb-4">
-                <h2 className="text-sm font-black uppercase mb-2" style={{ color: '#0a1628', borderBottom: '2px solid #facc15', paddingBottom: '4px', display: 'inline-block' }}>
-                  From The Chairman
-                </h2>
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2" style={{ borderColor: '#0a1628' }}>
-                    <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: '#1e3a5f' }}>
-                      <span className="text-xs font-bold" style={{ color: '#facc15' }}>BD</span>
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[10px] leading-relaxed" style={{ color: '#374151' }}>
-                      Good afternoon and welcome to the Avondale Motor Park Arena for today's {programmeData?.competition || 'JD Cymru South'} fixture against {opposition.name}.
-                    </p>
-                    <p className="text-[10px] leading-relaxed mt-2" style={{ color: '#374151' }}>
-                      We extend a warm welcome to the players, officials and supporters of {opposition.name}. We hope you enjoy your visit.
-                    </p>
-                    <p className="text-[9px] font-semibold mt-2" style={{ color: '#0a1628' }}>
-                      Barrie Desmond, Chairman
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Today's Officials */}
-              <div className="p-3 rounded mb-3" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <h3 className="text-[10px] font-bold uppercase mb-2" style={{ color: '#0a1628' }}>Match Officials</h3>
-                <div className="grid grid-cols-3 gap-2 text-[9px]">
-                  <div>
-                    <p style={{ color: '#6b7280' }}>Referee</p>
-                    <p className="font-semibold" style={{ color: '#0a1628' }}>{programmeData?.referee || 'TBC'}</p>
-                  </div>
-                  <div>
-                    <p style={{ color: '#6b7280' }}>Assistant 1</p>
-                    <p className="font-semibold" style={{ color: '#0a1628' }}>{programmeData?.assistantRef1 || 'TBC'}</p>
-                  </div>
-                  <div>
-                    <p style={{ color: '#6b7280' }}>Assistant 2</p>
-                    <p className="font-semibold" style={{ color: '#0a1628' }}>{programmeData?.assistantRef2 || 'TBC'}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Sponsors */}
-              {(programmeData?.matchSponsor || programmeData?.matchballSponsor || programmeData?.mascotSponsor) && (
-                <div className="p-3 rounded mb-3" style={{ backgroundColor: '#facc15' }}>
-                  {programmeData?.matchSponsor && (
-                    <div className="mb-2">
-                      <p className="text-[9px] font-bold uppercase" style={{ color: '#0a1628' }}>Match Sponsor</p>
-                      <p className="text-sm font-black" style={{ color: '#0a1628' }}>{programmeData.matchSponsor}</p>
-                    </div>
-                  )}
-                  {programmeData?.matchballSponsor && (
-                    <div className="mb-2">
-                      <p className="text-[9px] font-bold uppercase" style={{ color: '#0a1628' }}>Matchball Sponsor</p>
-                      <p className="text-xs font-bold" style={{ color: '#0a1628' }}>{programmeData.matchballSponsor}</p>
-                    </div>
-                  )}
-                  {programmeData?.mascotSponsor && (
-                    <div>
-                      <p className="text-[9px] font-bold uppercase" style={{ color: '#0a1628' }}>Mascot Sponsor</p>
-                      <p className="text-xs font-bold" style={{ color: '#0a1628' }}>{programmeData.mascotSponsor}</p>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Quick Facts */}
-              <div className="mt-3">
-                <h3 className="text-[10px] font-bold uppercase mb-2" style={{ color: '#0a1628' }}>Quick Facts</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="p-2 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                    <p className="text-[8px] uppercase" style={{ color: '#6b7280' }}>Founded</p>
-                    <p className="text-sm font-black" style={{ color: '#0a1628' }}>1925</p>
-                  </div>
-                  <div className="p-2 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                    <p className="text-[8px] uppercase" style={{ color: '#6b7280' }}>Nickname</p>
-                    <p className="text-sm font-black" style={{ color: '#0a1628' }}>The Celts</p>
-                  </div>
-                  <div className="p-2 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                    <p className="text-[8px] uppercase" style={{ color: '#6b7280' }}>Colours</p>
-                    <p className="text-sm font-black" style={{ color: '#0a1628' }}>Blue & Yellow</p>
-                  </div>
-                  <div className="p-2 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                    <p className="text-[8px] uppercase" style={{ color: '#6b7280' }}>Ground</p>
-                    <p className="text-[10px] font-bold" style={{ color: '#0a1628' }}>Avondale MPA</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>2</p>
-            </div>
-          </div>
-        );
-
-      // ==================== MANAGER'S NOTES ====================
+      // ==================== PAGE 2: MANAGER'S NOTES ====================
       case 'managers-notes':
-        const defaultNotes = `Good afternoon and a warm welcome to all supporters joining us at the Avondale Motor Park Arena for today's fixture against ${opposition.name}.\n\nThe lads have been working hard in training this week and we're looking forward to putting on a performance for you today. The support we receive week in, week out means everything to this club.\n\nEnjoy the game and thank you for your continued support.\n\nUp The Celtic!`;
+        const defaultNotes = `Good afternoon and welcome to the Avondale Motor Park Arena for today's JD Cymru South fixture against ${opposition.name}.\n\nThank you for your continued support - it means the world to everyone at the club. The lads have been working hard in training and we're looking forward to putting on a performance for you today.\n\nEnjoy the game!`;
         const notesText = programmeData?.managersNotes || defaultNotes;
 
         return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                Manager's Notes
-              </p>
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.white }}>
+            <PageHeader title="Manager's Notes" />
+
+            {/* Manager card */}
+            <div className="flex items-start gap-4 p-4 rounded-lg mb-4" style={{ backgroundColor: COLORS.grayLight }}>
+              <div className="w-16 h-20 rounded overflow-hidden flex-shrink-0">
+                <Image src="/images/staff/simon-berry.webp" alt="Simon Berry" width={64} height={80} className="object-cover w-full h-full" />
+              </div>
+              <div>
+                <h2 className="text-lg font-black" style={{ color: COLORS.navy }}>Simon Berry</h2>
+                <p className="text-sm" style={{ color: COLORS.gray }}>First Team Manager</p>
+                <span className="inline-block mt-2 px-2 py-1 rounded text-[10px] font-bold" style={{ backgroundColor: COLORS.grayBorder, color: COLORS.navy }}>
+                  Since 2023
+                </span>
+              </div>
             </div>
 
-            <div className="flex-1 p-4 overflow-hidden">
-              {/* Manager photo and intro */}
-              <div className="flex items-start gap-3 mb-4">
-                <div className="w-16 h-20 rounded overflow-hidden flex-shrink-0 border-2" style={{ borderColor: '#0a1628' }}>
-                  <Image src="/images/staff/simon-berry.webp" alt="Simon Berry" width={64} height={80} className="object-cover w-full h-full" />
-                </div>
+            {/* Notes content */}
+            <div className="flex-1 p-4 rounded-lg" style={{ backgroundColor: COLORS.grayLight }}>
+              {notesText.split('\n').map((paragraph, idx) => (
+                paragraph.trim() && (
+                  <p key={idx} className="text-sm leading-relaxed mb-3" style={{ color: '#374151' }}>
+                    {paragraph}
+                  </p>
+                )
+              ))}
+              <div className="mt-4 pt-3" style={{ borderTop: `1px solid ${COLORS.grayBorder}` }}>
+                <p className="text-sm font-bold" style={{ color: COLORS.navy }}>Simon Berry</p>
+                <p className="text-xs" style={{ color: COLORS.gray }}>First Team Manager</p>
+              </div>
+            </div>
+
+            <SponsorFooter />
+          </div>
+        );
+
+      // ==================== PAGE 3: SQUAD ====================
+      case 'squad':
+        return (
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.white }}>
+            <PageHeader title="Cwmbran Celtic Squad" subtitle="Tick the players in today's starting lineup" />
+
+            <div className="flex-1 grid grid-cols-2 gap-4">
+              {/* Left column - GK, DEF, FWD */}
+              <div className="space-y-3">
+                {/* Goalkeepers */}
                 <div>
-                  <h2 className="text-lg font-black" style={{ color: '#0a1628' }}>Simon Berry</h2>
-                  <p className="text-[10px] font-medium" style={{ color: '#6b7280' }}>First Team Manager</p>
-                  <div className="mt-1 h-1 w-12" style={{ backgroundColor: '#facc15' }} />
+                  <div className="px-2 py-1 rounded-t text-[10px] font-bold uppercase" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                    Goalkeepers
+                  </div>
+                  <div className="border border-t-0 rounded-b p-2 space-y-1" style={{ borderColor: COLORS.grayBorder }}>
+                    {goalkeepers.map(p => (
+                      <div key={p.squadNo} className="flex items-center gap-2">
+                        <div className="w-4 h-4 border rounded" style={{ borderColor: COLORS.grayBorder }} />
+                        <span className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                          {p.squadNo}
+                        </span>
+                        <span className="text-xs" style={{ color: COLORS.navy }}>{p.firstName} {p.lastName}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Defenders */}
+                <div>
+                  <div className="px-2 py-1 rounded-t text-[10px] font-bold uppercase" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                    Defenders
+                  </div>
+                  <div className="border border-t-0 rounded-b p-2 space-y-1" style={{ borderColor: COLORS.grayBorder }}>
+                    {defenders.slice(0, 6).map(p => (
+                      <div key={p.squadNo} className="flex items-center gap-2">
+                        <div className="w-4 h-4 border rounded" style={{ borderColor: COLORS.grayBorder }} />
+                        <span className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                          {p.squadNo}
+                        </span>
+                        <span className="text-xs" style={{ color: COLORS.navy }}>{p.firstName} {p.lastName}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Forwards */}
+                <div>
+                  <div className="px-2 py-1 rounded-t text-[10px] font-bold uppercase" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                    Forwards
+                  </div>
+                  <div className="border border-t-0 rounded-b p-2 space-y-1" style={{ borderColor: COLORS.grayBorder }}>
+                    {forwards.slice(0, 4).map(p => (
+                      <div key={p.squadNo} className="flex items-center gap-2">
+                        <div className="w-4 h-4 border rounded" style={{ borderColor: COLORS.grayBorder }} />
+                        <span className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                          {p.squadNo}
+                        </span>
+                        <span className="text-xs" style={{ color: COLORS.navy }}>{p.firstName} {p.lastName}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Notes content */}
-              <div className="p-3 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                {notesText.split('\n').map((paragraph, idx) => (
-                  paragraph.trim() && (
-                    <p key={idx} className="text-[10px] leading-relaxed mb-2" style={{ color: '#374151' }}>
-                      {paragraph}
-                    </p>
-                  )
-                ))}
-                <div className="mt-3 pt-2" style={{ borderTop: '1px solid #e5e7eb' }}>
-                  <p className="text-[10px] font-bold italic" style={{ color: '#0a1628' }}>Simon Berry</p>
-                  <p className="text-[9px]" style={{ color: '#6b7280' }}>First Team Manager</p>
-                </div>
-              </div>
-
-              {/* Team News */}
-              {programmeData?.teamNews && (
-                <div className="mt-3 p-3 rounded" style={{ backgroundColor: '#fef3c7' }}>
-                  <h3 className="text-[10px] font-bold uppercase mb-1" style={{ color: '#0a1628' }}>Team News</h3>
-                  <p className="text-[10px]" style={{ color: '#374151' }}>{programmeData.teamNews}</p>
-                </div>
-              )}
-
-              {/* Special Notes */}
-              {programmeData?.specialNotes && (
-                <div className="mt-3 p-3 rounded" style={{ backgroundColor: '#0a1628' }}>
-                  <h3 className="text-[10px] font-bold uppercase mb-1" style={{ color: '#facc15' }}>Announcement</h3>
-                  <p className="text-[10px]" style={{ color: '#ffffff' }}>{programmeData.specialNotes}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>3</p>
-            </div>
-          </div>
-        );
-
-      // ==================== SQUAD - GK & DEFENDERS ====================
-      case 'squad-gk-def':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#0a1628' }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#facc15' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#0a1628' }}>
-                First Team Squad
-              </p>
-            </div>
-
-            <div className="flex-1 p-3 overflow-hidden">
-              {/* Goalkeepers */}
-              <div className="mb-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                  <h3 className="text-[10px] font-bold uppercase" style={{ color: '#facc15' }}>Goalkeepers</h3>
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {goalkeepers.slice(0, 2).map(player => (
-                    <div key={player.squadNo} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                        {player.squadNo}
+              {/* Right column - MID and SUBS */}
+              <div className="space-y-3">
+                {/* Midfielders */}
+                <div>
+                  <div className="px-2 py-1 rounded-t text-[10px] font-bold uppercase" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                    Midfielders
+                  </div>
+                  <div className="border border-t-0 rounded-b p-2 space-y-1" style={{ borderColor: COLORS.grayBorder }}>
+                    {midfielders.slice(0, 10).map(p => (
+                      <div key={p.squadNo} className="flex items-center gap-2">
+                        <div className="w-4 h-4 border rounded" style={{ borderColor: COLORS.grayBorder }} />
+                        <span className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                          {p.squadNo}
+                        </span>
+                        <span className="text-xs" style={{ color: COLORS.navy }}>{p.firstName} {p.lastName}</span>
                       </div>
-                      <div>
-                        <p className="text-[10px] font-bold" style={{ color: '#ffffff' }}>{player.firstName} {player.lastName}</p>
-                        <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{player.position}</p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Defenders */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                  <h3 className="text-[10px] font-bold uppercase" style={{ color: '#facc15' }}>Defenders</h3>
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {defenders.slice(0, 8).map(player => (
-                    <div key={player.squadNo} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                        {player.squadNo}
+                {/* Substitutes */}
+                <div>
+                  <p className="text-[10px] font-bold uppercase mb-1" style={{ color: COLORS.gray }}>Substitutes</p>
+                  <div className="space-y-1">
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="flex items-center gap-2">
+                        <div className="w-4 h-4 border rounded" style={{ borderColor: COLORS.grayBorder }} />
+                        <div className="flex-1 h-6 border-b" style={{ borderColor: COLORS.grayBorder }} />
                       </div>
-                      <div>
-                        <p className="text-[10px] font-bold" style={{ color: '#ffffff' }}>{player.firstName} {player.lastName}</p>
-                        <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{player.position}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Management footer */}
-            <div className="px-4 py-2 flex items-center justify-between" style={{ backgroundColor: 'rgba(250,204,21,0.1)' }}>
-              <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.6)' }}>Manager: Simon Berry</p>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.4)' }}>4</p>
-            </div>
-          </div>
-        );
-
-      // ==================== SQUAD - MID & FWD ====================
-      case 'squad-mid-fwd':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#0a1628' }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#facc15' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#0a1628' }}>
-                First Team Squad
-              </p>
-            </div>
-
-            <div className="flex-1 p-3 overflow-hidden">
-              {/* Midfielders */}
-              <div className="mb-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                  <h3 className="text-[10px] font-bold uppercase" style={{ color: '#facc15' }}>Midfielders</h3>
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {midfielders.slice(0, 8).map(player => (
-                    <div key={player.squadNo} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                        {player.squadNo}
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold" style={{ color: '#ffffff' }}>{player.firstName} {player.lastName}</p>
-                        <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{player.position}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Forwards */}
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                  <h3 className="text-[10px] font-bold uppercase" style={{ color: '#facc15' }}>Forwards</h3>
-                  <div className="h-px flex-1" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {forwards.slice(0, 6).map(player => (
-                    <div key={player.squadNo} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                        {player.squadNo}
-                      </div>
-                      <div>
-                        <p className="text-[10px] font-bold" style={{ color: '#ffffff' }}>{player.firstName} {player.lastName}</p>
-                        <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>{player.position}</p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2 flex items-center justify-between" style={{ backgroundColor: 'rgba(250,204,21,0.1)' }}>
-              <p className="text-[9px]" style={{ color: '#facc15' }}>#UpTheCeltic</p>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.4)' }}>5</p>
+            <div className="flex justify-between items-center pt-3 mt-3" style={{ borderTop: `2px solid ${COLORS.yellow}` }}>
+              <p className="text-xs font-bold" style={{ color: COLORS.navy }}>MANAGER: Simon Berry</p>
+              <p className="text-xs font-bold" style={{ color: COLORS.yellow }}>#UpTheCeltic</p>
             </div>
           </div>
         );
 
-      // ==================== TODAY'S MATCH ====================
+      // ==================== PAGE 4: TODAY'S MATCH ====================
       case 'todays-match':
-        // Get starting XI players from programme data, or use default
         const startingXIPlayers = programmeData?.startingXI?.length === 11
           ? programmeData.startingXI.map(no => squad.find(p => p.squadNo === no)).filter(Boolean)
           : [...goalkeepers.slice(0, 1), ...defenders.slice(0, 4), ...midfielders.slice(0, 4), ...forwards.slice(0, 2)];
@@ -636,264 +442,246 @@ export default function ShareableProgrammePage() {
           ? programmeData.substitutes.map(no => squad.find(p => p.squadNo === no)).filter(Boolean)
           : [];
 
-        const isHome = programmeData?.venue !== 'away';
-
         return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                Today&apos;s Match
-              </p>
-            </div>
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.white }}>
+            <PageHeader title="Today's Match" />
 
-            <div className="flex-1 p-3">
-              {/* Teams header */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-center flex-1">
-                  <div className="w-10 h-10 mx-auto mb-1">
-                    <Image src="/images/club-logo.webp" alt="Celtic" width={40} height={40} className="object-contain" />
-                  </div>
-                  <p className="text-[10px] font-black" style={{ color: '#0a1628' }}>CELTIC</p>
-                  <p className="text-[8px]" style={{ color: '#6b7280' }}>{isHome ? 'Home' : 'Away'}</p>
+            <div className="flex-1 grid grid-cols-2 gap-3">
+              {/* Home - Celtic */}
+              <div className="rounded-lg overflow-hidden border" style={{ borderColor: COLORS.grayBorder }}>
+                <div className="p-2 text-center" style={{ backgroundColor: COLORS.navy }}>
+                  <p className="text-xs font-black" style={{ color: COLORS.yellow }}>CWMBRAN CELTIC</p>
+                  <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>Home</p>
                 </div>
-                <div className="px-3">
-                  <p className="text-lg font-black" style={{ color: '#facc15' }}>VS</p>
-                </div>
-                <div className="text-center flex-1">
-                  <div className="w-10 h-10 mx-auto mb-1 rounded-full flex items-center justify-center" style={{ backgroundColor: '#e5e7eb' }}>
-                    <span className="text-[10px] font-bold" style={{ color: '#6b7280' }}>{opposition.name.substring(0, 2).toUpperCase()}</span>
-                  </div>
-                  <p className="text-[10px] font-black" style={{ color: '#0a1628' }}>{opposition.name.split(' ')[0].toUpperCase()}</p>
-                  <p className="text-[8px]" style={{ color: '#6b7280' }}>{isHome ? 'Away' : 'Home'}</p>
-                </div>
-              </div>
-
-              {/* Team sheets */}
-              <div className="grid grid-cols-2 gap-2">
-                {/* Home - Celtic */}
-                <div className="rounded overflow-hidden" style={{ backgroundColor: '#0a1628' }}>
-                  <div className="p-2 text-center" style={{ backgroundColor: '#facc15' }}>
-                    <p className="text-[9px] font-bold" style={{ color: '#0a1628' }}>CWMBRAN CELTIC</p>
-                  </div>
-                  <div className="p-2">
-                    {startingXIPlayers.map((p) => p && (
-                      <div key={p.squadNo} className="flex items-center gap-1 py-0.5">
-                        <span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>{p.squadNo}</span>
-                        <span className="text-[8px]" style={{ color: '#ffffff' }}>
-                          {p.firstName[0]}. {p.lastName}
-                          {programmeData?.captain === p.squadNo && <span style={{ color: '#facc15' }}> (C)</span>}
-                        </span>
-                      </div>
-                    ))}
-                    <div className="mt-2 pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                      <p className="text-[7px]" style={{ color: 'rgba(255,255,255,0.5)' }}>SUBS</p>
-                      {subsPlayers.length > 0 ? (
-                        <div className="flex flex-wrap gap-x-2">
-                          {subsPlayers.map(p => p && (
-                            <span key={p.squadNo} className="text-[7px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                              {p.squadNo}. {p.lastName}
-                            </span>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-[7px]" style={{ color: 'rgba(255,255,255,0.4)' }}>12. ___  14. ___  15. ___</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Away - Opposition */}
-                <div className="rounded overflow-hidden" style={{ backgroundColor: '#f3f4f6' }}>
-                  <div className="p-2 text-center" style={{ backgroundColor: '#374151' }}>
-                    <p className="text-[9px] font-bold" style={{ color: '#ffffff' }}>{opposition.name.toUpperCase()}</p>
-                  </div>
-                  <div className="p-2">
-                    {[1,2,3,4,5,6,7,8,9,10,11].map(n => (
-                      <div key={n} className="flex items-center gap-1 py-0.5">
-                        <span className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold" style={{ backgroundColor: '#d1d5db', color: '#374151' }}>{n}</span>
-                        <span className="text-[8px]" style={{ color: '#6b7280' }}>_______________</span>
-                      </div>
-                    ))}
-                    <div className="mt-2 pt-2" style={{ borderTop: '1px solid #e5e7eb' }}>
-                      <p className="text-[7px]" style={{ color: '#9ca3af' }}>SUBS</p>
-                      <p className="text-[7px]" style={{ color: '#9ca3af' }}>12. ___  14. ___  15. ___</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>6</p>
-            </div>
-          </div>
-        );
-
-      // ==================== OPPOSITION ====================
-      case 'opposition':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                The Opposition
-              </p>
-            </div>
-
-            <div className="flex-1 p-4 overflow-hidden">
-              <div className="text-center mb-4">
-                <h2 className="text-xl font-black" style={{ color: '#0a1628' }}>{opposition.name}</h2>
-                {opposition.nickname && (
-                  <p className="text-xs italic" style={{ color: '#6b7280' }}>"{opposition.nickname}"</p>
-                )}
-                <div className="mt-2 h-1 w-16 mx-auto" style={{ backgroundColor: '#facc15' }} />
-              </div>
-
-              {/* Stats grid */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                <div className="p-3 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <p className="text-[8px] uppercase mb-1" style={{ color: '#6b7280' }}>Founded</p>
-                  <p className="text-lg font-black" style={{ color: '#0a1628' }}>{opposition.founded}</p>
-                </div>
-                <div className="p-3 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <p className="text-[8px] uppercase mb-1" style={{ color: '#6b7280' }}>Ground</p>
-                  <p className="text-xs font-bold" style={{ color: '#0a1628' }}>{opposition.ground}</p>
-                </div>
-                <div className="p-3 rounded col-span-2" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <p className="text-[8px] uppercase mb-1" style={{ color: '#6b7280' }}>Club Colours</p>
-                  <p className="text-sm font-bold" style={{ color: '#0a1628' }}>{opposition.colours}</p>
-                </div>
-              </div>
-
-              {/* Last meeting */}
-              {opposition.lastMeeting && (
-                <div className="p-3 rounded" style={{ backgroundColor: '#0a1628' }}>
-                  <p className="text-[9px] font-bold uppercase mb-2" style={{ color: '#facc15' }}>Last Meeting</p>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs" style={{ color: '#ffffff' }}>{opposition.lastMeeting.date}</p>
-                    <div className="flex items-center gap-2">
-                      <span className={`w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold`} style={{
-                        backgroundColor: opposition.lastMeeting.result === 'W' ? '#22c55e' : opposition.lastMeeting.result === 'L' ? '#ef4444' : '#6b7280',
-                        color: '#ffffff'
-                      }}>
-                        {opposition.lastMeeting.result}
+                <div className="p-3 space-y-1">
+                  {startingXIPlayers.map((p) => p && (
+                    <div key={p.squadNo} className="flex items-center gap-2">
+                      <span className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                        {p.squadNo}
                       </span>
-                      <span className="text-lg font-black" style={{ color: '#ffffff' }}>{opposition.lastMeeting.score}</span>
+                      <span className="text-[11px]" style={{ color: COLORS.navy }}>
+                        {p.firstName} {p.lastName}
+                        {programmeData?.captain === p.squadNo && <span className="font-bold" style={{ color: COLORS.yellow }}> (C)</span>}
+                      </span>
                     </div>
+                  ))}
+                  <div className="pt-2 mt-2" style={{ borderTop: `1px solid ${COLORS.grayBorder}` }}>
+                    <p className="text-[9px] font-bold uppercase mb-1" style={{ color: COLORS.gray }}>Substitutes</p>
+                    {subsPlayers.length > 0 ? (
+                      subsPlayers.map(p => p && (
+                        <div key={p.squadNo} className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded flex items-center justify-center text-[9px] font-bold" style={{ backgroundColor: COLORS.grayLight, color: COLORS.navy }}>
+                            {p.squadNo}
+                          </span>
+                          <span className="text-[10px]" style={{ color: COLORS.gray }}>{p.lastName}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-[10px]" style={{ color: COLORS.gray }}>12. ___ 14. ___ 15. ___</p>
+                    )}
                   </div>
-                </div>
-              )}
-            </div>
-
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>7</p>
-            </div>
-          </div>
-        );
-
-      // ==================== HEAD TO HEAD ====================
-      case 'head-to-head':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#0a1628' }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#facc15' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#0a1628' }}>
-                Head to Head
-              </p>
-            </div>
-
-            <div className="flex-1 p-4 flex flex-col justify-center">
-              {/* VS Display */}
-              <div className="flex items-center justify-center gap-4 mb-6">
-                <div className="text-center">
-                  <div className="w-14 h-14 mx-auto mb-2">
-                    <Image src="/images/club-logo.webp" alt="Celtic" width={56} height={56} className="object-contain" />
-                  </div>
-                  <p className="text-xs font-bold" style={{ color: '#ffffff' }}>CELTIC</p>
-                </div>
-                <div className="text-center px-4">
-                  <p className="text-2xl font-black" style={{ color: '#facc15' }}>VS</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-14 h-14 mx-auto mb-2 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                    <span className="text-lg font-bold" style={{ color: '#facc15' }}>{opposition.name.substring(0, 2).toUpperCase()}</span>
-                  </div>
-                  <p className="text-xs font-bold" style={{ color: '#ffffff' }}>{opposition.name.split(' ')[0].toUpperCase()}</p>
                 </div>
               </div>
 
-              {/* Stats */}
-              {opposition.headToHead && (
-                <div className="grid grid-cols-4 gap-2 mb-4">
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                    <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.played}</p>
-                    <p className="text-[8px] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>Played</p>
+              {/* Away - Opposition */}
+              <div className="rounded-lg overflow-hidden border" style={{ borderColor: COLORS.grayBorder }}>
+                <div className="p-2 text-center" style={{ backgroundColor: COLORS.gray }}>
+                  <p className="text-xs font-black" style={{ color: COLORS.white }}>{opposition.name.toUpperCase()}</p>
+                  <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>Away</p>
+                </div>
+                <div className="p-3">
+                  <p className="text-[9px] font-bold uppercase mb-2" style={{ color: COLORS.gray }}>Starting XI</p>
+                  <div className="space-y-1">
+                    {[1,2,3,4,5,6,7,8,9,10,11].map(n => (
+                      <div key={n} className="flex items-center gap-2">
+                        <span className="w-5 text-[10px] font-bold" style={{ color: COLORS.gray }}>{n}</span>
+                        <div className="flex-1 border-b" style={{ borderColor: COLORS.grayBorder }} />
+                      </div>
+                    ))}
                   </div>
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: 'rgba(34,197,94,0.3)' }}>
-                    <p className="text-2xl font-black" style={{ color: '#22c55e' }}>{opposition.headToHead.celticWins}</p>
-                    <p className="text-[8px] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>Celtic Wins</p>
-                  </div>
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                    <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.draws}</p>
-                    <p className="text-[8px] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>Draws</p>
-                  </div>
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: 'rgba(239,68,68,0.3)' }}>
-                    <p className="text-2xl font-black" style={{ color: '#ef4444' }}>{opposition.headToHead.oppositionWins}</p>
-                    <p className="text-[8px] uppercase" style={{ color: 'rgba(255,255,255,0.5)' }}>Opp Wins</p>
+                  <div className="pt-2 mt-2" style={{ borderTop: `1px solid ${COLORS.grayBorder}` }}>
+                    <p className="text-[9px] font-bold uppercase mb-1" style={{ color: COLORS.gray }}>Substitutes</p>
+                    <p className="text-[10px]" style={{ color: COLORS.gray }}>12. ___ 14. ___ 15. ___</p>
                   </div>
                 </div>
-              )}
-
-              {/* Win percentage bar */}
-              {opposition.headToHead && (
-                <div className="p-3 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
-                  <p className="text-[9px] uppercase mb-2 text-center" style={{ color: 'rgba(255,255,255,0.5)' }}>Win Rate Comparison</p>
-                  <div className="flex h-6 rounded overflow-hidden">
-                    <div style={{ width: `${(opposition.headToHead.celticWins / opposition.headToHead.played) * 100}%`, backgroundColor: '#22c55e' }} className="flex items-center justify-center">
-                      <span className="text-[8px] font-bold" style={{ color: '#ffffff' }}>{Math.round((opposition.headToHead.celticWins / opposition.headToHead.played) * 100)}%</span>
-                    </div>
-                    <div style={{ width: `${(opposition.headToHead.draws / opposition.headToHead.played) * 100}%`, backgroundColor: '#6b7280' }} />
-                    <div style={{ width: `${(opposition.headToHead.oppositionWins / opposition.headToHead.played) * 100}%`, backgroundColor: '#ef4444' }} className="flex items-center justify-center">
-                      <span className="text-[8px] font-bold" style={{ color: '#ffffff' }}>{Math.round((opposition.headToHead.oppositionWins / opposition.headToHead.played) * 100)}%</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
 
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: 'rgba(250,204,21,0.1)' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.4)' }}>8</p>
+            {/* Match Officials */}
+            <div className="mt-4 pt-3" style={{ borderTop: `2px solid ${COLORS.yellow}` }}>
+              <p className="text-[10px] font-bold uppercase text-center mb-2" style={{ color: COLORS.gray }}>Match Officials</p>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div>
+                  <p className="text-[9px] uppercase" style={{ color: COLORS.gray }}>Referee</p>
+                  <div className="border-b mt-1" style={{ borderColor: COLORS.grayBorder }} />
+                </div>
+                <div>
+                  <p className="text-[9px] uppercase" style={{ color: COLORS.gray }}>Assistant 1</p>
+                  <div className="border-b mt-1" style={{ borderColor: COLORS.grayBorder }} />
+                </div>
+                <div>
+                  <p className="text-[9px] uppercase" style={{ color: COLORS.gray }}>Assistant 2</p>
+                  <div className="border-b mt-1" style={{ borderColor: COLORS.grayBorder }} />
+                </div>
+              </div>
             </div>
           </div>
         );
 
-      // ==================== LEAGUE TABLE ====================
+      // ==================== PAGE 5: HISTORY ====================
+      case 'history':
+        return (
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.white }}>
+            <PageHeader title="Our History" subtitle="100 Years of Cwmbran Celtic" />
+
+            <div className="flex-1 space-y-4">
+              {/* Timeline items */}
+              {[
+                { year: '1925', title: 'The Beginning', text: 'Cwmbran Celtic AFC was founded in 1925, emerging from the proud working-class community of Cwmbran. In an era when the town was still developing around its iron and steel industries, local men came together to form a football club that would represent their community for generations to come.' },
+                { year: '1940s', title: 'Post-War Revival', text: 'After the Second World War, the club reformed with renewed vigour. Cwmbran was designated a New Town in 1949, bringing an influx of new residents and supporters. The Celtic became a focal point for community spirit in the growing town.' },
+                { year: '2000s', title: 'Rising Through the Ranks', text: 'The 21st century saw Celtic climb the Welsh football pyramid. The club earned promotion to the Welsh Football League and later to Tier 3 of the Cymru Leagues, competing against some of Wales\' most historic clubs.' },
+                { year: 'NOW', title: 'The Celtic Today', text: 'Today, Cwmbran Celtic fields men\'s, women\'s and development teams. Playing at the Avondale Motor Park Arena, we remain committed to our founding values: community, passion, and the beautiful game.' },
+              ].map((item, i) => (
+                <div key={i} className="flex gap-3">
+                  <div className="w-12 h-8 rounded flex items-center justify-center flex-shrink-0" style={{ backgroundColor: COLORS.yellow }}>
+                    <span className="text-[10px] font-black" style={{ color: COLORS.navy }}>{item.year}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold" style={{ color: COLORS.navy }}>{item.title}</h3>
+                    <p className="text-[10px] leading-relaxed" style={{ color: COLORS.gray }}>{item.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Quote banner */}
+            <div className="mt-4 p-3 rounded-lg text-center" style={{ backgroundColor: COLORS.navy }}>
+              <p className="text-xs italic" style={{ color: COLORS.white }}>
+                "More than a club - we are a family, a community, a century of shared dreams."
+              </p>
+              <p className="text-[10px] mt-1" style={{ color: COLORS.yellow }}>Fraternitas in Ludis - Brotherhood in Sport</p>
+            </div>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-2 mt-4 pt-3" style={{ borderTop: `1px solid ${COLORS.grayBorder}` }}>
+              {[
+                { value: '101', label: 'YEARS' },
+                { value: '3', label: 'TEAMS' },
+                { value: 'Tier 3', label: 'LEVEL' },
+                { value: '1', label: 'COMMUNITY' },
+              ].map((stat, i) => (
+                <div key={i} className="text-center">
+                  <p className="text-lg font-black" style={{ color: COLORS.navy }}>{stat.value}</p>
+                  <p className="text-[8px] uppercase" style={{ color: COLORS.gray }}>{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      // ==================== PAGE 6: VISITORS ====================
+      case 'visitors':
+        return (
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.white }}>
+            <PageHeader title="Today's Visitors" subtitle={opposition.name} />
+
+            {/* Club info and head to head in card */}
+            <div className="p-4 rounded-lg mb-4" style={{ backgroundColor: COLORS.grayLight }}>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Club info */}
+                <div>
+                  <p className="text-[10px] font-bold uppercase mb-2" style={{ color: COLORS.gray }}>Club Information</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between border-b pb-1" style={{ borderColor: COLORS.grayBorder }}>
+                      <span className="text-xs" style={{ color: COLORS.gray }}>Founded</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.navy }}>{opposition.founded}</span>
+                    </div>
+                    <div className="flex justify-between border-b pb-1" style={{ borderColor: COLORS.grayBorder }}>
+                      <span className="text-xs" style={{ color: COLORS.gray }}>Ground</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.navy }}>{opposition.ground}</span>
+                    </div>
+                    <div className="flex justify-between border-b pb-1" style={{ borderColor: COLORS.grayBorder }}>
+                      <span className="text-xs" style={{ color: COLORS.gray }}>Colours</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.navy }}>{opposition.colours}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs" style={{ color: COLORS.gray }}>Nickname</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.navy }}>"{opposition.nickname || 'N/A'}"</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Head to head */}
+                {opposition.headToHead && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase mb-2" style={{ color: COLORS.yellow }}>Head to Head Record</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-2 rounded text-center" style={{ backgroundColor: COLORS.navy }}>
+                        <p className="text-xl font-black" style={{ color: COLORS.white }}>{opposition.headToHead.played}</p>
+                        <p className="text-[8px] uppercase" style={{ color: COLORS.yellow }}>Played</p>
+                      </div>
+                      <div className="p-2 rounded text-center" style={{ backgroundColor: COLORS.navy }}>
+                        <p className="text-xl font-black" style={{ color: COLORS.white }}>{opposition.headToHead.celticWins}</p>
+                        <p className="text-[8px] uppercase" style={{ color: COLORS.yellow }}>Celtic Wins</p>
+                      </div>
+                      <div className="p-2 rounded text-center" style={{ backgroundColor: COLORS.navy }}>
+                        <p className="text-xl font-black" style={{ color: COLORS.white }}>{opposition.headToHead.draws}</p>
+                        <p className="text-[8px] uppercase" style={{ color: COLORS.yellow }}>Draws</p>
+                      </div>
+                      <div className="p-2 rounded text-center" style={{ backgroundColor: COLORS.navy }}>
+                        <p className="text-xl font-black" style={{ color: COLORS.white }}>{opposition.headToHead.oppositionWins}</p>
+                        <p className="text-[8px] uppercase" style={{ color: COLORS.yellow }}>Losses</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* About Celtic */}
+            <div className="p-4 rounded-lg" style={{ backgroundColor: COLORS.grayLight }}>
+              <h3 className="text-sm font-bold mb-2" style={{ color: COLORS.navy }}>About Cwmbran Celtic AFC</h3>
+              <p className="text-[10px] leading-relaxed" style={{ color: COLORS.gray }}>
+                Founded in 1925, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales. Playing our home games at the Avondale Motor Park Arena, we compete in the JD Cymru South league. The club is committed to developing local talent and providing football opportunities for players of all ages and abilities.
+              </p>
+              <div className="grid grid-cols-3 gap-2 mt-3 pt-3" style={{ borderTop: `1px solid ${COLORS.grayBorder}` }}>
+                <div className="text-center">
+                  <p className="text-lg font-black" style={{ color: COLORS.navy }}>1925</p>
+                  <p className="text-[8px] uppercase" style={{ color: COLORS.gray }}>Founded</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-black" style={{ color: COLORS.navy }}>3</p>
+                  <p className="text-[8px] uppercase" style={{ color: COLORS.gray }}>Teams</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-black" style={{ color: COLORS.navy }}>Tier 3</p>
+                  <p className="text-[8px] uppercase" style={{ color: COLORS.gray }}>League Level</p>
+                </div>
+              </div>
+            </div>
+
+            <SponsorFooter />
+          </div>
+        );
+
+      // ==================== PAGE 7: LEAGUE TABLE ====================
       case 'league-table':
         return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                {programmeData?.competition || 'JD Cymru South'} Table
-              </p>
-            </div>
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.white }}>
+            <PageHeader title="JD Cymru South Table" />
 
-            <div className="flex-1 p-2 overflow-hidden">
-              <table className="w-full text-[8px]">
+            <div className="flex-1 overflow-hidden">
+              <table className="w-full text-[9px]">
                 <thead>
-                  <tr style={{ backgroundColor: '#0a1628' }}>
-                    <th className="p-1.5 text-left font-bold" style={{ color: '#facc15' }}>#</th>
-                    <th className="p-1.5 text-left font-bold" style={{ color: '#facc15' }}>Club</th>
-                    <th className="p-1.5 text-center font-bold" style={{ color: '#facc15' }}>P</th>
-                    <th className="p-1.5 text-center font-bold" style={{ color: '#facc15' }}>W</th>
-                    <th className="p-1.5 text-center font-bold" style={{ color: '#facc15' }}>D</th>
-                    <th className="p-1.5 text-center font-bold" style={{ color: '#facc15' }}>L</th>
-                    <th className="p-1.5 text-center font-bold" style={{ color: '#facc15' }}>GD</th>
-                    <th className="p-1.5 text-center font-bold" style={{ color: '#facc15' }}>Pts</th>
+                  <tr style={{ backgroundColor: COLORS.yellow }}>
+                    <th className="p-1.5 text-left font-bold" style={{ color: COLORS.navy }}>Pos</th>
+                    <th className="p-1.5 text-left font-bold" style={{ color: COLORS.navy }}>Club</th>
+                    <th className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>P</th>
+                    <th className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>W</th>
+                    <th className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>D</th>
+                    <th className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>L</th>
+                    <th className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>GD</th>
+                    <th className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>Pts</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -902,20 +690,21 @@ export default function ShareableProgrammePage() {
                     const isOpp = team.club === opposition.name;
                     return (
                       <tr key={team.club} style={{
-                        backgroundColor: isCeltic ? '#fef3c7' : isOpp ? '#dbeafe' : idx % 2 === 0 ? '#ffffff' : '#f9fafb'
+                        backgroundColor: isCeltic ? '#fef9c3' : isOpp ? '#e0e7ff' : idx % 2 === 0 ? COLORS.white : COLORS.grayLight
                       }}>
-                        <td className="p-1.5 font-bold" style={{ color: '#0a1628' }}>{team.position}</td>
-                        <td className="p-1.5" style={{ color: '#0a1628', fontWeight: isCeltic || isOpp ? 700 : 400 }}>
-                          {team.club.length > 18 ? team.club.substring(0, 16) + '...' : team.club}
+                        <td className="p-1.5 font-bold" style={{ color: COLORS.navy }}>{team.position}</td>
+                        <td className="p-1.5" style={{ color: COLORS.navy, fontWeight: isCeltic || isOpp ? 700 : 400 }}>
+                          {team.club}
+                          {(isCeltic || isOpp) && <span className="ml-1 inline-block w-2 h-2 rounded-full" style={{ backgroundColor: isCeltic ? COLORS.yellow : COLORS.navy }} />}
                         </td>
-                        <td className="p-1.5 text-center" style={{ color: '#6b7280' }}>{team.played}</td>
-                        <td className="p-1.5 text-center" style={{ color: '#6b7280' }}>{team.won}</td>
-                        <td className="p-1.5 text-center" style={{ color: '#6b7280' }}>{team.drawn}</td>
-                        <td className="p-1.5 text-center" style={{ color: '#6b7280' }}>{team.lost}</td>
-                        <td className="p-1.5 text-center" style={{ color: team.gd > 0 ? '#22c55e' : team.gd < 0 ? '#ef4444' : '#6b7280' }}>
+                        <td className="p-1.5 text-center" style={{ color: COLORS.gray }}>{team.played}</td>
+                        <td className="p-1.5 text-center" style={{ color: COLORS.gray }}>{team.won}</td>
+                        <td className="p-1.5 text-center" style={{ color: COLORS.gray }}>{team.drawn}</td>
+                        <td className="p-1.5 text-center" style={{ color: COLORS.gray }}>{team.lost}</td>
+                        <td className="p-1.5 text-center" style={{ color: team.gd > 0 ? '#16a34a' : team.gd < 0 ? '#dc2626' : COLORS.gray }}>
                           {team.gd > 0 ? `+${team.gd}` : team.gd}
                         </td>
-                        <td className="p-1.5 text-center font-bold" style={{ color: '#0a1628' }}>{team.points}</td>
+                        <td className="p-1.5 text-center font-bold" style={{ color: COLORS.navy }}>{team.points}</td>
                       </tr>
                     );
                   })}
@@ -923,318 +712,230 @@ export default function ShareableProgrammePage() {
               </table>
             </div>
 
-            {/* Key */}
-            <div className="px-4 py-2 flex items-center justify-center gap-4" style={{ backgroundColor: '#f3f4f6' }}>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#fef3c7' }} />
-                <span className="text-[7px]" style={{ color: '#6b7280' }}>Celtic</span>
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-6 pt-3 mt-2" style={{ borderTop: `1px solid ${COLORS.grayBorder}` }}>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.yellow }} />
+                <span className="text-[10px]" style={{ color: COLORS.gray }}>Cwmbran Celtic</span>
               </div>
-              <div className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded" style={{ backgroundColor: '#dbeafe' }} />
-                <span className="text-[7px]" style={{ color: '#6b7280' }}>Today's Opponent</span>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.navy }} />
+                <span className="text-[10px]" style={{ color: COLORS.gray }}>Today's Opposition</span>
               </div>
-            </div>
-
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>9</p>
+              <span className="text-[10px]" style={{ color: COLORS.gray }}>Table as of {formatShortDate(date)}</span>
             </div>
           </div>
         );
 
-      // ==================== FORM GUIDE ====================
-      case 'form-guide':
+      // ==================== PAGE 8: RESULTS & FIXTURES ====================
+      case 'results-fixtures':
         return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                Form Guide
-              </p>
+          <div className="h-full flex flex-col" style={{ backgroundColor: COLORS.white }}>
+            {/* Action photo header */}
+            <div className="h-24 relative">
+              {programmeData?.actionImage ? (
+                <Image src={programmeData.actionImage} alt="" fill className="object-cover" />
+              ) : (
+                <div className="w-full h-full" style={{ backgroundColor: COLORS.navy }}>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>Recent Action</p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className="flex-1 p-3 overflow-hidden">
-              {/* Recent Results */}
-              <div className="mb-4">
-                <h3 className="text-[10px] font-bold uppercase mb-2 pb-1" style={{ color: '#0a1628', borderBottom: '2px solid #facc15' }}>
-                  Recent Results
-                </h3>
-                <div className="space-y-1.5">
-                  {recentResults.slice(0, 5).map((r, i) => {
-                    const home = r.homeTeam.includes('Cwmbran Celtic');
-                    const celticScore = home ? r.homeScore : r.awayScore;
-                    const oppScore = home ? r.awayScore : r.homeScore;
-                    const res = celticScore > oppScore ? 'W' : celticScore < oppScore ? 'L' : 'D';
-                    return (
-                      <div key={i} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                        <span className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style={{
-                          backgroundColor: res === 'W' ? '#22c55e' : res === 'L' ? '#ef4444' : '#6b7280',
-                          color: '#ffffff'
-                        }}>{res}</span>
-                        <span className="flex-1 text-[10px]" style={{ color: '#374151' }}>
-                          {home ? 'vs' : '@'} {home ? r.awayTeam : r.homeTeam}
-                        </span>
-                        <span className="text-sm font-black" style={{ color: '#0a1628' }}>{celticScore}-{oppScore}</span>
-                      </div>
-                    );
-                  })}
+            <div className="flex-1 p-5">
+              <div className="grid grid-cols-2 gap-4 h-full">
+                {/* Recent Results */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-5 rounded-full" style={{ backgroundColor: COLORS.yellow }} />
+                    <h2 className="text-sm font-black uppercase" style={{ color: COLORS.navy }}>Recent Results</h2>
+                  </div>
+                  <div className="space-y-2">
+                    {recentResults.slice(0, 5).map((r, i) => {
+                      const home = r.homeTeam.includes('Cwmbran Celtic');
+                      const celticScore = home ? r.homeScore : r.awayScore;
+                      const oppScore = home ? r.awayScore : r.homeScore;
+                      const res = celticScore > oppScore ? 'W' : celticScore < oppScore ? 'L' : 'D';
+                      return (
+                        <div key={i} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: COLORS.grayLight }}>
+                          <span className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style={{
+                            backgroundColor: res === 'W' ? '#16a34a' : res === 'L' ? '#dc2626' : COLORS.gray,
+                            color: COLORS.white
+                          }}>{res}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-bold truncate" style={{ color: COLORS.navy }}>{home ? r.awayTeam : r.homeTeam}</p>
+                            <p className="text-[8px]" style={{ color: COLORS.gray }}>{home ? 'Home' : 'Away'} • {formatShortDate(r.date)}</p>
+                          </div>
+                          <span className="text-sm font-black" style={{ color: COLORS.navy }}>{celticScore}-{oppScore}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Up Next */}
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1 h-5 rounded-full" style={{ backgroundColor: COLORS.yellow }} />
+                    <h2 className="text-sm font-black uppercase" style={{ color: COLORS.navy }}>Up Next</h2>
+                  </div>
+                  <div className="space-y-2">
+                    {upcomingFixtures.slice(0, 5).map((f, i) => {
+                      const home = f.homeTeam.includes('Cwmbran Celtic');
+                      return (
+                        <div key={i} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: COLORS.grayLight }}>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-bold truncate" style={{ color: COLORS.navy }}>{home ? f.awayTeam : f.homeTeam}</p>
+                            <p className="text-[8px]" style={{ color: COLORS.gray }}>{home ? 'Home' : 'Away'} • {f.time || '15:00'}</p>
+                          </div>
+                          <span className="px-2 py-1 rounded text-[10px] font-bold" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
+                            {formatShortDate(f.date)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-
-              {/* Upcoming Fixtures */}
-              <div>
-                <h3 className="text-[10px] font-bold uppercase mb-2 pb-1" style={{ color: '#0a1628', borderBottom: '2px solid #facc15' }}>
-                  Upcoming Fixtures
-                </h3>
-                <div className="space-y-1.5">
-                  {upcomingFixtures.slice(0, 4).map((f, i) => {
-                    const home = f.homeTeam.includes('Cwmbran Celtic');
-                    return (
-                      <div key={i} className="flex items-center gap-2 p-2 rounded" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                        <span className="px-2 py-1 rounded text-[8px] font-bold" style={{ backgroundColor: home ? '#0a1628' : '#f3f4f6', color: home ? '#facc15' : '#6b7280' }}>
-                          {home ? 'H' : 'A'}
-                        </span>
-                        <span className="flex-1 text-[10px]" style={{ color: '#374151' }}>
-                          {home ? f.awayTeam : f.homeTeam}
-                        </span>
-                        <span className="text-[9px] px-2 py-1 rounded" style={{ backgroundColor: '#0a1628', color: '#ffffff' }}>
-                          {formatShortDate(f.date)}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
             </div>
 
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>10</p>
-            </div>
+            <SponsorFooter />
           </div>
         );
 
-      // ==================== CLUB HISTORY ====================
-      case 'club-history':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#0a1628' }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#facc15' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#0a1628' }}>
-                Club History
-              </p>
-            </div>
-
-            <div className="flex-1 p-4 overflow-hidden">
-              <div className="text-center mb-4">
-                <h2 className="text-lg font-black" style={{ color: '#ffffff' }}>CWMBRAN CELTIC AFC</h2>
-                <p className="text-xs italic" style={{ color: '#facc15' }}>Est. 1925</p>
-              </div>
-
-              {/* Timeline */}
-              <div className="space-y-3">
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-black text-xs flex-shrink-0" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                    1925
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <p className="text-xs font-bold" style={{ color: '#ffffff' }}>Founded</p>
-                    <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                      Cwmbran Celtic AFC established in the heart of our working-class community.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-black text-xs flex-shrink-0" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                    1949
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <p className="text-xs font-bold" style={{ color: '#ffffff' }}>New Town Era</p>
-                    <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                      Cwmbran designated a New Town, bringing growth and new supporters.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-black text-xs flex-shrink-0" style={{ backgroundColor: '#facc15', color: '#0a1628' }}>
-                    2024
-                  </div>
-                  <div className="flex-1 pt-1">
-                    <p className="text-xs font-bold" style={{ color: '#ffffff' }}>The Celtic Today</p>
-                    <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                      Competing in JD Cymru South with men's, women's and development teams.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Motto */}
-              <div className="mt-4 p-3 rounded text-center" style={{ backgroundColor: 'rgba(250,204,21,0.1)' }}>
-                <p className="text-sm italic" style={{ color: '#facc15' }}>"Fraternitas in Ludis"</p>
-                <p className="text-[9px] mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Brotherhood in Sport</p>
-              </div>
-            </div>
-
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: 'rgba(250,204,21,0.1)' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.4)' }}>11</p>
-            </div>
-          </div>
-        );
-
-      // ==================== CELTIC BOND ====================
+      // ==================== PAGE 9: CELTIC BOND ====================
       case 'celtic-bond':
         return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#facc15' }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
+          <div className="h-full flex flex-col p-5" style={{ backgroundColor: COLORS.yellow }}>
+            <div className="text-center mb-4">
+              <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase" style={{ backgroundColor: COLORS.navy, color: COLORS.white }}>
                 Support Your Club
+              </span>
+              <h1 className="text-3xl font-black mt-2" style={{ color: COLORS.navy }}>CELTIC BOND</h1>
+              <p className="text-sm" style={{ color: COLORS.navy }}>Help Build Our Future</p>
+            </div>
+
+            {/* Description card */}
+            <div className="p-4 rounded-lg mb-4" style={{ backgroundColor: COLORS.white }}>
+              <h3 className="text-xs font-bold uppercase mb-2" style={{ color: COLORS.navy }}>What is the Celtic Bond?</h3>
+              <p className="text-[11px] leading-relaxed" style={{ color: COLORS.gray }}>
+                The Celtic Bond is a monthly lottery that helps fund essential club improvements and community projects. For just £5 per month, you could win cash prizes while supporting your local football club.
               </p>
             </div>
 
-            <div className="flex-1 p-4 flex flex-col justify-center">
-              <div className="text-center mb-4">
-                <h2 className="text-2xl font-black" style={{ color: '#0a1628' }}>CELTIC BOND</h2>
-                <p className="text-xs" style={{ color: '#374151' }}>Monthly Lottery</p>
+            {/* Prize boxes */}
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="p-3 rounded-lg text-center" style={{ backgroundColor: COLORS.navy }}>
+                <p className="text-2xl font-black" style={{ color: COLORS.yellow }}>£100</p>
+                <p className="text-[9px] uppercase" style={{ color: 'rgba(255,255,255,0.7)' }}>1st Prize</p>
               </div>
-
-              <div className="p-4 rounded-lg mb-4" style={{ backgroundColor: '#ffffff' }}>
-                <p className="text-xs text-center mb-3" style={{ color: '#374151' }}>
-                  Join our monthly lottery for just <span className="font-bold">£5</span> and help fund club improvements while winning cash prizes!
-                </p>
-
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: '#0a1628' }}>
-                    <p className="text-xl font-black" style={{ color: '#facc15' }}>£100</p>
-                    <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.6)' }}>1st Prize</p>
-                  </div>
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: '#1e3a5f' }}>
-                    <p className="text-lg font-black" style={{ color: '#facc15' }}>£50</p>
-                    <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.6)' }}>2nd Prize</p>
-                  </div>
-                  <div className="p-3 rounded text-center" style={{ backgroundColor: '#2d4a6f' }}>
-                    <p className="text-lg font-black" style={{ color: '#facc15' }}>£25</p>
-                    <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.6)' }}>3rd Prize</p>
-                  </div>
-                </div>
+              <div className="p-3 rounded-lg text-center" style={{ backgroundColor: COLORS.navy }}>
+                <p className="text-xl font-black" style={{ color: COLORS.yellow }}>£50</p>
+                <p className="text-[9px] uppercase" style={{ color: 'rgba(255,255,255,0.7)' }}>2nd Prize</p>
               </div>
-
-              <div className="p-3 rounded text-center" style={{ backgroundColor: '#0a1628' }}>
-                <p className="text-xs" style={{ color: '#ffffff' }}>
-                  Sign up at <span className="font-bold" style={{ color: '#facc15' }}>cwmbranceltic.com/celtic-bond</span>
-                </p>
+              <div className="p-3 rounded-lg text-center" style={{ backgroundColor: COLORS.navy }}>
+                <p className="text-xl font-black" style={{ color: COLORS.yellow }}>£25</p>
+                <p className="text-[9px] uppercase" style={{ color: 'rgba(255,255,255,0.7)' }}>3rd Prize</p>
               </div>
             </div>
 
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>12</p>
-            </div>
-          </div>
-        );
-
-      // ==================== SPONSORS ====================
-      case 'sponsors':
-        return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#fafafa', ...paperTexture }}>
-            {/* Header */}
-            <div className="px-4 py-2" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-center" style={{ color: '#facc15' }}>
-                Thank You To Our Sponsors
-              </p>
-            </div>
-
-            <div className="flex-1 p-4 flex flex-col justify-center">
-              {/* Main sponsor */}
-              <div className="text-center mb-4">
-                <p className="text-[9px] uppercase mb-2" style={{ color: '#6b7280' }}>Principal Partner</p>
-                <div className="p-4 rounded-lg" style={{ backgroundColor: '#ffffff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                  <p className="text-lg font-black" style={{ color: '#0a1628' }}>AVONDALE MOTOR PARK</p>
-                  <p className="text-[10px]" style={{ color: '#6b7280' }}>Stadium Naming Rights Partner</p>
-                </div>
-              </div>
-
-              {/* Other sponsors grid */}
+            {/* What it funds */}
+            <div className="p-4 rounded-lg mb-4" style={{ backgroundColor: COLORS.white }}>
+              <h3 className="text-xs font-bold uppercase mb-2" style={{ color: COLORS.navy }}>Your Support Helps Fund:</h3>
               <div className="grid grid-cols-2 gap-2">
-                <div className="p-3 rounded text-center" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                  <p className="text-[9px] uppercase mb-1" style={{ color: '#6b7280' }}>Kit Sponsor</p>
-                  <p className="text-xs font-bold" style={{ color: '#0a1628' }}>Partner Name</p>
-                </div>
-                <div className="p-3 rounded text-center" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                  <p className="text-[9px] uppercase mb-1" style={{ color: '#6b7280' }}>Training Wear</p>
-                  <p className="text-xs font-bold" style={{ color: '#0a1628' }}>Partner Name</p>
-                </div>
-                <div className="p-3 rounded text-center" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                  <p className="text-[9px] uppercase mb-1" style={{ color: '#6b7280' }}>Match Ball</p>
-                  <p className="text-xs font-bold" style={{ color: '#0a1628' }}>Partner Name</p>
-                </div>
-                <div className="p-3 rounded text-center" style={{ backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-                  <p className="text-[9px] uppercase mb-1" style={{ color: '#6b7280' }}>Programme</p>
-                  <p className="text-xs font-bold" style={{ color: '#0a1628' }}>Partner Name</p>
-                </div>
-              </div>
-
-              {/* Sponsor CTA */}
-              <div className="mt-4 p-3 rounded text-center" style={{ backgroundColor: '#0a1628' }}>
-                <p className="text-[9px]" style={{ color: '#facc15' }}>
-                  Interested in sponsoring? Email sponsors@cwmbranceltic.com
-                </p>
+                {['Pitch maintenance', 'Youth development', 'Kit & equipment', 'Ground improvements'].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style={{ backgroundColor: '#16a34a', color: COLORS.white }}>✓</span>
+                    <span className="text-[11px]" style={{ color: COLORS.navy }}>{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Page number */}
-            <div className="px-4 py-1 text-center" style={{ backgroundColor: '#0a1628' }}>
-              <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.5)' }}>13</p>
+            {/* How to join */}
+            <div className="p-4 rounded-lg" style={{ backgroundColor: COLORS.navy }}>
+              <h3 className="text-xs font-bold uppercase mb-2" style={{ color: COLORS.yellow }}>How to Join</h3>
+              <p className="text-[11px] mb-3" style={{ color: COLORS.white }}>
+                Sign up online at <span className="font-bold">cwmbranceltic.com/celtic-bond</span> or speak to a committee member on match day.
+              </p>
+              <div className="flex justify-between items-center p-2 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                <div>
+                  <p className="text-lg font-black" style={{ color: COLORS.yellow }}>Only £5</p>
+                  <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>per month</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold" style={{ color: COLORS.white }}>Monthly Draw</p>
+                  <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.7)' }}>Results on social media</p>
+                </div>
+              </div>
             </div>
+
+            <p className="text-center text-xs mt-4 font-bold" style={{ color: COLORS.navy }}>
+              Thank you to all our Celtic Bond members!
+            </p>
+            <p className="text-center text-sm font-black" style={{ color: COLORS.navy }}>#UpTheCeltic</p>
           </div>
         );
 
-      // ==================== BACK COVER ====================
+      // ==================== PAGE 10: BACK COVER ====================
       case 'back-cover':
         return (
-          <div className="h-full flex flex-col" style={{ backgroundColor: '#0a1628' }}>
+          <div className="h-full flex flex-col" style={{ background: `linear-gradient(180deg, ${COLORS.navy} 0%, ${COLORS.navyDark} 100%)` }}>
             <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
+              {/* Club crest */}
               <div className="w-24 h-24 mb-4">
                 <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={96} height={96} className="object-contain" />
               </div>
 
-              <h2 className="text-xl font-black mb-1" style={{ color: '#ffffff' }}>CWMBRAN CELTIC AFC</h2>
-              <p className="text-xs mb-4" style={{ color: '#facc15' }}>Established 1925</p>
+              <h1 className="text-2xl font-black" style={{ color: COLORS.white }}>CWMBRAN CELTIC AFC</h1>
+              <p className="text-sm mb-6" style={{ color: COLORS.yellow }}>Established 1925</p>
 
-              <div className="h-px w-24 mb-4" style={{ backgroundColor: 'rgba(250,204,21,0.3)' }} />
+              {/* Info columns */}
+              <div className="grid grid-cols-2 gap-8 text-left mb-6">
+                <div>
+                  <p className="text-[10px] font-bold uppercase mb-2" style={{ color: COLORS.yellow }}>Our Ground</p>
+                  <p className="text-sm font-bold" style={{ color: COLORS.white }}>Avondale Motor Park Arena</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Henllys Way</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Cwmbran</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>NP44 3FS</p>
 
-              <div className="text-xs space-y-1 mb-4" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                <p>Avondale Motor Park Arena</p>
-                <p>Henllys Way, Cwmbran</p>
-                <p>NP44 3FS</p>
-              </div>
-
-              <div className="flex items-center gap-4 mb-6">
-                <div className="text-center">
-                  <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.5)' }}>Web</p>
-                  <p className="text-xs font-bold" style={{ color: '#ffffff' }}>cwmbranceltic.com</p>
+                  <p className="text-[10px] font-bold uppercase mt-4 mb-1" style={{ color: COLORS.yellow }}>Contact</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>cwmbrancelticfc@gmail.com</p>
                 </div>
-                <div className="w-px h-8" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }} />
-                <div className="text-center">
-                  <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.5)' }}>Social</p>
-                  <p className="text-xs font-bold" style={{ color: '#ffffff' }}>@cwmbranceltic</p>
+                <div>
+                  <p className="text-[10px] font-bold uppercase mb-2" style={{ color: COLORS.yellow }}>Admission Prices</p>
+                  <div className="space-y-1">
+                    <div className="flex justify-between">
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Adults</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.white }}>£5</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Concessions</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.white }}>£3</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Under 16s</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.yellow }}>FREE</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>Programme</span>
+                      <span className="text-xs font-bold" style={{ color: COLORS.white }}>£2</span>
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] font-bold uppercase mt-4 mb-1" style={{ color: COLORS.yellow }}>Follow Us</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>@cwmbranceltic</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>cwmbranceltic.com</p>
                 </div>
               </div>
-
-              <p className="text-xl font-black" style={{ color: '#facc15' }}>#UpTheCeltic</p>
             </div>
 
             {/* Footer */}
-            <div className="p-4 text-center" style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}>
-              <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                Thank you for your support
-              </p>
-              <p className="text-[8px] mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                Programme produced by Cwmbran Celtic AFC
-              </p>
+            <div className="p-4 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+              <p className="text-xs mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>Thank you for supporting Cwmbran Celtic AFC</p>
+              <p className="text-lg font-black" style={{ color: COLORS.yellow }}>#UpTheCeltic</p>
             </div>
           </div>
         );
@@ -1249,42 +950,36 @@ export default function ShareableProgrammePage() {
       {/* Programme Container */}
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="relative w-full max-w-sm">
-          {/* Programme with shadow and page effect */}
+          {/* Programme with shadow */}
           <div
-            className="relative rounded-sm overflow-hidden"
+            className="relative rounded overflow-hidden"
             style={{
               aspectRatio: '1/1.414',
               maxHeight: 'calc(100vh - 140px)',
-              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)',
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8)',
             }}
           >
-            {/* Page Content */}
             <div className="absolute inset-0">
               {renderPage()}
             </div>
-
-            {/* Page edge effect (right side) */}
-            <div className="absolute top-0 right-0 bottom-0 w-1 pointer-events-none" style={{
-              background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.1))'
-            }} />
 
             {/* Navigation Arrows */}
             {currentPage > 0 && (
               <button
                 onClick={prevPage}
                 className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center z-20 transition-transform hover:scale-110"
-                style={{ backgroundColor: 'rgba(10,22,40,0.9)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+                style={{ backgroundColor: 'rgba(30,58,95,0.95)' }}
               >
-                <span className="text-lg" style={{ color: '#facc15' }}>‹</span>
+                <span className="text-lg" style={{ color: COLORS.yellow }}>‹</span>
               </button>
             )}
             {currentPage < totalPages - 1 && (
               <button
                 onClick={nextPage}
                 className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center z-20 transition-transform hover:scale-110"
-                style={{ backgroundColor: 'rgba(10,22,40,0.9)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+                style={{ backgroundColor: 'rgba(30,58,95,0.95)' }}
               >
-                <span className="text-lg" style={{ color: '#facc15' }}>›</span>
+                <span className="text-lg" style={{ color: COLORS.yellow }}>›</span>
               </button>
             )}
           </div>
@@ -1292,16 +987,16 @@ export default function ShareableProgrammePage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="p-4" style={{ backgroundColor: '#0a1628' }}>
+      <div className="p-4" style={{ backgroundColor: COLORS.navy }}>
         {/* Page Indicator */}
-        <div className="flex items-center justify-center gap-1 mb-3">
+        <div className="flex items-center justify-center gap-1.5 mb-3">
           {pages.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentPage(i)}
               className="w-2 h-2 rounded-full transition-all"
               style={{
-                backgroundColor: i === currentPage ? '#facc15' : 'rgba(255,255,255,0.2)',
+                backgroundColor: i === currentPage ? COLORS.yellow : 'rgba(255,255,255,0.2)',
                 transform: i === currentPage ? 'scale(1.3)' : 'scale(1)'
               }}
             />
@@ -1319,7 +1014,7 @@ export default function ShareableProgrammePage() {
           <button
             onClick={() => setShowShareMenu(!showShareMenu)}
             className="px-3 py-1.5 rounded text-[10px] font-bold"
-            style={{ backgroundColor: '#facc15', color: '#0a1628' }}
+            style={{ backgroundColor: COLORS.yellow, color: COLORS.navy }}
           >
             Share
           </button>
@@ -1329,9 +1024,9 @@ export default function ShareableProgrammePage() {
         {showShareMenu && (
           <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
             <div className="flex gap-2">
-              <button onClick={shareWhatsApp} className="flex-1 py-2 rounded text-[10px] font-bold" style={{ backgroundColor: '#25D366', color: '#ffffff' }}>WhatsApp</button>
-              <button onClick={shareTwitter} className="flex-1 py-2 rounded text-[10px] font-bold" style={{ backgroundColor: '#000000', color: '#ffffff' }}>X</button>
-              <button onClick={copyLink} className="flex-1 py-2 rounded text-[10px] font-bold" style={{ backgroundColor: '#6b7280', color: '#ffffff' }}>Copy Link</button>
+              <button onClick={shareWhatsApp} className="flex-1 py-2 rounded text-[10px] font-bold" style={{ backgroundColor: '#25D366', color: COLORS.white }}>WhatsApp</button>
+              <button onClick={shareTwitter} className="flex-1 py-2 rounded text-[10px] font-bold" style={{ backgroundColor: '#000000', color: COLORS.white }}>X</button>
+              <button onClick={copyLink} className="flex-1 py-2 rounded text-[10px] font-bold" style={{ backgroundColor: COLORS.gray, color: COLORS.white }}>Copy Link</button>
             </div>
           </div>
         )}
