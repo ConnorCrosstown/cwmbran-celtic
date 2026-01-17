@@ -211,7 +211,7 @@ export default function Navigation({ mobile = false, onItemClick }: NavigationPr
       {/* Tickets Button - Always visible */}
       <Link
         href="/tickets"
-        className={`${mobile ? 'block mt-4' : 'ml-2'} bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-700 transition-colors flex items-center gap-2`}
+        className={`${mobile ? 'block mt-4' : 'ml-2'} btn-tickets-sm`}
         onClick={onItemClick}
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
