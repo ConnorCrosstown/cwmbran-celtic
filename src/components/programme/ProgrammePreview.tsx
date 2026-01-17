@@ -497,7 +497,125 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 5: TODAY'S OPPOSITION ==================== */}
+          {/* ==================== PAGE 5: CLUB HISTORY ==================== */}
+          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
+            <div className="aspect-[1/1.414] p-8 flex flex-col">
+              {/* Header */}
+              <div className="flex items-center gap-4 mb-4 pb-3 border-b-4" style={{ borderColor: '#1e3a8a' }}>
+                <div className="w-3 h-10 rounded-full" style={{ backgroundColor: '#facc15' }} />
+                <div>
+                  <h2 className="text-xl font-black tracking-tight" style={{ color: '#0f172a' }}>OUR HISTORY</h2>
+                  <p className="text-sm" style={{ color: '#6b7280' }}>100 Years of Cwmbran Celtic</p>
+                </div>
+              </div>
+
+              {/* Timeline Content */}
+              <div className="flex-1 space-y-4">
+                {/* Founding */}
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-sm" style={{ backgroundColor: '#1e3a8a', color: '#ffffff' }}>
+                      1925
+                    </div>
+                    <div className="w-0.5 flex-1" style={{ backgroundColor: '#e5e7eb' }} />
+                  </div>
+                  <div className="flex-1 pb-4">
+                    <h3 className="font-bold text-sm mb-1" style={{ color: '#0f172a' }}>The Beginning</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
+                      Cwmbran Celtic AFC was founded in 1925, emerging from the proud working-class community of Cwmbran.
+                      In an era when the town was still developing around its iron and steel industries, local men came together
+                      to form a football club that would represent their community for generations to come.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Early Years */}
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-xs" style={{ backgroundColor: '#facc15', color: '#0f172a' }}>
+                      1940s
+                    </div>
+                    <div className="w-0.5 flex-1" style={{ backgroundColor: '#e5e7eb' }} />
+                  </div>
+                  <div className="flex-1 pb-4">
+                    <h3 className="font-bold text-sm mb-1" style={{ color: '#0f172a' }}>Post-War Revival</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
+                      After the Second World War, the club reformed with renewed vigour. Cwmbran was designated a New Town
+                      in 1949, bringing an influx of new residents and supporters. The Celtic became a focal point for
+                      community spirit in the growing town.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Modern Era */}
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-xs" style={{ backgroundColor: '#1e3a8a', color: '#ffffff' }}>
+                      2000s
+                    </div>
+                    <div className="w-0.5 flex-1" style={{ backgroundColor: '#e5e7eb' }} />
+                  </div>
+                  <div className="flex-1 pb-4">
+                    <h3 className="font-bold text-sm mb-1" style={{ color: '#0f172a' }}>Rising Through the Ranks</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
+                      The 21st century saw Celtic climb the Welsh football pyramid. The club earned promotion to the
+                      Welsh Football League and later to Tier 3 of the Cymru Leagues, competing against some of
+                      Wales&apos; most historic clubs.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Today */}
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center font-black text-xs" style={{ backgroundColor: '#facc15', color: '#0f172a' }}>
+                      NOW
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-sm mb-1" style={{ color: '#0f172a' }}>The Celtic Today</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
+                      Today, Cwmbran Celtic fields men&apos;s, women&apos;s and development teams. Playing at the Avondale Motor Park Arena,
+                      we remain committed to our founding values: community, passion, and the beautiful game. As we approach
+                      our centenary, we thank every player, volunteer, and supporter who has made this journey possible.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quote Box */}
+              <div className="mt-4 rounded-lg p-4" style={{ backgroundColor: '#1e3a8a' }}>
+                <p className="text-sm italic text-center" style={{ color: '#ffffff' }}>
+                  &ldquo;More than a club - we are a family, a community, a century of shared dreams.&rdquo;
+                </p>
+                <p className="text-xs text-center mt-2" style={{ color: '#facc15' }}>
+                  Fraternitas in Ludis - Brotherhood in Sport
+                </p>
+              </div>
+
+              {/* Stats Row */}
+              <div className="mt-4 grid grid-cols-4 gap-2">
+                <div className="text-center p-2 rounded" style={{ backgroundColor: '#f3f4f6' }}>
+                  <p className="text-xl font-black" style={{ color: '#1e3a8a' }}>{new Date().getFullYear() - 1925}</p>
+                  <p className="text-[9px] uppercase" style={{ color: '#6b7280' }}>Years</p>
+                </div>
+                <div className="text-center p-2 rounded" style={{ backgroundColor: '#f3f4f6' }}>
+                  <p className="text-xl font-black" style={{ color: '#1e3a8a' }}>3</p>
+                  <p className="text-[9px] uppercase" style={{ color: '#6b7280' }}>Teams</p>
+                </div>
+                <div className="text-center p-2 rounded" style={{ backgroundColor: '#f3f4f6' }}>
+                  <p className="text-xl font-black" style={{ color: '#1e3a8a' }}>Tier 3</p>
+                  <p className="text-[9px] uppercase" style={{ color: '#6b7280' }}>Level</p>
+                </div>
+                <div className="text-center p-2 rounded" style={{ backgroundColor: '#f3f4f6' }}>
+                  <p className="text-xl font-black" style={{ color: '#1e3a8a' }}>1</p>
+                  <p className="text-[9px] uppercase" style={{ color: '#6b7280' }}>Community</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ==================== PAGE 6: TODAY'S OPPOSITION ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
             <div className="aspect-[1/1.414] p-8 flex flex-col">
               {/* Header */}
@@ -627,7 +745,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 6: LEAGUE TABLE ==================== */}
+          {/* ==================== PAGE 7: LEAGUE TABLE ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
             <div className="aspect-[1/1.414] p-10 flex flex-col">
               {/* Header */}
@@ -708,7 +826,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 7: RESULTS & FIXTURES ==================== */}
+          {/* ==================== PAGE 8: RESULTS & FIXTURES ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
             <div className="aspect-[1/1.414] p-8 flex flex-col">
               {/* Action Image Banner */}
@@ -819,7 +937,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 8: CELTIC BOND ==================== */}
+          {/* ==================== PAGE 9: CELTIC BOND ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
             <div className="aspect-[1/1.414] relative overflow-hidden" style={{ backgroundColor: '#fde047' }}>
               {/* Content */}
@@ -915,7 +1033,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 9: BACK COVER ==================== */}
+          {/* ==================== PAGE 10: BACK COVER ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page print:break-before-page">
             <div className="aspect-[1/1.414] relative overflow-hidden">
               {/* Background */}
