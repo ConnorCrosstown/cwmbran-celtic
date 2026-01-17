@@ -72,13 +72,15 @@ export default function TeamCard({
       <div className="p-4 flex gap-3">
         <Link
           href={href}
-          className="flex-1 text-center py-2 bg-celtic-blue text-white rounded-lg font-medium hover:bg-celtic-blue-dark transition-colors text-sm"
+          className="flex-1 text-center py-2 bg-celtic-blue rounded-lg font-medium hover:bg-celtic-blue-dark transition-colors text-sm"
+          style={{ color: '#ffffff' }}
         >
           View Team
         </Link>
         <Link
           href="/fixtures"
-          className="flex-1 text-center py-2 border border-celtic-blue text-celtic-blue rounded-lg font-medium hover:bg-celtic-blue hover:text-white transition-colors text-sm"
+          className="flex-1 text-center py-2 border border-celtic-blue rounded-lg font-medium hover:bg-celtic-blue transition-colors text-sm"
+          style={{ color: '#1e3a8a' }}
         >
           Fixtures
         </Link>
