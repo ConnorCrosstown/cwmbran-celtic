@@ -15,6 +15,7 @@ interface ProgrammeData {
   teamNews: string;
   matchSponsor: string;
   coverImage?: string;
+  actionImage?: string;
 }
 
 interface ProgrammePreviewProps {
@@ -198,7 +199,7 @@ First Team Manager`;
                   </div>
                   <h2 className="text-3xl font-black tracking-tight text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{opposition?.name?.toUpperCase() || 'OPPOSITION'}</h2>
                   {opposition?.nickname && (
-                    <p className="text-sm text-celtic-yellow mt-2 italic">&ldquo;{opposition.nickname}&rdquo;</p>
+                    <p className="text-lg text-celtic-yellow mt-2 italic font-semibold">&ldquo;{opposition.nickname}&rdquo;</p>
                   )}
                 </div>
 
@@ -709,8 +710,24 @@ First Team Manager`;
 
           {/* ==================== PAGE 7: RESULTS & FIXTURES ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
-            <div className="aspect-[1/1.414] p-10 flex flex-col">
-              <div className="grid grid-cols-2 gap-8 flex-1">
+            <div className="aspect-[1/1.414] p-8 flex flex-col">
+              {/* Action Image Banner */}
+              {data.actionImage && (
+                <div className="h-32 mb-4 rounded-xl overflow-hidden relative">
+                  <Image
+                    src={data.actionImage}
+                    alt="Match action"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-2 left-3">
+                    <p className="text-white text-xs font-semibold">Recent Action</p>
+                  </div>
+                </div>
+              )}
+
+              <div className={`grid grid-cols-2 gap-6 ${data.actionImage ? '' : 'flex-1'}`}>
                 {/* Recent Results */}
                 <div>
                   <div className="flex items-center gap-3 mb-4 pb-3 border-b-4 border-celtic-blue">
@@ -760,15 +777,15 @@ First Team Manager`;
                       const date = new Date(fixture.date);
 
                       return (
-                        <div key={idx} className="bg-gray-50 rounded-lg p-3">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-bold text-sm">{opponent}</p>
-                              <p className="text-[11px] text-gray-500">
+                        <div key={idx} className="bg-gray-100 rounded-lg p-3">
+                          <div className="flex justify-between items-center">
+                            <div className="flex-1">
+                              <p className="font-bold text-sm text-gray-900">{opponent}</p>
+                              <p className="text-[11px] text-gray-600">
                                 {isCelticHome ? 'Home' : 'Away'} • {fixture.time}
                               </p>
                             </div>
-                            <div className="text-right bg-celtic-blue text-white px-3 py-1 rounded">
+                            <div className="bg-celtic-blue text-white px-3 py-2 rounded text-center">
                               <p className="font-bold text-sm">{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</p>
                             </div>
                           </div>
@@ -799,7 +816,111 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 8: BACK COVER ==================== */}
+          {/* ==================== PAGE 8: CELTIC BOND ==================== */}
+          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
+            <div className="aspect-[1/1.414] relative overflow-hidden">
+              {/* Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-celtic-yellow via-yellow-400 to-celtic-yellow">
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-celtic-blue blur-3xl transform translate-x-1/2 -translate-y-1/2" />
+                  <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-celtic-blue blur-3xl transform -translate-x-1/2 translate-y-1/2" />
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="relative h-full flex flex-col p-8">
+                {/* Header */}
+                <div className="text-center mb-6">
+                  <div className="inline-block bg-celtic-blue text-white px-6 py-2 rounded-full mb-4">
+                    <p className="text-xs uppercase tracking-wider font-bold">Support Your Club</p>
+                  </div>
+                  <h2 className="text-4xl font-black text-celtic-blue tracking-tight mb-2">CELTIC BOND</h2>
+                  <p className="text-lg text-gray-800 font-semibold">Help Build Our Future</p>
+                </div>
+
+                {/* Main Content */}
+                <div className="flex-1 flex flex-col gap-4">
+                  {/* What is Celtic Bond */}
+                  <div className="bg-white/80 rounded-xl p-5 shadow-sm">
+                    <h3 className="font-bold text-celtic-blue mb-2 text-sm uppercase tracking-wider">What is the Celtic Bond?</h3>
+                    <p className="text-gray-700 text-sm leading-relaxed">
+                      The Celtic Bond is a monthly lottery that helps fund essential club improvements and community projects.
+                      For just £5 per month, you could win cash prizes while supporting your local football club.
+                    </p>
+                  </div>
+
+                  {/* Prize Info */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="bg-celtic-blue rounded-xl p-4 text-center text-white">
+                      <p className="text-3xl font-black">£100</p>
+                      <p className="text-xs uppercase tracking-wider font-semibold text-celtic-yellow">1st Prize</p>
+                    </div>
+                    <div className="bg-celtic-blue/90 rounded-xl p-4 text-center text-white">
+                      <p className="text-2xl font-black">£50</p>
+                      <p className="text-xs uppercase tracking-wider font-semibold text-celtic-yellow">2nd Prize</p>
+                    </div>
+                    <div className="bg-celtic-blue/80 rounded-xl p-4 text-center text-white">
+                      <p className="text-2xl font-black">£25</p>
+                      <p className="text-xs uppercase tracking-wider font-semibold text-celtic-yellow">3rd Prize</p>
+                    </div>
+                  </div>
+
+                  {/* Benefits */}
+                  <div className="bg-white/80 rounded-xl p-5 shadow-sm">
+                    <h3 className="font-bold text-celtic-blue mb-3 text-sm uppercase tracking-wider">Your Support Helps Fund:</h3>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                        <span className="text-sm text-gray-700">Pitch maintenance</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                        <span className="text-sm text-gray-700">Youth development</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                        <span className="text-sm text-gray-700">Kit & equipment</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                        <span className="text-sm text-gray-700">Ground improvements</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* How to Join */}
+                  <div className="bg-celtic-blue rounded-xl p-5 text-white">
+                    <h3 className="font-bold text-celtic-yellow mb-2 text-sm uppercase tracking-wider">How to Join</h3>
+                    <p className="text-sm mb-3">
+                      Sign up online at <span className="font-bold text-celtic-yellow">cwmbranceltic.com/celtic-bond</span> or speak to a committee member on match day.
+                    </p>
+                    <div className="flex items-center justify-between bg-white/10 rounded-lg p-3">
+                      <div>
+                        <p className="text-celtic-yellow font-bold text-xl">Only £5</p>
+                        <p className="text-xs text-white/80">per month</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold">Monthly Draw</p>
+                        <p className="text-xs text-white/80">Results on social media</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-700 font-semibold">
+                    Thank you to all our Celtic Bond members!
+                  </p>
+                  <p className="text-xs text-gray-600 mt-1">
+                    #UpTheCeltic
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ==================== PAGE 9: BACK COVER ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page print:break-before-page">
             <div className="aspect-[1/1.414] relative overflow-hidden">
               {/* Background */}

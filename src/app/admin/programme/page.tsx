@@ -19,6 +19,7 @@ export default function ProgrammeGeneratorPage() {
     teamNews: '',
     matchSponsor: '',
     coverImage: '',
+    actionImage: '',
   });
 
   // Simple password check (in production, use proper auth)
@@ -38,14 +39,14 @@ export default function ProgrammeGeneratorPage() {
     });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, imageType: 'coverImage' | 'actionImage') => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData({
           ...formData,
-          coverImage: reader.result as string
+          [imageType]: reader.result as string
         });
       };
       reader.readAsDataURL(file);
@@ -221,45 +222,80 @@ export default function ProgrammeGeneratorPage() {
             </div>
           </div>
 
-          {/* Cover Image */}
+          {/* Photos */}
           <div className="card p-4 md:p-6 mb-4">
             <h2 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
               <span className="w-8 h-8 bg-celtic-blue rounded-full flex items-center justify-center text-white text-sm">2</span>
-              Cover Photo
+              Photos
               <span className="text-xs font-normal text-gray-500">(optional)</span>
             </h2>
 
-            <div className="flex gap-4 items-start">
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload a match photo for the cover
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-celtic-blue file:text-white hover:file:bg-celtic-blue-dark file:cursor-pointer"
-                />
-                <p className="text-xs text-gray-500 mt-2">
-                  Recommended: Action shot from a recent match. Leave blank for default gradient background.
-                </p>
-              </div>
-              {formData.coverImage && (
-                <div className="w-32 h-20 rounded-lg overflow-hidden border-2 border-celtic-blue relative">
-                  <Image
-                    src={formData.coverImage}
-                    alt="Cover preview"
-                    fill
-                    className="object-cover"
+            {/* Cover Photo */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-sm text-celtic-dark mb-2">Cover Photo</h3>
+              <div className="flex gap-4 items-start">
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, 'coverImage')}
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-celtic-blue file:text-white hover:file:bg-celtic-blue-dark file:cursor-pointer"
                   />
-                  <button
-                    onClick={() => setFormData({ ...formData, coverImage: '' })}
-                    className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
-                  >
-                    ×
-                  </button>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Main cover image - action shot or ground photo
+                  </p>
                 </div>
-              )}
+                {formData.coverImage && (
+                  <div className="w-24 h-16 rounded-lg overflow-hidden border-2 border-celtic-blue relative">
+                    <Image
+                      src={formData.coverImage}
+                      alt="Cover preview"
+                      fill
+                      className="object-cover"
+                    />
+                    <button
+                      onClick={() => setFormData({ ...formData, coverImage: '' })}
+                      className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Action Photo */}
+            <div>
+              <h3 className="font-semibold text-sm text-celtic-dark mb-2">Action Photo</h3>
+              <div className="flex gap-4 items-start">
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, 'actionImage')}
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-celtic-blue file:text-white hover:file:bg-celtic-blue-dark file:cursor-pointer"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Action shot for the results page
+                  </p>
+                </div>
+                {formData.actionImage && (
+                  <div className="w-24 h-16 rounded-lg overflow-hidden border-2 border-celtic-blue relative">
+                    <Image
+                      src={formData.actionImage}
+                      alt="Action preview"
+                      fill
+                      className="object-cover"
+                    />
+                    <button
+                      onClick={() => setFormData({ ...formData, actionImage: '' })}
+                      className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
