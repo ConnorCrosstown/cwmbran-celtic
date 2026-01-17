@@ -1,53 +1,11 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { clubHistory, honours } from '@/data/club-history';
 
 export const metadata: Metadata = {
   title: 'Club History',
   description: 'The history of Cwmbran Celtic AFC from 1924 to present day. From CYMS to the JD Cymru South.',
 };
-
-const timeline = [
-  {
-    year: '1924',
-    title: 'Founded as CYMS',
-    description: 'Cwmbran Celtic was founded as CYMS (Catholic Young Men\'s Society), beginning a century of football in Cwmbran.',
-  },
-  {
-    year: '1950s',
-    title: 'Post-War Growth',
-    description: 'The club grew in the post-war era, becoming an established part of the local football scene.',
-  },
-  {
-    year: '1970s',
-    title: 'Name Change',
-    description: 'The club was renamed to Cwmbran Celtic, reflecting its growing identity in the community.',
-  },
-  {
-    year: '1980s',
-    title: 'League Success',
-    description: 'A period of success in local leagues, establishing Celtic as a competitive force in Welsh football.',
-  },
-  {
-    year: '2000s',
-    title: 'Ground Development',
-    description: 'Improvements to facilities at the ground, creating a better match day experience for supporters.',
-  },
-  {
-    year: '2019',
-    title: 'FAW Pyramid Restructure',
-    description: 'Following the FAW pyramid restructure, Celtic compete in the newly formed tier 3 of Welsh football.',
-  },
-  {
-    year: '2020',
-    title: "Women's Section",
-    description: "The club established a thriving women's section, competing in the Genero Adran South.",
-  },
-  {
-    year: '2024',
-    title: 'Centenary Year',
-    description: 'Cwmbran Celtic celebrates 100 years of football, marking a century of service to the community.',
-  },
-];
 
 export default function HistoryPage() {
   return (
@@ -100,9 +58,9 @@ export default function HistoryPage() {
 
               {/* Timeline items */}
               <div className="space-y-8">
-                {timeline.map((item, index) => (
+                {clubHistory.map((event, index) => (
                   <div
-                    key={item.year}
+                    key={event.year}
                     className={`relative flex items-start ${
                       index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                     }`}
@@ -118,10 +76,10 @@ export default function HistoryPage() {
                     }`}>
                       <div className="card p-6">
                         <span className="inline-block bg-celtic-blue text-white px-3 py-1 rounded-full text-sm font-bold mb-3">
-                          {item.year}
+                          {event.year}
                         </span>
-                        <h3 className="font-bold text-lg text-celtic-dark mb-2">{item.title}</h3>
-                        <p className="text-gray-600">{item.description}</p>
+                        <h3 className="font-bold text-lg text-celtic-dark mb-2">{event.title}</h3>
+                        <p className="text-gray-600">{event.description}</p>
                       </div>
                     </div>
                   </div>
@@ -176,6 +134,52 @@ export default function HistoryPage() {
                 </ul>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Honours */}
+      <section className="py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="section-title">Honours</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {honours.map((honour) => (
+                <div key={honour.competition} className="card p-6">
+                  <h3 className="text-lg font-bold text-celtic-blue mb-4">{honour.competition}</h3>
+                  <div className="space-y-3">
+                    {honour.achievements.map((achievement) => (
+                      <div key={achievement.title}>
+                        <p className="font-semibold text-celtic-dark">{achievement.title}</p>
+                        <p className="text-sm text-gray-500">{achievement.years.join(', ')}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-sm text-gray-500 mt-6 text-center">
+              We&apos;re working on compiling a complete record of our honours. If you have historical information, please <Link href="/contact" className="text-celtic-blue hover:underline">get in touch</Link>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Season Archives CTA */}
+      <section className="py-12 md:py-16 bg-celtic-blue text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              Season Archives
+            </h2>
+            <p className="text-gray-200 mb-6 max-w-2xl mx-auto">
+              Browse our season-by-season records including league positions, top scorers, and memorable moments.
+            </p>
+            <Link href="/club/archives" className="btn-secondary">
+              View Archives
+            </Link>
           </div>
         </div>
       </section>

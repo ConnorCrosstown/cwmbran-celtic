@@ -38,6 +38,7 @@ const navItems: NavItem[] = [
     children: [
       { label: 'About Us', href: '/club' },
       { label: 'Club History', href: '/club/history' },
+      { label: 'Season Archives', href: '/club/archives' },
       { label: 'Community', href: '/community' },
       { label: 'Sponsors', href: '/sponsors' },
       { label: 'Contact', href: '/contact' },
@@ -49,6 +50,7 @@ const navItems: NavItem[] = [
     href: '/celtic-bond',
     children: [
       { label: 'Celtic Bond', href: '/celtic-bond' },
+      { label: 'Bond Results', href: '/celtic-bond/results' },
       { label: 'Celtic Card', href: '/celtic-card' },
       { label: 'Gallery', href: '/gallery' },
     ],

@@ -10,10 +10,18 @@ const communityPrograms = [
   {
     title: 'Walking Football',
     description: 'Fun, social football sessions for over 50s. Stay active and make new friends in a relaxed, low-impact environment.',
-    href: '/community/walking-football',
+    href: '/teams/walking',
     icon: '🚶',
-    sessions: 'Tuesdays & Thursdays, 10am-11:30am',
-    cost: '£3 per session',
+    sessions: 'Weekly sessions',
+    cost: 'Contact for pricing',
+  },
+  {
+    title: 'Coleg Gwent Partnership',
+    description: 'Historic collaboration providing pathways for young players to combine education with football development.',
+    href: '/community/coleg-gwent',
+    icon: '🎓',
+    sessions: 'Academic year',
+    cost: 'Part of college programme',
   },
   {
     title: 'Youth Development',
@@ -22,14 +30,6 @@ const communityPrograms = [
     icon: '⚽',
     sessions: 'Various times - see page for details',
     cost: 'Contact for fees',
-  },
-  {
-    title: 'School Partnerships',
-    description: 'Working with local schools to promote football and healthy lifestyles in the Cwmbran community.',
-    href: '/community/schools',
-    icon: '🏫',
-    sessions: 'During school hours',
-    cost: 'Free for partner schools',
   },
   {
     title: 'Match Day Volunteers',
