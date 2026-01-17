@@ -130,26 +130,6 @@ export default function NextMatchHero({ fixture, admission }: NextMatchHeroProps
         </div>
       </section>
 
-      {/* Celtic Bond Banner - Directly Below */}
-      <section className="bg-celtic-yellow py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">🎟️</span>
-              <div>
-                <span className="font-bold text-celtic-dark">Celtic Bond</span>
-                <span className="text-celtic-dark/80 ml-2 hidden sm:inline">Support the club & win monthly cash prizes!</span>
-              </div>
-            </div>
-            <Link
-              href="/celtic-bond"
-              className="bg-celtic-blue text-white py-2 px-5 rounded font-bold text-sm hover:bg-celtic-blue-dark transition-colors whitespace-nowrap"
-            >
-              Join for £10/month
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

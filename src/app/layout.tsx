@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import CelticBondStrip from '@/components/banners/CelticBondStrip';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
 const inter = Inter({
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
         <ThemeProvider>
           <Header />
+          <CelticBondStrip />
           <main className="flex-grow">{children}</main>
           <Footer />
         </ThemeProvider>
