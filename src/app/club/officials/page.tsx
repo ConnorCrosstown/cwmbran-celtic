@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Club Officials',
@@ -18,22 +19,22 @@ const footballStaff = [
   {
     team: "Men's First Team",
     staff: [
-      { role: 'Manager', name: 'Simon Berry', since: '2023' },
-      { role: 'Assistant Manager', name: 'TBC', since: '' },
-      { role: 'Coach', name: 'TBC', since: '' },
+      { role: 'Manager', name: 'Simon Berry', since: '2023', photo: '/images/staff/simon-berry.webp' },
+      { role: 'Assistant Manager', name: 'TBC', since: '', photo: null },
+      { role: 'Coach', name: 'TBC', since: '', photo: null },
     ]
   },
   {
     team: "Women's Team",
     staff: [
-      { role: 'Manager', name: 'TBC', since: '' },
-      { role: 'Assistant Manager', name: 'TBC', since: '' },
+      { role: 'Manager', name: 'TBC', since: '', photo: null },
+      { role: 'Assistant Manager', name: 'TBC', since: '', photo: null },
     ]
   },
   {
     team: "Development Squad",
     staff: [
-      { role: 'Manager', name: 'TBC', since: '' },
+      { role: 'Manager', name: 'TBC', since: '', photo: null },
     ]
   },
 ];
@@ -119,11 +120,23 @@ export default function OfficialsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       {team.staff.map((person, idx) => (
                         <div key={idx} className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-gray-400 font-bold text-xs">
-                              {person.name !== 'TBC' ? person.name.split(' ').map(n => n[0]).join('') : '?'}
-                            </span>
-                          </div>
+                          {person.photo ? (
+                            <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                              <Image
+                                src={person.photo}
+                                alt={person.name}
+                                width={40}
+                                height={40}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-gray-400 font-bold text-xs">
+                                {person.name !== 'TBC' ? person.name.split(' ').map(n => n[0]).join('') : '?'}
+                              </span>
+                            </div>
+                          )}
                           <div>
                             <p className="text-[10px] text-gray-500 uppercase">{person.role}</p>
                             <p className="font-semibold text-sm text-celtic-dark">{person.name}</p>

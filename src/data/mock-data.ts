@@ -301,7 +301,7 @@ export const mockSquad = {
   results: [
     // Goalkeepers
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/lewis-watkins.webp",
       squadNo: 1,
       firstName: "Lewis",
       lastName: "Watkins",
@@ -310,7 +310,7 @@ export const mockSquad = {
       dateOfBirth: toComet("1992-06-15")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/iwan-hooper.webp",
       squadNo: 13,
       firstName: "Iwan",
       lastName: "Hooper",
@@ -320,7 +320,7 @@ export const mockSquad = {
     },
     // Defenders
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/oliver-berry.webp",
       squadNo: 2,
       firstName: "Oliver",
       lastName: "Berry",
@@ -329,7 +329,7 @@ export const mockSquad = {
       dateOfBirth: toComet("1999-03-18")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/sam-powell.webp",
       squadNo: 3,
       firstName: "Sam",
       lastName: "Powell",
@@ -338,16 +338,16 @@ export const mockSquad = {
       dateOfBirth: toComet("1996-11-08")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/dominic-connor.webp",
       squadNo: 4,
-      firstName: "Joshua",
-      lastName: "Winstone",
+      firstName: "Dominic",
+      lastName: "Connor",
       position: "Centre Back",
       appearances: 24,
-      dateOfBirth: toComet("2002-05-30")
+      dateOfBirth: toComet("1998-05-30")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/andrew-larcombe.webp",
       squadNo: 5,
       firstName: "Andrew",
       lastName: "Larcombe",
@@ -356,16 +356,16 @@ export const mockSquad = {
       dateOfBirth: toComet("1987-09-12")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/jac-evans.webp",
       squadNo: 6,
-      firstName: "Josh",
-      lastName: "Hinwood",
+      firstName: "Jac",
+      lastName: "Evans",
       position: "Centre Back",
       appearances: 22,
       dateOfBirth: toComet("1997-02-18")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/kian-bodenham.webp",
       squadNo: 15,
       firstName: "Kian",
       lastName: "Bodenham",
@@ -374,17 +374,26 @@ export const mockSquad = {
       dateOfBirth: toComet("2003-04-25")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/lloyd-perkins.webp",
       squadNo: 16,
-      firstName: "Bailey",
-      lastName: "Goodall",
+      firstName: "Lloyd",
+      lastName: "Perkins",
       position: "Right Back",
       appearances: 15,
       dateOfBirth: toComet("2002-08-03")
     },
+    {
+      photo: "/images/players/tyler-broom.webp",
+      squadNo: 21,
+      firstName: "Tyler",
+      lastName: "Broom",
+      position: "Centre Back",
+      appearances: 12,
+      dateOfBirth: toComet("2001-03-15")
+    },
     // Midfielders
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/mario-van-dieren.webp",
       squadNo: 7,
       firstName: "Mario",
       lastName: "van Dieren",
@@ -393,7 +402,7 @@ export const mockSquad = {
       dateOfBirth: toComet("1995-01-14")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/alex-mcdowell.webp",
       squadNo: 8,
       firstName: "Alex",
       lastName: "McDowell",
@@ -402,7 +411,7 @@ export const mockSquad = {
       dateOfBirth: toComet("1996-12-07")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/isaac-powell.webp",
       squadNo: 10,
       firstName: "Isaac",
       lastName: "Powell",
@@ -411,7 +420,7 @@ export const mockSquad = {
       dateOfBirth: toComet("2000-06-19")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/louis-cochrane.webp",
       squadNo: 11,
       firstName: "Louis",
       lastName: "Cochrane",
@@ -420,7 +429,7 @@ export const mockSquad = {
       dateOfBirth: toComet("1997-11-22")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/cole-doolan.webp",
       squadNo: 14,
       firstName: "Cole",
       lastName: "Doolan",
@@ -429,7 +438,7 @@ export const mockSquad = {
       dateOfBirth: toComet("2000-07-15")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/joseph-bowen.webp",
       squadNo: 17,
       firstName: "Joseph",
       lastName: "Bowen",
@@ -438,16 +447,16 @@ export const mockSquad = {
       dateOfBirth: toComet("2003-02-28")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/efan-fletcher.webp",
       squadNo: 18,
-      firstName: "Callum",
-      lastName: "Wakeham",
+      firstName: "Efan",
+      lastName: "Fletcher",
       position: "Defensive Midfield",
       appearances: 19,
       dateOfBirth: toComet("1998-05-10")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/gabriel-howells.webp",
       squadNo: 19,
       firstName: "Gabriel",
       lastName: "Howells",
@@ -456,7 +465,7 @@ export const mockSquad = {
       dateOfBirth: toComet("2006-09-03")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/tommy-challenger.webp",
       squadNo: 20,
       firstName: "Tommy",
       lastName: "Challenger",
@@ -464,9 +473,45 @@ export const mockSquad = {
       appearances: 10,
       dateOfBirth: toComet("2007-03-20")
     },
+    {
+      photo: "/images/players/ethan-hooper.webp",
+      squadNo: 22,
+      firstName: "Ethan",
+      lastName: "Hooper",
+      position: "Central Midfield",
+      appearances: 8,
+      dateOfBirth: toComet("2004-06-12")
+    },
+    {
+      photo: "/images/players/jack-prosser.webp",
+      squadNo: 23,
+      firstName: "Jack",
+      lastName: "Prosser",
+      position: "Central Midfield",
+      appearances: 6,
+      dateOfBirth: toComet("2003-09-28")
+    },
+    {
+      photo: "/images/players/evan-maidment.webp",
+      squadNo: 24,
+      firstName: "Evan",
+      lastName: "Maidment",
+      position: "Central Midfield",
+      appearances: 5,
+      dateOfBirth: toComet("2004-01-15")
+    },
+    {
+      photo: "/images/players/finley-hayman.webp",
+      squadNo: 25,
+      firstName: "Finley",
+      lastName: "Hayman",
+      position: "Central Midfield",
+      appearances: 4,
+      dateOfBirth: toComet("2005-07-22")
+    },
     // Forwards
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/arthur-furness.webp",
       squadNo: 9,
       firstName: "Arthur",
       lastName: "Furness",
@@ -475,16 +520,97 @@ export const mockSquad = {
       dateOfBirth: toComet("1993-08-25")
     },
     {
-      photo: "https://comet.faw.cymru/resources/images/noImageAvailable.png",
+      photo: "/images/players/connor-james.webp",
       squadNo: 12,
-      firstName: "Oscar",
-      lastName: "Balkwill",
+      firstName: "Connor",
+      lastName: "James",
       position: "Striker",
       appearances: 14,
-      dateOfBirth: toComet("2007-04-12")
+      dateOfBirth: toComet("2000-04-12")
+    },
+    {
+      photo: "/images/players/joshua-gibson.webp",
+      squadNo: 26,
+      firstName: "Joshua",
+      lastName: "Gibson",
+      position: "Striker",
+      appearances: 8,
+      dateOfBirth: toComet("2003-11-05")
+    },
+    {
+      photo: "/images/players/luke-edwards.webp",
+      squadNo: 27,
+      firstName: "Luke",
+      lastName: "Edwards",
+      position: "Striker",
+      appearances: 7,
+      dateOfBirth: toComet("2002-08-18")
+    },
+    {
+      photo: "/images/players/martin-ingram.webp",
+      squadNo: 28,
+      firstName: "Martin",
+      lastName: "Ingram",
+      position: "Striker",
+      appearances: 5,
+      dateOfBirth: toComet("1999-02-14")
+    },
+    {
+      photo: "/images/players/robert-jones.webp",
+      squadNo: 29,
+      firstName: "Robert",
+      lastName: "Jones",
+      position: "Striker",
+      appearances: 4,
+      dateOfBirth: toComet("2001-05-30")
+    },
+    {
+      photo: "/images/players/ryan-saunders.webp",
+      squadNo: 30,
+      firstName: "Ryan",
+      lastName: "Saunders",
+      position: "Striker",
+      appearances: 3,
+      dateOfBirth: toComet("2000-12-08")
+    },
+    {
+      photo: "/images/players/ryan-thomas.webp",
+      squadNo: 31,
+      firstName: "Ryan",
+      lastName: "Thomas",
+      position: "Striker",
+      appearances: 6,
+      dateOfBirth: toComet("1998-09-22")
+    },
+    {
+      photo: "/images/players/sam-lewis.webp",
+      squadNo: 32,
+      firstName: "Sam",
+      lastName: "Lewis",
+      position: "Striker",
+      appearances: 5,
+      dateOfBirth: toComet("2001-03-18")
+    },
+    {
+      photo: "/images/players/steven-muir.webp",
+      squadNo: 33,
+      firstName: "Steven",
+      lastName: "Muir",
+      position: "Striker",
+      appearances: 4,
+      dateOfBirth: toComet("1997-06-25")
+    },
+    {
+      photo: "/images/players/tom-berry.webp",
+      squadNo: 34,
+      firstName: "Tom",
+      lastName: "Berry",
+      position: "Striker",
+      appearances: 3,
+      dateOfBirth: toComet("2002-11-12")
     }
   ],
-  totalSize: 20,
+  totalSize: 34,
   page: 0,
   pageSize: 25
 };
