@@ -5,7 +5,6 @@ import UpcomingFixtures from '@/components/home/UpcomingFixtures';
 import LatestNews from '@/components/home/LatestNews';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
-import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import Link from 'next/link';
 
 import {
@@ -93,9 +92,6 @@ export default async function HomePage() {
 
       {/* Latest News */}
       <LatestNews articles={getLatestNews(3)} />
-
-      {/* Celtic Bond CTA */}
-      <CelticBondBanner />
 
       {/* Visit Us CTA */}
       <section className="py-12 md:py-16 bg-white">
