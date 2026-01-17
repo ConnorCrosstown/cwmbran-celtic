@@ -167,13 +167,13 @@ First Team Manager`;
               <div className="relative h-full flex flex-col p-10 text-white">
                 {/* Header Bar */}
                 <div className="flex justify-between items-start">
-                  <div className="bg-black/30 backdrop-blur-sm rounded-lg px-4 py-2">
+                  <div className="bg-black/50 backdrop-blur-sm rounded-lg px-4 py-2">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-celtic-yellow font-semibold">Official Match Programme</p>
-                    <p className="text-sm font-bold">{data.competition}</p>
+                    <p className="text-sm font-bold text-white">{data.competition}</p>
                   </div>
-                  <div className="bg-celtic-yellow text-celtic-dark rounded-lg px-4 py-2 text-center">
-                    <p className="text-2xl font-black">{data.kickoff}</p>
-                    <p className="text-[10px] uppercase tracking-wider font-semibold">Kick-off</p>
+                  <div className="bg-celtic-yellow rounded-lg px-4 py-2 text-center">
+                    <p className="text-2xl font-black text-gray-900">{data.kickoff}</p>
+                    <p className="text-[10px] uppercase tracking-wider font-semibold text-gray-800">Kick-off</p>
                   </div>
                 </div>
 
@@ -190,35 +190,35 @@ First Team Manager`;
                   </div>
 
                   {/* Team Names */}
-                  <h1 className="text-4xl font-black tracking-tight mb-3 drop-shadow-lg">CWMBRAN CELTIC</h1>
+                  <h1 className="text-4xl font-black tracking-tight mb-3 text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>CWMBRAN CELTIC</h1>
                   <div className="flex items-center gap-4 mb-3">
                     <div className="h-[2px] w-16 bg-celtic-yellow" />
                     <span className="text-2xl font-bold text-celtic-yellow">VS</span>
                     <div className="h-[2px] w-16 bg-celtic-yellow" />
                   </div>
-                  <h2 className="text-3xl font-black tracking-tight drop-shadow-lg">{opposition?.name?.toUpperCase() || 'OPPOSITION'}</h2>
+                  <h2 className="text-3xl font-black tracking-tight text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>{opposition?.name?.toUpperCase() || 'OPPOSITION'}</h2>
                   {opposition?.nickname && (
-                    <p className="text-sm text-white/80 mt-2 italic">&ldquo;{opposition.nickname}&rdquo;</p>
+                    <p className="text-sm text-celtic-yellow mt-2 italic">&ldquo;{opposition.nickname}&rdquo;</p>
                   )}
                 </div>
 
                 {/* Footer */}
                 <div className="mt-auto">
                   {/* Match Details Bar */}
-                  <div className="bg-black/30 backdrop-blur-sm rounded-lg p-4 mb-4">
+                  <div className="bg-black/50 backdrop-blur-sm rounded-lg p-4 mb-4">
                     <div className="flex justify-between items-center text-sm">
                       <div>
-                        <p className="text-white/60 text-[10px] uppercase tracking-wider">Date</p>
-                        <p className="font-semibold">{formatDate(data.date)}</p>
+                        <p className="text-celtic-yellow text-[10px] uppercase tracking-wider font-semibold">Date</p>
+                        <p className="font-semibold text-white">{formatDate(data.date)}</p>
                       </div>
                       <div className="text-center">
-                        <p className="text-white/60 text-[10px] uppercase tracking-wider">Venue</p>
-                        <p className="font-semibold">Avondale Motor Park Arena</p>
+                        <p className="text-celtic-yellow text-[10px] uppercase tracking-wider font-semibold">Venue</p>
+                        <p className="font-semibold text-white">Avondale Motor Park Arena</p>
                       </div>
                       {data.matchdayNumber && (
                         <div className="text-right">
-                          <p className="text-white/60 text-[10px] uppercase tracking-wider">Match Day</p>
-                          <p className="font-semibold text-celtic-yellow text-xl">{data.matchdayNumber}</p>
+                          <p className="text-celtic-yellow text-[10px] uppercase tracking-wider font-semibold">Match Day</p>
+                          <p className="font-black text-white text-xl">{data.matchdayNumber}</p>
                         </div>
                       )}
                     </div>
@@ -226,9 +226,9 @@ First Team Manager`;
 
                   {/* Sponsor */}
                   {data.matchSponsor && (
-                    <div className="text-center border-t border-white/20 pt-4">
-                      <p className="text-[10px] uppercase tracking-[0.15em] text-white/60 mb-1">Today&apos;s Match Sponsor</p>
-                      <p className="font-bold text-lg">{data.matchSponsor}</p>
+                    <div className="text-center border-t border-white/30 pt-4">
+                      <p className="text-[10px] uppercase tracking-[0.15em] text-celtic-yellow mb-1 font-semibold">Today&apos;s Match Sponsor</p>
+                      <p className="font-bold text-lg text-white">{data.matchSponsor}</p>
                     </div>
                   )}
                 </div>
@@ -401,65 +401,160 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 4: TODAY'S OPPOSITION ==================== */}
-          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
-            <div className="aspect-[1/1.414] p-10 flex flex-col">
+          {/* ==================== PAGE 4: TODAY'S MATCH - BOTH TEAMS ==================== */}
+          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page overflow-hidden">
+            <div className="aspect-[1/1.414] p-6 flex flex-col">
               {/* Header */}
-              <div className="flex items-center gap-4 mb-6 pb-4 border-b-4 border-celtic-blue">
-                <div className="w-3 h-12 bg-celtic-yellow rounded-full" />
+              <div className="flex items-center justify-center gap-4 mb-4 pb-3 border-b-4 border-celtic-blue">
+                <h2 className="text-xl font-black text-celtic-dark tracking-tight text-center">TODAY&apos;S MATCH</h2>
+              </div>
+
+              {/* Two Team Columns */}
+              <div className="flex-1 grid grid-cols-2 gap-4">
+                {/* Home Team - Cwmbran Celtic */}
+                <div className="bg-celtic-blue rounded-lg overflow-hidden">
+                  <div className="bg-celtic-dark px-3 py-2 text-center">
+                    <p className="text-celtic-yellow font-black text-sm">CWMBRAN CELTIC</p>
+                    <p className="text-white/80 text-[10px]">Home</p>
+                  </div>
+                  <div className="p-3 space-y-0.5">
+                    {/* Show all squad in compact list */}
+                    {[...goalkeepers.slice(0, 1), ...defenders.slice(0, 4), ...midfielders.slice(0, 4), ...forwards.slice(0, 2)].map((player, idx) => (
+                      <div key={player.squadNo} className="flex items-center gap-1.5 py-0.5">
+                        <span className="w-4 h-4 bg-celtic-yellow text-celtic-dark rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                          {player.squadNo}
+                        </span>
+                        <span className="text-white text-[10px]">{player.firstName} {player.lastName}</span>
+                      </div>
+                    ))}
+                    <div className="border-t border-white/20 mt-2 pt-2">
+                      <p className="text-celtic-yellow text-[9px] font-semibold">SUBSTITUTES</p>
+                      {[...goalkeepers.slice(1, 2), ...defenders.slice(4, 5), ...midfielders.slice(4, 6), ...forwards.slice(2, 3)].map((player) => (
+                        <div key={player.squadNo} className="flex items-center gap-1.5 py-0.5">
+                          <span className="w-4 h-4 bg-white/20 text-white rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                            {player.squadNo}
+                          </span>
+                          <span className="text-white/80 text-[10px]">{player.firstName} {player.lastName}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Away Team - Opposition */}
+                <div className="bg-gray-100 rounded-lg overflow-hidden">
+                  <div className="bg-gray-800 px-3 py-2 text-center">
+                    <p className="text-white font-black text-sm">{opposition?.name?.toUpperCase() || 'OPPOSITION'}</p>
+                    <p className="text-gray-400 text-[10px]">Away</p>
+                  </div>
+                  <div className="p-3">
+                    <p className="text-gray-500 text-[10px] mb-2 uppercase font-semibold">Starting XI</p>
+                    {/* Placeholder lines for away team */}
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
+                      <div key={num} className="flex items-center gap-1.5 py-0.5">
+                        <span className="w-4 h-4 bg-gray-300 text-gray-600 rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                          {num}
+                        </span>
+                        <span className="text-gray-400 text-[10px]">____________________</span>
+                      </div>
+                    ))}
+                    <div className="border-t border-gray-200 mt-2 pt-2">
+                      <p className="text-gray-500 text-[9px] font-semibold">SUBSTITUTES</p>
+                      {[12, 14, 15, 16, 17].map((num) => (
+                        <div key={num} className="flex items-center gap-1.5 py-0.5">
+                          <span className="w-4 h-4 bg-gray-200 text-gray-500 rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                            {num}
+                          </span>
+                          <span className="text-gray-300 text-[10px]">____________________</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Match Officials */}
+              <div className="mt-3 pt-3 border-t-2 border-gray-200">
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="text-[9px] text-gray-500 uppercase tracking-wider font-semibold mb-2 text-center">Match Officials</p>
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                      <p className="text-[9px] text-gray-400 uppercase">Referee</p>
+                      <p className="text-[10px] text-gray-600 font-medium">_____________</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-gray-400 uppercase">Assistant 1</p>
+                      <p className="text-[10px] text-gray-600 font-medium">_____________</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-gray-400 uppercase">Assistant 2</p>
+                      <p className="text-[10px] text-gray-600 font-medium">_____________</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ==================== PAGE 5: TODAY'S OPPOSITION ==================== */}
+          <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
+            <div className="aspect-[1/1.414] p-8 flex flex-col">
+              {/* Header */}
+              <div className="flex items-center gap-4 mb-4 pb-3 border-b-4 border-celtic-blue">
+                <div className="w-3 h-10 bg-celtic-yellow rounded-full" />
                 <div>
-                  <h2 className="text-2xl font-black text-celtic-dark tracking-tight">TODAY&apos;S VISITORS</h2>
-                  <p className="text-lg text-celtic-blue font-semibold">{opposition?.name}</p>
+                  <h2 className="text-xl font-black text-celtic-dark tracking-tight">TODAY&apos;S VISITORS</h2>
+                  <p className="text-base text-gray-700 font-semibold">{opposition?.name}</p>
                 </div>
               </div>
 
               {opposition && (
                 <div className="flex-1">
                   {/* Club Info Cards */}
-                  <div className="grid grid-cols-2 gap-6 mb-6">
-                    <div className="bg-gray-50 rounded-xl p-5">
-                      <h3 className="font-bold text-sm text-celtic-blue mb-4 uppercase tracking-wider">Club Information</h3>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                          <span className="text-gray-500 text-sm">Founded</span>
-                          <span className="font-bold text-celtic-dark">{opposition.founded}</span>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <h3 className="font-bold text-xs text-gray-700 mb-3 uppercase tracking-wider">Club Information</h3>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
+                          <span className="text-gray-500 text-xs">Founded</span>
+                          <span className="font-bold text-gray-800 text-sm">{opposition.founded}</span>
                         </div>
-                        <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                          <span className="text-gray-500 text-sm">Ground</span>
-                          <span className="font-bold text-celtic-dark text-right">{opposition.ground}</span>
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
+                          <span className="text-gray-500 text-xs">Ground</span>
+                          <span className="font-bold text-gray-800 text-sm text-right">{opposition.ground}</span>
                         </div>
-                        <div className="flex justify-between items-center py-2 border-b border-gray-200">
-                          <span className="text-gray-500 text-sm">Colours</span>
-                          <span className="font-bold text-celtic-dark">{opposition.colours}</span>
+                        <div className="flex justify-between items-center py-1.5 border-b border-gray-200">
+                          <span className="text-gray-500 text-xs">Colours</span>
+                          <span className="font-bold text-gray-800 text-sm">{opposition.colours}</span>
                         </div>
                         {opposition.nickname && (
-                          <div className="flex justify-between items-center py-2">
-                            <span className="text-gray-500 text-sm">Nickname</span>
-                            <span className="font-bold text-celtic-dark">&ldquo;{opposition.nickname}&rdquo;</span>
+                          <div className="flex justify-between items-center py-1.5">
+                            <span className="text-gray-500 text-xs">Nickname</span>
+                            <span className="font-bold text-gray-800 text-sm">&ldquo;{opposition.nickname}&rdquo;</span>
                           </div>
                         )}
                       </div>
                     </div>
 
                     {opposition.headToHead && (
-                      <div className="bg-celtic-blue rounded-xl p-5 text-white">
-                        <h3 className="font-bold text-sm text-celtic-yellow mb-4 uppercase tracking-wider">Head to Head Record</h3>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-white/10 rounded-lg p-3 text-center">
-                            <p className="text-3xl font-black">{opposition.headToHead.played}</p>
-                            <p className="text-[10px] uppercase tracking-wider text-white/70">Played</p>
+                      <div className="bg-celtic-blue rounded-lg p-4 text-white">
+                        <h3 className="font-bold text-xs text-celtic-yellow mb-3 uppercase tracking-wider">Head to Head Record</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="bg-white/20 rounded p-2 text-center">
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.played}</p>
+                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Played</p>
                           </div>
-                          <div className="bg-green-500/30 rounded-lg p-3 text-center">
-                            <p className="text-3xl font-black text-green-300">{opposition.headToHead.celticWins}</p>
-                            <p className="text-[10px] uppercase tracking-wider text-white/70">Celtic Wins</p>
+                          <div className="bg-green-500/40 rounded p-2 text-center">
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.celticWins}</p>
+                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Celtic Wins</p>
                           </div>
-                          <div className="bg-white/10 rounded-lg p-3 text-center">
-                            <p className="text-3xl font-black">{opposition.headToHead.draws}</p>
-                            <p className="text-[10px] uppercase tracking-wider text-white/70">Draws</p>
+                          <div className="bg-white/20 rounded p-2 text-center">
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.draws}</p>
+                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Draws</p>
                           </div>
-                          <div className="bg-red-500/30 rounded-lg p-3 text-center">
-                            <p className="text-3xl font-black text-red-300">{opposition.headToHead.oppositionWins}</p>
-                            <p className="text-[10px] uppercase tracking-wider text-white/70">Losses</p>
+                          <div className="bg-red-500/40 rounded p-2 text-center">
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.oppositionWins}</p>
+                            <p className="text-[9px] uppercase tracking-wider text-white font-semibold">Losses</p>
                           </div>
                         </div>
                       </div>
@@ -468,15 +563,13 @@ First Team Manager`;
 
                   {/* Last Meeting */}
                   {opposition.lastMeeting && (
-                    <div className="bg-celtic-yellow/20 rounded-xl p-5 mb-6">
-                      <h4 className="font-bold text-celtic-dark mb-3 flex items-center gap-2">
-                        <span>🔄</span> Last Meeting
-                      </h4>
+                    <div className="bg-celtic-yellow/20 rounded-lg p-4 mb-4">
+                      <h4 className="font-bold text-gray-800 mb-2 text-sm">Last Meeting</h4>
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm text-gray-600">{opposition.lastMeeting.date}</p>
+                          <p className="text-xs text-gray-600">{opposition.lastMeeting.date}</p>
                         </div>
-                        <div className={`text-2xl font-black ${
+                        <div className={`text-xl font-black ${
                           opposition.lastMeeting.result === 'W' ? 'text-green-600' :
                           opposition.lastMeeting.result === 'L' ? 'text-red-600' : 'text-gray-600'
                         }`}>
@@ -486,21 +579,45 @@ First Team Manager`;
                       </div>
                     </div>
                   )}
+
+                  {/* About Cwmbran Celtic section */}
+                  <div className="bg-celtic-blue/10 rounded-lg p-4">
+                    <h4 className="font-bold text-gray-800 mb-2 text-sm">About Cwmbran Celtic AFC</h4>
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      Founded in {clubInfo.founded}, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales.
+                      Playing our home games at the Avondale Motor Park Arena, we compete in the JD Cymru South league.
+                      The club is committed to developing local talent and providing football opportunities for players of all ages and abilities.
+                    </p>
+                    <div className="grid grid-cols-3 gap-3 mt-3">
+                      <div className="text-center">
+                        <p className="text-xl font-black text-celtic-blue">{clubInfo.founded}</p>
+                        <p className="text-[9px] text-gray-500 uppercase">Founded</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xl font-black text-celtic-blue">3</p>
+                        <p className="text-[9px] text-gray-500 uppercase">Teams</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xl font-black text-celtic-blue">Tier 3</p>
+                        <p className="text-[9px] text-gray-500 uppercase">League Level</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {/* Sponsors */}
-              <div className="mt-auto pt-4 border-t-2 border-gray-200">
-                <p className="text-[10px] text-gray-400 uppercase tracking-[0.15em] mb-3 text-center font-semibold">Our Partners</p>
-                <div className="grid grid-cols-3 gap-4">
+              <div className="mt-auto pt-3 border-t-2 border-gray-200">
+                <p className="text-[9px] text-gray-400 uppercase tracking-[0.15em] mb-2 text-center font-semibold">Our Partners</p>
+                <div className="grid grid-cols-3 gap-3">
                   {sponsors.partners.slice(0, 3).map((sponsor, idx) => (
-                    <div key={idx} className="bg-gray-50 rounded-lg p-3 flex items-center justify-center h-16">
+                    <div key={idx} className="bg-gray-50 rounded p-2 flex items-center justify-center h-12">
                       <Image
                         src={sponsor.logo}
                         alt={sponsor.name}
-                        width={100}
-                        height={40}
-                        className="max-h-10 w-auto object-contain"
+                        width={80}
+                        height={32}
+                        className="max-h-8 w-auto object-contain"
                       />
                     </div>
                   ))}
@@ -509,7 +626,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 5: LEAGUE TABLE ==================== */}
+          {/* ==================== PAGE 6: LEAGUE TABLE ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
             <div className="aspect-[1/1.414] p-10 flex flex-col">
               {/* Header */}
@@ -590,7 +707,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 6: RESULTS & FIXTURES ==================== */}
+          {/* ==================== PAGE 7: RESULTS & FIXTURES ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page mb-8 print:mb-0 print:break-before-page">
             <div className="aspect-[1/1.414] p-10 flex flex-col">
               <div className="grid grid-cols-2 gap-8 flex-1">
@@ -682,7 +799,7 @@ First Team Manager`;
             </div>
           </div>
 
-          {/* ==================== PAGE 7: BACK COVER ==================== */}
+          {/* ==================== PAGE 8: BACK COVER ==================== */}
           <div className="bg-white shadow-xl print:shadow-none programme-page print:break-before-page">
             <div className="aspect-[1/1.414] relative overflow-hidden">
               {/* Background */}
