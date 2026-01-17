@@ -118,8 +118,8 @@ export default function ShareableProgrammePage() {
             </div>
 
             <div className="flex-1 flex flex-col items-center justify-center">
-              <div className="w-24 h-24 relative mb-4">
-                <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" fill className="object-contain" />
+              <div className="w-24 h-24 mb-4">
+                <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={96} height={96} className="object-contain w-full h-full" />
               </div>
               <h1 className="text-2xl font-black mb-2" style={{ color: '#ffffff' }}>CWMBRAN CELTIC</h1>
               <div className="flex items-center justify-center gap-2 mb-2">
@@ -146,8 +146,8 @@ export default function ShareableProgrammePage() {
           <div className="h-full flex flex-col p-5" style={{ backgroundColor: '#ffffff' }}>
             <h2 className="text-lg font-black mb-3 pb-2 border-b-4" style={{ color: '#0f172a', borderColor: '#1e3a8a' }}>MANAGER&apos;S NOTES</h2>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-14 h-14 rounded-full overflow-hidden border-2" style={{ borderColor: '#1e3a8a' }}>
-                <Image src="/images/staff/simon-berry.webp" alt="Simon Berry" width={56} height={56} className="object-cover" />
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 flex-shrink-0" style={{ borderColor: '#1e3a8a' }}>
+                <Image src="/images/staff/simon-berry.webp" alt="Simon Berry" width={56} height={56} className="object-cover w-full h-full" />
               </div>
               <div>
                 <p className="font-bold text-sm" style={{ color: '#0f172a' }}>Simon Berry</p>
@@ -456,8 +456,8 @@ export default function ShareableProgrammePage() {
         return (
           <div className="h-full flex flex-col p-5 text-center" style={{ backgroundColor: '#0f172a' }}>
             <div className="flex-1 flex flex-col items-center justify-center">
-              <div className="w-20 h-20 relative mb-4">
-                <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" fill className="object-contain" />
+              <div className="w-20 h-20 mb-4">
+                <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={80} height={80} className="object-contain w-full h-full" />
               </div>
               <h2 className="text-xl font-black mb-1" style={{ color: '#ffffff' }}>CWMBRAN CELTIC AFC</h2>
               <p className="text-xs mb-4" style={{ color: '#facc15' }}>Established 1925</p>
