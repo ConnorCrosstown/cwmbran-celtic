@@ -172,13 +172,14 @@ export default function SponsorsPage() {
                   Sponsor an individual match day with hospitality and programme advertising
                 </p>
               </div>
-              <div className="bg-white/10 rounded-xl p-6 text-center">
+              <Link href="/sponsors/boards" className="bg-white/10 rounded-xl p-6 text-center block hover:bg-white/20 transition-colors">
                 <div className="text-4xl mb-4">🎯</div>
                 <h3 className="font-bold text-lg mb-2">Pitch Side Boards</h3>
                 <p className="text-sm text-gray-300">
                   Promote your business with advertising boards visible throughout matches
                 </p>
-              </div>
+                <span className="inline-block mt-2 text-celtic-yellow text-sm font-semibold">View Available →</span>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

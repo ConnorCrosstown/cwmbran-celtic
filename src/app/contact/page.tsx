@@ -1,12 +1,42 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { clubInfo } from '@/data/mock-data';
 
-export const metadata: Metadata = {
-  title: 'Contact Us',
-  description: 'Get in touch with Cwmbran Celtic AFC. Contact us for general enquiries, media requests, or commercial opportunities.',
-};
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const subject = searchParams.get('subject') || '';
 
-export default function ContactPage() {
+  // Map URL subjects to form values
+  const getInitialSubject = () => {
+    if (subject.includes('board') || subject === 'advertising') return 'advertising';
+    if (subject.includes('premium') || subject.includes('standard') || subject.includes('budget')) return 'advertising';
+    if (subject === 'sponsorship') return 'sponsorship';
+    return '';
+  };
+
+  // Get board number from subject if present
+  const getBoardMessage = () => {
+    if (subject.startsWith('board-')) {
+      const boardNum = subject.replace('board-', '');
+      return `I am interested in advertising Board #${boardNum}.\n\nPlease provide more information about availability and the sponsorship process.`;
+    }
+    if (subject === 'premium-board') {
+      return 'I am interested in a Premium advertising board (8ft x 3ft).\n\nPlease provide more information about availability and locations.';
+    }
+    if (subject === 'standard-board') {
+      return 'I am interested in a Standard advertising board (6ft x 2ft).\n\nPlease provide more information about availability and locations.';
+    }
+    if (subject === 'budget-board') {
+      return 'I am interested in a Budget advertising board (4ft x 2ft).\n\nPlease provide more information about availability and locations.';
+    }
+    if (subject === 'advertising') {
+      return 'I am interested in pitch-side advertising at Cwmbran Celtic.\n\nPlease provide more information about available boards and pricing.';
+    }
+    return '';
+  };
+
   return (
     <>
       {/* Hero */}
@@ -146,12 +176,14 @@ export default function ContactPage() {
                       id="subject"
                       name="subject"
                       required
+                      defaultValue={getInitialSubject()}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none transition-colors"
                     >
                       <option value="">Select a subject...</option>
                       <option value="general">General Enquiry</option>
                       <option value="media">Media Request</option>
                       <option value="sponsorship">Sponsorship / Commercial</option>
+                      <option value="advertising">Advertising Board Enquiry</option>
                       <option value="playing">Playing Opportunities</option>
                       <option value="celtic-bond">Celtic Bond</option>
                       <option value="other">Other</option>
@@ -167,6 +199,7 @@ export default function ContactPage() {
                       name="message"
                       rows={5}
                       required
+                      defaultValue={getBoardMessage()}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none transition-colors resize-none"
                       placeholder="How can we help you?"
                     />
@@ -212,5 +245,13 @@ export default function ContactPage() {
         </div>
       </section>
     </>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ContactForm />
+    </Suspense>
   );
 }

@@ -193,73 +193,126 @@ export default function ShareableProgrammePage() {
       // ==================== COVER ====================
       case 'cover':
         return (
-          <div className="h-full relative overflow-hidden">
-            {/* Background Image */}
-            {programmeData?.coverImage ? (
-              <div className="absolute inset-0">
-                <Image src={programmeData.coverImage} alt="" fill className="object-cover" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,22,40,0.7) 0%, rgba(10,22,40,0.4) 30%, rgba(10,22,40,0.8) 100%)' }} />
-              </div>
-            ) : (
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #0a1628 0%, #1e3a5f 50%, #0a1628 100%)' }} />
-            )}
+          <div className="h-full relative overflow-hidden" style={{ backgroundColor: '#facc15' }}>
+            {/* Yellow Background */}
+            <div className="absolute inset-0" style={{ backgroundColor: '#facc15' }} />
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col p-4">
-              {/* Header */}
-              <div className="text-center">
-                <div className="inline-block px-3 py-1 rounded-sm mb-1" style={{ backgroundColor: 'rgba(250,204,21,0.9)' }}>
-                  <p className="text-[8px] font-bold uppercase tracking-wider" style={{ color: '#0a1628' }}>
-                    Official Match Day Programme
-                  </p>
-                </div>
-                <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.8)' }}>
-                  {programmeData?.competition || 'JD Cymru South'} {programmeData?.matchdayNumber ? `• Matchday ${programmeData.matchdayNumber}` : ''}
-                </p>
+            <div className="relative z-10 h-full flex flex-col">
+              {/* Header - Club Name */}
+              <div className="pt-3 px-3 text-center">
+                <h1 className="text-[28px] leading-none font-black tracking-tight" style={{
+                  color: '#1e56a0',
+                  textShadow: '2px 2px 0px rgba(255,255,255,0.5)',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  CWMBRAN
+                </h1>
+                <h1 className="text-[28px] leading-none font-black tracking-tight -mt-1" style={{
+                  color: '#1e56a0',
+                  textShadow: '2px 2px 0px rgba(255,255,255,0.5)',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}>
+                  CELTIC FC
+                </h1>
               </div>
 
-              {/* Main Content */}
-              <div className="flex-1 flex flex-col items-center justify-center text-center">
-                <div className="w-20 h-20 mb-3">
-                  <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={80} height={80} className="object-contain drop-shadow-lg" />
+              {/* League & Price Row */}
+              <div className="flex items-center justify-between px-3 mt-1">
+                <div className="flex items-center gap-1.5">
+                  {/* JD Sports logo placeholder */}
+                  <div className="w-6 h-6 rounded flex items-center justify-center" style={{ backgroundColor: '#000' }}>
+                    <span className="text-[8px] font-bold text-white">JD</span>
+                  </div>
+                  {/* Cymru South logo placeholder */}
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#1e56a0' }}>
+                    <span className="text-[5px] font-bold text-white text-center leading-tight">CYMRU<br/>SOUTH</span>
+                  </div>
                 </div>
-
-                <h1 className="text-2xl font-black tracking-tight mb-1" style={{ color: '#ffffff', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
-                  CWMBRAN CELTIC
-                </h1>
-
-                <div className="flex items-center gap-3 my-2">
-                  <div className="h-px w-12" style={{ backgroundColor: 'rgba(250,204,21,0.6)' }} />
-                  <span className="text-sm font-black" style={{ color: '#facc15' }}>VS</span>
-                  <div className="h-px w-12" style={{ backgroundColor: 'rgba(250,204,21,0.6)' }} />
+                <div className="text-right">
+                  <p className="text-[8px] font-bold" style={{ color: '#1e56a0' }}>OFFICIAL MATCH PROGRAMME</p>
+                  <p className="text-[10px] font-black" style={{ color: '#1e56a0' }}>{programmeData?.programmePrice || '£1.50'}</p>
+                  <p className="text-[7px]" style={{ color: '#1e56a0' }}>SEASON 2024/2025</p>
                 </div>
+              </div>
 
-                <h2 className="text-xl font-black tracking-tight" style={{ color: '#ffffff', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
-                  {opposition.name.toUpperCase()}
-                </h2>
-                {opposition.nickname && (
-                  <p className="text-xs italic mt-1" style={{ color: 'rgba(250,204,21,0.9)' }}>
-                    "{opposition.nickname}"
-                  </p>
+              {/* Website */}
+              <div className="text-center -mt-0.5">
+                <p className="text-[7px] font-medium" style={{ color: '#1e56a0' }}>WWW.CWMBRANCLTIC.COM</p>
+              </div>
+
+              {/* Main Action Image */}
+              <div className="flex-1 mx-2 mt-1 relative overflow-hidden rounded-sm" style={{ minHeight: '45%' }}>
+                {programmeData?.coverImage ? (
+                  <Image
+                    src={programmeData.coverImage}
+                    alt="Match action"
+                    fill
+                    className="object-cover object-center"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: '#4a7c59' }}>
+                    {/* Placeholder pitch pattern */}
+                    <div className="text-center">
+                      <div className="w-20 h-20 mx-auto mb-2 opacity-50">
+                        <Image src="/images/club-logo.webp" alt="" width={80} height={80} className="object-contain" />
+                      </div>
+                      <p className="text-[10px] font-medium text-white/70">Action Photo</p>
+                    </div>
+                  </div>
                 )}
               </div>
 
-              {/* Footer */}
-              <div className="text-center p-3 rounded" style={{ backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
-                <p className="text-[10px] font-medium mb-0.5" style={{ color: 'rgba(255,255,255,0.8)' }}>
-                  {formatDate(date)}
-                </p>
-                <p className="text-2xl font-black" style={{ color: '#facc15' }}>
-                  {programmeData?.kickoff || '15:00'}
-                </p>
-                <p className="text-[9px]" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                  Avondale Motor Park Arena, Cwmbran
-                </p>
+              {/* Match Info Strip */}
+              <div className="mx-2 mt-1 p-2 rounded-sm flex items-center justify-between" style={{ backgroundColor: '#1e56a0' }}>
+                {/* Home Badge */}
+                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: '#fff' }}>
+                  <Image src="/images/club-logo.webp" alt="Cwmbran Celtic" width={40} height={40} className="object-contain w-full h-full p-0.5" />
+                </div>
+
+                {/* Match Details */}
+                <div className="flex-1 text-center px-2">
+                  <p className="text-[9px] font-bold text-white">CWMBRAN CELTIC v</p>
+                  <p className="text-[11px] font-black text-white">{opposition.name.toUpperCase()}</p>
+                  <p className="text-[7px] text-white/90 mt-0.5">
+                    {formatDate(date).toUpperCase()}, K.O. {programmeData?.kickoff || '15:00'}
+                  </p>
+                  <p className="text-[7px] text-white/80">AVONDALE MOTORPOINT ARENA</p>
+                </div>
+
+                {/* Away Badge */}
+                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#fff' }}>
+                  <span className="text-[8px] font-bold text-center" style={{ color: '#1e56a0' }}>
+                    {opposition.name.split(' ').map(w => w[0]).join('')}
+                  </span>
+                </div>
               </div>
 
-              {/* Price badge */}
-              <div className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#facc15' }}>
-                <span className="text-[10px] font-black" style={{ color: '#0a1628' }}>{programmeData?.programmePrice || 'FREE'}</span>
+              {/* Main Sponsor */}
+              <div className="mx-2 mt-1 p-2 text-center rounded-sm" style={{ backgroundColor: '#1e56a0' }}>
+                <p className="text-[14px] font-black italic text-white tracking-wide">AVONDALE</p>
+                <p className="text-[10px] font-bold" style={{ color: '#facc15' }}>MOTOR PARK</p>
+                <p className="text-[6px] text-white/80">THE UK'S VAN SUPERSTORE</p>
+              </div>
+
+              {/* Partner Logos Footer */}
+              <div className="flex items-center justify-between px-3 py-1.5" style={{ backgroundColor: '#0a1628' }}>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#333' }}>
+                    <span className="text-[5px] text-white font-bold">RHINO</span>
+                  </div>
+                  <div className="w-8 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#1e56a0' }}>
+                    <span className="text-[5px] text-white">Cofficology</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#c41e3a' }}>
+                    <span className="text-[5px] text-white font-bold">EnerSys</span>
+                  </div>
+                  <div className="w-8 h-4 rounded flex items-center justify-center" style={{ backgroundColor: '#333' }}>
+                    <span className="text-[5px] text-white">Endurance</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
