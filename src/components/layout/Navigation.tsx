@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
     children: [
       { label: "Men's First Team", href: '/teams/mens' },
       { label: "Women's Team", href: '/teams/ladies' },
+      { label: "Walking Football", href: '/teams/walking' },
     ],
   },
   {
