@@ -1,10 +1,11 @@
-import NextMatchHero from '@/components/home/NextMatchHero';
+import HeroSection from '@/components/home/HeroSection';
 import TeamCard from '@/components/home/TeamCard';
 import LatestResult from '@/components/home/LatestResult';
 import UpcomingFixtures from '@/components/home/UpcomingFixtures';
 import LatestNews from '@/components/home/LatestNews';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import Link from 'next/link';
 
 import {
@@ -40,13 +41,18 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero Section - Next Home Game (either team) */}
-      <NextMatchHero fixture={nextHomeFixture} admission={clubInfo.admission} />
+      {/* Hero Section - Dramatic Next Match Display */}
+      <HeroSection fixture={nextHomeFixture} />
 
       {/* Both Teams - Equal Presence */}
-      <section className="py-12 md:py-16">
+      <section className="py-16 md:py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <h2 className="section-title text-center">Our Teams</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-celtic-dark dark:text-white mb-4">Our Teams</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Follow both our Men&apos;s and Ladies teams competing in the Welsh football pyramid
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Men's Team */}
             <TeamCard
@@ -72,18 +78,23 @@ export default async function HomePage() {
       </section>
 
       {/* Latest Result & Upcoming Fixtures */}
-      <section className="py-12 md:py-16 bg-gray-100">
+      <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Latest Result */}
             <div>
-              <h2 className="section-title">Latest Result</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark dark:text-white mb-6">Latest Result</h2>
               <LatestResult result={latestResult} />
             </div>
 
             {/* Upcoming Fixtures - All Teams */}
             <div>
-              <h2 className="section-title">Upcoming Fixtures</h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark dark:text-white">Upcoming Fixtures</h2>
+                <Link href="/fixtures" className="text-celtic-blue dark:text-celtic-yellow font-semibold text-sm hover:underline">
+                  View All →
+                </Link>
+              </div>
               <UpcomingFixtures fixtures={upcomingFixtures} />
             </div>
           </div>
@@ -94,50 +105,71 @@ export default async function HomePage() {
       <LatestNews articles={getLatestNews(3)} />
 
       {/* Visit Us CTA */}
-      <section className="py-12 md:py-16 bg-white">
+      <section className="py-16 md:py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="section-title">Visit Us</h2>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-celtic-dark dark:text-white mb-4">Visit Us</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
               Come and support Cwmbran Celtic at the {clubInfo.ground.name}.
               We welcome all supporters with great facilities including our clubhouse bar
               and tea bar.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-              <div className="p-6 bg-gray-50 rounded-xl">
-                <div className="text-4xl mb-3">📍</div>
-                <h3 className="font-semibold mb-2">Location</h3>
-                <p className="text-sm text-gray-600">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+              <div className="p-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+                <div className="w-14 h-14 bg-celtic-blue/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-lg mb-2 text-celtic-dark dark:text-white">Location</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {clubInfo.ground.address.street}<br />
                   {clubInfo.ground.address.town}<br />
                   {clubInfo.ground.address.postcode}
                 </p>
               </div>
-              <div className="p-6 bg-gray-50 rounded-xl">
-                <div className="text-4xl mb-3">🎟️</div>
-                <h3 className="font-semibold mb-2">Admission</h3>
-                <p className="text-sm text-gray-600">
+              <div className="p-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+                <div className="w-14 h-14 bg-celtic-blue/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-lg mb-2 text-celtic-dark dark:text-white">Admission</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Adults: £{clubInfo.admission.adults}<br />
                   Concessions: £{clubInfo.admission.concessions}<br />
                   Under 16s: FREE
                 </p>
               </div>
-              <div className="p-6 bg-gray-50 rounded-xl">
-                <div className="text-4xl mb-3">🍺</div>
-                <h3 className="font-semibold mb-2">Facilities</h3>
-                <p className="text-sm text-gray-600">
+              <div className="p-8 bg-gray-50 dark:bg-gray-800 rounded-2xl">
+                <div className="w-14 h-14 bg-celtic-blue/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <h3 className="font-bold text-lg mb-2 text-celtic-dark dark:text-white">Facilities</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Licensed clubhouse bar<br />
                   Tea bar with hot food<br />
                   Free parking
                 </p>
               </div>
             </div>
-            <Link href="/visit" className="btn-primary">
-              Plan Your Visit
-            </Link>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/visit" className="btn-primary">
+                Plan Your Visit
+              </Link>
+              <Link href="/tickets" className="btn-tickets">
+                Buy Tickets
+              </Link>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Celtic Bond CTA */}
+      <CelticBondBanner variant="full" />
 
       {/* Newsletter Signup */}
       <NewsletterSignup />

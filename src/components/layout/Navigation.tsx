@@ -2,31 +2,171 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
 
 interface NavItem {
   label: string;
   href: string;
-  external?: boolean;
+  children?: NavItem[];
 }
 
 const navItems: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'News', href: '/news' },
   { label: 'Fixtures', href: '/fixtures' },
-  { label: 'Teams', href: '/teams' },
-  { label: 'Tickets', href: '/tickets' },
-  { label: 'Events', href: '/events' },
+  {
+    label: 'Teams',
+    href: '/teams',
+    children: [
+      { label: "Men's First Team", href: '/teams/mens' },
+      { label: 'Ladies', href: '/teams/ladies' },
+    ],
+  },
+  {
+    label: 'Match Day',
+    href: '/tickets',
+    children: [
+      { label: 'Buy Tickets', href: '/tickets' },
+      { label: 'Visit Us', href: '/visit' },
+      { label: 'Events', href: '/events' },
+    ],
+  },
+  {
+    label: 'Club',
+    href: '/club',
+    children: [
+      { label: 'About Us', href: '/club' },
+      { label: 'Club History', href: '/club/history' },
+      { label: 'Community', href: '/community' },
+      { label: 'Sponsors', href: '/sponsors' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
   { label: 'Shop', href: '/shop' },
-  { label: 'Visit Us', href: '/visit' },
-  { label: 'The Club', href: '/club' },
-  { label: 'Celtic Bond', href: '/celtic-bond' },
-  { label: 'Celtic Card', href: '/celtic-card' },
-  { label: 'Contact', href: '/contact' },
+  {
+    label: 'Supporters',
+    href: '/celtic-bond',
+    children: [
+      { label: 'Celtic Bond', href: '/celtic-bond' },
+      { label: 'Celtic Card', href: '/celtic-card' },
+      { label: 'Gallery', href: '/gallery' },
+    ],
+  },
 ];
 
 interface NavigationProps {
   mobile?: boolean;
   onItemClick?: () => void;
+}
+
+function DropdownMenu({ item, mobile, onItemClick }: { item: NavItem; mobile?: boolean; onItemClick?: () => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
+
+  const isActive = pathname === item.href ||
+    (item.href !== '/' && pathname?.startsWith(item.href)) ||
+    item.children?.some(child => pathname === child.href || pathname?.startsWith(child.href));
+
+  const handleMouseEnter = () => {
+    if (!mobile) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setIsOpen(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!mobile) {
+      timeoutRef.current = setTimeout(() => setIsOpen(false), 150);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  if (mobile) {
+    return (
+      <div className="space-y-1">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`w-full flex items-center justify-between py-2 px-4 rounded-lg ${
+            isActive ? 'bg-celtic-blue-dark text-celtic-yellow' : 'text-white hover:bg-celtic-blue-dark'
+          }`}
+        >
+          {item.label}
+          <svg
+            className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {isOpen && item.children && (
+          <div className="pl-4 space-y-1">
+            {item.children.map((child) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                className={`block py-2 px-4 rounded-lg text-sm ${
+                  pathname === child.href
+                    ? 'bg-celtic-blue-dark text-celtic-yellow'
+                    : 'text-white/80 hover:bg-celtic-blue-dark hover:text-white'
+                }`}
+                onClick={onItemClick}
+              >
+                {child.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <Link
+        href={item.href}
+        className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors duration-200 ${
+          isActive
+            ? 'bg-celtic-blue-dark text-celtic-yellow'
+            : 'text-white hover:bg-celtic-blue-dark hover:text-celtic-yellow'
+        }`}
+      >
+        {item.label}
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </Link>
+
+      {isOpen && item.children && (
+        <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
+          {item.children.map((child) => (
+            <Link
+              key={child.href}
+              href={child.href}
+              className={`block px-4 py-2 text-sm transition-colors ${
+                pathname === child.href
+                  ? 'bg-celtic-blue/10 text-celtic-blue dark:text-celtic-yellow'
+                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`}
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function Navigation({ mobile = false, onItemClick }: NavigationProps) {
@@ -42,36 +182,19 @@ export default function Navigation({ mobile = false, onItemClick }: NavigationPr
   return (
     <nav className={mobile ? 'space-y-1' : 'flex items-center space-x-1'}>
       {navItems.map((item) => {
-        const isActive = pathname === item.href ||
-          (item.href !== '/' && pathname?.startsWith(item.href));
-
-        if (item.external) {
+        if (item.children) {
           return (
-            <a
+            <DropdownMenu
               key={item.href}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${baseClasses} ${inactiveClasses} inline-flex items-center`}
-              onClick={onItemClick}
-            >
-              {item.label}
-              <svg
-                className="w-3 h-3 ml-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-            </a>
+              item={item}
+              mobile={mobile}
+              onItemClick={onItemClick}
+            />
           );
         }
+
+        const isActive = pathname === item.href ||
+          (item.href !== '/' && pathname?.startsWith(item.href));
 
         return (
           <Link
@@ -84,6 +207,18 @@ export default function Navigation({ mobile = false, onItemClick }: NavigationPr
           </Link>
         );
       })}
+
+      {/* Tickets Button - Always visible */}
+      <Link
+        href="/tickets"
+        className={`${mobile ? 'block mt-4' : 'ml-2'} bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-700 transition-colors flex items-center gap-2`}
+        onClick={onItemClick}
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+        </svg>
+        Tickets
+      </Link>
     </nav>
   );
 }
