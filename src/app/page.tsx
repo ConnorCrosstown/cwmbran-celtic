@@ -5,6 +5,7 @@ import UpcomingFixtures from '@/components/home/UpcomingFixtures';
 import LatestNews from '@/components/home/LatestNews';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import Link from 'next/link';
 
 import {
@@ -94,23 +95,7 @@ export default async function HomePage() {
       <LatestNews articles={getLatestNews(3)} />
 
       {/* Celtic Bond CTA */}
-      <section className="bg-celtic-yellow py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark mb-2">
-                Support the Club with Celtic Bond
-              </h2>
-              <p className="text-celtic-dark/80">
-                Monthly prize draw supporting Cwmbran Celtic AFC. Win cash prizes while backing your club!
-              </p>
-            </div>
-            <Link href="/celtic-bond" className="btn-primary whitespace-nowrap">
-              Learn More
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CelticBondBanner />
 
       {/* Visit Us CTA */}
       <section className="py-12 md:py-16 bg-white">

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import LeagueTable from '@/components/tables/LeagueTable';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import { getLadiesLeagueTable } from '@/lib/comet';
 
 export const metadata: Metadata = {
@@ -114,6 +115,9 @@ export default async function LadiesTeamPage() {
           </Link>
         </div>
       </section>
+
+      {/* Celtic Bond Banner */}
+      <CelticBondBanner />
     </>
   );
 }

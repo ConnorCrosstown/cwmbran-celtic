@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import PlayerCard from '@/components/squad/PlayerCard';
 import LeagueTable from '@/components/tables/LeagueTable';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import { getMensSquad, getPlayerStats, getMensLeagueTable, getLeaguePosition } from '@/lib/comet';
 import { Player, PlayerStats } from '@/types';
 
@@ -166,6 +167,9 @@ export default async function MensTeamPage() {
           </div>
         </div>
       </section>
+
+      {/* Celtic Bond Banner */}
+      <CelticBondBanner />
     </>
   );
 }

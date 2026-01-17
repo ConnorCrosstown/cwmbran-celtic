@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import FixtureCard from '@/components/fixtures/FixtureCard';
 import ResultCard from '@/components/fixtures/ResultCard';
 import LeagueTable from '@/components/tables/LeagueTable';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
 import { getFixtures, getResults, getMensLeagueTable, getLadiesLeagueTable } from '@/lib/comet';
 
 export const metadata: Metadata = {
@@ -162,8 +163,15 @@ export default async function FixturesPage() {
         </div>
       </section>
 
-      {/* Admission Info */}
+      {/* Celtic Bond Banner */}
       <section className="py-8 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <CelticBondBanner variant="compact" />
+        </div>
+      </section>
+
+      {/* Admission Info */}
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="font-bold text-lg mb-4">Match Day Admission</h3>
