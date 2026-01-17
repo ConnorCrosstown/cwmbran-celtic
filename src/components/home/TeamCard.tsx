@@ -22,9 +22,9 @@ export default function TeamCard({
   return (
     <div className="card overflow-hidden">
       {/* Header */}
-      <div className="bg-celtic-blue text-white p-4">
-        <h3 className="font-bold text-lg">{teamName}</h3>
-        <p className="text-sm text-celtic-yellow">{league}</p>
+      <div className="bg-celtic-blue p-4">
+        <h3 className="font-bold text-lg text-white">{teamName}</h3>
+        <p className="text-sm text-white/80">{league}</p>
       </div>
 
       {/* League Position */}
