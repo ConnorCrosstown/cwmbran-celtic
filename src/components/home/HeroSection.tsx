@@ -74,11 +74,11 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                 {isHome ? 'HOME' : 'AWAY'}
               </div>
               <div className="text-center lg:text-left">
-                <p className="text-gray-300 text-xs uppercase tracking-wide mb-1">Next {isHome ? 'Home' : 'Away'} Game</p>
-                <p className="font-bold text-lg md:text-xl text-white">
-                  Cwmbran Celtic <span className="text-gray-300 font-normal">vs</span> {opponent}
+                <p className="text-xs uppercase tracking-wide mb-1" style={{ color: '#d1d5db' }}>Next {isHome ? 'Home' : 'Away'} Game</p>
+                <p className="font-bold text-lg md:text-xl" style={{ color: '#ffffff' }}>
+                  Cwmbran Celtic <span className="font-normal" style={{ color: '#d1d5db' }}>vs</span> {opponent}
                 </p>
-                <p className="text-gray-200 text-sm">
+                <p className="text-sm" style={{ color: '#e5e7eb' }}>
                   {formatMatchDateLong(fixture.date)} • {fixture.time} • {fixture.venue}
                 </p>
               </div>
@@ -89,30 +89,30 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
               <div className="flex items-center gap-3">
                 <div className="text-center">
                   <div className="bg-white/10 rounded px-3 py-2 min-w-[50px]">
-                    <span className="text-xl md:text-2xl font-bold text-white">{timeLeft.days}</span>
+                    <span className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>{timeLeft.days}</span>
                   </div>
-                  <span className="text-xs text-gray-300">Days</span>
+                  <span className="text-xs" style={{ color: '#d1d5db' }}>Days</span>
                 </div>
-                <span className="text-gray-400">:</span>
+                <span style={{ color: '#9ca3af' }}>:</span>
                 <div className="text-center">
                   <div className="bg-white/10 rounded px-3 py-2 min-w-[50px]">
-                    <span className="text-xl md:text-2xl font-bold text-white">{timeLeft.hours.toString().padStart(2, '0')}</span>
+                    <span className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>{timeLeft.hours.toString().padStart(2, '0')}</span>
                   </div>
-                  <span className="text-xs text-gray-300">Hrs</span>
+                  <span className="text-xs" style={{ color: '#d1d5db' }}>Hrs</span>
                 </div>
-                <span className="text-gray-400">:</span>
+                <span style={{ color: '#9ca3af' }}>:</span>
                 <div className="text-center">
                   <div className="bg-white/10 rounded px-3 py-2 min-w-[50px]">
-                    <span className="text-xl md:text-2xl font-bold text-white">{timeLeft.minutes.toString().padStart(2, '0')}</span>
+                    <span className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>{timeLeft.minutes.toString().padStart(2, '0')}</span>
                   </div>
-                  <span className="text-xs text-gray-300">Min</span>
+                  <span className="text-xs" style={{ color: '#d1d5db' }}>Min</span>
                 </div>
-                <span className="text-gray-400 hidden sm:block">:</span>
+                <span className="hidden sm:block" style={{ color: '#9ca3af' }}>:</span>
                 <div className="text-center hidden sm:block">
                   <div className="bg-white/10 rounded px-3 py-2 min-w-[50px]">
-                    <span className="text-xl md:text-2xl font-bold text-white">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+                    <span className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>{timeLeft.seconds.toString().padStart(2, '0')}</span>
                   </div>
-                  <span className="text-xs text-gray-300">Sec</span>
+                  <span className="text-xs" style={{ color: '#d1d5db' }}>Sec</span>
                 </div>
               </div>
             )}

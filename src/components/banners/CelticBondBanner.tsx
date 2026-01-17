@@ -51,17 +51,17 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-4xl mb-4 block">🎟️</span>
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: '#ffffff' }}>
             Join the Celtic Bond
           </h2>
-          <p className="text-lg text-gray-200 mb-6 max-w-2xl mx-auto">
+          <p className="text-lg mb-6 max-w-2xl mx-auto" style={{ color: '#e5e7eb' }}>
             Support Cwmbran Celtic AFC and be in with a chance to win cash prizes every month.
             Just £10 per month helps the club thrive!
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-3">
               <span className="text-3xl font-bold text-celtic-yellow">£10</span>
-              <span className="text-white">/month</span>
+              <span style={{ color: '#ffffff' }}>/month</span>
             </div>
             <Link
               href="/celtic-bond"
@@ -70,7 +70,7 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
               Join Celtic Bond
             </Link>
           </div>
-          <p className="text-sm text-gray-300 mt-4">
+          <p className="text-sm mt-4" style={{ color: '#d1d5db' }}>
             Monthly prize draws with cash prizes up to £100!
           </p>
         </div>

@@ -23,8 +23,8 @@ export default function TeamCard({
     <div className="card overflow-hidden">
       {/* Header */}
       <div className="bg-celtic-blue p-4">
-        <h3 className="font-bold text-lg text-white">{teamName}</h3>
-        <p className="text-sm text-gray-200">{league}</p>
+        <h3 className="font-bold text-lg" style={{ color: '#ffffff' }}>{teamName}</h3>
+        <p className="text-sm" style={{ color: '#e5e7eb' }}>{league}</p>
       </div>
 
       {/* League Position */}
