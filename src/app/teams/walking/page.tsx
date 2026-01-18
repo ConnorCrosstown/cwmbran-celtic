@@ -11,7 +11,7 @@ export default function WalkingFootballPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-celtic-green via-celtic-green-dark to-celtic-green overflow-hidden py-4 md:py-6">
+      <section className="relative bg-gradient-to-br from-celtic-blue-dark via-celtic-blue to-celtic-blue-dark overflow-hidden py-4 md:py-6">
         {/* Decorative elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-celtic-yellow blur-3xl"></div>
@@ -24,22 +24,22 @@ export default function WalkingFootballPage() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-white">Walking Football</h1>
-                <p className="text-xs text-gray-200">Football for all ages and abilities</p>
+                <p className="text-xs text-celtic-yellow">Football for all ages and abilities</p>
               </div>
 
               {/* Info badges */}
               <div className="flex items-center gap-2 text-xs">
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
                   <p className="text-base font-bold text-celtic-yellow">50+</p>
-                  <p className="text-[10px]" style={{ color: '#d1d5db' }}>Age</p>
+                  <p className="text-[10px] text-white">Age</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
                   <p className="text-base font-bold text-white">All</p>
-                  <p className="text-[10px]" style={{ color: '#d1d5db' }}>Levels</p>
+                  <p className="text-[10px] text-white">Levels</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
                   <p className="text-base font-bold text-white">Weekly</p>
-                  <p className="text-[10px]" style={{ color: '#d1d5db' }}>Sessions</p>
+                  <p className="text-[10px] text-white">Sessions</p>
                 </div>
               </div>
             </div>
@@ -67,8 +67,8 @@ export default function WalkingFootballPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="card p-4">
-                <div className="w-10 h-10 bg-celtic-green/10 rounded-full flex items-center justify-center mb-2">
-                  <svg className="w-5 h-5 text-celtic-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 bg-celtic-blue/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </div>
@@ -78,8 +78,8 @@ export default function WalkingFootballPage() {
                 </p>
               </div>
               <div className="card p-4">
-                <div className="w-10 h-10 bg-celtic-green/10 rounded-full flex items-center justify-center mb-2">
-                  <svg className="w-5 h-5 text-celtic-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 bg-celtic-blue/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
@@ -89,8 +89,8 @@ export default function WalkingFootballPage() {
                 </p>
               </div>
               <div className="card p-4">
-                <div className="w-10 h-10 bg-celtic-green/10 rounded-full flex items-center justify-center mb-2">
-                  <svg className="w-5 h-5 text-celtic-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 bg-celtic-blue/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
@@ -112,19 +112,19 @@ export default function WalkingFootballPage() {
             <div className="card p-4">
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-celtic-green text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
+                  <span className="w-5 h-5 bg-celtic-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>
                   <span><strong>No running</strong> - Players must walk at all times. One foot must always be in contact with the ground.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-celtic-green text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
+                  <span className="w-5 h-5 bg-celtic-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>
                   <span><strong>No contact</strong> - Walking football is a non-contact sport. No slide tackles or physical challenges.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-celtic-green text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
+                  <span className="w-5 h-5 bg-celtic-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>
                   <span><strong>Below head height</strong> - The ball must stay below head height at all times.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-celtic-green text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
+                  <span className="w-5 h-5 bg-celtic-blue text-white rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>
                   <span><strong>Smaller teams</strong> - Games are typically played with 5-7 players per side on a smaller pitch.</span>
                 </li>
               </ul>
@@ -154,7 +154,7 @@ export default function WalkingFootballPage() {
                   New players are always welcome! Just turn up to a session or get in touch beforehand.
                   We&apos;ll make sure you feel welcome and explain everything you need to know.
                 </p>
-                <Link href="/contact" className="text-celtic-green text-xs font-semibold hover:underline">
+                <Link href="/contact" className="text-celtic-blue text-xs font-semibold hover:underline">
                   Get in touch &rarr;
                 </Link>
               </div>
@@ -164,7 +164,7 @@ export default function WalkingFootballPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-6 md:py-8 bg-celtic-green">
+      <section className="py-6 md:py-8 bg-celtic-blue">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-lg md:text-xl font-bold text-white mb-2">
             Ready to Get Started?
@@ -173,7 +173,7 @@ export default function WalkingFootballPage() {
             Whether you&apos;re returning to football after years away or trying it for the first time,
             our walking football sessions are the perfect way to get involved.
           </p>
-          <Link href="/contact" className="bg-white text-celtic-green px-4 py-2 rounded font-semibold text-sm hover:bg-gray-100 transition-colors inline-block">
+          <Link href="/contact" className="bg-celtic-yellow text-celtic-dark px-4 py-2 rounded font-semibold text-sm hover:bg-celtic-yellow-light transition-colors inline-block">
             Contact Us to Join
           </Link>
         </div>
