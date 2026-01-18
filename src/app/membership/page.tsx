@@ -150,7 +150,7 @@ export default function MembershipPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display uppercase text-white mb-4">
               Join the Family
             </h1>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-white mb-8">
               Become part of the Celtic community with a season ticket or membership
             </p>
             <div className="flex flex-wrap gap-4">
@@ -325,7 +325,7 @@ export default function MembershipPage() {
           <h2 className="text-3xl md:text-4xl font-display uppercase text-white mb-4">
             Need Help Deciding?
           </h2>
-          <p className="text-white/80 max-w-2xl mx-auto mb-8">
+          <p className="text-white max-w-2xl mx-auto mb-8">
             Contact us and we&apos;ll help you find the perfect option for you and your family.
           </p>
           <div className="flex flex-wrap justify-center gap-4">

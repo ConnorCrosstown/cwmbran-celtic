@@ -1,6 +1,22 @@
 import Link from 'next/link';
 import { clubInfo, sponsors } from '@/data/mock-data';
 
+function PepperShaker() {
+  return (
+    <svg width="10" height="16" viewBox="0 0 40 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+      <rect x="12" y="0" width="16" height="10" rx="3" fill="#e5e5e5" />
+      <circle cx="15" cy="5" r="1.5" fill="#999" />
+      <circle cx="20" cy="5" r="1.5" fill="#999" />
+      <circle cx="25" cy="5" r="1.5" fill="#999" />
+      <rect x="14" y="10" width="12" height="6" fill="#d4d4d4" />
+      <path d="M10 16 L12 54 L28 54 L30 16 Z" fill="#f5f5f5" />
+      <path d="M12 16 L13 52 L27 52 L28 16 Z" fill="#ffffff" />
+      <rect x="14" y="28" width="12" height="16" rx="1" fill="#1a1a1a" />
+      <text x="20" y="39" textAnchor="middle" fontSize="7" fontWeight="bold" fill="white">P</text>
+    </svg>
+  );
+}
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -53,7 +69,7 @@ export default function Footer() {
                 className="w-14 h-14"
               />
               <div>
-                <div className="font-bold text-xl">Cwmbran Celtic AFC</div>
+                <div className="font-bold text-xl text-white">Cwmbran Celtic AFC</div>
                 <div className="text-sm text-celtic-yellow font-medium">Est. 1925</div>
               </div>
             </div>
@@ -241,23 +257,52 @@ export default function Footer() {
                 BUY TICKETS
               </Link>
             </div>
+
+            {/* OXO Easter Egg */}
+            <Link href="/ban-the-bovril" className="block mt-4 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors group">
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-white/60">Tea Hut Tip:</span>
+                <span className="font-black" style={{ color: '#C41E3A' }}>OXO</span>
+                <span className="text-white/60 flex items-center gap-1">+ <PepperShaker /></span>
+                <span className="text-white/40 group-hover:text-celtic-yellow transition-colors">→</span>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Sponsors Strip */}
+      {/* Sponsors Strip - Tiered Display */}
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-8">
-          <p className="text-white text-sm font-medium text-center mb-6">Official Partners</p>
-          <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
-            {sponsors.partners.map((sponsor, index) => (
-              sponsor.logo ? (
+          {/* Title Sponsor */}
+          <div className="text-center mb-8">
+            <p className="text-celtic-yellow text-xs uppercase tracking-wider mb-3">Stadium Naming Rights Partner</p>
+            <a
+              href={sponsors.titleSponsor.url || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-white rounded-xl p-4 hover:scale-105 transition-transform"
+            >
+              <img
+                src={sponsors.titleSponsor.logo}
+                alt={sponsors.titleSponsor.name}
+                className="h-14 md:h-16 w-auto"
+              />
+            </a>
+          </div>
+
+          {/* Official Partners */}
+          <div className="mb-6">
+            <p className="text-white text-xs uppercase tracking-wider text-center mb-4">Official Partners</p>
+            <div className="flex items-center justify-center gap-6 md:gap-10 flex-wrap">
+              {sponsors.officialPartners.map((sponsor, index) => (
                 <a
                   key={index}
                   href={sponsor.url || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={sponsor.url?.startsWith('http') ? '_blank' : undefined}
+                  rel={sponsor.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="block bg-white rounded-lg p-3 hover:scale-105 transition-transform"
+                  title={sponsor.description}
                 >
                   <img
                     src={sponsor.logo}
@@ -265,12 +310,39 @@ export default function Footer() {
                     className="h-10 md:h-12 w-auto"
                   />
                 </a>
-              ) : null
-            ))}
+              ))}
+            </div>
           </div>
-          <div className="text-center mt-6">
+
+          {/* Club Partners */}
+          <div>
+            <p className="text-gray-400 text-xs uppercase tracking-wider text-center mb-4">Club Partners</p>
+            <div className="flex items-center justify-center gap-6 md:gap-8 flex-wrap">
+              {sponsors.clubPartners.map((sponsor, index) => (
+                <a
+                  key={index}
+                  href={sponsor.url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-white/90 rounded-lg p-2 hover:scale-105 transition-transform"
+                >
+                  <img
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    className="h-8 md:h-10 w-auto"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/sponsors" className="text-celtic-yellow text-sm hover:underline">
               View all sponsors →
+            </Link>
+            <span className="hidden sm:inline text-white/30">|</span>
+            <Link href="/sponsors/opportunities" className="text-white text-sm hover:text-celtic-yellow transition-colors">
+              Become a sponsor
             </Link>
           </div>
         </div>

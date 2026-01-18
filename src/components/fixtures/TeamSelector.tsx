@@ -39,9 +39,9 @@ export default function TeamSelector() {
             <button
               key={team.id}
               onClick={() => scrollToTeam(team.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
                 team.color === 'blue'
-                  ? 'bg-celtic-blue/10 text-celtic-blue hover:bg-celtic-blue hover:text-white'
+                  ? 'bg-celtic-blue/10 text-celtic-blue hover:bg-celtic-blue hover:!text-white'
                   : 'bg-celtic-yellow/20 text-celtic-dark hover:bg-celtic-yellow'
               }`}
             >

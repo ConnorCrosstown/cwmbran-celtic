@@ -98,7 +98,7 @@ export default function TeamCard({
         </Link>
         <Link
           href="/fixtures"
-          className="flex-1 text-center py-2.5 border-2 border-celtic-blue rounded-lg font-semibold hover:bg-celtic-blue hover:text-white transition-colors text-sm text-celtic-blue"
+          className="btn-outline flex-1 text-center text-sm"
         >
           Fixtures
         </Link>

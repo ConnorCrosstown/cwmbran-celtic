@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import NewKitBanner from '@/components/banners/NewKitBanner';
+import OxoStrip from '@/components/banners/OxoStrip';
 
 export const metadata: Metadata = {
   title: 'Shop',
@@ -42,13 +45,70 @@ const categories: ProductCategory[] = [
 export default function ShopPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-celtic-blue text-white py-12 md:py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Official Shop</h1>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
-            Official Cwmbran Celtic AFC merchandise and replica kits
-          </p>
+      {/* New Kit Banner */}
+      <NewKitBanner />
+
+      {/* Hero with Kit */}
+      <section className="bg-gradient-to-br from-celtic-yellow via-celtic-yellow to-yellow-300 py-12 md:py-16 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center gap-8">
+            {/* Kit Image */}
+            <div className="lg:w-1/2">
+              <div className="relative aspect-square max-w-md mx-auto">
+                <Image
+                  src="/images/kit-2025-26.jpg"
+                  alt="Cwmbran Celtic 2025-26 Home Kit"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="lg:w-1/2 text-center lg:text-left">
+              <span className="inline-block bg-celtic-blue text-white text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-4">
+                Now Available
+              </span>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-display uppercase text-celtic-dark mb-4">
+                Official Shop
+              </h1>
+              <p className="text-celtic-dark/80 text-lg mb-6">
+                Get the new 2025/26 home kit featuring our shirt sponsor OXO.
+                Official replica kits, training wear, and supporter merchandise.
+              </p>
+
+              {/* Sponsor Badges */}
+              <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-6">
+                <div className="bg-white rounded-lg px-4 py-3 shadow-md">
+                  <span className="text-xs text-gray-500 block">Kit Supplier</span>
+                  <span className="text-2xl font-bold text-black tracking-tight">adidas</span>
+                </div>
+                <div className="bg-white rounded-lg px-4 py-2 shadow-md">
+                  <span className="text-xs text-gray-500 block">Shirt Sponsor</span>
+                  <Image
+                    src="/images/sponsors/oxo.png"
+                    alt="OXO"
+                    width={60}
+                    height={30}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+
+              <a
+                href="https://rhino.direct/pages/cwmbran-celtic-club-shop"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-celtic-blue text-white px-6 py-3 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Buy Home Kit
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -131,10 +191,15 @@ export default function ShopPage() {
                     </svg>
                   </a>
                 </div>
-                <div className="bg-white rounded-xl p-8 text-center">
-                  <div className="text-6xl mb-4">🦏</div>
-                  <p className="font-bold text-xl text-celtic-blue">Rhino</p>
-                  <p className="text-gray-500">Official Kit Partner</p>
+                <div className="bg-white rounded-xl p-4 text-center">
+                  <Image
+                    src="/images/sponsors/rhino-global.webp"
+                    alt="Rhino - Official Kit Partner"
+                    width={150}
+                    height={60}
+                    className="mx-auto mb-3"
+                  />
+                  <p className="text-gray-500 text-sm">Official Kit Partner</p>
                 </div>
               </div>
             </div>

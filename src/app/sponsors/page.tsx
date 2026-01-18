@@ -3,6 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { sponsors } from '@/data/mock-data';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import OxoStrip from '@/components/banners/OxoStrip';
+import SponsorInquiryForm from '@/components/forms/SponsorInquiryForm';
 
 export const metadata: Metadata = {
   title: 'Our Sponsors',
@@ -12,6 +14,9 @@ export const metadata: Metadata = {
 export default function SponsorsPage() {
   return (
     <>
+      {/* Celtic Bond Banner - Support the club */}
+      <CelticBondBanner variant="topbar" />
+
       {/* Hero */}
       <section className="bg-celtic-blue text-white py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
@@ -159,21 +164,33 @@ export default function SponsorsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               <div className="bg-white/10 rounded-xl p-6 text-center">
-                <div className="text-4xl mb-4">👕</div>
+                <div className="w-12 h-12 mx-auto mb-4 bg-celtic-yellow/20 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                  </svg>
+                </div>
                 <h3 className="font-bold text-lg mb-2">Kit Sponsorship</h3>
                 <p className="text-sm text-gray-300">
                   Have your brand on our match day kit worn by players throughout the season
                 </p>
               </div>
               <div className="bg-white/10 rounded-xl p-6 text-center">
-                <div className="text-4xl mb-4">📋</div>
+                <div className="w-12 h-12 mx-auto mb-4 bg-celtic-yellow/20 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                  </svg>
+                </div>
                 <h3 className="font-bold text-lg mb-2">Match Sponsorship</h3>
                 <p className="text-sm text-gray-300">
                   Sponsor an individual match day with hospitality and programme advertising
                 </p>
               </div>
               <Link href="/sponsors/boards" className="bg-white/10 rounded-xl p-6 text-center block hover:bg-white/20 transition-colors">
-                <div className="text-4xl mb-4">🎯</div>
+                <div className="w-12 h-12 mx-auto mb-4 bg-celtic-yellow/20 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                  </svg>
+                </div>
                 <h3 className="font-bold text-lg mb-2">Pitch Side Boards</h3>
                 <p className="text-sm text-gray-300">
                   Promote your business with advertising boards visible throughout matches
@@ -241,19 +258,18 @@ export default function SponsorsPage() {
         </div>
       </section>
 
-      {/* Contact CTA */}
-      <section className="py-12 md:py-16 bg-celtic-yellow">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark mb-4">
-            Interested in Sponsorship?
-          </h2>
-          <p className="text-celtic-dark/80 mb-6 max-w-xl mx-auto">
-            We&apos;d love to discuss how we can work together. Get in touch to find out
-            more about our sponsorship packages.
-          </p>
-          <Link href="/contact" className="btn-primary">
-            Contact Us
-          </Link>
+      {/* Sponsor Inquiry Form */}
+      <section id="inquiry" className="py-12 md:py-16 bg-gray-100 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark text-center mb-2">
+              Interested in Sponsorship?
+            </h2>
+            <p className="text-center text-gray-600 mb-8">
+              Fill out the form below and our commercial team will be in touch
+            </p>
+            <SponsorInquiryForm />
+          </div>
         </div>
       </section>
 

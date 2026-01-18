@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import GoldenTicketBanner from '@/components/banners/GoldenTicketBanner';
+import SeasonTicketBanner from '@/components/banners/SeasonTicketBanner';
 
 export const metadata: Metadata = {
   title: 'Our Teams',
@@ -54,6 +56,9 @@ const teams = [
 export default function TeamsPage() {
   return (
     <>
+      {/* Season Tickets Banner */}
+      <SeasonTicketBanner variant="topbar" />
+
       {/* Hero */}
       <section className="bg-celtic-blue py-4 md:py-6">
         <div className="container mx-auto px-4 text-center">

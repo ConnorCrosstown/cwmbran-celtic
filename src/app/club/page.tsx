@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import GiftTicketBanner from '@/components/banners/GiftTicketBanner';
 
 export const metadata: Metadata = {
   title: 'The Club',
@@ -52,6 +54,9 @@ const sections = [
 export default function ClubPage() {
   return (
     <>
+      {/* Celtic Bond Banner */}
+      <CelticBondBanner variant="topbar" />
+
       {/* Hero */}
       <section className="bg-celtic-blue text-white py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">

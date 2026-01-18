@@ -14,26 +14,38 @@ export const clubHistory: HistoryEvent[] = [
   {
     year: 1925,
     title: "Club Founded as CYMS",
-    description: "Cwmbran Celtic AFC was founded as CYMS (Catholic Young Men's Society), one of the oldest football clubs in the Torfaen area.",
+    description: "Cwmbran Celtic AFC was founded as CYMS (Catholic Young Men's Society), one of the oldest football clubs in the Torfaen area. The club began playing in the Newport & District League.",
     type: "founding"
+  },
+  {
+    year: 1926,
+    title: "First League Title",
+    description: "In their debut season, CYMS won the Newport & District League Division 2 Section A title.",
+    type: "achievement"
+  },
+  {
+    year: 1930,
+    title: "Gwent Church League Era",
+    description: "The club moved to the Gwent Church League, where they competed until 1939.",
+    type: "milestone"
   },
   {
     year: 1949,
     title: "Post-War Revival",
-    description: "The club reformed after World War II and joined the local league structure.",
+    description: "The club reformed after World War II and returned to the Newport & District League.",
     type: "milestone"
+  },
+  {
+    year: 1951,
+    title: "Premier Division Champions",
+    description: "Celtic won the Newport & District League Premier Division title in the 1950-51 season.",
+    type: "achievement"
   },
   {
     year: 1960,
     title: "Became Cwmbran Catholics",
-    description: "The club was renamed from CYMS to Cwmbran Catholics, reflecting the club's continued community ties.",
+    description: "After a period of running only junior sides, the club was reformed under the new name of Cwmbran Catholics.",
     type: "milestone"
-  },
-  {
-    year: 1970,
-    title: "Gwent County League Success",
-    description: "Celtic enjoyed a successful period in the Gwent County League, establishing themselves as a competitive force in local football.",
-    type: "achievement"
   },
   {
     year: 1972,
@@ -42,16 +54,34 @@ export const clubHistory: HistoryEvent[] = [
     type: "milestone"
   },
   {
-    year: 1992,
-    title: "Welsh Football League Entry",
-    description: "The club joined the Welsh Football League system, competing at a higher level of Welsh football.",
+    year: 1973,
+    title: "Gwent Amateur Cup Winners",
+    description: "Celtic won the Gwent Amateur Cup and finished runners-up in the Gwent Premier League in the 1972-73 season.",
+    type: "achievement"
+  },
+  {
+    year: 1979,
+    title: "Club Headquarters Established",
+    description: "The club bought its own premises at Oak Street, Old Cwmbran, which remains the club's headquarters today.",
+    type: "ground"
+  },
+  {
+    year: 2001,
+    title: "Gwent County League Progress",
+    description: "Celtic finished runners-up in Gwent County League Division Two, beginning their climb through the Welsh football pyramid.",
     type: "milestone"
   },
   {
-    year: 2000,
-    title: "Ground Development",
-    description: "Major improvements made to Celtic Park, including new facilities for players and supporters.",
-    type: "ground"
+    year: 2005,
+    title: "Welsh League Promotion",
+    description: "Under player-manager Mickey Copeman, Celtic finished runners-up to Clydach Wasps and were promoted to the Welsh League Division Three.",
+    type: "milestone"
+  },
+  {
+    year: 2007,
+    title: "Welsh League Division 3 Champions",
+    description: "Celtic enjoyed a remarkable 24-match unbeaten run and won the Welsh League Division Three title at their upgraded and newly named Celtic Park.",
+    type: "achievement"
   },
   {
     year: 2010,
@@ -60,10 +90,28 @@ export const clubHistory: HistoryEvent[] = [
     type: "milestone"
   },
   {
+    year: 2016,
+    title: "Welsh Cup Quarter-Finals",
+    description: "Under manager Nicky Church, Celtic reached the Welsh Cup Quarter-Finals for the first time in the club's history.",
+    type: "achievement"
+  },
+  {
+    year: 2016,
+    title: "Best Modern League Season",
+    description: "Celtic achieved their best modern-era league record: 24 wins, 0 draws, 6 losses, scoring 89 goals and conceding just 33. They finished as Welsh League Division Two runners-up with 72 points.",
+    type: "achievement"
+  },
+  {
     year: 2019,
-    title: "Welsh Football Pyramid Restructure",
-    description: "Celtic joined the newly formed JD Cymru South (Tier 3) as part of the FAW's restructure of Welsh football.",
+    title: "JD Cymru South Founder Members",
+    description: "Celtic became founding members of the newly formed JD Cymru South (Tier 3) as part of the FAW's restructure of Welsh football.",
     type: "milestone"
+  },
+  {
+    year: 2023,
+    title: "Welsh Cup Quarter-Finals Return",
+    description: "Celtic reached the Welsh Cup Quarter-Finals for the second time in their history.",
+    type: "achievement"
   },
   {
     year: 2024,
@@ -74,7 +122,7 @@ export const clubHistory: HistoryEvent[] = [
   {
     year: 2024,
     title: "Coleg Gwent Partnership",
-    description: "Historic collaboration agreement signed with Coleg Gwent in October 2024, creating pathways for young players to combine education with football development.",
+    description: "Historic collaboration agreement signed with Coleg Gwent in October 2024, creating pathways for young players to combine education with football development through the Football Excellence Programme.",
     type: "milestone"
   },
   {
@@ -85,31 +133,56 @@ export const clubHistory: HistoryEvent[] = [
   },
   {
     year: 2025,
-    title: "Women's Team Best-Ever Finish",
-    description: "Cwmbran Celtic Ladies achieved their highest league position (3rd) in the Genero Adran South.",
+    title: "Centenary Year",
+    description: "Cwmbran Celtic celebrates 100 years of football in Cwmbran, marking a century of serving the local community since 1925.",
+    type: "milestone"
+  },
+  {
+    year: 2025,
+    title: "Women's Team Promotion Push",
+    description: "Cwmbran Celtic Ladies challenge for promotion, sitting second in the Genero Adran South table.",
     type: "achievement"
   }
 ];
 
 export const honours = [
   {
+    competition: "Welsh League",
+    achievements: [
+      { title: "Division 3 Champions", years: ["2006-07"] },
+      { title: "Division 2 Runners-Up", years: ["2015-16"] }
+    ]
+  },
+  {
+    competition: "Welsh Cup",
+    achievements: [
+      { title: "Quarter-Finalists", years: ["2015-16", "2022-23"] }
+    ]
+  },
+  {
+    competition: "Newport & District League",
+    achievements: [
+      { title: "Premier Division Champions", years: ["1950-51"] },
+      { title: "Division 2 Section A Champions", years: ["1925-26"] }
+    ]
+  },
+  {
     competition: "Gwent County League",
     achievements: [
-      { title: "League Champions", years: ["1972-73", "1985-86"] },
-      { title: "Runners-Up", years: ["1970-71", "1984-85", "1987-88"] }
+      { title: "Division 1 Runners-Up", years: ["2001-02", "2004-05"] },
+      { title: "Division 2 Runners-Up", years: ["2000-01"] }
     ]
   },
   {
-    competition: "Gwent Senior Cup",
+    competition: "Gwent Amateur Cup",
     achievements: [
-      { title: "Winners", years: ["1974-75"] },
-      { title: "Runners-Up", years: ["1986-87"] }
+      { title: "Winners", years: ["1972-73"] }
     ]
   },
   {
-    competition: "Welsh Amateur Cup",
+    competition: "Gwent Premier League",
     achievements: [
-      { title: "Quarter-Finalists", years: ["1973-74"] }
+      { title: "Runners-Up", years: ["1972-73"] }
     ]
   }
 ];

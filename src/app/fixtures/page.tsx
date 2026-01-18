@@ -3,7 +3,11 @@ import FixtureCard from '@/components/fixtures/FixtureCard';
 import ResultCard from '@/components/fixtures/ResultCard';
 import LeagueTable from '@/components/tables/LeagueTable';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import OxoStrip from '@/components/banners/OxoStrip';
+import SeasonTicketBanner from '@/components/banners/SeasonTicketBanner';
+import MatchDayBanner from '@/components/banners/MatchDayBanner';
 import TeamSelector from '@/components/fixtures/TeamSelector';
+import CalendarExport from '@/components/fixtures/CalendarExport';
 import { getFixtures, getResults, getMensLeagueTable, getLadiesLeagueTable } from '@/lib/comet';
 
 export const metadata: Metadata = {
@@ -77,6 +81,9 @@ export default async function FixturesPage() {
         </div>
       </section>
 
+      {/* Season Tickets Banner */}
+      <SeasonTicketBanner variant="topbar" />
+
       {/* Team Selector */}
       <TeamSelector />
 
@@ -85,10 +92,13 @@ export default async function FixturesPage() {
         <div className="container mx-auto px-4">
           {/* Men's First Team Section */}
           <div id="mens" className="mb-12 scroll-mt-32">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
               <span className="bg-celtic-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">M</span>
               <h2 className="text-2xl font-bold text-celtic-dark">Men&apos;s First Team</h2>
               <span className="text-sm text-gray-500">JD Cymru South</span>
+              <div className="ml-auto">
+                <CalendarExport fixtures={mensFixtures} team="mens" />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -139,10 +149,13 @@ export default async function FixturesPage() {
 
           {/* Women's Section */}
           <div id="womens" className="mb-12 scroll-mt-32">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
               <span className="bg-celtic-yellow text-celtic-dark w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">W</span>
               <h2 className="text-2xl font-bold text-celtic-dark">Women&apos;s Team</h2>
               <span className="text-sm text-gray-500">Genero Adran South</span>
+              <div className="ml-auto">
+                <CalendarExport fixtures={womensFixtures} team="womens" />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -239,11 +252,11 @@ export default async function FixturesPage() {
             <div className="flex justify-center gap-8 text-sm">
               <div>
                 <span className="text-gray-600">Adults</span>
-                <span className="block font-bold text-celtic-dark">£5</span>
+                <span className="block font-bold text-celtic-dark">£7.50</span>
               </div>
               <div>
                 <span className="text-gray-600">Concessions</span>
-                <span className="block font-bold text-celtic-dark">£3</span>
+                <span className="block font-bold text-celtic-dark">£5</span>
               </div>
               <div>
                 <span className="text-gray-600">Under 16s</span>

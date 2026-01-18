@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDateLong, getOpponent } from '@/lib/comet';
 import { oppositionTeams } from '@/data/opposition-data';
+import MatchWeather from '@/components/weather/MatchWeather';
 
 // Note: Image import kept for club logo fallback display
 
@@ -140,6 +141,10 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                 </svg>
                 <span className="font-medium">{fixture.venue}</span>
               </div>
+              {/* Weather for home matches */}
+              {isHome && (
+                <MatchWeather matchDate={fixture.date} matchTime={fixture.time} compact />
+              )}
             </div>
 
             {/* Countdown & CTAs */}

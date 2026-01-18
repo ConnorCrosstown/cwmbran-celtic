@@ -28,14 +28,15 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Matchday',
-    href: '/tickets',
+    href: '/matchday',
     children: [
+      { label: 'Match Day Guide', href: '/matchday' },
       { label: 'Buy Tickets', href: '/tickets' },
-      { label: 'Visit Us', href: '/visit' },
       { label: 'Away Fans Info', href: '/visitors' },
       { label: 'Hospitality', href: '/hospitality' },
       { label: 'Match Programme', href: '/programme' },
       { label: 'Events', href: '/events' },
+      { label: 'Pass the Pepper', href: '/ban-the-bovril' },
     ],
   },
   {

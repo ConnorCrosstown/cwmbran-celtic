@@ -5,12 +5,19 @@ import UpcomingFixtures from '@/components/home/UpcomingFixtures';
 import LatestNews from '@/components/home/LatestNews';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
+import SponsorTicker from '@/components/sponsors/SponsorTicker';
+import SponsorSpotlight from '@/components/sponsors/SponsorSpotlight';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import SeasonTicketBanner from '@/components/banners/SeasonTicketBanner';
+import OxoStrip from '@/components/banners/OxoStrip';
+import GoldenTicketBanner from '@/components/banners/GoldenTicketBanner';
 import SectionHeader from '@/components/ui/SectionHeader';
 import MatchStatusBanner from '@/components/home/MatchStatusBanner';
 import CelticTVSection from '@/components/home/CelticTVSection';
 import ShopSection from '@/components/home/ShopSection';
 import SocialFeed from '@/components/home/SocialFeed';
+import AllTeamsOverview from '@/components/home/AllTeamsOverview';
+import KitReveal from '@/components/home/KitReveal';
 import Link from 'next/link';
 
 import {
@@ -55,18 +62,21 @@ export default async function HomePage() {
       {/* Hero Section - Dramatic Next Match Display */}
       <HeroSection fixture={nextHomeFixture} />
 
+      {/* Sponsor Ticker - Rolling sponsor logos */}
+      <SponsorTicker />
+
       {/* Newsletter Signup */}
       <NewsletterSignup />
 
-      {/* All Teams */}
+      {/* First Teams - Featured */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
-            title="Our Teams"
-            subtitle="Follow all our teams competing in the Welsh football pyramid"
+            title="Our First Teams"
+            subtitle="Follow our teams competing in the Welsh football pyramid"
             centered
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Men's First Team */}
             <TeamCard
               teamName="Men's First Team"
@@ -87,65 +97,17 @@ export default async function HomePage() {
               href="/teams/ladies"
             />
           </div>
-
-          {/* Men's 2nd and 3rd Teams */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Men's Seconds */}
-            <Link href="/teams/mens-seconds" className="card card-accent-yellow-top card-hover overflow-hidden block">
-              <div className="card-header-gradient p-5">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full flex-shrink-0 overflow-hidden">
-                    <img
-                      src="/images/club-logo.webp"
-                      alt="Cwmbran Celtic"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl uppercase tracking-wide" style={{ color: '#ffffff' }}>Men&apos;s Seconds</h3>
-                    <p className="text-sm" style={{ color: '#facc15' }}>Gwent County League Div 2</p>
-                  </div>
-                </div>
-              </div>
-              <div className="p-5">
-                <p className="text-sm text-gray-600 mb-4">
-                  Our second team competing in the Gwent County League Division 2.
-                </p>
-                <span className="inline-block py-2.5 px-4 bg-celtic-blue rounded-lg font-semibold text-sm text-white">
-                  View Team
-                </span>
-              </div>
-            </Link>
-
-            {/* Men's Thirds */}
-            <Link href="/teams/mens-thirds" className="card card-accent-yellow-top card-hover overflow-hidden block">
-              <div className="card-header-gradient p-5">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full flex-shrink-0 overflow-hidden">
-                    <img
-                      src="/images/club-logo.webp"
-                      alt="Cwmbran Celtic"
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-display text-xl uppercase tracking-wide" style={{ color: '#ffffff' }}>Men&apos;s Thirds</h3>
-                    <p className="text-sm" style={{ color: '#facc15' }}>Gwent County League Div 3</p>
-                  </div>
-                </div>
-              </div>
-              <div className="p-5">
-                <p className="text-sm text-gray-600 mb-4">
-                  Our third team competing in the Gwent County League Division 3.
-                </p>
-                <span className="inline-block py-2.5 px-4 bg-celtic-blue rounded-lg font-semibold text-sm text-white">
-                  View Team
-                </span>
-              </div>
-            </Link>
-          </div>
         </div>
       </section>
+
+      {/* New Kit Reveal */}
+      <KitReveal />
+
+      {/* Sponsor Spotlight */}
+      <SponsorSpotlight />
+
+      {/* All Teams Overview - Including Juniors */}
+      <AllTeamsOverview />
 
       {/* Latest Result & Upcoming Fixtures */}
       <section className="py-16 md:py-20 bg-gray-100">
@@ -165,6 +127,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Season Tickets CTA */}
+      <SeasonTicketBanner variant="full" />
 
       {/* Celtic Bond CTA */}
       <CelticBondBanner variant="full" />

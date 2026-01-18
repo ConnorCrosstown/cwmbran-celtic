@@ -28,16 +28,16 @@ export const mockFixtures = {
   columnNames: ["Match ID", "Date", "Time", "Home Team", "Away Team", "Competition", "Venue", "Home/Away"],
   columnKeys: ["matchId", "date", "time", "homeTeam", "awayTeam", "competition", "venue", "homeAway"],
   results: [
-    // Men's fixtures - 2025-26 season
+    // Men's fixtures - 2025-26 season (January onwards)
     {
       matchId: 1001,
       date: toComet("2026-01-16"),
       time: "19:30",
-      homeTeam: "Cwmbran Celtic",
-      awayTeam: "Cardiff Draconians",
+      homeTeam: "Cardiff Draconians",
+      awayTeam: "Cwmbran Celtic",
       competition: "JD Cymru South",
-      venue: "Avondale Motor Park Arena",
-      homeAway: "H"
+      venue: "Jubilee Park",
+      homeAway: "A"
     },
     {
       matchId: 1002,
@@ -51,7 +51,7 @@ export const mockFixtures = {
     },
     {
       matchId: 1003,
-      date: toComet("2026-01-23"),
+      date: toComet("2026-01-27"),
       time: "19:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Pontypridd United",
@@ -61,7 +61,7 @@ export const mockFixtures = {
     },
     {
       matchId: 1004,
-      date: toComet("2026-01-30"),
+      date: toComet("2026-02-03"),
       time: "19:45",
       homeTeam: "Trethomas Bluebirds",
       awayTeam: "Cwmbran Celtic",
@@ -75,6 +75,106 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Afan Lido",
+      competition: "JD Cymru South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 1006,
+      date: toComet("2026-02-14"),
+      time: "14:30",
+      homeTeam: "Trefelin BGC",
+      awayTeam: "Cwmbran Celtic",
+      competition: "JD Cymru South",
+      venue: "Ynys Park",
+      homeAway: "A"
+    },
+    {
+      matchId: 1007,
+      date: toComet("2026-02-21"),
+      time: "14:30",
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Aberystwyth Town",
+      competition: "JD Cymru South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 1008,
+      date: toComet("2026-02-28"),
+      time: "14:30",
+      homeTeam: "Cambrian United",
+      awayTeam: "Cwmbran Celtic",
+      competition: "JD Cymru South",
+      venue: "Clydach Vale",
+      homeAway: "A"
+    },
+    {
+      matchId: 1009,
+      date: toComet("2026-03-07"),
+      time: "14:30",
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Baglan Dragons",
+      competition: "JD Cymru South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 1010,
+      date: toComet("2026-03-14"),
+      time: "14:30",
+      homeTeam: "Ammanford",
+      awayTeam: "Cwmbran Celtic",
+      competition: "JD Cymru South",
+      venue: "Recreation Ground",
+      homeAway: "A"
+    },
+    {
+      matchId: 1011,
+      date: toComet("2026-03-21"),
+      time: "14:30",
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Ynyshir Albions",
+      competition: "JD Cymru South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 1012,
+      date: toComet("2026-03-28"),
+      time: "14:30",
+      homeTeam: "Newport City",
+      awayTeam: "Cwmbran Celtic",
+      competition: "JD Cymru South",
+      venue: "Newport Stadium",
+      homeAway: "A"
+    },
+    {
+      matchId: 1013,
+      date: toComet("2026-04-04"),
+      time: "14:30",
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Treowen Stars",
+      competition: "JD Cymru South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 1014,
+      date: toComet("2026-04-11"),
+      time: "14:30",
+      homeTeam: "Caerau Ely",
+      awayTeam: "Cwmbran Celtic",
+      competition: "JD Cymru South",
+      venue: "Cwrt-yr-Ala Road",
+      homeAway: "A"
+    },
+    {
+      matchId: 1015,
+      date: toComet("2026-04-18"),
+      time: "14:30",
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Carmarthen Town",
       competition: "JD Cymru South",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
@@ -94,11 +194,11 @@ export const mockFixtures = {
       matchId: 2002,
       date: toComet("2026-01-25"),
       time: "14:00",
-      homeTeam: "Cwmbran Celtic Ladies",
-      awayTeam: "Taffs Well FC Women",
+      homeTeam: "Taffs Well Women",
+      awayTeam: "Cwmbran Celtic Ladies",
       competition: "Genero Adran South",
-      venue: "Avondale Motor Park Arena",
-      homeAway: "H"
+      venue: "Rhiw'r Ddar",
+      homeAway: "A"
     },
     {
       matchId: 2003,
@@ -112,16 +212,56 @@ export const mockFixtures = {
     },
     {
       matchId: 2004,
+      date: toComet("2026-02-08"),
+      time: "14:00",
+      homeTeam: "Cascade YC Women",
+      awayTeam: "Cwmbran Celtic Ladies",
+      competition: "Genero Adran South",
+      venue: "Cascade Park",
+      homeAway: "A"
+    },
+    {
+      matchId: 2005,
       date: toComet("2026-02-15"),
       time: "14:00",
       homeTeam: "Cwmbran Celtic Ladies",
-      awayTeam: "Cascade YC Women",
+      awayTeam: "Pure Swansea",
+      competition: "Genero Adran South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 2006,
+      date: toComet("2026-02-22"),
+      time: "14:00",
+      homeTeam: "Llanelli Town Women",
+      awayTeam: "Cwmbran Celtic Ladies",
+      competition: "Genero Adran South",
+      venue: "Stebonheath Park",
+      homeAway: "A"
+    },
+    {
+      matchId: 2007,
+      date: toComet("2026-03-01"),
+      time: "14:00",
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Carmarthen Town Women",
+      competition: "Genero Adran South",
+      venue: "Avondale Motor Park Arena",
+      homeAway: "H"
+    },
+    {
+      matchId: 2008,
+      date: toComet("2026-03-15"),
+      time: "14:00",
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Cardiff Met WFC",
       competition: "Genero Adran South",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     }
   ],
-  totalSize: 9,
+  totalSize: 23,
   page: 0,
   pageSize: 25
 };
@@ -406,7 +546,7 @@ export const mockSquad = {
       dateOfBirth: toComet("1987-09-12")
     },
     {
-      photo: "/images/players/josh-hinwood.webp",
+      photo: "/images/players/placeholder.webp",
       squadNo: 4,
       firstName: "Josh",
       lastName: "Hinwood",
@@ -460,7 +600,7 @@ export const mockSquad = {
       dateOfBirth: toComet("2004-04-25")
     },
     {
-      photo: "/images/players/dominic-morris.webp",
+      photo: "/images/players/placeholder.webp",
       squadNo: 17,
       firstName: "Dominic",
       lastName: "Morris",
@@ -497,7 +637,7 @@ export const mockSquad = {
       dateOfBirth: toComet("2006-05-10")
     },
     {
-      photo: "/images/players/tom-dean.webp",
+      photo: "/images/players/placeholder.webp",
       squadNo: 11,
       firstName: "Tom",
       lastName: "Dean",
@@ -675,20 +815,153 @@ export const clubInfo = {
 };
 
 /**
+ * TICKET PRICING - Match Day & Season Tickets
+ * Updated: January 2026
+ */
+export const ticketPricing = {
+  // Match Day Tickets (via Gigantic - £0.50 fee per ticket)
+  matchDay: {
+    mens: {
+      adult: 7.50,
+      concession: 5.00,
+      under16: 0, // FREE
+      giganticFee: 0.50,
+      homeGames: 15,
+    },
+    womens: {
+      adult: 3.50,
+      concession: 2.50,
+      under16: 0, // FREE
+      giganticFee: 0.50,
+      homeGames: 8,
+    },
+  },
+
+  // Season Tickets (1.8% Gigantic fee)
+  seasonTickets: {
+    giganticFeePercent: 1.8,
+    earlyBird: {
+      endsDate: '2026-01-31',
+      endsFormatted: '31st January 2026',
+    },
+    superEarlyBird: {
+      endsDate: '2026-01-20',
+      endsFormatted: '20th January 2026',
+      limitedQuantity: 50,
+    },
+
+    // Men's Season Tickets (15 league games)
+    mens: {
+      superEarlyBird: {
+        adult: 65,
+        concession: 45,
+      },
+      earlyBird: {
+        adult: 75,
+        concession: 50,
+        family: 130, // 2 adults + 2 U16s
+      },
+      standard: {
+        adult: 85,
+        concession: 57,
+        family: 150,
+      },
+    },
+
+    // Women's Season Tickets (8 league games)
+    womens: {
+      superEarlyBird: {
+        adult: 20,
+        concession: 14,
+      },
+      earlyBird: {
+        adult: 24,
+        concession: 17,
+      },
+      standard: {
+        adult: 28,
+        concession: 20,
+      },
+    },
+
+    // Golden Season Ticket (All games - Men's, Women's, ALL Cup games)
+    golden: {
+      includes: [
+        'All 15 Men\'s home league games',
+        'All 8 Women\'s home league games',
+        'ALL home cup games (FAW Cup, League Cup, etc.)',
+        'Priority seating',
+        'Exclusive Golden Ticket holder badge/lanyard',
+        'Name in programme as "Golden Supporter"',
+      ],
+      superEarlyBird: {
+        adult: 99,
+        concession: 70,
+      },
+      earlyBird: {
+        adult: 115,
+        concession: 80,
+      },
+      standard: {
+        adult: 130,
+        concession: 90,
+      },
+    },
+  },
+
+  // Gift a Ticket campaign
+  giftATicket: {
+    available: true,
+    extraForGiftPack: 5, // Optional physical gift pack
+    giftPackIncludes: [
+      'Presentation box',
+      'Personalized gift card',
+      'Club pin badge',
+      'Mini scarf keyring',
+    ],
+  },
+
+  // Calculate savings vs Pay-As-You-Go
+  calculateSavings: {
+    mensPayg: 7.50 * 15, // £112.50
+    womensPayg: 3.50 * 8, // £28.00
+    bothPayg: (7.50 * 15) + (3.50 * 8), // £140.50
+  },
+};
+
+/**
  * SPONSORS
  */
 export const sponsors = {
+  titleSponsor: {
+    name: "Avondale Motor Park",
+    logo: "/images/sponsors/avondale-hire.webp",
+    url: "https://www.avondalemotorpark.com",
+    description: "Official Stadium Naming Rights Partner"
+  },
+  officialPartners: [
+    { name: "OXO", logo: "/images/sponsors/oxo.png", url: "/ban-the-bovril", description: "Official Hot Beverage Partner" },
+    { name: "Avondale Hire", logo: "/images/sponsors/avondale-hire.webp", url: "http://www.avondalehire.co.uk", description: "Official Equipment Partner" },
+    { name: "Taking the Strain Travel", logo: "/images/sponsors/taking-the-strain-travel.webp", url: "https://takingthestraintravel.co.uk", description: "Official Travel Partner" },
+    { name: "Rhino Global", logo: "/images/sponsors/rhino-global.webp", url: "https://rhino.direct", description: "Official Kit Partner" }
+  ],
+  clubPartners: [
+    { name: "Hathways", logo: "/images/sponsors/hathways.webp", url: "https://hathways.co.uk" },
+    { name: "Motazone", logo: "/images/sponsors/motazone.webp", url: "https://motazone.net" }
+  ],
+  // Legacy structure for backward compatibility
   main: {
     name: "Avondale Motor Park",
     logo: "/images/sponsors/avondale-hire.webp",
     url: "https://www.avondalemotorpark.com"
   },
   partners: [
+    { name: "OXO", logo: "/images/sponsors/oxo.png", url: "/ban-the-bovril" },
     { name: "Avondale Hire", logo: "/images/sponsors/avondale-hire.webp", url: "http://www.avondalehire.co.uk" },
     { name: "Taking the Strain Travel", logo: "/images/sponsors/taking-the-strain-travel.webp", url: "https://takingthestraintravel.co.uk" },
     { name: "Hathways", logo: "/images/sponsors/hathways.webp", url: "https://hathways.co.uk" },
     { name: "Motazone", logo: "/images/sponsors/motazone.webp", url: "https://motazone.net" },
-    { name: "Rhino Global", logo: "/images/sponsors/rhino-global.webp", url: null }
+    { name: "Rhino Global", logo: "/images/sponsors/rhino-global.webp", url: "https://rhino.direct" }
   ],
   advertisers: [
     { name: "John and Jane", logo: "/images/sponsors/john-and-jane.webp" },

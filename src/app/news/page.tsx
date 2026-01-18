@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getLatestNews } from '@/data/news-data';
+import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import SeasonTicketBanner from '@/components/banners/SeasonTicketBanner';
 
 export const metadata: Metadata = {
   title: 'News',
@@ -38,6 +40,9 @@ export default function NewsPage() {
 
   return (
     <>
+      {/* Season Tickets Banner */}
+      <SeasonTicketBanner variant="topbar" />
+
       {/* Hero */}
       <section className="bg-celtic-blue text-white py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
