@@ -6,11 +6,29 @@ interface UpcomingFixturesProps {
   fixtures: Fixture[];
 }
 
-function getTeamBadge(fixture: Fixture): { label: string; color: string; textColor: string } {
-  const isLadies = fixture.homeTeam.includes('Ladies') || fixture.awayTeam.includes('Ladies');
-  return isLadies
-    ? { label: 'W', color: 'bg-celtic-yellow', textColor: 'text-celtic-dark' }
-    : { label: 'M', color: 'bg-celtic-blue', textColor: 'text-white' };
+function getTeamInfo(fixture: Fixture): { label: string; fullName: string; color: string; textColor: string } {
+  const homeTeam = fixture.homeTeam.toLowerCase();
+  const awayTeam = fixture.awayTeam.toLowerCase();
+  const teamName = homeTeam.includes('cwmbran') ? fixture.homeTeam : fixture.awayTeam;
+  const teamLower = teamName.toLowerCase();
+
+  // Check for Women's team
+  if (teamLower.includes('ladies') || teamLower.includes('women')) {
+    return { label: 'W', fullName: "Women's", color: 'bg-celtic-yellow', textColor: 'text-celtic-dark' };
+  }
+
+  // Check for 3rd team (Thirds)
+  if (teamLower.includes('third') || teamLower.includes('3rd') || teamLower.includes('iii')) {
+    return { label: '3', fullName: "Men's 3rds", color: 'bg-emerald-600', textColor: 'text-white' };
+  }
+
+  // Check for 2nd team (Seconds/Reserves)
+  if (teamLower.includes('second') || teamLower.includes('2nd') || teamLower.includes('reserve') || teamLower.includes('ii')) {
+    return { label: '2', fullName: "Men's 2nds", color: 'bg-purple-600', textColor: 'text-white' };
+  }
+
+  // Default to Men's 1st team
+  return { label: '1', fullName: "Men's 1st", color: 'bg-celtic-blue', textColor: 'text-white' };
 }
 
 export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
@@ -25,7 +43,7 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
 
         <div className="space-y-3">
           {fixtures.map((fixture) => {
-            const teamBadge = getTeamBadge(fixture);
+            const teamInfo = getTeamInfo(fixture);
             return (
               <div
                 key={fixture.matchId}
@@ -33,13 +51,13 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
               >
                 {/* Team indicator badge */}
                 <div
-                  className={`${teamBadge.color} ${teamBadge.textColor} w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}
-                  title={teamBadge.label === 'W' ? 'Women' : "Men's"}
+                  className={`${teamInfo.color} ${teamInfo.textColor} w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0`}
+                  title={teamInfo.fullName}
                 >
-                  {teamBadge.label}
+                  {teamInfo.label}
                 </div>
 
-                <div className="text-center min-w-[60px]">
+                <div className="text-center min-w-[70px]">
                   <p className="text-sm font-semibold text-gray-700">
                     {formatMatchDate(fixture.date)}
                   </p>
@@ -47,6 +65,7 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
                 </div>
 
                 <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-celtic-blue mb-0.5">{teamInfo.fullName}</p>
                   <p className="font-semibold text-celtic-dark truncate">
                     vs {getOpponent(fixture)}
                   </p>
@@ -66,10 +85,18 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-200 text-xs text-gray-500">
+        <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-gray-200 text-xs text-gray-500">
           <div className="flex items-center gap-1.5">
-            <span className="bg-celtic-blue text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">M</span>
-            <span>Men&apos;s</span>
+            <span className="bg-celtic-blue text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">1</span>
+            <span>Men&apos;s 1st</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="bg-purple-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">2</span>
+            <span>Men&apos;s 2nds</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="bg-emerald-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">3</span>
+            <span>Men&apos;s 3rds</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="bg-celtic-yellow text-celtic-dark w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">W</span>
