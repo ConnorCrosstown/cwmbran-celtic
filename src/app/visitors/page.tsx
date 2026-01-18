@@ -99,7 +99,7 @@ export default function VisitorsPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display uppercase text-white mb-4">
               Welcome to The Park
             </h1>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-celtic-yellow mb-8">
               Everything you need to know for your visit to Cwmbran Celtic
             </p>
           </div>
@@ -112,19 +112,19 @@ export default function VisitorsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
             <div>
               <p className="text-2xl font-display">£{clubInfo.admission.adults}</p>
-              <p className="text-xs text-white/70 uppercase tracking-wide">Adult Entry</p>
+              <p className="text-xs text-gray-300 uppercase tracking-wide">Adult Entry</p>
             </div>
             <div>
               <p className="text-2xl font-display">£{clubInfo.admission.concessions}</p>
-              <p className="text-xs text-white/70 uppercase tracking-wide">Concessions</p>
+              <p className="text-xs text-gray-300 uppercase tracking-wide">Concessions</p>
             </div>
             <div>
               <p className="text-2xl font-display">FREE</p>
-              <p className="text-xs text-white/70 uppercase tracking-wide">Under 16s</p>
+              <p className="text-xs text-gray-300 uppercase tracking-wide">Under 16s</p>
             </div>
             <div>
               <p className="text-2xl font-display">2:30pm</p>
-              <p className="text-xs text-white/70 uppercase tracking-wide">Typical Kickoff</p>
+              <p className="text-xs text-gray-300 uppercase tracking-wide">Typical Kickoff</p>
             </div>
           </div>
         </div>

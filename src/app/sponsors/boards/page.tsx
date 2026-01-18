@@ -33,7 +33,7 @@ export default function AdvertisingBoardsPage() {
       <section className="bg-celtic-blue py-6 md:py-10">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Pitch-Side Advertising</h1>
-          <p className="text-sm text-white/80 max-w-2xl mx-auto">
+          <p className="text-sm text-celtic-yellow max-w-2xl mx-auto">
             Promote your business at every Cwmbran Celtic home match with a pitch-side advertising board.
           </p>
         </div>
@@ -273,7 +273,7 @@ export default function AdvertisingBoardsPage() {
           <h2 className="text-xl md:text-2xl font-bold text-white mb-3">
             Ready to Advertise?
           </h2>
-          <p className="text-sm text-white/80 max-w-xl mx-auto mb-6">
+          <p className="text-sm text-celtic-yellow max-w-xl mx-auto mb-6">
             Get in touch today to secure your pitch-side advertising board for the season.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

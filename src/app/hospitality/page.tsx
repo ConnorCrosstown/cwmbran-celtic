@@ -68,7 +68,7 @@ export default function HospitalityPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display uppercase text-white mb-4">
               Hospitality & Events
             </h1>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-celtic-yellow mb-8">
               From matchday experiences to private functions, make your event special at Cwmbran Celtic AFC
             </p>
             <Link href="/contact" className="btn-secondary">

@@ -111,7 +111,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display uppercase tracking-wide text-white leading-none mb-2">
                   Cwmbran Celtic
                 </h1>
-                <div className="flex items-center gap-4 text-white/80">
+                <div className="flex items-center gap-4 text-white">
                   <span className="text-2xl md:text-3xl font-light">vs</span>
                   <span className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-celtic-yellow">
                     {opponent}
@@ -120,7 +120,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
               </div>
 
               {/* Match Details */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-white/90 mb-8">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-white mb-8">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -153,7 +153,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                         {timeLeft.days}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-white/70 mt-1 block">Days</span>
+                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Days</span>
                   </div>
                   <span className="text-white/50 text-2xl font-light h-[52px] sm:h-[64px] flex items-center">:</span>
                   <div className="text-center">
@@ -162,7 +162,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                         {timeLeft.hours.toString().padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-white/70 mt-1 block">Hours</span>
+                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Hours</span>
                   </div>
                   <span className="text-white/50 text-2xl font-light h-[52px] sm:h-[64px] flex items-center">:</span>
                   <div className="text-center">
@@ -171,7 +171,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                         {timeLeft.minutes.toString().padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-white/70 mt-1 block">Mins</span>
+                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Mins</span>
                   </div>
                   <span className="text-white/50 text-2xl font-light hidden sm:flex h-[52px] sm:h-[64px] items-center">:</span>
                   <div className="text-center hidden sm:block">
@@ -180,7 +180,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                         {timeLeft.seconds.toString().padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-white/70 mt-1 block">Secs</span>
+                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Secs</span>
                   </div>
                 </div>
               )}
@@ -256,7 +256,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-display uppercase tracking-wide text-white mb-4">
               Cwmbran Celtic AFC
             </h1>
-            <p className="text-xl text-white/80 mb-8">Welcome to the official home of Cwmbran Celtic</p>
+            <p className="text-xl text-celtic-yellow mb-8">Welcome to the official home of Cwmbran Celtic</p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/fixtures" className="btn-primary">
                 View Fixtures

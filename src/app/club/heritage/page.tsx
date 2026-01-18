@@ -85,7 +85,7 @@ export default function HeritagePage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display uppercase text-white mb-4">
               100 Years of History
             </h1>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-celtic-yellow mb-8">
               A century of football, community, and Celtic pride
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function HeritagePage() {
             <blockquote className="text-2xl md:text-3xl font-display uppercase text-white mb-6">
               &quot;Cwmbran Celtic is more than a football club - it&apos;s the heart of our community.&quot;
             </blockquote>
-            <p className="text-white/70">- Club Centenary Message</p>
+            <p className="text-gray-300">- Club Centenary Message</p>
           </div>
         </div>
       </section>

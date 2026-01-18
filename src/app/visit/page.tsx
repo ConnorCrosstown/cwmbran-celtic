@@ -24,7 +24,7 @@ export default function VisitUsPage() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display uppercase text-white mb-4">
               Visit Us
             </h1>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-celtic-yellow mb-8">
               Everything you need to know about visiting {clubInfo.ground.name}
             </p>
             <div className="flex flex-wrap gap-4">

@@ -169,7 +169,7 @@ export default function WalkingFootballPage() {
           <h2 className="text-lg md:text-xl font-bold text-white mb-2">
             Ready to Get Started?
           </h2>
-          <p className="text-sm text-white/80 mb-4 max-w-xl mx-auto">
+          <p className="text-sm text-celtic-yellow mb-4 max-w-xl mx-auto">
             Whether you&apos;re returning to football after years away or trying it for the first time,
             our walking football sessions are the perfect way to get involved.
           </p>

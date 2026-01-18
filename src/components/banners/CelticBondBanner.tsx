@@ -129,7 +129,7 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-display uppercase text-white mb-4">
                 Celtic Bond
               </h2>
-              <p className="text-lg text-white/80 mb-6 max-w-md mx-auto lg:mx-0">
+              <p className="text-lg text-celtic-yellow mb-6 max-w-md mx-auto lg:mx-0">
                 Join our monthly prize draw and help fund first team improvements,
                 youth development, and ground facilities.
               </p>
@@ -149,7 +149,7 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
                 </Link>
               </div>
 
-              <p className="text-white/60 text-sm">
+              <p className="text-white text-sm">
                 {jackpotData.totalMembers} members and growing
               </p>
             </div>
@@ -159,7 +159,7 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 max-w-sm w-full">
                 {/* Jackpot amount */}
                 <div className="text-center mb-6">
-                  <p className="text-white/80 text-sm uppercase tracking-wide mb-2">This Month&apos;s Jackpot</p>
+                  <p className="text-white text-sm uppercase tracking-wide mb-2">This Month&apos;s Jackpot</p>
                   <div className="bg-celtic-yellow rounded-xl py-4 px-6">
                     <span className="text-5xl md:text-6xl font-display text-celtic-dark">£{jackpotData.currentJackpot}</span>
                   </div>
@@ -168,15 +168,15 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
                 {/* Prize breakdown */}
                 <div className="grid grid-cols-3 gap-2 mb-6">
                   <div className="bg-white/10 rounded-lg p-3 text-center">
-                    <p className="text-xs text-white/60 mb-1">1st Prize</p>
+                    <p className="text-xs text-gray-300 mb-1">1st Prize</p>
                     <p className="text-lg font-bold text-white">£100</p>
                   </div>
                   <div className="bg-white/10 rounded-lg p-3 text-center">
-                    <p className="text-xs text-white/60 mb-1">2nd Prize</p>
+                    <p className="text-xs text-gray-300 mb-1">2nd Prize</p>
                     <p className="text-lg font-bold text-white">£50</p>
                   </div>
                   <div className="bg-white/10 rounded-lg p-3 text-center">
-                    <p className="text-xs text-white/60 mb-1">3rd Prize</p>
+                    <p className="text-xs text-gray-300 mb-1">3rd Prize</p>
                     <p className="text-lg font-bold text-white">£25</p>
                   </div>
                 </div>
@@ -184,11 +184,11 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
                 {/* Next draw */}
                 <div className="border-t border-white/20 pt-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-white/60">Next Draw</span>
+                    <span className="text-gray-300">Next Draw</span>
                     <span className="text-white font-semibold">{jackpotData.nextDraw}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm mt-2">
-                    <span className="text-white/60">Last Winner</span>
+                    <span className="text-gray-300">Last Winner</span>
                     <span className="text-celtic-yellow font-semibold">{jackpotData.lastWinner} (£{jackpotData.lastPrize})</span>
                   </div>
                 </div>
