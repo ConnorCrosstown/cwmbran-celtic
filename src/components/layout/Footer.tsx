@@ -22,13 +22,13 @@ export default function Footer() {
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
               <h3 className="text-xl font-bold mb-2">Stay Updated</h3>
-              <p className="text-gray-400 text-sm">Get the latest news, fixtures & exclusive offers</p>
+              <p className="text-white text-sm">Get the latest news, fixtures & exclusive offers</p>
             </div>
             <form className="flex w-full md:w-auto gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 md:w-64 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow"
+                className="flex-1 md:w-64 px-4 py-3 rounded-lg bg-white border border-white/20 text-celtic-dark placeholder-gray-500 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow"
               />
               <button
                 type="submit"
@@ -62,10 +62,10 @@ export default function Footer() {
               and Genero Adran South (Women&apos;s). Come support your local club!
             </p>
             <div className="mb-6">
-              <p className="text-white text-sm">
-                <strong className="text-celtic-yellow">{clubInfo.ground.name}</strong><br />
-                {clubInfo.ground.address.street}<br />
-                {clubInfo.ground.address.town}, {clubInfo.ground.address.postcode}
+              <p className="text-sm">
+                <strong className="text-celtic-yellow block mb-1">{clubInfo.ground.name}</strong>
+                <span className="text-white">{clubInfo.ground.address.street}</span><br />
+                <span className="text-white">{clubInfo.ground.address.town}, {clubInfo.ground.address.postcode}</span>
               </p>
             </div>
             {/* Social Links */}
