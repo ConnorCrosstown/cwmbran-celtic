@@ -3,21 +3,10 @@ import TeamCard from '@/components/home/TeamCard';
 import LatestResult from '@/components/home/LatestResult';
 import UpcomingFixtures from '@/components/home/UpcomingFixtures';
 import LatestNews from '@/components/home/LatestNews';
-import NewsletterSignup from '@/components/home/NewsletterSignup';
 import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
 import SponsorTicker from '@/components/sponsors/SponsorTicker';
-import SponsorSpotlight from '@/components/sponsors/SponsorSpotlight';
-import CelticBondBanner from '@/components/banners/CelticBondBanner';
-import SeasonTicketBanner from '@/components/banners/SeasonTicketBanner';
-import OxoStrip from '@/components/banners/OxoStrip';
-import GoldenTicketBanner from '@/components/banners/GoldenTicketBanner';
 import SectionHeader from '@/components/ui/SectionHeader';
 import MatchStatusBanner from '@/components/home/MatchStatusBanner';
-import CelticTVSection from '@/components/home/CelticTVSection';
-import ShopSection from '@/components/home/ShopSection';
-import SocialFeed from '@/components/home/SocialFeed';
-import AllTeamsOverview from '@/components/home/AllTeamsOverview';
-import KitReveal from '@/components/home/KitReveal';
 import Link from 'next/link';
 
 import {
@@ -56,27 +45,31 @@ export default async function HomePage() {
       {/* Match Status Banner - Shows latest result or live score */}
       <MatchStatusBanner latestResult={latestResult} />
 
-      {/* Celtic Bond Top Banner - Promote the lottery */}
-      <CelticBondBanner variant="topbar" />
-
       {/* Hero Section - Dramatic Next Match Display */}
       <HeroSection fixture={nextHomeFixture} />
 
       {/* Sponsor Ticker - Rolling sponsor logos */}
       <SponsorTicker />
 
-      {/* Newsletter Signup */}
-      <NewsletterSignup />
-
-      {/* First Teams - Featured */}
+      {/* First Teams - Featured (Ladies first - they're doing better!) */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
-            title="Our First Teams"
+            title="Our Teams"
             subtitle="Follow our teams competing in the Welsh football pyramid"
             centered
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Women's Team - Featured first (2nd place!) */}
+            <TeamCard
+              teamName="Women's Team"
+              teamType="ladies"
+              league="Genero Adran South"
+              position={ladiesPosition}
+              nextFixture={nextLadiesHome}
+              href="/teams/ladies"
+            />
+
             {/* Men's First Team */}
             <TeamCard
               teamName="Men's First Team"
@@ -86,28 +79,14 @@ export default async function HomePage() {
               nextFixture={nextMensHome}
               href="/teams/mens"
             />
-
-            {/* Women's Team */}
-            <TeamCard
-              teamName="Women's Team"
-              teamType="ladies"
-              league="Genero Adran South"
-              position={ladiesPosition}
-              nextFixture={nextLadiesHome}
-              href="/teams/ladies"
-            />
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/teams" className="text-celtic-blue font-semibold hover:text-celtic-blue-dark transition-colors">
+              View all teams including reserves & walking football →
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* New Kit Reveal */}
-      <KitReveal />
-
-      {/* Sponsor Spotlight */}
-      <SponsorSpotlight />
-
-      {/* All Teams Overview - Including Juniors */}
-      <AllTeamsOverview />
 
       {/* Latest Result & Upcoming Fixtures */}
       <section className="py-16 md:py-20 bg-gray-100">
@@ -128,23 +107,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Season Tickets CTA */}
-      <SeasonTicketBanner variant="full" />
-
-      {/* Celtic Bond CTA */}
-      <CelticBondBanner variant="full" />
-
       {/* Latest News */}
       <LatestNews articles={getLatestNews(3)} />
-
-      {/* Celtic TV - Video Content */}
-      <CelticTVSection />
-
-      {/* Club Shop */}
-      <ShopSection />
-
-      {/* Social Media Feed */}
-      <SocialFeed />
 
       {/* Visit Us CTA */}
       <section className="py-16 md:py-20 bg-white">
@@ -155,10 +119,6 @@ export default async function HomePage() {
               subtitle={`Come and support Cwmbran Celtic at the ${clubInfo.ground.name}`}
               centered
             />
-            <p className="text-gray-600 mb-10 max-w-2xl mx-auto text-center">
-              We welcome all supporters with great facilities including our clubhouse bar
-              and tea bar.
-            </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
               <Link href="/visit" className="p-8 bg-gray-50 rounded-2xl card-hover text-center block">
                 <div className="w-14 h-14 bg-celtic-blue/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-celtic-blue/20 transition-colors">
@@ -202,11 +162,11 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/visit" className="btn-primary">
-                Plan Your Visit
-              </Link>
               <Link href="/tickets" className="btn-tickets">
                 Buy Tickets
+              </Link>
+              <Link href="/visit" className="btn-primary">
+                Plan Your Visit
               </Link>
             </div>
           </div>

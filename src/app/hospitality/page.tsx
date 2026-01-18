@@ -163,7 +163,7 @@ export default function HospitalityPage() {
             <Link href="/contact" className="btn-primary">
               Contact Us
             </Link>
-            <a href="tel:+441onal" className="btn-outline">
+            <a href="tel:+447831441109" className="btn-outline">
               Call Us
             </a>
           </div>
