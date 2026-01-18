@@ -58,7 +58,7 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
     const isDraw = outcome === 'D';
     const isHome = isHomeResult(latestResult);
 
-    const bgColor = isWin ? 'from-green-600 to-green-700' : isDraw ? 'from-amber-500 to-amber-600' : 'from-red-500 to-red-600';
+    const bgColor = isWin ? 'from-celtic-yellow to-yellow-500' : isDraw ? 'from-amber-500 to-amber-600' : 'from-red-500 to-red-600';
     const resultText = isWin ? 'WIN' : isDraw ? 'DRAW' : 'LOSS';
 
     const celticScore = isHome ? latestResult.homeScore : latestResult.awayScore;
