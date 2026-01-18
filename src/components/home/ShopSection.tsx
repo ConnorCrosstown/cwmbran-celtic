@@ -132,7 +132,7 @@ export default function ShopSection() {
               <h3 className="text-2xl md:text-3xl font-display uppercase text-white mb-2">
                 New Season Kit Available
               </h3>
-              <p className="text-white">
+              <p className="text-celtic-yellow">
                 Get the 2025/26 home and away shirts now at the official club shop
               </p>
             </div>

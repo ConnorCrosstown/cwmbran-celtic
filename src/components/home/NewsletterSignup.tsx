@@ -24,7 +24,7 @@ export default function NewsletterSignup() {
           <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: '#ffffff' }}>
             Stay Updated
           </h2>
-          <p className="mb-6" style={{ color: '#e5e7eb' }}>
+          <p className="mb-6 text-celtic-yellow">
             Get the latest news, match updates, and exclusive content delivered to your inbox.
           </p>
 
@@ -33,14 +33,14 @@ export default function NewsletterSignup() {
               Thanks for subscribing! Check your inbox to confirm.
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 required
-                className="flex-1 px-4 py-3 rounded-lg focus:ring-2 focus:ring-celtic-yellow outline-none"
+                className="flex-1 px-4 py-3 rounded-lg bg-white text-celtic-dark placeholder-gray-500 focus:ring-2 focus:ring-celtic-yellow outline-none border border-gray-300"
               />
               <button
                 type="submit"

@@ -22,13 +22,13 @@ export default function Footer() {
           <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
               <h3 className="text-xl font-bold mb-2">Stay Updated</h3>
-              <p className="text-white text-sm">Get the latest news, fixtures & exclusive offers</p>
+              <p className="text-celtic-yellow text-sm">Get the latest news, fixtures & exclusive offers</p>
             </div>
             <form className="flex w-full md:w-auto gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 md:w-64 px-4 py-3 rounded-lg bg-white border border-white/20 text-celtic-dark placeholder-gray-500 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow"
+                className="flex-1 md:w-80 px-4 py-3 rounded-lg bg-white border border-white/20 text-celtic-dark placeholder-gray-500 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow"
               />
               <button
                 type="submit"
@@ -248,7 +248,7 @@ export default function Footer() {
       {/* Sponsors Strip */}
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-8">
-          <p className="text-celtic-yellow text-sm font-medium text-center mb-6">Official Partners</p>
+          <p className="text-white text-sm font-medium text-center mb-6">Official Partners</p>
           <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
             {sponsors.partners.map((sponsor, index) => (
               sponsor.logo ? (
