@@ -66,33 +66,35 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10 py-12 md:py-16">
         {fixture ? (
-          <div className="max-w-5xl">
-            {/* Badge Row */}
-            <div className="flex items-center gap-3 mb-6">
-              <span className={`${isHome ? 'badge-home' : 'badge-away'} flex items-center gap-2`}>
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            {/* Left Side - Match Info */}
+            <div className="max-w-2xl">
+              {/* Badge Row */}
+              <div className="flex items-center gap-3 mb-6">
+                <span className={`${isHome ? 'badge-home' : 'badge-away'} flex items-center gap-2`}>
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
+                  </span>
+                  NEXT {isHome ? 'HOME' : 'AWAY'} MATCH
                 </span>
-                NEXT {isHome ? 'HOME' : 'AWAY'} MATCH
-              </span>
-              <span className="badge-league">JD Cymru South</span>
-            </div>
-
-            {/* Match Title */}
-            <div className="mb-8">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display uppercase tracking-wide text-white leading-none mb-2">
-                Cwmbran Celtic
-              </h1>
-              <div className="flex items-center gap-4 text-white/80">
-                <span className="text-2xl md:text-3xl font-light">vs</span>
-                <span className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-celtic-yellow">
-                  {opponent}
-                </span>
+                <span className="badge-league">JD Cymru South</span>
               </div>
-            </div>
 
-            {/* Match Details */}
+              {/* Match Title */}
+              <div className="mb-8">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display uppercase tracking-wide text-white leading-none mb-2">
+                  Cwmbran Celtic
+                </h1>
+                <div className="flex items-center gap-4 text-white/80">
+                  <span className="text-2xl md:text-3xl font-light">vs</span>
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-celtic-yellow">
+                    {opponent}
+                  </span>
+                </div>
+              </div>
+
+              {/* Match Details */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-white/90 mb-8">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +161,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
               )}
 
               {/* CTA Buttons */}
-              <div className="flex gap-3 lg:ml-auto">
+              <div className="flex gap-3">
                 <Link href="/tickets" className="btn-tickets">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
@@ -175,6 +177,39 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                   </svg>
                   Get Directions
                 </Link>
+              </div>
+            </div>
+            </div>
+
+            {/* Right Side - Team Logos */}
+            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+              {/* Home Team Logo */}
+              <div className="flex flex-col items-center">
+                <div className="w-28 h-28 xl:w-36 xl:h-36 relative bg-white/10 rounded-full p-3 backdrop-blur-sm border border-white/20">
+                  <Image
+                    src="/images/club-logo.webp"
+                    alt="Cwmbran Celtic"
+                    fill
+                    className="object-contain p-2"
+                  />
+                </div>
+                <span className="mt-3 text-white/80 text-sm font-medium uppercase tracking-wide">Celtic</span>
+              </div>
+
+              {/* VS */}
+              <div className="flex flex-col items-center">
+                <span className="text-4xl xl:text-5xl font-display text-celtic-yellow">V</span>
+              </div>
+
+              {/* Away Team Logo */}
+              <div className="flex flex-col items-center">
+                <div className="w-28 h-28 xl:w-36 xl:h-36 relative bg-white/10 rounded-full p-3 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                  {/* Placeholder for opposition logo - shows first letter */}
+                  <span className="text-4xl xl:text-5xl font-display text-white/60">
+                    {opponent?.charAt(0) || '?'}
+                  </span>
+                </div>
+                <span className="mt-3 text-white/80 text-sm font-medium uppercase tracking-wide">{opponent?.split(' ')[0] || 'TBC'}</span>
               </div>
             </div>
           </div>
