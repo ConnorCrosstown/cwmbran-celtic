@@ -139,14 +139,14 @@ export const mockResults = {
     // Men's results - 2024-25 season (most recent first)
     {
       matchId: 901,
-      date: toComet("2025-04-12"),
+      date: toComet("2025-01-11"),
       homeTeam: "Cwmbran Celtic",
-      awayTeam: "Llantwit Major",
-      homeScore: 1,
-      awayScore: 0,
+      awayTeam: "Carmarthen Town",
+      homeScore: 3,
+      awayScore: 1,
       competition: "JD Cymru South",
-      scorers: "van Dieren 14'",
-      attendance: 178
+      scorers: "Berry 23', van Dieren 56', Hughes 78'",
+      attendance: 195
     },
     {
       matchId: 902,
