@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 interface CelticBondBannerProps {
-  variant?: 'full' | 'compact' | 'sidebar';
+  variant?: 'full' | 'compact' | 'sidebar' | 'topbar';
 }
 
 // Mock jackpot data - in production this would come from an API
@@ -14,6 +14,31 @@ const jackpotData = {
 };
 
 export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerProps) {
+  if (variant === 'topbar') {
+    return (
+      <div className="bg-celtic-blue text-white">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 py-2 text-sm">
+            <span className="hidden sm:inline">🎉</span>
+            <span className="font-medium">
+              <span className="text-celtic-yellow font-bold">Celtic Bond</span>
+              <span className="hidden sm:inline"> - Win up to </span>
+              <span className="sm:hidden"> - </span>
+              <span className="text-celtic-yellow font-bold">£{jackpotData.currentJackpot}</span>
+              <span className="hidden sm:inline"> this month!</span>
+            </span>
+            <Link
+              href="/celtic-bond"
+              className="bg-celtic-yellow text-celtic-dark px-3 py-1 rounded font-bold text-xs hover:bg-yellow-400 transition-colors"
+            >
+              Join Now
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (variant === 'sidebar') {
     return (
       <div className="bg-gradient-to-br from-celtic-blue to-celtic-blue-dark rounded-lg p-5 text-white">
