@@ -16,7 +16,7 @@ const jackpotData = {
 export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerProps) {
   if (variant === 'topbar') {
     return (
-      <div className="bg-celtic-blue-dark text-white overflow-hidden">
+      <Link href="/celtic-bond" className="block bg-celtic-blue-dark text-white overflow-hidden hover:bg-celtic-blue-dark/90 transition-colors cursor-pointer">
         <div className="flex items-center py-2">
           {/* Scrolling content */}
           <div className="animate-marquee whitespace-nowrap flex items-center gap-16">
@@ -40,20 +40,13 @@ export default function CelticBondBanner({ variant = 'full' }: CelticBondBannerP
                   <span className="font-bold text-celtic-yellow">£10/month</span>
                   {' '}to enter
                 </span>
+                <span className="text-celtic-yellow">★</span>
+                <span className="font-bold text-celtic-yellow">Click to Join →</span>
               </span>
             ))}
           </div>
-          {/* Fixed Join button on the right */}
-          <div className="absolute right-0 bg-gradient-to-l from-celtic-blue-dark via-celtic-blue-dark to-transparent pl-8 pr-4 py-2">
-            <Link
-              href="/celtic-bond"
-              className="bg-celtic-yellow text-celtic-dark px-4 py-1.5 rounded font-bold text-xs hover:bg-yellow-400 transition-colors whitespace-nowrap"
-            >
-              Join Now
-            </Link>
-          </div>
         </div>
-      </div>
+      </Link>
     );
   }
 
