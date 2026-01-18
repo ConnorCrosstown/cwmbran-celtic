@@ -46,11 +46,11 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Celtic Bond Top Banner - Promote the lottery */}
-      <CelticBondBanner variant="topbar" />
-
       {/* Match Status Banner - Shows latest result or live score */}
       <MatchStatusBanner latestResult={latestResult} />
+
+      {/* Celtic Bond Top Banner - Promote the lottery */}
+      <CelticBondBanner variant="topbar" />
 
       {/* Hero Section - Dramatic Next Match Display */}
       <HeroSection fixture={nextHomeFixture} />
