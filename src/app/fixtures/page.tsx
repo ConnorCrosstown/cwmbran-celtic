@@ -3,6 +3,7 @@ import FixtureCard from '@/components/fixtures/FixtureCard';
 import ResultCard from '@/components/fixtures/ResultCard';
 import LeagueTable from '@/components/tables/LeagueTable';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import TeamSelector from '@/components/fixtures/TeamSelector';
 import { getFixtures, getResults, getMensLeagueTable, getLadiesLeagueTable } from '@/lib/comet';
 
 export const metadata: Metadata = {
@@ -53,14 +54,17 @@ export default async function FixturesPage() {
         </div>
       </section>
 
+      {/* Team Selector */}
+      <TeamSelector />
+
       {/* Main Content */}
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
-          {/* Men's Section */}
-          <div className="mb-12">
+          {/* Men's First Team Section */}
+          <div id="mens" className="mb-12 scroll-mt-32">
             <div className="flex items-center gap-3 mb-6">
               <span className="bg-celtic-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">M</span>
-              <h2 className="text-2xl font-bold text-celtic-dark">Men&apos;s Team</h2>
+              <h2 className="text-2xl font-bold text-celtic-dark">Men&apos;s First Team</h2>
               <span className="text-sm text-gray-500">JD Cymru South</span>
             </div>
 
@@ -111,7 +115,7 @@ export default async function FixturesPage() {
           <hr className="border-gray-200 my-8" />
 
           {/* Women's Section */}
-          <div>
+          <div id="womens" className="mb-12 scroll-mt-32">
             <div className="flex items-center gap-3 mb-6">
               <span className="bg-celtic-yellow text-celtic-dark w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">W</span>
               <h2 className="text-2xl font-bold text-celtic-dark">Women&apos;s Team</h2>
@@ -158,6 +162,40 @@ export default async function FixturesPage() {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <hr className="border-gray-200 my-8" />
+
+          {/* Men's Seconds Section */}
+          <div id="mens-seconds" className="mb-12 scroll-mt-32">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="bg-celtic-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+              <h2 className="text-2xl font-bold text-celtic-dark">Men&apos;s Seconds</h2>
+              <span className="text-sm text-gray-500">Gwent County League Div 2</span>
+            </div>
+
+            <div className="card p-6 text-center bg-gray-50">
+              <p className="text-gray-600 mb-2">Fixtures and results coming soon</p>
+              <p className="text-sm text-gray-500">Check back for updates on our second team&apos;s matches</p>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <hr className="border-gray-200 my-8" />
+
+          {/* Men's Thirds Section */}
+          <div id="mens-thirds" className="scroll-mt-32">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="bg-celtic-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+              <h2 className="text-2xl font-bold text-celtic-dark">Men&apos;s Thirds</h2>
+              <span className="text-sm text-gray-500">Gwent County League Div 3</span>
+            </div>
+
+            <div className="card p-6 text-center bg-gray-50">
+              <p className="text-gray-600 mb-2">Fixtures and results coming soon</p>
+              <p className="text-sm text-gray-500">Check back for updates on our third team&apos;s matches</p>
             </div>
           </div>
         </div>
