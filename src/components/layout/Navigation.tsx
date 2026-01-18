@@ -32,6 +32,8 @@ const navItems: NavItem[] = [
     children: [
       { label: 'Buy Tickets', href: '/tickets' },
       { label: 'Visit Us', href: '/visit' },
+      { label: 'Away Fans Info', href: '/visitors' },
+      { label: 'Hospitality', href: '/hospitality' },
       { label: 'Match Programme', href: '/programme' },
       { label: 'Events', href: '/events' },
     ],
@@ -42,6 +44,7 @@ const navItems: NavItem[] = [
     children: [
       { label: 'About Us', href: '/club' },
       { label: 'Club History', href: '/club/history' },
+      { label: 'Club Heritage', href: '/club/heritage' },
       { label: 'Club Officials', href: '/club/officials' },
       { label: 'Season Archives', href: '/club/archives' },
       { label: 'Club Documents', href: '/club/documents' },
@@ -58,6 +61,8 @@ const navItems: NavItem[] = [
       { label: 'Celtic Bond', href: '/celtic-bond' },
       { label: 'Bond Results', href: '/celtic-bond/results' },
       { label: 'Celtic Card', href: '/celtic-card' },
+      { label: 'Membership', href: '/membership' },
+      { label: 'Fans Zone', href: '/fans' },
       { label: 'Gallery', href: '/gallery' },
     ],
   },
