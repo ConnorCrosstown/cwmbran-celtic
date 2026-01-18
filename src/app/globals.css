@@ -256,7 +256,7 @@ p {
 }
 
 .btn-tickets {
-  background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
   color: white;
   padding: 0.875rem 2rem;
   border-radius: 0.5rem;
@@ -269,7 +269,7 @@ p {
   gap: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.4);
+  box-shadow: 0 4px 14px 0 rgba(22, 163, 74, 0.4);
   position: relative;
   overflow: hidden;
 }
@@ -287,7 +287,7 @@ p {
 
 .btn-tickets:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px 0 rgba(249, 115, 22, 0.5);
+  box-shadow: 0 8px 25px 0 rgba(22, 163, 74, 0.5);
 }
 
 .btn-tickets:hover::before {
@@ -295,7 +295,7 @@ p {
 }
 
 .btn-tickets-sm {
-  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
@@ -309,7 +309,7 @@ p {
 
 .btn-tickets-sm:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
 }
 
 .btn-outline {
