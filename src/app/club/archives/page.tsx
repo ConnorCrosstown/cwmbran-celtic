@@ -13,8 +13,8 @@ export default function ArchivesPage() {
       {/* Hero */}
       <section className="bg-celtic-blue py-4 md:py-6">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Season Archives</h1>
-          <p className="text-xs" style={{ color: '#e5e7eb' }}>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Season Archives</h1>
+          <p className="text-xs text-gray-200">
             Historical records and statistics
           </p>
         </div>

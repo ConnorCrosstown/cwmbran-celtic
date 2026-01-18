@@ -137,9 +137,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
       {/* Modal */}
       <div className="fixed top-20 left-1/2 -translate-x-1/2 w-full max-w-xl z-50 px-4">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+        <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           {/* Search Input */}
-          <div className="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3 p-4 border-b border-gray-200">
             <svg
               className="w-5 h-5 text-gray-400"
               fill="none"
@@ -160,9 +160,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-400"
+              className="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder-gray-400"
             />
-            <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs text-gray-400 bg-gray-100 dark:bg-gray-700 rounded">
+            <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs text-gray-400 bg-gray-100 rounded">
               ESC
             </kbd>
           </div>
@@ -177,19 +177,19 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   onClick={onClose}
                   className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
                     index === selectedIndex
-                      ? 'bg-celtic-blue/10 dark:bg-celtic-blue/20'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'bg-celtic-blue/10/20'
+                      : 'hover:bg-gray-100'
                   }`}
                 >
                   <div className="flex-1">
-                    <p className="font-semibold text-celtic-dark dark:text-white text-sm">
+                    <p className="font-semibold text-celtic-dark text-sm">
                       {result.title}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-gray-500">
                       {result.description}
                     </p>
                   </div>
-                  <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-1 rounded">
+                  <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">
                     {result.category}
                   </span>
                 </Link>
@@ -200,7 +200,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {/* No results */}
           {query && results.length === 0 && (
             <div className="p-8 text-center">
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-gray-500">
                 No results found for &quot;{query}&quot;
               </p>
             </div>
@@ -209,35 +209,35 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {/* Quick links when no query */}
           {!query && (
             <div className="p-4">
-              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+              <p className="text-xs text-gray-500 uppercase tracking-wide mb-3">
                 Quick Links
               </p>
               <div className="grid grid-cols-2 gap-2">
                 <Link
                   href="/fixtures"
                   onClick={onClose}
-                  className="text-sm text-celtic-blue dark:text-celtic-yellow hover:underline"
+                  className="text-sm text-celtic-blue hover:underline"
                 >
                   Fixtures
                 </Link>
                 <Link
                   href="/news"
                   onClick={onClose}
-                  className="text-sm text-celtic-blue dark:text-celtic-yellow hover:underline"
+                  className="text-sm text-celtic-blue hover:underline"
                 >
                   News
                 </Link>
                 <Link
                   href="/tickets"
                   onClick={onClose}
-                  className="text-sm text-celtic-blue dark:text-celtic-yellow hover:underline"
+                  className="text-sm text-celtic-blue hover:underline"
                 >
                   Tickets
                 </Link>
                 <Link
                   href="/shop"
                   onClick={onClose}
-                  className="text-sm text-celtic-blue dark:text-celtic-yellow hover:underline"
+                  className="text-sm text-celtic-blue hover:underline"
                 >
                   Shop
                 </Link>
@@ -246,12 +246,12 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           )}
 
           {/* Footer hint */}
-          <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-2">
+          <div className="border-t border-gray-200 px-4 py-2">
             <p className="text-xs text-gray-400 text-center">
-              <kbd className="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">↑</kbd>
-              <kbd className="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded ml-1">↓</kbd>
+              <kbd className="px-1 py-0.5 bg-gray-100 rounded">↑</kbd>
+              <kbd className="px-1 py-0.5 bg-gray-100 rounded ml-1">↓</kbd>
               <span className="mx-2">to navigate</span>
-              <kbd className="px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">Enter</kbd>
+              <kbd className="px-1 py-0.5 bg-gray-100 rounded">Enter</kbd>
               <span className="ml-2">to select</span>
             </p>
           </div>

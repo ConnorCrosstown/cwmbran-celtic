@@ -73,10 +73,10 @@ const upcomingEvents: ClubEvent[] = [
 
 const getCategoryBadge = (category: ClubEvent['category']) => {
   const badges = {
-    social: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    fundraiser: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+    social: 'bg-blue-100 text-blue-800',
+    fundraiser: 'bg-green-100 text-green-800',
     awards: 'bg-celtic-yellow text-celtic-dark',
-    family: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+    family: 'bg-purple-100 text-purple-800',
   };
   const labels = {
     social: 'Social',
@@ -128,7 +128,7 @@ export default function EventsPage() {
                       {getCategoryBadge(event.category)}
                       <span className="text-sm text-gray-500">{event.time}</span>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                    <p className="text-gray-600 text-sm mb-4">
                       {event.description}
                     </p>
                     {event.price && (
@@ -143,7 +143,7 @@ export default function EventsPage() {
       </section>
 
       {/* All Events */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="section-title text-center">All Upcoming Events</h2>
@@ -161,7 +161,7 @@ export default function EventsPage() {
                         <h3 className="font-bold text-lg">{event.title}</h3>
                         {getCategoryBadge(event.category)}
                       </div>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      <p className="text-gray-600 text-sm">
                         {event.description}
                       </p>
                     </div>
@@ -196,7 +196,7 @@ export default function EventsPage() {
                   <div className="text-4xl">🧠</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Monthly Quiz Night</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                    <p className="text-gray-600 text-sm mb-2">
                       First Friday of every month at 7:30pm in the clubhouse. Teams of up to 6.
                     </p>
                     <p className="text-celtic-blue font-semibold">£2 per person</p>
@@ -209,7 +209,7 @@ export default function EventsPage() {
                   <div className="text-4xl">⚽</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Match Days</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                    <p className="text-gray-600 text-sm mb-2">
                       Every home game is an event! Clubhouse open before and after, plus tea bar with hot food.
                     </p>
                     <Link href="/fixtures" className="text-celtic-blue font-semibold hover:underline">
@@ -224,7 +224,7 @@ export default function EventsPage() {
                   <div className="text-4xl">📺</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Live Football</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                    <p className="text-gray-600 text-sm mb-2">
                       Watch live Premier League and international matches on the big screen in the clubhouse.
                     </p>
                     <p className="text-celtic-blue font-semibold">Free entry</p>
@@ -237,7 +237,7 @@ export default function EventsPage() {
                   <div className="text-4xl">🎉</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Private Hire</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
+                    <p className="text-gray-600 text-sm mb-2">
                       The clubhouse is available for private functions. Contact us for availability and rates.
                     </p>
                     <Link href="/contact" className="text-celtic-blue font-semibold hover:underline">
@@ -252,7 +252,7 @@ export default function EventsPage() {
       </section>
 
       {/* Venue Info */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="section-title text-center">The Venue</h2>
@@ -261,12 +261,12 @@ export default function EventsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="font-bold text-lg mb-4">Cwmbran Celtic Clubhouse</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-gray-600 mb-4">
                     Our clubhouse at the Avondale Motor Park Arena is the perfect venue for social events.
                     With a licensed bar, large screen TVs, and capacity for up to 100 guests, it&apos;s ideal
                     for parties, presentations, and community gatherings.
                   </p>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                  <ul className="space-y-2 text-gray-600">
                     <li className="flex items-center gap-2">
                       <span className="text-celtic-blue">✓</span>
                       <span>Licensed bar</span>
@@ -287,7 +287,7 @@ export default function EventsPage() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-4">Location</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-gray-600 mb-4">
                     <strong>Avondale Motor Park Arena</strong><br />
                     Henllys Way<br />
                     Cwmbran<br />

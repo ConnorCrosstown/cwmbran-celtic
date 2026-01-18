@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       {/* Content */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
+          <div className="max-w-3xl mx-auto prose prose-lg">
             <h2>Introduction</h2>
             <p>
               Cwmbran Celtic AFC (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy.

@@ -61,7 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
+      <body className="min-h-screen flex flex-col bg-gray-50 transition-colors">
         <ThemeProvider>
           <Header />
           <main className="flex-grow">{children}</main>

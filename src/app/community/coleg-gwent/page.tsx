@@ -21,10 +21,10 @@ export default function ColegGwentPage() {
             <span className="inline-block bg-celtic-yellow text-celtic-dark px-3 py-1 rounded-full text-xs font-semibold mb-3">
               Education Partnership
             </span>
-            <h1 className="text-xl md:text-2xl font-bold mb-2" style={{ color: '#ffffff' }}>
+            <h1 className="text-xl md:text-2xl font-bold mb-2 text-white">
               Coleg Gwent Partnership
             </h1>
-            <p className="text-sm" style={{ color: '#e5e7eb' }}>
+            <p className="text-sm text-gray-200">
               Combining education with elite football development
             </p>
           </div>
@@ -170,7 +170,7 @@ export default function ColegGwentPage() {
       <section className="py-6 md:py-8 bg-celtic-blue">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <blockquote className="text-lg md:text-xl italic mb-4" style={{ color: '#ffffff' }}>
+            <blockquote className="text-lg md:text-xl italic mb-4 text-white">
               &ldquo;This partnership creates a fantastic opportunity for young players in our area to
               develop their football while getting a quality education. It&apos;s exactly what our
               community needs.&rdquo;

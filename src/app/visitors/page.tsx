@@ -85,7 +85,7 @@ const nearbyPlaces = [
 
 export default function VisitorsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
@@ -141,13 +141,13 @@ export default function VisitorsPage() {
           <div className="grid gap-8 lg:grid-cols-2 max-w-5xl mx-auto">
             {/* Address Card */}
             <div className="card-static p-6">
-              <h3 className="font-bold text-lg text-celtic-dark dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 </svg>
                 Ground Address
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-gray-600 mb-4">
                 {clubInfo.ground.name}<br />
                 {clubInfo.ground.address.street}<br />
                 {clubInfo.ground.address.town}<br />
@@ -168,47 +168,47 @@ export default function VisitorsPage() {
 
             {/* Directions Card */}
             <div className="card-static p-6">
-              <h3 className="font-bold text-lg text-celtic-dark dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
                 By Car
               </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                <p><strong className="text-celtic-dark dark:text-white">From M4:</strong> Exit at Junction 26 and follow signs for Cwmbran. Continue on the A4051 towards Cwmbran town centre.</p>
-                <p><strong className="text-celtic-dark dark:text-white">From Cwmbran:</strong> Head towards Llanyrafon area. The ground is located off the main road with signage visible on matchdays.</p>
-                <p><strong className="text-celtic-dark dark:text-white">Parking:</strong> Free parking available at the ground. Alternative parking at nearby retail parks if required.</p>
+              <div className="space-y-3 text-sm text-gray-600">
+                <p><strong className="text-celtic-dark">From M4:</strong> Exit at Junction 26 and follow signs for Cwmbran. Continue on the A4051 towards Cwmbran town centre.</p>
+                <p><strong className="text-celtic-dark">From Cwmbran:</strong> Head towards Llanyrafon area. The ground is located off the main road with signage visible on matchdays.</p>
+                <p><strong className="text-celtic-dark">Parking:</strong> Free parking available at the ground. Alternative parking at nearby retail parks if required.</p>
               </div>
             </div>
 
             {/* Public Transport Card */}
             <div className="card-static p-6">
-              <h3 className="font-bold text-lg text-celtic-dark dark:text-white mb-4 flex items-center gap-2">
+              <h3 className="font-bold text-lg text-celtic-dark mb-4 flex items-center gap-2">
                 <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
                 By Public Transport
               </h3>
-              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                <p><strong className="text-celtic-dark dark:text-white">Train:</strong> Cwmbran railway station is approximately 1.5 miles from the ground. Direct services from Cardiff Central (20 mins) and Newport (10 mins).</p>
-                <p><strong className="text-celtic-dark dark:text-white">Bus:</strong> Local bus services operate throughout Cwmbran. Check Stagecoach South Wales for routes to Llanyrafon area.</p>
-                <p><strong className="text-celtic-dark dark:text-white">Taxi:</strong> Taxis are available from the station and town centre. Journey approximately £5-7.</p>
+              <div className="space-y-3 text-sm text-gray-600">
+                <p><strong className="text-celtic-dark">Train:</strong> Cwmbran railway station is approximately 1.5 miles from the ground. Direct services from Cardiff Central (20 mins) and Newport (10 mins).</p>
+                <p><strong className="text-celtic-dark">Bus:</strong> Local bus services operate throughout Cwmbran. Check Stagecoach South Wales for routes to Llanyrafon area.</p>
+                <p><strong className="text-celtic-dark">Taxi:</strong> Taxis are available from the station and town centre. Journey approximately £5-7.</p>
               </div>
             </div>
 
             {/* Map Placeholder */}
             <div className="card-static p-0 overflow-hidden">
-              <div className="h-full min-h-[300px] bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+              <div className="h-full min-h-[300px] bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                 <div className="text-center p-6">
-                  <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                   </svg>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm">Interactive map</p>
+                  <p className="text-gray-500 text-sm">Interactive map</p>
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${clubInfo.ground.address.street}, ${clubInfo.ground.address.town}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-celtic-blue dark:text-celtic-yellow text-sm font-semibold hover:underline"
+                    className="text-celtic-blue text-sm font-semibold hover:underline"
                   >
                     View on Google Maps
                   </a>
@@ -220,7 +220,7 @@ export default function VisitorsPage() {
       </section>
 
       {/* Facilities Section */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Ground Facilities"
@@ -230,12 +230,12 @@ export default function VisitorsPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {facilities.map((facility, index) => (
-              <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-xl p-5 text-center">
-                <div className="w-12 h-12 mx-auto mb-3 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center text-celtic-blue dark:text-celtic-yellow">
+              <div key={index} className="bg-gray-50 rounded-xl p-5 text-center">
+                <div className="w-12 h-12 mx-auto mb-3 bg-celtic-blue/10/20 rounded-full flex items-center justify-center text-celtic-blue">
                   {facility.icon}
                 </div>
-                <h3 className="font-bold text-celtic-dark dark:text-white text-sm mb-1">{facility.title}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{facility.description}</p>
+                <h3 className="font-bold text-celtic-dark text-sm mb-1">{facility.title}</h3>
+                <p className="text-xs text-gray-500">{facility.description}</p>
               </div>
             ))}
           </div>
@@ -243,7 +243,7 @@ export default function VisitorsPage() {
       </section>
 
       {/* Ground Rules Section */}
-      <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-900">
+      <section className="py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Ground Rules"
@@ -253,7 +253,7 @@ export default function VisitorsPage() {
 
           <div className="max-w-2xl mx-auto">
             <div className="card-static p-6">
-              <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+              <ul className="space-y-3 text-sm text-gray-600">
                 <li className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -291,7 +291,7 @@ export default function VisitorsPage() {
       </section>
 
       {/* Nearby Places */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Nearby"
@@ -303,10 +303,10 @@ export default function VisitorsPage() {
             {nearbyPlaces.map((place, index) => (
               <div key={index} className="card-static p-5">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-bold text-celtic-dark dark:text-white">{place.name}</h3>
-                  <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-600 dark:text-gray-400">{place.distance}</span>
+                  <h3 className="font-bold text-celtic-dark">{place.name}</h3>
+                  <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">{place.distance}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{place.description}</p>
+                <p className="text-sm text-gray-600">{place.description}</p>
               </div>
             ))}
           </div>

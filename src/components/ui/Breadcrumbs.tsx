@@ -19,7 +19,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
           {item.href ? (
             <Link href={item.href}>{item.label}</Link>
           ) : (
-            <span className="text-gray-900 dark:text-white font-medium">{item.label}</span>
+            <span className="text-gray-900 font-medium">{item.label}</span>
           )}
         </span>
       ))}

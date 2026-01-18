@@ -44,8 +44,8 @@ export default async function LadiesTeamPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Women&apos;s Team</h1>
-                <p className="text-xs" style={{ color: '#e5e7eb' }}>Genero Adran South</p>
+                <h1 className="text-xl md:text-2xl font-bold text-white">Women&apos;s Team</h1>
+                <p className="text-xs text-gray-200">Genero Adran South</p>
               </div>
 
               {/* Stats Row */}
@@ -56,11 +56,11 @@ export default async function LadiesTeamPage() {
                     <p className="text-[10px]" style={{ color: '#d1d5db' }}>Pos</p>
                   </div>
                   <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                    <p className="text-base font-bold" style={{ color: '#ffffff' }}>{position.points}</p>
+                    <p className="text-base font-bold text-white">{position.points}</p>
                     <p className="text-[10px]" style={{ color: '#d1d5db' }}>Pts</p>
                   </div>
                   <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                    <p className="text-base font-bold" style={{ color: '#ffffff' }}>{position.played}</p>
+                    <p className="text-base font-bold text-white">{position.played}</p>
                     <p className="text-[10px]" style={{ color: '#d1d5db' }}>P</p>
                   </div>
                 </div>
@@ -74,7 +74,7 @@ export default async function LadiesTeamPage() {
                   <p className="text-[10px] uppercase mb-1" style={{ color: '#9ca3af' }}>Next Game</p>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>vs {getOpponent(nextFixture)}</p>
+                      <p className="text-sm font-semibold text-white">vs {getOpponent(nextFixture)}</p>
                       <p className="text-xs" style={{ color: '#d1d5db' }}>{formatMatchDate(nextFixture.date)} • {nextFixture.time}</p>
                     </div>
                     <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${nextFixture.homeAway === 'H' ? 'bg-celtic-yellow text-celtic-dark' : 'bg-white/20'}`} style={nextFixture.homeAway !== 'H' ? { color: '#ffffff' } : {}}>
@@ -88,11 +88,11 @@ export default async function LadiesTeamPage() {
                   <p className="text-[10px] uppercase mb-1" style={{ color: '#9ca3af' }}>Last Result</p>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>vs {getOpponentFromResult(lastResult)}</p>
+                      <p className="text-sm font-semibold text-white">vs {getOpponentFromResult(lastResult)}</p>
                       <p className="text-xs" style={{ color: '#d1d5db' }}>{formatMatchDate(lastResult.date)}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-base font-bold" style={{ color: '#ffffff' }}>{lastResult.homeScore} - {lastResult.awayScore}</p>
+                      <p className="text-base font-bold text-white">{lastResult.homeScore} - {lastResult.awayScore}</p>
                       <span className={`text-[10px] font-bold ${
                         (isHomeResult(lastResult) && lastResult.homeScore > lastResult.awayScore) ||
                         (!isHomeResult(lastResult) && lastResult.awayScore > lastResult.homeScore)

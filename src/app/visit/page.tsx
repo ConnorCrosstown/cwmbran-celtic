@@ -103,25 +103,25 @@ export default function VisitUsPage() {
             {/* Public Transport */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               <div className="card-static p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
-                  <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                   </svg>
                   By Train
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700">
                   The nearest station is <strong>Cwmbran</strong> (approximately 1.5 miles from the ground).
                   From the station, you can take a taxi or walk (25-30 minutes).
                 </p>
               </div>
               <div className="card-static p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
-                  <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   By Bus
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700">
                   Several local bus routes serve the Henllys area. Check with
                   Stagecoach South Wales for current timetables.
                 </p>
@@ -132,7 +132,7 @@ export default function VisitUsPage() {
       </section>
 
       {/* Admission */}
-      <section id="admission" className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
+      <section id="admission" className="py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <SectionHeader title="Match Day Admission" subtitle="Pay on the day at the turnstile" centered />
@@ -185,19 +185,19 @@ export default function VisitUsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="card-static p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
-                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark">
+                  <div className="w-10 h-10 bg-celtic-blue/10/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
                   Clubhouse Bar
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                <p className="text-gray-700 mb-4">
                   Our licensed clubhouse bar is open on match days and selected evenings.
                   Enjoy a drink before, during, and after the game in a friendly atmosphere.
                 </p>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-gray-600 space-y-1">
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
                     Wide selection of beers, ales, and spirits
@@ -214,18 +214,18 @@ export default function VisitUsPage() {
               </div>
 
               <div className="card-static p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
-                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark">
+                  <div className="w-10 h-10 bg-celtic-blue/10/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
                   Tea Bar
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">
+                <p className="text-gray-700 mb-4">
                   Hot and cold refreshments available from our tea bar throughout the match.
                 </p>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                <ul className="text-sm text-gray-600 space-y-1">
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
                     Hot drinks (tea, coffee, hot chocolate)
@@ -242,15 +242,15 @@ export default function VisitUsPage() {
               </div>
 
               <div className="card-static p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
-                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark">
+                  <div className="w-10 h-10 bg-celtic-blue/10/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                     </svg>
                   </div>
                   Parking
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700">
                   <strong>Free parking</strong> is available at the ground.
                   There is ample space for all supporters, but we recommend
                   arriving early for popular fixtures.
@@ -258,15 +258,15 @@ export default function VisitUsPage() {
               </div>
 
               <div className="card-static p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
-                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark">
+                  <div className="w-10 h-10 bg-celtic-blue/10/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
                   Accessibility
                 </h3>
-                <p className="text-gray-700 dark:text-gray-300">
+                <p className="text-gray-700">
                   We welcome disabled supporters. Please contact the club in advance
                   if you have specific requirements and we will do our best to accommodate you.
                 </p>

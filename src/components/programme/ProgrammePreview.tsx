@@ -170,7 +170,7 @@ First Team Manager`;
                 <div className="flex justify-between items-start">
                   <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2">
                     <p className="text-[10px] uppercase tracking-[0.2em] font-semibold" style={{ color: '#facc15' }}>Official Match Programme</p>
-                    <p className="text-sm font-bold" style={{ color: '#ffffff' }}>{data.competition}</p>
+                    <p className="text-sm font-bold text-white">{data.competition}</p>
                   </div>
                   <div className="rounded-lg px-4 py-2 text-center" style={{ backgroundColor: '#facc15' }}>
                     <p className="text-2xl font-black" style={{ color: '#0f172a' }}>{data.kickoff}</p>
@@ -210,16 +210,16 @@ First Team Manager`;
                     <div className="flex justify-between items-center text-sm">
                       <div>
                         <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>Date</p>
-                        <p className="font-semibold" style={{ color: '#ffffff' }}>{formatDate(data.date)}</p>
+                        <p className="font-semibold text-white">{formatDate(data.date)}</p>
                       </div>
                       <div className="text-center">
                         <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>Venue</p>
-                        <p className="font-semibold" style={{ color: '#ffffff' }}>Avondale Motor Park Arena</p>
+                        <p className="font-semibold text-white">Avondale Motor Park Arena</p>
                       </div>
                       {data.matchdayNumber && (
                         <div className="text-right">
                           <p className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>Match Day</p>
-                          <p className="font-black text-xl" style={{ color: '#ffffff' }}>{data.matchdayNumber}</p>
+                          <p className="font-black text-xl text-white">{data.matchdayNumber}</p>
                         </div>
                       )}
                     </div>
@@ -229,7 +229,7 @@ First Team Manager`;
                   {data.matchSponsor && (
                     <div className="text-center border-t border-white/30 pt-4">
                       <p className="text-[10px] uppercase tracking-[0.15em] mb-1 font-semibold" style={{ color: '#facc15' }}>Today&apos;s Match Sponsor</p>
-                      <p className="font-bold text-lg" style={{ color: '#ffffff' }}>{data.matchSponsor}</p>
+                      <p className="font-bold text-lg text-white">{data.matchSponsor}</p>
                     </div>
                   )}
                 </div>
@@ -585,7 +585,7 @@ First Team Manager`;
 
               {/* Quote Box */}
               <div className="mt-4 rounded-lg p-4" style={{ backgroundColor: '#1e3a8a' }}>
-                <p className="text-sm italic text-center" style={{ color: '#ffffff' }}>
+                <p className="text-sm italic text-center text-white">
                   &ldquo;More than a club - we are a family, a community, a century of shared dreams.&rdquo;
                 </p>
                 <p className="text-xs text-center mt-2" style={{ color: '#facc15' }}>
@@ -660,20 +660,20 @@ First Team Manager`;
                         <h3 className="font-bold text-xs mb-3 uppercase tracking-wider" style={{ color: '#facc15' }}>Head to Head Record</h3>
                         <div className="grid grid-cols-2 gap-2">
                           <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.played}</p>
-                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Played</p>
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.played}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold text-white">Played</p>
                           </div>
                           <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(34,197,94,0.5)' }}>
-                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.celticWins}</p>
-                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Celtic Wins</p>
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.celticWins}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold text-white">Celtic Wins</p>
                           </div>
                           <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.draws}</p>
-                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Draws</p>
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.draws}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold text-white">Draws</p>
                           </div>
                           <div className="rounded p-2 text-center" style={{ backgroundColor: 'rgba(239,68,68,0.5)' }}>
-                            <p className="text-2xl font-black" style={{ color: '#ffffff' }}>{opposition.headToHead.oppositionWins}</p>
-                            <p className="text-[9px] uppercase tracking-wider font-semibold" style={{ color: '#ffffff' }}>Losses</p>
+                            <p className="text-2xl font-black text-white">{opposition.headToHead.oppositionWins}</p>
+                            <p className="text-[9px] uppercase tracking-wider font-semibold text-white">Losses</p>
                           </div>
                         </div>
                       </div>
@@ -907,7 +907,7 @@ First Team Manager`;
                               </p>
                             </div>
                             <div className="px-3 py-2 rounded text-center" style={{ backgroundColor: '#1e3a8a' }}>
-                              <p className="font-bold text-sm" style={{ color: '#ffffff' }}>{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</p>
+                              <p className="font-bold text-sm text-white">{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</p>
                             </div>
                           </div>
                         </div>
@@ -945,7 +945,7 @@ First Team Manager`;
                 {/* Header */}
                 <div className="text-center mb-6">
                   <div className="inline-block px-6 py-2 rounded-full mb-4" style={{ backgroundColor: '#1e3a8a' }}>
-                    <p className="text-xs uppercase tracking-wider font-bold" style={{ color: '#ffffff' }}>Support Your Club</p>
+                    <p className="text-xs uppercase tracking-wider font-bold text-white">Support Your Club</p>
                   </div>
                   <h2 className="text-4xl font-black tracking-tight mb-2" style={{ color: '#1e3a8a' }}>CELTIC BOND</h2>
                   <p className="text-lg font-semibold" style={{ color: '#374151' }}>Help Build Our Future</p>
@@ -965,15 +965,15 @@ First Team Manager`;
                   {/* Prize Info */}
                   <div className="grid grid-cols-3 gap-3">
                     <div className="rounded-xl p-4 text-center" style={{ backgroundColor: '#1e3a8a' }}>
-                      <p className="text-3xl font-black" style={{ color: '#ffffff' }}>£100</p>
+                      <p className="text-3xl font-black text-white">£100</p>
                       <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>1st Prize</p>
                     </div>
                     <div className="rounded-xl p-4 text-center" style={{ backgroundColor: '#2563eb' }}>
-                      <p className="text-2xl font-black" style={{ color: '#ffffff' }}>£50</p>
+                      <p className="text-2xl font-black text-white">£50</p>
                       <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>2nd Prize</p>
                     </div>
                     <div className="rounded-xl p-4 text-center" style={{ backgroundColor: '#3b82f6' }}>
-                      <p className="text-2xl font-black" style={{ color: '#ffffff' }}>£25</p>
+                      <p className="text-2xl font-black text-white">£25</p>
                       <p className="text-xs uppercase tracking-wider font-semibold" style={{ color: '#facc15' }}>3rd Prize</p>
                     </div>
                   </div>
@@ -1004,7 +1004,7 @@ First Team Manager`;
                   {/* How to Join */}
                   <div className="rounded-xl p-5" style={{ backgroundColor: '#1e3a8a' }}>
                     <h3 className="font-bold mb-2 text-sm uppercase tracking-wider" style={{ color: '#facc15' }}>How to Join</h3>
-                    <p className="text-sm mb-3" style={{ color: '#ffffff' }}>
+                    <p className="text-sm mb-3 text-white">
                       Sign up online at <span className="font-bold" style={{ color: '#facc15' }}>cwmbranceltic.com/celtic-bond</span> or speak to a committee member on match day.
                     </p>
                     <div className="flex items-center justify-between rounded-lg p-3" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
@@ -1013,7 +1013,7 @@ First Team Manager`;
                         <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>per month</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>Monthly Draw</p>
+                        <p className="text-sm font-semibold text-white">Monthly Draw</p>
                         <p className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>Results on social media</p>
                       </div>
                     </div>

@@ -68,7 +68,7 @@ const legends = [
 
 export default function HeritagePage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
@@ -128,7 +128,7 @@ export default function HeritagePage() {
           <div className="max-w-3xl mx-auto">
             <div className="relative">
               {/* Timeline line */}
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200" />
 
               {timeline.map((event, index) => (
                 <div key={index} className="relative flex gap-6 mb-8 last:mb-0">
@@ -143,8 +143,8 @@ export default function HeritagePage() {
 
                   {/* Content */}
                   <div className={`flex-1 card-static p-5 ${event.highlight ? 'border-l-4 border-celtic-yellow' : ''}`}>
-                    <h3 className="font-bold text-lg text-celtic-dark dark:text-white mb-2">{event.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">{event.description}</p>
+                    <h3 className="font-bold text-lg text-celtic-dark mb-2">{event.title}</h3>
+                    <p className="text-gray-600 text-sm">{event.description}</p>
                   </div>
                 </div>
               ))}
@@ -154,7 +154,7 @@ export default function HeritagePage() {
       </section>
 
       {/* Honours Section */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Honours"
@@ -164,14 +164,14 @@ export default function HeritagePage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {honours.map((honour, index) => (
-              <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
+              <div key={index} className="bg-gray-50 rounded-xl p-6 text-center">
                 <div className="w-12 h-12 bg-celtic-yellow rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg className="w-6 h-6 text-celtic-dark" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-celtic-dark dark:text-white mb-1">{honour.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{honour.years}</p>
+                <h3 className="font-bold text-celtic-dark mb-1">{honour.title}</h3>
+                <p className="text-sm text-gray-500">{honour.years}</p>
               </div>
             ))}
           </div>
@@ -179,7 +179,7 @@ export default function HeritagePage() {
       </section>
 
       {/* Club Legends */}
-      <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-900">
+      <section className="py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Club Legends"
@@ -196,16 +196,16 @@ export default function HeritagePage() {
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-celtic-dark dark:text-white">{legend.name}</h3>
-                <p className="text-sm text-celtic-blue dark:text-celtic-yellow font-semibold">{legend.position}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{legend.era}</p>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 italic">{legend.note}</p>
+                <h3 className="font-bold text-celtic-dark">{legend.name}</h3>
+                <p className="text-sm text-celtic-blue font-semibold">{legend.position}</p>
+                <p className="text-xs text-gray-500 mt-1">{legend.era}</p>
+                <p className="text-xs text-gray-600 mt-2 italic">{legend.note}</p>
               </div>
             ))}
           </div>
 
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-8">
-            Help us build our legends archive. If you have information about former players, please <Link href="/contact" className="text-celtic-blue dark:text-celtic-yellow hover:underline">contact us</Link>.
+          <p className="text-center text-sm text-gray-500 mt-8">
+            Help us build our legends archive. If you have information about former players, please <Link href="/contact" className="text-celtic-blue hover:underline">contact us</Link>.
           </p>
         </div>
       </section>
@@ -226,7 +226,7 @@ export default function HeritagePage() {
       </section>
 
       {/* Archive CTA */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 text-center">
           <SectionHeader
             title="Explore Our Archive"

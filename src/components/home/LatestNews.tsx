@@ -29,7 +29,7 @@ export default function LatestNews({ articles }: LatestNewsProps) {
   }
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="section-title text-center">Latest News</h2>

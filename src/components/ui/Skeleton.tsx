@@ -41,7 +41,7 @@ export function SkeletonTable() {
   return (
     <div className="space-y-2">
       {[...Array(10)].map((_, i) => (
-        <div key={i} className="flex items-center gap-4 p-3 bg-white dark:bg-gray-800 rounded-lg">
+        <div key={i} className="flex items-center gap-4 p-3 bg-white rounded-lg">
           <Skeleton className="h-6 w-6" />
           <Skeleton className="h-8 w-8 rounded-full" />
           <Skeleton className="h-4 w-32" />

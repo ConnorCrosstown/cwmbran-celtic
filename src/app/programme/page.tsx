@@ -40,8 +40,8 @@ export default function ProgrammePage() {
       {/* Hero */}
       <section className="bg-celtic-blue py-4 md:py-6">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Digital Match Programme</h1>
-          <p className="text-xs" style={{ color: '#e5e7eb' }}>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Digital Match Programme</h1>
+          <p className="text-xs text-gray-200">
             Your official matchday companion
           </p>
         </div>

@@ -9,15 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Note: Primary colors are defined in globals.css using @theme
+        // These are kept for backward compatibility
         celtic: {
+          blue: "#1e3a8a",
+          "blue-dark": "#172554",
+          "blue-light": "#2563eb",
+          yellow: "#facc15",
+          "yellow-dark": "#ca8a04",
+          "yellow-light": "#fde047",
           green: "#006633",
           "green-dark": "#004d26",
-          "green-light": "#008040",
-          gold: "#FFD700",
-          "gold-dark": "#CCA300",
           white: "#FFFFFF",
-          dark: "#1a1a1a",
-          gray: "#4a4a4a",
+          dark: "#0f172a",
+          gray: "#475569",
         },
         win: "#22c55e",
         draw: "#f59e0b",

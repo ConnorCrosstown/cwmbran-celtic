@@ -55,7 +55,7 @@ function VideoCard({ video }: { video: Video }) {
 
   return (
     <Link href="/celtic-tv" className="group cursor-pointer card-hover block rounded-lg">
-      <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 mb-3">
+      <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-200 mb-3">
         {/* Placeholder for video thumbnail */}
         <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue to-celtic-blue-dark flex items-center justify-center">
           <svg className="w-12 h-12 text-white/30" fill="currentColor" viewBox="0 0 24 24">
@@ -83,10 +83,10 @@ function VideoCard({ video }: { video: Video }) {
         </div>
       </div>
 
-      <h4 className="font-semibold text-celtic-dark dark:text-white text-sm leading-tight group-hover:text-celtic-blue dark:group-hover:text-celtic-yellow transition-colors line-clamp-2">
+      <h4 className="font-semibold text-celtic-dark text-sm leading-tight group-hover:text-celtic-blue transition-colors line-clamp-2">
         {video.title}
       </h4>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+      <p className="text-xs text-gray-500 mt-1">
         {new Date(video.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
       </p>
     </Link>
@@ -95,7 +95,7 @@ function VideoCard({ video }: { video: Video }) {
 
 export default function CelticTVSection() {
   return (
-    <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
+    <section className="py-16 md:py-20 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div className="section-header">
@@ -114,7 +114,7 @@ export default function CelticTVSection() {
           </div>
           <Link
             href="/celtic-tv"
-            className="text-celtic-blue dark:text-celtic-yellow font-semibold text-sm hover:underline flex items-center gap-1 group"
+            className="text-celtic-blue font-semibold text-sm hover:underline flex items-center gap-1 group"
           >
             View All
             <svg

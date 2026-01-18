@@ -52,8 +52,8 @@ export default function OfficialsPage() {
       {/* Hero */}
       <section className="bg-celtic-blue py-4 md:py-6">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Club Officials</h1>
-          <p className="text-xs" style={{ color: '#e5e7eb' }}>
+          <h1 className="text-xl md:text-2xl font-bold text-white">Club Officials</h1>
+          <p className="text-xs text-gray-200">
             The people behind Cwmbran Celtic AFC
           </p>
         </div>
@@ -114,7 +114,7 @@ export default function OfficialsPage() {
               {footballStaff.map((team) => (
                 <div key={team.team} className="card overflow-hidden">
                   <div className="bg-celtic-blue px-4 py-2">
-                    <h3 className="font-semibold text-sm" style={{ color: '#ffffff' }}>{team.team}</h3>
+                    <h3 className="font-semibold text-sm text-white">{team.team}</h3>
                   </div>
                   <div className="p-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

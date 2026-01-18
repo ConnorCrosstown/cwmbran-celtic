@@ -38,7 +38,7 @@ export default function SectionHeader({
       {viewAllLink && (
         <Link
           href={viewAllLink}
-          className="text-celtic-blue dark:text-celtic-yellow font-semibold text-sm hover:underline flex items-center gap-1 group"
+          className="text-celtic-blue font-semibold text-sm hover:underline flex items-center gap-1 group"
         >
           {viewAllText}
           <svg

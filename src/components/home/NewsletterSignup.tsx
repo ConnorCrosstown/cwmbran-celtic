@@ -18,10 +18,10 @@ export default function NewsletterSignup() {
   };
 
   return (
-    <section className="bg-celtic-blue py-12">
+    <section className="bg-celtic-blue py-16 md:py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: '#ffffff' }}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
             Stay Updated
           </h2>
           <p className="mb-6 text-celtic-yellow">

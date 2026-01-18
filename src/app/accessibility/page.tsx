@@ -20,7 +20,7 @@ export default function AccessibilityPage() {
       {/* Content */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
+          <div className="max-w-3xl mx-auto prose prose-lg">
             <h2>Website Accessibility</h2>
             <p>
               Cwmbran Celtic AFC is committed to ensuring our website is accessible to all users,
@@ -90,7 +90,7 @@ export default function AccessibilityPage() {
             <p>
               We welcome feedback on our accessibility provision. If you have suggestions for
               improvements or have experienced any difficulties, please{' '}
-              <Link href="/contact" className="text-celtic-blue dark:text-celtic-yellow hover:underline">
+              <Link href="/contact" className="text-celtic-blue hover:underline">
                 contact us
               </Link>
               . Your feedback helps us improve the experience for all supporters.
@@ -106,7 +106,7 @@ export default function AccessibilityPage() {
                   href="https://www.faw.cymru"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-celtic-blue dark:text-celtic-yellow hover:underline"
+                  className="text-celtic-blue hover:underline"
                 >
                   Football Association of Wales
                 </a>
@@ -116,7 +116,7 @@ export default function AccessibilityPage() {
                   href="https://www.levelplayingfield.org.uk"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-celtic-blue dark:text-celtic-yellow hover:underline"
+                  className="text-celtic-blue hover:underline"
                 >
                   Level Playing Field
                 </a>

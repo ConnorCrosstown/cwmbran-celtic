@@ -23,8 +23,8 @@ export default function MensSecondsPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Men&apos;s Seconds</h1>
-                <p className="text-xs" style={{ color: '#e5e7eb' }}>Gwent County League Division 2</p>
+                <h1 className="text-xl md:text-2xl font-bold text-white">Men&apos;s Seconds</h1>
+                <p className="text-xs text-gray-200">Gwent County League Division 2</p>
               </div>
 
               {/* Info badges */}
@@ -34,7 +34,7 @@ export default function MensSecondsPage() {
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>Team</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                  <p className="text-base font-bold" style={{ color: '#ffffff' }}>Div 2</p>
+                  <p className="text-base font-bold text-white">Div 2</p>
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>League</p>
                 </div>
               </div>
@@ -47,16 +47,16 @@ export default function MensSecondsPage() {
       <section className="py-6 md:py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark dark:text-white mb-4">About the Team</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">About the Team</h2>
 
             <div className="card p-4 mb-4">
-              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              <p className="text-sm text-gray-700 mb-2">
                 Cwmbran Celtic Men&apos;s Seconds compete in the Gwent County League Division 2. The team
                 provides an important stepping stone for players developing their skills and looking to
                 progress to the First Team, as well as experienced players who want to continue playing
                 competitive football.
               </p>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+              <p className="text-sm text-gray-700">
                 Playing in the Gwent County League gives players regular competitive matches against other
                 clubs in the region, helping them to develop their game in a competitive environment.
               </p>
@@ -69,8 +69,8 @@ export default function MensSecondsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-sm mb-1 text-celtic-dark dark:text-white">Development Pathway</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-bold text-sm mb-1 text-celtic-dark">Development Pathway</h3>
+                <p className="text-xs text-gray-600">
                   A bridge between youth football and the First Team for developing players.
                 </p>
               </div>
@@ -80,8 +80,8 @@ export default function MensSecondsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-sm mb-1 text-celtic-dark dark:text-white">Team Spirit</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-bold text-sm mb-1 text-celtic-dark">Team Spirit</h3>
+                <p className="text-xs text-gray-600">
                   A close-knit squad with a strong team ethos and commitment to the club.
                 </p>
               </div>
@@ -91,8 +91,8 @@ export default function MensSecondsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-sm mb-1 text-celtic-dark dark:text-white">Competitive Football</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-bold text-sm mb-1 text-celtic-dark">Competitive Football</h3>
+                <p className="text-xs text-gray-600">
                   Regular league matches throughout the season in the Gwent County League.
                 </p>
               </div>
@@ -102,10 +102,10 @@ export default function MensSecondsPage() {
       </section>
 
       {/* Staff */}
-      <section className="py-6 md:py-8 bg-gray-50 dark:bg-gray-800">
+      <section className="py-6 md:py-8 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark dark:text-white mb-4">Coaching Staff</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">Coaching Staff</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="card p-4">
@@ -115,7 +115,7 @@ export default function MensSecondsPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-celtic-blue font-semibold uppercase">Manager</p>
-                    <p className="font-bold text-sm text-celtic-dark dark:text-white">TBC</p>
+                    <p className="font-bold text-sm text-celtic-dark">TBC</p>
                   </div>
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function MensSecondsPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-celtic-blue font-semibold uppercase">Assistant Manager</p>
-                    <p className="font-bold text-sm text-celtic-dark dark:text-white">TBC</p>
+                    <p className="font-bold text-sm text-celtic-dark">TBC</p>
                   </div>
                 </div>
               </div>
@@ -139,25 +139,25 @@ export default function MensSecondsPage() {
       <section className="py-6 md:py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark dark:text-white mb-4">Training & Trials</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">Training & Trials</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="card p-4">
-                <h3 className="font-bold text-sm mb-2 text-celtic-dark dark:text-white">Training Sessions</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                <h3 className="font-bold text-sm mb-2 text-celtic-dark">Training Sessions</h3>
+                <p className="text-xs text-gray-600 mb-2">
                   Training takes place weekly. Contact the club for current training times and location.
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">
+                <p className="text-xs text-gray-500">
                   Training is held at Avondale Motor Park Arena or local training facilities.
                 </p>
               </div>
               <div className="card p-4">
-                <h3 className="font-bold text-sm mb-2 text-celtic-dark dark:text-white">Interested in Joining?</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                <h3 className="font-bold text-sm mb-2 text-celtic-dark">Interested in Joining?</h3>
+                <p className="text-xs text-gray-600 mb-2">
                   We&apos;re always looking for players to strengthen our squad.
                   If you&apos;re interested in playing, get in touch with us.
                 </p>
-                <Link href="/contact" className="text-celtic-blue dark:text-celtic-yellow text-xs font-semibold hover:underline">
+                <Link href="/contact" className="text-celtic-blue text-xs font-semibold hover:underline">
                   Contact us about trials &rarr;
                 </Link>
               </div>

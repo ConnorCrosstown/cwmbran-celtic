@@ -139,7 +139,7 @@ export default function CelticCardPage() {
                 <div key={index} className="card p-6">
                   <div className="text-4xl mb-4">{benefit.icon}</div>
                   <h3 className="font-bold text-lg mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  <p className="text-gray-600 text-sm">
                     {benefit.description}
                   </p>
                 </div>
@@ -150,7 +150,7 @@ export default function CelticCardPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="section-title text-center">How It Works</h2>
@@ -162,7 +162,7 @@ export default function CelticCardPage() {
                     {step.step}
                   </div>
                   <h3 className="font-bold text-lg mb-2">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  <p className="text-gray-600 text-sm">
                     {step.description}
                   </p>
                 </div>
@@ -184,7 +184,7 @@ export default function CelticCardPage() {
                   <div className="text-4xl">🍺</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Clubhouse Bar</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Pay for drinks with a simple tap. No need for cash or cards - just your Celtic Card.
                     </p>
                   </div>
@@ -196,7 +196,7 @@ export default function CelticCardPage() {
                   <div className="text-4xl">☕</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Tea Bar</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Grab a hot drink, burger, or pie on match day. Quick and convenient.
                     </p>
                   </div>
@@ -208,7 +208,7 @@ export default function CelticCardPage() {
                   <div className="text-4xl">🎟️</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Turnstiles</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Tap your card for quick entry to home matches. Linked to your season ticket if applicable.
                     </p>
                   </div>
@@ -220,7 +220,7 @@ export default function CelticCardPage() {
                   <div className="text-4xl">🛍️</div>
                   <div>
                     <h3 className="font-bold text-lg mb-2">Club Shop</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Buy merchandise, programmes, and more from the match day shop.
                     </p>
                   </div>
@@ -232,7 +232,7 @@ export default function CelticCardPage() {
       </section>
 
       {/* Top Up Options */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="section-title text-center">Easy Top Up Options</h2>
@@ -241,7 +241,7 @@ export default function CelticCardPage() {
               <div className="card p-6 text-center">
                 <div className="text-4xl mb-4">🌐</div>
                 <h3 className="font-bold text-lg mb-2">Online</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                <p className="text-gray-600 text-sm">
                   Top up anytime via our website. Instant credit to your card.
                 </p>
               </div>
@@ -249,7 +249,7 @@ export default function CelticCardPage() {
               <div className="card p-6 text-center">
                 <div className="text-4xl mb-4">📱</div>
                 <h3 className="font-bold text-lg mb-2">Mobile App</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                <p className="text-gray-600 text-sm">
                   Manage your card, check balance, and top up via the Celtic Card app.
                 </p>
               </div>
@@ -257,7 +257,7 @@ export default function CelticCardPage() {
               <div className="card p-6 text-center">
                 <div className="text-4xl mb-4">🏠</div>
                 <h3 className="font-bold text-lg mb-2">At The Clubhouse</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                <p className="text-gray-600 text-sm">
                   Top up at the bar with cash or card on match days and events.
                 </p>
               </div>
@@ -277,10 +277,10 @@ export default function CelticCardPage() {
                 <div className="text-5xl mb-4">📱</div>
                 <h3 className="font-bold text-xl mb-2">Digital Card</h3>
                 <p className="text-3xl font-bold text-celtic-blue mb-2">FREE</p>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-6">
+                <p className="text-gray-600 text-sm mb-6">
                   Add to Apple Wallet or Google Wallet. Perfect if you always have your phone.
                 </p>
-                <ul className="text-left space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <ul className="text-left space-y-2 text-sm text-gray-600">
                   <li className="flex items-center gap-2">
                     <span className="text-celtic-blue">✓</span>
                     <span>Instant activation</span>
@@ -300,10 +300,10 @@ export default function CelticCardPage() {
                 <div className="text-5xl mb-4">💳</div>
                 <h3 className="font-bold text-xl mb-2">Physical Card</h3>
                 <p className="text-3xl font-bold text-celtic-blue mb-2">£5</p>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-6">
+                <p className="text-gray-600 text-sm mb-6">
                   Premium plastic card with NFC chip. Collect at the clubhouse.
                 </p>
-                <ul className="text-left space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                <ul className="text-left space-y-2 text-sm text-gray-600">
                   <li className="flex items-center gap-2">
                     <span className="text-celtic-blue">✓</span>
                     <span>Premium card design</span>

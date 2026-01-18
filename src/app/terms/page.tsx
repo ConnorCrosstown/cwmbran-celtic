@@ -19,7 +19,7 @@ export default function TermsPage() {
       {/* Content */}
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
+          <div className="max-w-3xl mx-auto prose prose-lg">
             <h2>Acceptance of Terms</h2>
             <p>
               By accessing and using the Cwmbran Celtic AFC website, you accept and agree to be bound

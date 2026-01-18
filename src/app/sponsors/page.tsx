@@ -47,11 +47,11 @@ export default function SponsorsPage() {
                   {sponsors.main.name}
                 </div>
               )}
-              <p className="text-gray-600 dark:text-gray-400 font-semibold">{sponsors.main.name}</p>
+              <p className="text-gray-600 font-semibold">{sponsors.main.name}</p>
               <p className="text-sm text-gray-500">Stadium Naming Rights Partner</p>
             </a>
 
-            <p className="mt-8 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className="mt-8 text-gray-600 max-w-2xl mx-auto">
               We are proud to have {sponsors.main.name} as our main sponsor. Their support
               enables us to maintain our facilities and develop football in the Cwmbran community.
             </p>
@@ -60,7 +60,7 @@ export default function SponsorsPage() {
       </section>
 
       {/* Club Partners */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="section-title text-center">Club Partners</h2>
@@ -85,12 +85,12 @@ export default function SponsorsPage() {
                       </div>
                     ) : (
                       <div className="h-20 flex items-center justify-center mb-3">
-                        <span className="text-celtic-dark dark:text-white font-semibold group-hover:text-celtic-blue transition-colors">
+                        <span className="text-celtic-dark font-semibold group-hover:text-celtic-blue transition-colors">
                           {sponsor.name}
                         </span>
                       </div>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{sponsor.name}</p>
+                    <p className="text-xs text-gray-500 truncate">{sponsor.name}</p>
                   </a>
                 ) : (
                   <div key={index} className="card p-6 text-center">
@@ -104,12 +104,12 @@ export default function SponsorsPage() {
                       </div>
                     ) : (
                       <div className="h-20 flex items-center justify-center mb-3">
-                        <span className="text-celtic-dark dark:text-white font-semibold">
+                        <span className="text-celtic-dark font-semibold">
                           {sponsor.name}
                         </span>
                       </div>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{sponsor.name}</p>
+                    <p className="text-xs text-gray-500 truncate">{sponsor.name}</p>
                   </div>
                 )
               ))}
@@ -139,7 +139,7 @@ export default function SponsorsPage() {
                       />
                     </div>
                   ) : null}
-                  <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <span className="text-sm text-gray-700 font-medium">
                     {sponsor.name}
                   </span>
                 </div>

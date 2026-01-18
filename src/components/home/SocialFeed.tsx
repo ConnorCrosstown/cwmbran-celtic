@@ -63,7 +63,7 @@ const platformIcons = {
 };
 
 const platformColors = {
-  twitter: 'text-gray-900 dark:text-white',
+  twitter: 'text-gray-900',
   instagram: 'text-pink-600',
   facebook: 'text-blue-600',
 };
@@ -80,17 +80,17 @@ function SocialPostCard({ post }: { post: SocialPost }) {
       href={platformLinks[post.platform]}
       target="_blank"
       rel="noopener noreferrer"
-      className="card-static p-4 hover:border-celtic-blue dark:hover:border-celtic-yellow transition-colors group block"
+      className="card-static p-4 hover:border-celtic-blue transition-colors group block"
     >
       <div className="flex items-start gap-3">
         <div className={`${platformColors[post.platform]} flex-shrink-0`}>
           {platformIcons[post.platform]}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 group-hover:text-celtic-dark dark:group-hover:text-white transition-colors">
+          <p className="text-sm text-gray-700 line-clamp-3 group-hover:text-celtic-dark transition-colors">
             {post.content}
           </p>
-          <div className="flex items-center gap-3 mt-2 text-xs text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
             <span>{new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
             <span className="flex items-center gap-1">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
@@ -107,7 +107,7 @@ function SocialPostCard({ post }: { post: SocialPost }) {
 
 export default function SocialFeed() {
   return (
-    <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
+    <section className="py-16 md:py-20 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div className="section-header">
@@ -122,7 +122,7 @@ export default function SocialFeed() {
               href="https://twitter.com/CwmbranCelticFC"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-celtic-blue hover:text-white transition-colors"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 hover:bg-celtic-blue hover:text-white transition-colors"
               aria-label="Twitter"
             >
               {platformIcons.twitter}
@@ -131,7 +131,7 @@ export default function SocialFeed() {
               href="https://instagram.com/cwmbranceltic"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-pink-600 hover:text-white transition-colors"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 hover:bg-pink-600 hover:text-white transition-colors"
               aria-label="Instagram"
             >
               {platformIcons.instagram}
@@ -140,7 +140,7 @@ export default function SocialFeed() {
               href="https://facebook.com/CwmbranCelticAFC"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-colors"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
               aria-label="Facebook"
             >
               {platformIcons.facebook}
@@ -155,15 +155,15 @@ export default function SocialFeed() {
         </div>
 
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Follow us on social media using <span className="text-celtic-blue dark:text-celtic-yellow font-semibold">#UpTheCeltic</span>
+          <p className="text-sm text-gray-600 mb-4">
+            Follow us on social media using <span className="text-celtic-blue font-semibold">#UpTheCeltic</span>
           </p>
           <div className="flex sm:hidden items-center justify-center gap-3">
             <a
               href="https://twitter.com/CwmbranCelticFC"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-celtic-blue hover:text-white transition-colors"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 hover:bg-celtic-blue hover:text-white transition-colors"
               aria-label="Twitter"
             >
               {platformIcons.twitter}
@@ -172,7 +172,7 @@ export default function SocialFeed() {
               href="https://instagram.com/cwmbranceltic"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-pink-600 hover:text-white transition-colors"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 hover:bg-pink-600 hover:text-white transition-colors"
               aria-label="Instagram"
             >
               {platformIcons.instagram}
@@ -181,7 +181,7 @@ export default function SocialFeed() {
               href="https://facebook.com/CwmbranCelticAFC"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-colors"
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-600 hover:bg-blue-600 hover:text-white transition-colors"
               aria-label="Facebook"
             >
               {platformIcons.facebook}

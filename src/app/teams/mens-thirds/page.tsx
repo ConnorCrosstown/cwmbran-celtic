@@ -23,8 +23,8 @@ export default function MensThirdsPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Men&apos;s Thirds</h1>
-                <p className="text-xs" style={{ color: '#e5e7eb' }}>Gwent County League Division 3</p>
+                <h1 className="text-xl md:text-2xl font-bold text-white">Men&apos;s Thirds</h1>
+                <p className="text-xs text-gray-200">Gwent County League Division 3</p>
               </div>
 
               {/* Info badges */}
@@ -34,7 +34,7 @@ export default function MensThirdsPage() {
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>Team</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                  <p className="text-base font-bold" style={{ color: '#ffffff' }}>Div 3</p>
+                  <p className="text-base font-bold text-white">Div 3</p>
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>League</p>
                 </div>
               </div>
@@ -47,15 +47,15 @@ export default function MensThirdsPage() {
       <section className="py-6 md:py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark dark:text-white mb-4">About the Team</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">About the Team</h2>
 
             <div className="card p-4 mb-4">
-              <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              <p className="text-sm text-gray-700 mb-2">
                 Cwmbran Celtic Men&apos;s Thirds compete in the Gwent County League Division 3. The team
                 is an important part of the club&apos;s structure, providing opportunities for players
                 of all abilities to represent Cwmbran Celtic in competitive football.
               </p>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+              <p className="text-sm text-gray-700">
                 The Thirds team emphasises enjoyment, development, and community spirit while still
                 competing at a good standard of local football. It&apos;s perfect for players who want
                 to play regular competitive football in a supportive environment.
@@ -69,8 +69,8 @@ export default function MensThirdsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-sm mb-1 text-celtic-dark dark:text-white">Enjoyment First</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-bold text-sm mb-1 text-celtic-dark">Enjoyment First</h3>
+                <p className="text-xs text-gray-600">
                   Football should be fun - we focus on enjoying the game while being competitive.
                 </p>
               </div>
@@ -80,8 +80,8 @@ export default function MensThirdsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-sm mb-1 text-celtic-dark dark:text-white">All Welcome</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-bold text-sm mb-1 text-celtic-dark">All Welcome</h3>
+                <p className="text-xs text-gray-600">
                   Open to players of all abilities who want to be part of the Celtic family.
                 </p>
               </div>
@@ -91,8 +91,8 @@ export default function MensThirdsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </div>
-                <h3 className="font-bold text-sm mb-1 text-celtic-dark dark:text-white">Community Spirit</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <h3 className="font-bold text-sm mb-1 text-celtic-dark">Community Spirit</h3>
+                <p className="text-xs text-gray-600">
                   Strong team spirit and social connections both on and off the pitch.
                 </p>
               </div>
@@ -102,10 +102,10 @@ export default function MensThirdsPage() {
       </section>
 
       {/* Staff */}
-      <section className="py-6 md:py-8 bg-gray-50 dark:bg-gray-800">
+      <section className="py-6 md:py-8 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark dark:text-white mb-4">Coaching Staff</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">Coaching Staff</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="card p-4">
@@ -115,7 +115,7 @@ export default function MensThirdsPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-celtic-blue font-semibold uppercase">Manager</p>
-                    <p className="font-bold text-sm text-celtic-dark dark:text-white">TBC</p>
+                    <p className="font-bold text-sm text-celtic-dark">TBC</p>
                   </div>
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function MensThirdsPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-celtic-blue font-semibold uppercase">Assistant Manager</p>
-                    <p className="font-bold text-sm text-celtic-dark dark:text-white">TBC</p>
+                    <p className="font-bold text-sm text-celtic-dark">TBC</p>
                   </div>
                 </div>
               </div>
@@ -139,25 +139,25 @@ export default function MensThirdsPage() {
       <section className="py-6 md:py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark dark:text-white mb-4">Training & Trials</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">Training & Trials</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="card p-4">
-                <h3 className="font-bold text-sm mb-2 text-celtic-dark dark:text-white">Training Sessions</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                <h3 className="font-bold text-sm mb-2 text-celtic-dark">Training Sessions</h3>
+                <p className="text-xs text-gray-600 mb-2">
                   Training takes place weekly. Contact the club for current training times and location.
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">
+                <p className="text-xs text-gray-500">
                   Training is held at Avondale Motor Park Arena or local training facilities.
                 </p>
               </div>
               <div className="card p-4">
-                <h3 className="font-bold text-sm mb-2 text-celtic-dark dark:text-white">Interested in Joining?</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                <h3 className="font-bold text-sm mb-2 text-celtic-dark">Interested in Joining?</h3>
+                <p className="text-xs text-gray-600 mb-2">
                   Looking for a team? The Thirds welcome players of all abilities.
                   Get in touch to find out more.
                 </p>
-                <Link href="/contact" className="text-celtic-blue dark:text-celtic-yellow text-xs font-semibold hover:underline">
+                <Link href="/contact" className="text-celtic-blue text-xs font-semibold hover:underline">
                   Contact us about joining &rarr;
                 </Link>
               </div>

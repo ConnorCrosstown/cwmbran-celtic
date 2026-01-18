@@ -20,7 +20,7 @@ export default function GalleryViewer({ images }: GalleryViewerProps) {
               <button
                 key={image.id}
                 onClick={() => setSelectedImage(index)}
-                className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden hover:opacity-90 transition-opacity relative group"
+                className="aspect-square bg-gray-200 rounded-lg overflow-hidden hover:opacity-90 transition-opacity relative group"
               >
                 <img
                   src={image.src}

@@ -31,8 +31,8 @@ export default function CelticBondResultsPage() {
             <Link href="/celtic-bond" className="text-celtic-yellow/80 text-xs hover:text-celtic-yellow mb-2 inline-block">
               &larr; Back to Celtic Bond
             </Link>
-            <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Celtic Bond Results</h1>
-            <p className="text-xs" style={{ color: '#e5e7eb' }}>
+            <h1 className="text-xl md:text-2xl font-bold text-white">Celtic Bond Results</h1>
+            <p className="text-xs text-gray-200">
               Monthly draw winners
             </p>
           </div>

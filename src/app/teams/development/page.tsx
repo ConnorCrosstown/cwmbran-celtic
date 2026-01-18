@@ -22,8 +22,8 @@ export default function DevelopmentSquadPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Development Squad</h1>
-                <p className="text-xs" style={{ color: '#e5e7eb' }}>Building for the future</p>
+                <h1 className="text-xl md:text-2xl font-bold text-white">Development Squad</h1>
+                <p className="text-xs text-gray-200">Building for the future</p>
               </div>
 
               {/* Info badges */}
@@ -33,7 +33,7 @@ export default function DevelopmentSquadPage() {
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>Age</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                  <p className="text-base font-bold" style={{ color: '#ffffff' }}>Reserve</p>
+                  <p className="text-base font-bold text-white">Reserve</p>
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>League</p>
                 </div>
               </div>
@@ -163,10 +163,10 @@ export default function DevelopmentSquadPage() {
       <section className="py-6 md:py-8 bg-celtic-blue">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-lg font-bold mb-2" style={{ color: '#ffffff' }}>
+            <h2 className="text-lg font-bold mb-2 text-white">
               Coleg Gwent Partnership
             </h2>
-            <p className="text-sm mb-4" style={{ color: '#e5e7eb' }}>
+            <p className="text-sm mb-4 text-gray-200">
               Our partnership with Coleg Gwent provides an additional pathway for young players
               to develop their football while gaining educational qualifications.
             </p>

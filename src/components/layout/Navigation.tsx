@@ -171,15 +171,15 @@ function DropdownMenu({ item, mobile, onItemClick, isOpen, onOpen, onClose }: Dr
       </Link>
 
       {isOpen && item.children && (
-        <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50">
+        <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
           {item.children.map((child) => (
             <Link
               key={child.href}
               href={child.href}
               className={`block px-4 py-2 text-sm transition-colors ${
                 pathname === child.href
-                  ? 'bg-celtic-blue/10 text-celtic-blue dark:text-celtic-yellow'
-                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  ? 'bg-celtic-blue/10 text-celtic-blue'
+                  : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
               {child.label}

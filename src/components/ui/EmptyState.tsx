@@ -49,10 +49,10 @@ export default function EmptyState({ icon = 'file', title, description, action }
       <div className="empty-state-icon">
         {icons[icon]}
       </div>
-      <h3 className="text-xl font-display text-celtic-dark dark:text-white mb-2">
+      <h3 className="text-xl font-display text-celtic-dark mb-2">
         {title}
       </h3>
-      <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto mb-6">
+      <p className="text-gray-600 max-w-md mx-auto mb-6">
         {description}
       </p>
       {action && (

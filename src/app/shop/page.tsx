@@ -71,7 +71,7 @@ export default function ShopPage() {
                   <h3 className="font-bold text-xl mb-2 group-hover:text-celtic-blue transition-colors">
                     {category.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
+                  <p className="text-gray-600 text-sm mb-4">
                     {category.description}
                   </p>
                   <span className="inline-flex items-center gap-1 text-celtic-blue font-semibold">
@@ -88,7 +88,7 @@ export default function ShopPage() {
       </section>
 
       {/* Kit Partner */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="section-title text-center">Our Kit Partner</h2>
@@ -97,11 +97,11 @@ export default function ShopPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
                   <h3 className="font-bold text-2xl mb-4">Rhino Teamwear</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-gray-600 mb-4">
                     Our official kit supplier Rhino provides all replica kits and training wear.
                     Premium quality sportswear designed for performance.
                   </p>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-6">
+                  <ul className="space-y-2 text-gray-600 mb-6">
                     <li className="flex items-center gap-2">
                       <span className="text-celtic-blue">✓</span>
                       <span>Official replica shirts</span>
@@ -131,7 +131,7 @@ export default function ShopPage() {
                     </svg>
                   </a>
                 </div>
-                <div className="bg-white dark:bg-gray-700 rounded-xl p-8 text-center">
+                <div className="bg-white rounded-xl p-8 text-center">
                   <div className="text-6xl mb-4">🦏</div>
                   <p className="font-bold text-xl text-celtic-blue">Rhino</p>
                   <p className="text-gray-500">Official Kit Partner</p>
@@ -157,11 +157,11 @@ export default function ShopPage() {
                 </div>
                 <div className="order-1 md:order-2">
                   <h3 className="font-bold text-2xl mb-4">Eco-Friendly Merchandise</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-gray-600 mb-4">
                     Our supporter merchandise is produced by Teemill using sustainable, organic cotton
                     and eco-friendly production methods. Made to order, so no waste!
                   </p>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-6">
+                  <ul className="space-y-2 text-gray-600 mb-6">
                     <li className="flex items-center gap-2">
                       <span className="text-celtic-blue">✓</span>
                       <span>T-shirts & hoodies</span>
@@ -198,11 +198,11 @@ export default function ShopPage() {
       </section>
 
       {/* Match Day Shop */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="section-title">Match Day Shop</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
               Visit our club shop at the Avondale Motor Park Arena on match days for merchandise,
               programmes, and more. Cash and card payments accepted.
             </p>
@@ -211,21 +211,21 @@ export default function ShopPage() {
               <div className="card p-6">
                 <div className="text-4xl mb-3">📍</div>
                 <h3 className="font-semibold mb-2">Location</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600">
                   Inside the clubhouse at the Avondale Motor Park Arena
                 </p>
               </div>
               <div className="card p-6">
                 <div className="text-4xl mb-3">🕐</div>
                 <h3 className="font-semibold mb-2">Opening Hours</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600">
                   1 hour before kick-off until 30 mins after full time
                 </p>
               </div>
               <div className="card p-6">
                 <div className="text-4xl mb-3">💳</div>
                 <h3 className="font-semibold mb-2">Payment</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600">
                   Cash & contactless card payments accepted
                 </p>
               </div>

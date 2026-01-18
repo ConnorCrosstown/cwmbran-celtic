@@ -52,7 +52,7 @@ function ProductCard({ product }: { product: Product }) {
       rel="noopener noreferrer"
       className="group card-hover block rounded-lg"
     >
-      <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 mb-3">
+      <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
         {/* Placeholder for product image */}
         <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue/10 to-celtic-yellow/10 flex items-center justify-center">
           <div className="w-20 h-20 bg-celtic-blue/20 rounded-full flex items-center justify-center">
@@ -77,13 +77,13 @@ function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+      <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
         {product.category}
       </p>
-      <h4 className="font-semibold text-celtic-dark dark:text-white text-sm mb-1 group-hover:text-celtic-blue dark:group-hover:text-celtic-yellow transition-colors">
+      <h4 className="font-semibold text-celtic-dark text-sm mb-1 group-hover:text-celtic-blue transition-colors">
         {product.name}
       </h4>
-      <p className="font-bold text-celtic-blue dark:text-celtic-yellow">
+      <p className="font-bold text-celtic-blue">
         £{product.price.toFixed(2)}
       </p>
     </a>
@@ -92,7 +92,7 @@ function ProductCard({ product }: { product: Product }) {
 
 export default function ShopSection() {
   return (
-    <section className="py-16 md:py-20 bg-white dark:bg-gray-900">
+    <section className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div className="section-header">
@@ -104,7 +104,7 @@ export default function ShopSection() {
           </div>
           <Link
             href="/shop"
-            className="text-celtic-blue dark:text-celtic-yellow font-semibold text-sm hover:underline flex items-center gap-1 group"
+            className="text-celtic-blue font-semibold text-sm hover:underline flex items-center gap-1 group"
           >
             Shop All
             <svg

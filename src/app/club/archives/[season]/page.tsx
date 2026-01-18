@@ -44,8 +44,8 @@ export default async function SeasonArchivePage({ params }: Props) {
             <Link href="/club/archives" className="text-celtic-yellow/80 text-xs hover:text-celtic-yellow mb-2 inline-block">
               &larr; All Archives
             </Link>
-            <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>{archive.season} Season</h1>
-            <p className="text-xs" style={{ color: '#e5e7eb' }}>
+            <h1 className="text-xl md:text-2xl font-bold text-white">{archive.season} Season</h1>
+            <p className="text-xs text-gray-200">
               Season archive and statistics
             </p>
           </div>
@@ -60,7 +60,7 @@ export default async function SeasonArchivePage({ params }: Props) {
 
             <div className="card overflow-hidden mb-4">
               <div className="bg-celtic-blue p-3">
-                <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>{archive.mens.league}</p>
+                <p className="text-sm font-semibold text-white">{archive.mens.league}</p>
               </div>
               <div className="p-4">
                 {/* League position */}
@@ -146,7 +146,7 @@ export default async function SeasonArchivePage({ params }: Props) {
 
               <div className="card overflow-hidden mb-4">
                 <div className="bg-celtic-blue p-3">
-                  <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>{archive.womens.league}</p>
+                  <p className="text-sm font-semibold text-white">{archive.womens.league}</p>
                 </div>
                 <div className="p-4">
                   {/* League position */}

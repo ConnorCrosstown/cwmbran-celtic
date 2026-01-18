@@ -136,7 +136,7 @@ const benefits = [
 
 export default function MembershipPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
@@ -203,16 +203,16 @@ export default function MembershipPage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="font-bold text-lg text-celtic-dark dark:text-white mb-2">{ticket.name}</h3>
+                  <h3 className="font-bold text-lg text-celtic-dark mb-2">{ticket.name}</h3>
                   <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-4xl font-display text-celtic-blue dark:text-celtic-yellow">£{ticket.price}</span>
+                    <span className="text-4xl font-display text-celtic-blue">£{ticket.price}</span>
                   </div>
-                  <p className="text-celtic-yellow dark:text-celtic-yellow/80 text-sm font-semibold mb-3">{ticket.savings}</p>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{ticket.description}</p>
+                  <p className="text-celtic-yellow/80 text-sm font-semibold mb-3">{ticket.savings}</p>
+                  <p className="text-gray-600 text-sm mb-4">{ticket.description}</p>
 
                   <ul className="space-y-2 mb-6">
                     {ticket.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                      <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                         <svg className="w-4 h-4 text-celtic-yellow flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
@@ -229,14 +229,14 @@ export default function MembershipPage() {
             ))}
           </div>
 
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-8">
+          <p className="text-center text-sm text-gray-500 mt-8">
             Season tickets can be collected from the clubhouse on matchdays or posted for an additional £3.
           </p>
         </div>
       </section>
 
       {/* Membership Section */}
-      <section id="membership" className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section id="membership" className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Club Membership"
@@ -250,18 +250,18 @@ export default function MembershipPage() {
                 key={index}
                 className={`card-static p-6 ${tier.color === 'yellow' ? 'border-2 border-celtic-yellow bg-celtic-yellow/5' : ''}`}
               >
-                <h3 className="font-display text-xl uppercase text-celtic-dark dark:text-white mb-2">{tier.name}</h3>
+                <h3 className="font-display text-xl uppercase text-celtic-dark mb-2">{tier.name}</h3>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className={`text-4xl font-display ${tier.color === 'yellow' ? 'text-celtic-dark dark:text-celtic-yellow' : 'text-celtic-blue dark:text-celtic-yellow'}`}>
+                  <span className={`text-4xl font-display ${tier.color === 'yellow' ? 'text-celtic-dark' : 'text-celtic-blue'}`}>
                     £{tier.price}
                   </span>
-                  <span className="text-gray-500 dark:text-gray-400 text-sm">/{tier.period}</span>
+                  <span className="text-gray-500 text-sm">/{tier.period}</span>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{tier.description}</p>
+                <p className="text-gray-600 text-sm mb-4">{tier.description}</p>
 
                 <ul className="space-y-2 mb-6">
                   {tier.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                       <svg className="w-4 h-4 text-celtic-yellow flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
@@ -283,7 +283,7 @@ export default function MembershipPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-900">
+      <section className="py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Frequently Asked Questions"
@@ -292,26 +292,26 @@ export default function MembershipPage() {
 
           <div className="max-w-2xl mx-auto space-y-4">
             <div className="card-static p-5">
-              <h3 className="font-bold text-celtic-dark dark:text-white mb-2">How do I collect my season ticket?</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-bold text-celtic-dark mb-2">How do I collect my season ticket?</h3>
+              <p className="text-sm text-gray-600">
                 Season tickets can be collected from the clubhouse before any home game. Please bring photo ID. Alternatively, we can post your ticket for £3.
               </p>
             </div>
             <div className="card-static p-5">
-              <h3 className="font-bold text-celtic-dark dark:text-white mb-2">What matches are included?</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-bold text-celtic-dark mb-2">What matches are included?</h3>
+              <p className="text-sm text-gray-600">
                 Season tickets cover all JD Cymru South home league matches. Cup matches and friendlies may require separate purchase, though season ticket holders receive priority booking.
               </p>
             </div>
             <div className="card-static p-5">
-              <h3 className="font-bold text-celtic-dark dark:text-white mb-2">Can I get a refund if I can't attend?</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-bold text-celtic-dark mb-2">Can I get a refund if I can't attend?</h3>
+              <p className="text-sm text-gray-600">
                 Season tickets are non-refundable, but you can gift your ticket to a friend or family member for individual matches.
               </p>
             </div>
             <div className="card-static p-5">
-              <h3 className="font-bold text-celtic-dark dark:text-white mb-2">Does membership include entry to games?</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h3 className="font-bold text-celtic-dark mb-2">Does membership include entry to games?</h3>
+              <p className="text-sm text-gray-600">
                 Supporter Membership does not include match entry - you would need to purchase tickets separately. For included match entry, consider a season ticket.
               </p>
             </div>

@@ -71,10 +71,10 @@ export default function SponsorshipOpportunitiesPage() {
           <span className="inline-block bg-celtic-yellow text-celtic-dark px-3 py-1 rounded-full text-xs font-semibold mb-3">
             Partner With Us
           </span>
-          <h1 className="text-xl md:text-3xl font-bold mb-2" style={{ color: '#ffffff' }}>
+          <h1 className="text-xl md:text-3xl font-bold mb-2 text-white">
             Sponsorship Opportunities
           </h1>
-          <p className="text-sm max-w-2xl mx-auto" style={{ color: '#e5e7eb' }}>
+          <p className="text-sm max-w-2xl mx-auto text-gray-200">
             Join the Cwmbran Celtic family and connect your brand with our passionate community
           </p>
         </div>
@@ -199,7 +199,7 @@ export default function SponsorshipOpportunitiesPage() {
       <section className="py-6 md:py-8 bg-celtic-blue">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-lg font-bold text-center mb-4" style={{ color: '#ffffff' }}>
+            <h2 className="text-lg font-bold text-center mb-4 text-white">
               Sponsorship Enquiry
             </h2>
 

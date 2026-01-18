@@ -54,7 +54,7 @@ const venueHire = [
 
 export default function HospitalityPage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
@@ -98,13 +98,13 @@ export default function HospitalityPage() {
 
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-bold text-celtic-dark dark:text-white">{pkg.name}</h3>
-                    <span className="text-celtic-blue dark:text-celtic-yellow font-bold">{pkg.price}</span>
+                    <h3 className="text-xl font-bold text-celtic-dark">{pkg.name}</h3>
+                    <span className="text-celtic-blue font-bold">{pkg.price}</span>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{pkg.description}</p>
+                  <p className="text-gray-600 text-sm mb-4">{pkg.description}</p>
                   <ul className="space-y-2 mb-6">
                     {pkg.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                      <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                         <svg className="w-4 h-4 text-celtic-yellow flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
@@ -123,7 +123,7 @@ export default function HospitalityPage() {
       </section>
 
       {/* Venue Hire */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Venue Hire"
@@ -133,12 +133,12 @@ export default function HospitalityPage() {
           <div className="grid gap-6 md:grid-cols-3">
             {venueHire.map((venue, index) => (
               <div key={index} className="card-static card-accent-left p-6">
-                <h3 className="text-xl font-bold text-celtic-dark dark:text-white mb-2">{venue.name}</h3>
-                <p className="text-celtic-blue dark:text-celtic-yellow font-semibold text-sm mb-3">{venue.capacity}</p>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{venue.description}</p>
+                <h3 className="text-xl font-bold text-celtic-dark mb-2">{venue.name}</h3>
+                <p className="text-celtic-blue font-semibold text-sm mb-3">{venue.capacity}</p>
+                <p className="text-gray-600 text-sm mb-4">{venue.description}</p>
                 <ul className="space-y-2">
                   {venue.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                       <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full flex-shrink-0" />
                       {feature}
                     </li>

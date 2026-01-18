@@ -111,7 +111,7 @@ export default async function GalleryAlbumPage({ params }: PageProps) {
       <GalleryViewer images={album.images} />
 
       {/* Back link */}
-      <section className="py-8 border-t dark:border-gray-700">
+      <section className="py-8 border-t">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <Link

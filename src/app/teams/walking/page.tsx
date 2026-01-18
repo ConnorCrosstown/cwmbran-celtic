@@ -23,8 +23,8 @@ export default function WalkingFootballPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <h1 className="text-xl md:text-2xl font-bold" style={{ color: '#ffffff' }}>Walking Football</h1>
-                <p className="text-xs" style={{ color: '#e5e7eb' }}>Football for all ages and abilities</p>
+                <h1 className="text-xl md:text-2xl font-bold text-white">Walking Football</h1>
+                <p className="text-xs text-gray-200">Football for all ages and abilities</p>
               </div>
 
               {/* Info badges */}
@@ -34,11 +34,11 @@ export default function WalkingFootballPage() {
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>Age</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                  <p className="text-base font-bold" style={{ color: '#ffffff' }}>All</p>
+                  <p className="text-base font-bold text-white">All</p>
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>Levels</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded px-3 py-1.5 text-center border border-white/10">
-                  <p className="text-base font-bold" style={{ color: '#ffffff' }}>Weekly</p>
+                  <p className="text-base font-bold text-white">Weekly</p>
                   <p className="text-[10px]" style={{ color: '#d1d5db' }}>Sessions</p>
                 </div>
               </div>

@@ -13,8 +13,8 @@ export default function TicketsPage() {
       {/* Hero */}
       <section className="bg-celtic-blue py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#ffffff' }}>Tickets</h1>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#e5e7eb' }}>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">Tickets</h1>
+          <p className="text-lg max-w-2xl mx-auto text-gray-200">
             Get your tickets for Cwmbran Celtic home matches at the Avondale Motor Park Arena
           </p>
         </div>
@@ -68,11 +68,11 @@ export default function TicketsPage() {
       </section>
 
       {/* Season Tickets */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
             <h2 className="section-title text-center">Season Tickets 2026/27</h2>
-            <p className="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+            <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
               Get access to all home league matches with a season ticket. Save money and show your support for the Celts!
             </p>
 
@@ -206,7 +206,7 @@ export default function TicketsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="section-title">Digital Wallet Passes</h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-gray-600 mb-6">
                   All season ticket holders receive a digital pass for Apple Wallet or Google Wallet.
                   Simply show your phone at the turnstile for quick entry - no paper tickets needed!
                 </p>
@@ -230,11 +230,11 @@ export default function TicketsPage() {
                 </ul>
               </div>
               <div className="flex justify-center gap-4">
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 text-center">
+                <div className="bg-gray-100 rounded-2xl p-6 text-center">
                   <div className="text-5xl mb-3">📱</div>
                   <p className="font-semibold">Apple Wallet</p>
                 </div>
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl p-6 text-center">
+                <div className="bg-gray-100 rounded-2xl p-6 text-center">
                   <div className="text-5xl mb-3">📲</div>
                   <p className="font-semibold">Google Wallet</p>
                 </div>
@@ -245,7 +245,7 @@ export default function TicketsPage() {
       </section>
 
       {/* Match Day Info */}
-      <section className="py-12 md:py-16 bg-gray-100 dark:bg-gray-800">
+      <section className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="section-title text-center">Match Day Information</h2>
@@ -253,12 +253,12 @@ export default function TicketsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="card p-6">
                 <h3 className="font-bold text-lg mb-4">Getting There</h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                <p className="text-gray-600 mb-4">
                   <strong>Avondale Motor Park Arena</strong><br />
                   Henllys Way, Cwmbran<br />
                   NP44 3JY
                 </p>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-600">
                   Free parking available at the ground. The venue is a 10-minute walk from Cwmbran town centre.
                 </p>
                 <Link href="/visit" className="text-celtic-blue font-semibold hover:underline mt-4 inline-block">
@@ -268,7 +268,7 @@ export default function TicketsPage() {
 
               <div className="card p-6">
                 <h3 className="font-bold text-lg mb-4">Facilities</h3>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                <ul className="space-y-2 text-gray-600">
                   <li className="flex items-center gap-2">
                     <span>🍺</span>
                     <span>Licensed clubhouse bar</span>

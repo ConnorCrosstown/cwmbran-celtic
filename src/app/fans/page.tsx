@@ -109,7 +109,7 @@ const chants = [
 
 export default function FanZonePage() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
@@ -149,14 +149,14 @@ export default function FanZonePage() {
           <div className="grid gap-8 md:grid-cols-3">
             {fanContent.map((item, index) => (
               <div key={index} className="card card-accent-yellow-top p-6">
-                <div className="w-14 h-14 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-xl flex items-center justify-center text-celtic-blue dark:text-celtic-yellow mb-4">
+                <div className="w-14 h-14 bg-celtic-blue/10/20 rounded-xl flex items-center justify-center text-celtic-blue mb-4">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-bold text-celtic-dark dark:text-white mb-2">{item.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{item.description}</p>
+                <h3 className="text-xl font-bold text-celtic-dark mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">{item.description}</p>
                 <ul className="space-y-2 mb-6">
                   {item.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                       <svg className="w-4 h-4 text-celtic-yellow flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
@@ -174,7 +174,7 @@ export default function FanZonePage() {
       </section>
 
       {/* Social Media Section */}
-      <section id="social" className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section id="social" className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Connect With Us"
@@ -189,14 +189,14 @@ export default function FanZonePage() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-static p-5 text-center hover:border-celtic-blue dark:hover:border-celtic-yellow transition-colors group"
+                className="card-static p-5 text-center hover:border-celtic-blue transition-colors group"
               >
-                <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 group-hover:bg-celtic-blue group-hover:text-white dark:group-hover:bg-celtic-yellow dark:group-hover:text-celtic-dark transition-colors">
+                <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 group-hover:bg-celtic-blue group-hover:text-white transition-colors">
                   {social.icon}
                 </div>
-                <h3 className="font-bold text-celtic-dark dark:text-white mb-1">{social.name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{social.handle}</p>
-                <p className="text-xs text-celtic-blue dark:text-celtic-yellow font-semibold">{social.followers} followers</p>
+                <h3 className="font-bold text-celtic-dark mb-1">{social.name}</h3>
+                <p className="text-sm text-gray-500 mb-2">{social.handle}</p>
+                <p className="text-xs text-celtic-blue font-semibold">{social.followers} followers</p>
               </a>
             ))}
           </div>
@@ -204,7 +204,7 @@ export default function FanZonePage() {
       </section>
 
       {/* Chants Section */}
-      <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-900">
+      <section className="py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <SectionHeader
             title="Matchday Songbook"
@@ -221,9 +221,9 @@ export default function FanZonePage() {
                       <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-celtic-dark dark:text-white">{chant.title}</h3>
+                  <h3 className="font-bold text-celtic-dark">{chant.title}</h3>
                 </div>
-                <pre className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap font-sans leading-relaxed">
+                <pre className="text-sm text-gray-600 whitespace-pre-wrap font-sans leading-relaxed">
                   {chant.lyrics}
                 </pre>
               </div>
@@ -258,7 +258,7 @@ export default function FanZonePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-800">
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
             <SectionHeader
@@ -270,13 +270,13 @@ export default function FanZonePage() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-celtic-blue dark:focus:ring-celtic-yellow focus:border-transparent"
+                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-celtic-blue focus:border-transparent"
               />
               <button type="submit" className="btn-primary whitespace-nowrap">
                 Subscribe
               </button>
             </form>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+            <p className="text-xs text-gray-500 mt-3">
               We respect your privacy. Unsubscribe at any time.
             </p>
           </div>
