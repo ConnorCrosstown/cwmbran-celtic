@@ -209,12 +209,12 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             {/* Right Side - Team Logos */}
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {/* Home Team Logo */}
-              <div className="w-28 h-28 xl:w-36 xl:h-36">
+              <div className="w-32 h-32 xl:w-40 xl:h-40">
                 <Image
                   src="/images/club-logo.webp"
                   alt="Cwmbran Celtic"
-                  width={144}
-                  height={144}
+                  width={160}
+                  height={160}
                   className="object-contain w-full h-full"
                 />
               </div>
@@ -223,19 +223,21 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
               <span className="text-4xl xl:text-5xl font-display text-celtic-yellow">V</span>
 
               {/* Away Team Logo */}
-              <div className="w-28 h-28 xl:w-36 xl:h-36 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center overflow-hidden">
+              <div className="w-32 h-32 xl:w-40 xl:h-40">
                 {opponentData?.badge ? (
                   <Image
                     src={opponentData.badge}
                     alt={opponent || 'Opposition'}
-                    width={144}
-                    height={144}
-                    className="object-contain w-full h-full p-2"
+                    width={160}
+                    height={160}
+                    className="object-contain w-full h-full"
                   />
                 ) : (
-                  <span className="text-4xl xl:text-5xl font-display text-white/60">
-                    {opponent?.charAt(0) || '?'}
-                  </span>
+                  <div className="w-full h-full bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                    <span className="text-4xl xl:text-5xl font-display text-white/60">
+                      {opponent?.charAt(0) || '?'}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
