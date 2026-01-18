@@ -21,7 +21,7 @@ export default function TeamCard({
   href,
 }: TeamCardProps) {
   return (
-    <div className="card card-accent-yellow-top overflow-hidden">
+    <div className="card card-accent-yellow-top card-hover overflow-hidden">
       {/* Header */}
       <div className="card-header-gradient p-5">
         <div className="flex items-center gap-4">

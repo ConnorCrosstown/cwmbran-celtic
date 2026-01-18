@@ -3,6 +3,7 @@ import { Inter, Oswald } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ScrollToTop from '@/components/ui/ScrollToTop';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
 const inter = Inter({
@@ -65,6 +66,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <ScrollToTop />
         </ThemeProvider>
       </body>
     </html>

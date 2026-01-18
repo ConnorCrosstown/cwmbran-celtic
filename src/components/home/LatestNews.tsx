@@ -39,7 +39,7 @@ export default function LatestNews({ articles }: LatestNewsProps) {
               const categoryBadge = getCategoryBadge(article.category);
 
               return (
-                <article key={article.id} className="card hover:shadow-lg transition-shadow">
+                <article key={article.id} className="card card-hover">
                   <Link href={`/news/${article.slug}`} className="block p-5">
                     <div className="flex items-center gap-2 mb-3">
                       <span className={`${categoryBadge.color} text-white px-2 py-0.5 rounded text-xs font-bold`}>
