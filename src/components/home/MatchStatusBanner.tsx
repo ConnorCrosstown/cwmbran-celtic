@@ -69,21 +69,19 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-2.5">
             <div className="flex items-center gap-4">
-              <span className="bg-white/20 text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wide">
+              <span className="bg-celtic-dark text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wide">
                 FT
               </span>
               <div className="flex items-center gap-3">
                 <span className="font-semibold text-sm sm:text-base">Cwmbran Celtic</span>
-                <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded">
+                <div className="flex items-center gap-2 bg-celtic-dark px-3 py-1 rounded">
                   <span className="text-xl sm:text-2xl font-display">{celticScore}</span>
                   <span className="text-white/70">-</span>
                   <span className="text-xl sm:text-2xl font-display">{oppScore}</span>
                 </div>
                 <span className="font-semibold text-sm sm:text-base">{getOpponentFromResult(latestResult)}</span>
               </div>
-              <span className={`hidden sm:inline-block text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded ${
-                isWin ? 'bg-white/30' : isDraw ? 'bg-white/30' : 'bg-white/30'
-              }`}>
+              <span className="hidden sm:inline-block text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded bg-celtic-dark">
                 {resultText}
               </span>
             </div>
