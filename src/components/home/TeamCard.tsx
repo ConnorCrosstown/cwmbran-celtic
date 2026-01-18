@@ -36,7 +36,7 @@ export default function TeamCard({
           </div>
           <div>
             <h3 className="font-display text-xl uppercase tracking-wide text-white">{teamName}</h3>
-            <p className="text-sm" style={{ color: '#facc15' }}>{league}</p>
+            <p className="text-sm text-celtic-yellow">{league}</p>
           </div>
         </div>
       </div>
