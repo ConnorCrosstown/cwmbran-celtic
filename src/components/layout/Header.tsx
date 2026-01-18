@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import Navigation from './Navigation';
 import ThemeToggle from './ThemeToggle';
+import SearchModal from '@/components/ui/SearchModal';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // Handle scroll effect
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function Header() {
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (mobileMenuOpen || searchOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -39,7 +41,20 @@ export default function Header() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, searchOpen]);
+
+  // Keyboard shortcut for search (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <header
@@ -69,11 +84,54 @@ export default function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-2">
             <Navigation />
-            <ThemeToggle />
+            <div className="flex items-center gap-2 ml-4 pl-4 border-l border-white/20">
+              {/* Search Button */}
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="p-2 text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+                aria-label="Search"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-xs text-white/60 bg-white/10 rounded">
+                  ⌘K
+                </kbd>
+              </button>
+              <Link
+                href="/shop"
+                className="px-4 py-2 text-white font-semibold text-sm hover:bg-white/10 rounded-lg transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Shop
+              </Link>
+              <Link
+                href="/tickets"
+                className="btn-tickets-sm"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                </svg>
+                Tickets
+              </Link>
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-3">
+          <div className="lg:hidden flex items-center gap-2">
+            {/* Mobile Search Button */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+              aria-label="Search"
+            >
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
             <ThemeToggle />
             <button
               className="relative w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
@@ -189,6 +247,9 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }

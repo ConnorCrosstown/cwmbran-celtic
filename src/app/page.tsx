@@ -6,6 +6,11 @@ import LatestNews from '@/components/home/LatestNews';
 import NewsletterSignup from '@/components/home/NewsletterSignup';
 import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
+import SectionHeader from '@/components/ui/SectionHeader';
+import MatchStatusBanner from '@/components/home/MatchStatusBanner';
+import CelticTVSection from '@/components/home/CelticTVSection';
+import ShopSection from '@/components/home/ShopSection';
+import SocialFeed from '@/components/home/SocialFeed';
 import Link from 'next/link';
 
 import {
@@ -41,18 +46,20 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* Match Status Banner - Shows latest result or live score */}
+      <MatchStatusBanner latestResult={latestResult} />
+
       {/* Hero Section - Dramatic Next Match Display */}
       <HeroSection fixture={nextHomeFixture} />
 
       {/* Both Teams - Equal Presence */}
       <section className="py-16 md:py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-celtic-dark dark:text-white mb-4">Our Teams</h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Follow both our Men&apos;s and Women&apos;s teams competing in the Welsh football pyramid
-            </p>
-          </div>
+          <SectionHeader
+            title="Our Teams"
+            subtitle="Follow both our Men's and Women's teams competing in the Welsh football pyramid"
+            centered
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Men's Team */}
             <TeamCard
@@ -83,18 +90,13 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Latest Result */}
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark dark:text-white mb-6">Latest Result</h2>
+              <SectionHeader title="Latest Result" viewAllLink="/fixtures" viewAllText="All Results" />
               <LatestResult result={latestResult} />
             </div>
 
             {/* Upcoming Fixtures - All Teams */}
             <div>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark dark:text-white">Upcoming Fixtures</h2>
-                <Link href="/fixtures" className="text-celtic-blue dark:text-celtic-yellow font-semibold text-sm hover:underline">
-                  View All →
-                </Link>
-              </div>
+              <SectionHeader title="Upcoming Fixtures" viewAllLink="/fixtures" />
               <UpcomingFixtures fixtures={upcomingFixtures} />
             </div>
           </div>
@@ -104,13 +106,25 @@ export default async function HomePage() {
       {/* Latest News */}
       <LatestNews articles={getLatestNews(3)} />
 
+      {/* Celtic TV - Video Content */}
+      <CelticTVSection />
+
+      {/* Club Shop */}
+      <ShopSection />
+
+      {/* Social Media Feed */}
+      <SocialFeed />
+
       {/* Visit Us CTA */}
       <section className="py-16 md:py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-celtic-dark dark:text-white mb-4">Visit Us</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
-              Come and support Cwmbran Celtic at the {clubInfo.ground.name}.
+          <div className="max-w-4xl mx-auto">
+            <SectionHeader
+              title="Visit Us"
+              subtitle={`Come and support Cwmbran Celtic at the ${clubInfo.ground.name}`}
+              centered
+            />
+            <p className="text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto text-center">
               We welcome all supporters with great facilities including our clubhouse bar
               and tea bar.
             </p>

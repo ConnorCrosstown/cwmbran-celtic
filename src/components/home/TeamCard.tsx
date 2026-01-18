@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Fixture, LeagueTableRow } from '@/types';
 import { formatMatchDate, getOpponent, isHomeGame } from '@/lib/comet';
 
@@ -20,33 +21,52 @@ export default function TeamCard({
   href,
 }: TeamCardProps) {
   return (
-    <div className="card overflow-hidden">
+    <div className="card card-accent-yellow-top overflow-hidden">
       {/* Header */}
-      <div className="bg-celtic-blue p-4">
-        <h3 className="font-bold text-lg" style={{ color: '#ffffff' }}>{teamName}</h3>
-        <p className="text-sm" style={{ color: '#e5e7eb' }}>{league}</p>
+      <div className="card-header-gradient p-5">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <Image
+              src="/images/club-logo.webp"
+              alt="Cwmbran Celtic"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h3 className="font-display text-xl uppercase tracking-wide" style={{ color: '#ffffff' }}>{teamName}</h3>
+            <p className="text-sm" style={{ color: '#facc15' }}>{league}</p>
+          </div>
+        </div>
       </div>
 
       {/* League Position */}
       {position && (
-        <div className="p-4 border-b">
+        <div className="p-5 border-b border-gray-100 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="text-center">
-                <span className="text-3xl font-bold text-celtic-blue">{position.position}</span>
-                <span className="text-sm text-gray-500">
+                <span className="text-4xl font-display text-celtic-blue dark:text-celtic-yellow">{position.position}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   {position.position === 1 ? 'st' : position.position === 2 ? 'nd' : position.position === 3 ? 'rd' : 'th'}
                 </span>
               </div>
-              <div className="text-sm text-gray-600">
-                <p><span className="font-semibold">{position.points}</span> pts</p>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                <p><span className="font-bold text-celtic-dark dark:text-white">{position.points}</span> pts</p>
                 <p>{position.played} played</p>
               </div>
             </div>
-            <div className="text-sm text-gray-600 text-right">
-              <p className="text-green-600">W{position.won}</p>
-              <p className="text-yellow-600">D{position.drawn}</p>
-              <p className="text-red-600">L{position.lost}</p>
+            <div className="flex gap-2">
+              <div className="text-center px-3 py-1.5 bg-win/10 rounded">
+                <span className="text-sm font-bold text-win">W{position.won}</span>
+              </div>
+              <div className="text-center px-3 py-1.5 bg-draw/10 rounded">
+                <span className="text-sm font-bold text-draw">D{position.drawn}</span>
+              </div>
+              <div className="text-center px-3 py-1.5 bg-loss/10 rounded">
+                <span className="text-sm font-bold text-loss">L{position.lost}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -54,12 +74,12 @@ export default function TeamCard({
 
       {/* Next Fixture */}
       {nextFixture && (
-        <div className="p-4 border-b bg-gray-50">
-          <p className="text-xs text-gray-500 uppercase mb-2">Next Home Game</p>
+        <div className="p-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+          <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold mb-2">Next Home Game</p>
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold text-celtic-dark">vs {getOpponent(nextFixture)}</p>
-              <p className="text-sm text-gray-600">{formatMatchDate(nextFixture.date)} • {nextFixture.time}</p>
+              <p className="font-bold text-celtic-dark dark:text-white">vs {getOpponent(nextFixture)}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{formatMatchDate(nextFixture.date)} • {nextFixture.time}</p>
             </div>
             {isHomeGame(nextFixture) && (
               <span className="badge-home">HOME</span>
@@ -72,15 +92,14 @@ export default function TeamCard({
       <div className="p-4 flex gap-3">
         <Link
           href={href}
-          className="flex-1 text-center py-2 bg-celtic-blue rounded-lg font-medium hover:bg-celtic-blue-dark transition-colors text-sm"
+          className="flex-1 text-center py-2.5 bg-celtic-blue rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors text-sm"
           style={{ color: '#ffffff' }}
         >
           View Team
         </Link>
         <Link
           href="/fixtures"
-          className="flex-1 text-center py-2 border border-celtic-blue rounded-lg font-medium hover:bg-celtic-blue transition-colors text-sm"
-          style={{ color: '#1e3a8a' }}
+          className="flex-1 text-center py-2.5 border-2 border-celtic-blue rounded-lg font-semibold hover:bg-celtic-blue hover:text-white transition-colors text-sm text-celtic-blue dark:text-celtic-yellow dark:border-celtic-yellow dark:hover:bg-celtic-yellow dark:hover:text-celtic-dark"
         >
           Fixtures
         </Link>

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { clubInfo } from '@/data/mock-data';
+import SectionHeader from '@/components/ui/SectionHeader';
 
 export const metadata: Metadata = {
   title: 'Visit Us',
@@ -11,20 +12,38 @@ export default function VisitUsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-celtic-blue text-white py-12 md:py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Visit Us</h1>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
-            Everything you need to know about visiting {clubInfo.ground.name}
-          </p>
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-celtic-blue-dark to-celtic-blue" />
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display uppercase text-white mb-4">
+              Visit Us
+            </h1>
+            <p className="text-xl text-white/80 mb-8">
+              Everything you need to know about visiting {clubInfo.ground.name}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a href="#getting-here" className="btn-secondary">
+                Get Directions
+              </a>
+              <a href="#admission" className="bg-white/10 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors">
+                Admission Prices
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Getting Here */}
-      <section className="py-12 md:py-16">
+      <section id="getting-here" className="py-16 md:py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="section-title">Getting Here</h2>
+          <div className="max-w-5xl mx-auto">
+            <SectionHeader title="Getting Here" subtitle="How to find The Park" />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Map */}
@@ -83,16 +102,26 @@ export default function VisitUsPage() {
 
             {/* Public Transport */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-              <div className="card p-6">
-                <h3 className="font-bold text-lg mb-4">🚂 By Train</h3>
-                <p className="text-gray-700">
+              <div className="card-static p-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
+                  <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                  By Train
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
                   The nearest station is <strong>Cwmbran</strong> (approximately 1.5 miles from the ground).
                   From the station, you can take a taxi or walk (25-30 minutes).
                 </p>
               </div>
-              <div className="card p-6">
-                <h3 className="font-bold text-lg mb-4">🚌 By Bus</h3>
-                <p className="text-gray-700">
+              <div className="card-static p-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
+                  <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  By Bus
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
                   Several local bus routes serve the Henllys area. Check with
                   Stagecoach South Wales for current timetables.
                 </p>
@@ -103,10 +132,10 @@ export default function VisitUsPage() {
       </section>
 
       {/* Admission */}
-      <section id="admission" className="py-12 md:py-16 bg-gray-100">
+      <section id="admission" className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="section-title">Match Day Admission</h2>
+          <div className="max-w-5xl mx-auto">
+            <SectionHeader title="Match Day Admission" subtitle="Pay on the day at the turnstile" centered />
 
             <div className="card p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -149,49 +178,95 @@ export default function VisitUsPage() {
       </section>
 
       {/* Facilities */}
-      <section className="py-12 md:py-16">
+      <section className="py-16 md:py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="section-title">Facilities</h2>
+          <div className="max-w-5xl mx-auto">
+            <SectionHeader title="Facilities" subtitle="What to expect at The Park" centered />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="card p-6">
-                <h3 className="font-bold text-lg mb-4">🍺 Clubhouse Bar</h3>
-                <p className="text-gray-700 mb-4">
+              <div className="card-static p-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
+                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  Clubhouse Bar
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
                   Our licensed clubhouse bar is open on match days and selected evenings.
                   Enjoy a drink before, during, and after the game in a friendly atmosphere.
                 </p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Wide selection of beers, ales, and spirits</li>
-                  <li>• Soft drinks available</li>
-                  <li>• Big screen for live football</li>
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
+                    Wide selection of beers, ales, and spirits
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
+                    Soft drinks available
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
+                    Big screen for live football
+                  </li>
                 </ul>
               </div>
 
-              <div className="card p-6">
-                <h3 className="font-bold text-lg mb-4">☕ Tea Bar</h3>
-                <p className="text-gray-700 mb-4">
+              <div className="card-static p-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
+                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  Tea Bar
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">
                   Hot and cold refreshments available from our tea bar throughout the match.
                 </p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Hot drinks (tea, coffee, hot chocolate)</li>
-                  <li>• Burgers and hot dogs</li>
-                  <li>• Snacks and confectionery</li>
+                <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
+                    Hot drinks (tea, coffee, hot chocolate)
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
+                    Burgers and hot dogs
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full" />
+                    Snacks and confectionery
+                  </li>
                 </ul>
               </div>
 
-              <div className="card p-6">
-                <h3 className="font-bold text-lg mb-4">🚗 Parking</h3>
-                <p className="text-gray-700">
+              <div className="card-static p-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
+                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                    </svg>
+                  </div>
+                  Parking
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
                   <strong>Free parking</strong> is available at the ground.
                   There is ample space for all supporters, but we recommend
                   arriving early for popular fixtures.
                 </p>
               </div>
 
-              <div className="card p-6">
-                <h3 className="font-bold text-lg mb-4">♿ Accessibility</h3>
-                <p className="text-gray-700">
+              <div className="card-static p-6">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-celtic-dark dark:text-white">
+                  <div className="w-10 h-10 bg-celtic-blue/10 dark:bg-celtic-blue/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-celtic-blue dark:text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </div>
+                  Accessibility
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
                   We welcome disabled supporters. Please contact the club in advance
                   if you have specific requirements and we will do our best to accommodate you.
                 </p>
@@ -202,10 +277,10 @@ export default function VisitUsPage() {
       </section>
 
       {/* Ground Hoppers */}
-      <section className="py-12 md:py-16 bg-celtic-blue text-white">
+      <section className="py-16 md:py-20 bg-celtic-blue text-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">Ground Hoppers Welcome!</h2>
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-display uppercase mb-6">Ground Hoppers Welcome!</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
@@ -251,9 +326,9 @@ export default function VisitUsPage() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-12 md:py-16 bg-celtic-yellow">
+      <section className="py-16 md:py-20 bg-celtic-yellow">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-celtic-dark mb-4">
+          <h2 className="text-3xl md:text-4xl font-display uppercase text-celtic-dark mb-4">
             Questions About Your Visit?
           </h2>
           <p className="text-celtic-dark/80 mb-6 max-w-xl mx-auto">

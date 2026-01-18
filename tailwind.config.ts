@@ -19,9 +19,13 @@ const config: Config = {
           dark: "#1a1a1a",
           gray: "#4a4a4a",
         },
+        win: "#22c55e",
+        draw: "#f59e0b",
+        loss: "#ef4444",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-oswald)", "Oswald", "system-ui", "sans-serif"],
       },
     },
   },

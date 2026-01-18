@@ -3,24 +3,61 @@
 import Image from 'next/image';
 
 interface CoverPageProps {
-  opposition: {
+  uploadedCover?: string; // Full cover image upload - if provided, shows this instead of generated design
+  opposition?: {
     name: string;
     nickname?: string;
   };
-  date: string;
-  kickoff: string;
-  coverImage?: string;
+  date?: string;
+  kickoff?: string;
+  coverImage?: string; // Action photo for generated design
   forPrint?: boolean;
 }
 
-// Colors matching the printed programme JPEG
-const YELLOW = '#f4c430';
-const BLUE = '#1e3a8a';
-const DARK_BLUE = '#0f172a';
+export default function CoverPage({ uploadedCover, opposition, date, kickoff, coverImage, forPrint = false }: CoverPageProps) {
+  // If an uploaded cover is provided, just display it full-page
+  if (uploadedCover) {
+    if (forPrint) {
+      return (
+        <div style={{
+          width: 794,
+          height: 1123,
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          <Image
+            src={uploadedCover}
+            alt="Programme Cover"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
+          />
+        </div>
+      );
+    }
 
-export default function CoverPage({ opposition, date, kickoff, coverImage, forPrint = false }: CoverPageProps) {
+    // Online responsive version
+    return (
+      <div className="h-full relative overflow-hidden">
+        <Image
+          src={uploadedCover}
+          alt="Programme Cover"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+    );
+  }
+
+  // Fallback: Generated cover design (yellow/blue theme)
+  // Colors matching the printed programme JPEG
+  const YELLOW = '#f4c430';
+  const BLUE = '#1e3a8a';
+  const DARK_BLUE = '#0f172a';
+
   // Format date
-  const matchDate = new Date(date);
+  const matchDate = date ? new Date(date) : new Date();
   const formattedDate = matchDate.toLocaleDateString('en-GB', {
     weekday: 'long',
     day: 'numeric',
@@ -28,7 +65,8 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
     year: 'numeric',
   }).toUpperCase();
 
-  // For print, we use fixed pixel sizes. For online, we use responsive classes.
+  const oppName = opposition?.name || 'Opposition';
+
   if (forPrint) {
     return (
       <div style={{
@@ -62,7 +100,6 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
           alignItems: 'center',
           padding: '12px 28px 8px 28px',
         }}>
-          {/* Left - JD Cymru South logos */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
               width: 44,
@@ -91,7 +128,6 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
             </div>
           </div>
 
-          {/* Right - Programme info */}
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: BLUE }}>
               OFFICIAL MATCH PROGRAMME <span style={{ fontWeight: 800 }}>£2</span>
@@ -162,7 +198,7 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
               CWMBRAN CELTIC <span style={{ fontWeight: 400 }}>v</span>
             </div>
             <div style={{ fontSize: 18, fontWeight: 800, color: BLUE }}>
-              {opposition.name.toUpperCase()}
+              {oppName.toUpperCase()}
             </div>
             <div style={{ fontSize: 11, fontWeight: 600, color: BLUE, marginTop: 6 }}>
               {formattedDate}, K.O. {kickoff || '15:00'}
@@ -184,7 +220,7 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
             flexShrink: 0,
           }}>
             <span style={{ fontSize: 9, fontWeight: 700, color: DARK_BLUE, textAlign: 'center', padding: 4 }}>
-              {opposition.name.split(' ').slice(0, 2).join(' ').toUpperCase()}
+              {oppName.split(' ').slice(0, 2).join(' ').toUpperCase()}
             </span>
           </div>
         </div>
@@ -238,7 +274,7 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
     );
   }
 
-  // Online responsive version
+  // Online responsive version (generated design)
   return (
     <div className="h-full relative overflow-hidden" style={{ backgroundColor: YELLOW }}>
       {/* Main Title */}
@@ -254,14 +290,12 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
       {/* League logos and info row */}
       <div className="flex justify-between items-center px-5 py-3">
         <div className="flex items-center gap-2">
-          {/* JD Logo */}
           <div
             className="w-10 h-10 rounded-full flex items-center justify-center"
             style={{ backgroundColor: DARK_BLUE }}
           >
             <span className="text-white font-extrabold italic text-sm">JD</span>
           </div>
-          {/* Cymru South */}
           <div
             className="w-10 h-10 rounded-full flex flex-col items-center justify-center"
             style={{ backgroundColor: DARK_BLUE }}
@@ -323,7 +357,7 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
             CWMBRAN CELTIC <span className="font-normal">v</span>
           </p>
           <p className="text-sm font-extrabold" style={{ color: BLUE }}>
-            {opposition.name.toUpperCase()}
+            {oppName.toUpperCase()}
           </p>
           <p className="text-[10px] font-semibold mt-1" style={{ color: BLUE }}>
             {formattedDate}, K.O. {kickoff || '15:00'}
@@ -338,7 +372,7 @@ export default function CoverPage({ opposition, date, kickoff, coverImage, forPr
           style={{ backgroundColor: '#fff', border: `2px solid ${DARK_BLUE}` }}
         >
           <span className="text-[8px] font-bold text-center p-1" style={{ color: DARK_BLUE }}>
-            {opposition.name.split(' ').slice(0, 2).join(' ').toUpperCase()}
+            {oppName.split(' ').slice(0, 2).join(' ').toUpperCase()}
           </span>
         </div>
       </div>

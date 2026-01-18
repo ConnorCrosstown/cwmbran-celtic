@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Oswald } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -9,6 +9,12 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+});
+
+const oswald = Oswald({
+  subsets: ['latin'],
+  variable: '--font-oswald',
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
         <ThemeProvider>
           <Header />
