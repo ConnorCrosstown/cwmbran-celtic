@@ -121,36 +121,36 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             <div className="flex flex-col lg:flex-row lg:items-center gap-6">
               {/* Countdown */}
               {timeLeft && (
-                <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-end gap-2 sm:gap-3">
                   <div className="text-center">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 sm:px-4 py-2 sm:py-3 min-w-[56px] sm:min-w-[68px] border border-white/20">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
                         {timeLeft.days}
                       </span>
                     </div>
                     <span className="text-xs sm:text-sm text-white/70 mt-1 block">Days</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light">:</span>
+                  <span className="text-white/50 text-2xl font-light pb-6">:</span>
                   <div className="text-center">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 sm:px-4 py-2 sm:py-3 min-w-[56px] sm:min-w-[68px] border border-white/20">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
                         {timeLeft.hours.toString().padStart(2, '0')}
                       </span>
                     </div>
                     <span className="text-xs sm:text-sm text-white/70 mt-1 block">Hours</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light">:</span>
+                  <span className="text-white/50 text-2xl font-light pb-6">:</span>
                   <div className="text-center">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 sm:px-4 py-2 sm:py-3 min-w-[56px] sm:min-w-[68px] border border-white/20">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
                         {timeLeft.minutes.toString().padStart(2, '0')}
                       </span>
                     </div>
                     <span className="text-xs sm:text-sm text-white/70 mt-1 block">Mins</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light hidden sm:block">:</span>
+                  <span className="text-white/50 text-2xl font-light hidden sm:block pb-6">:</span>
                   <div className="text-center hidden sm:block">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg px-3 sm:px-4 py-2 sm:py-3 min-w-[56px] sm:min-w-[68px] border border-white/20">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
                         {timeLeft.seconds.toString().padStart(2, '0')}
                       </span>
@@ -185,12 +185,13 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {/* Home Team Logo */}
               <div className="flex flex-col items-center">
-                <div className="w-28 h-28 xl:w-36 xl:h-36 relative bg-white/10 rounded-full p-3 backdrop-blur-sm border border-white/20">
+                <div className="w-28 h-28 xl:w-36 xl:h-36 rounded-full overflow-hidden border-2 border-white/30">
                   <Image
                     src="/images/club-logo.webp"
                     alt="Cwmbran Celtic"
-                    fill
-                    className="object-contain p-2"
+                    width={144}
+                    height={144}
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <span className="mt-3 text-white/80 text-sm font-medium uppercase tracking-wide">Celtic</span>
@@ -203,7 +204,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
 
               {/* Away Team Logo */}
               <div className="flex flex-col items-center">
-                <div className="w-28 h-28 xl:w-36 xl:h-36 relative bg-white/10 rounded-full p-3 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+                <div className="w-28 h-28 xl:w-36 xl:h-36 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center">
                   {/* Placeholder for opposition logo - shows first letter */}
                   <span className="text-4xl xl:text-5xl font-display text-white/60">
                     {opponent?.charAt(0) || '?'}
