@@ -102,7 +102,7 @@ export default async function HomePage() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-display text-xl uppercase tracking-wide text-white">Men&apos;s Seconds</h3>
+                    <h3 className="font-display text-xl uppercase tracking-wide" style={{ color: '#ffffff' }}>Men&apos;s Seconds</h3>
                     <p className="text-sm" style={{ color: '#facc15' }}>Gwent County League Div 2</p>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default async function HomePage() {
                     />
                   </div>
                   <div>
-                    <h3 className="font-display text-xl uppercase tracking-wide text-white">Men&apos;s Thirds</h3>
+                    <h3 className="font-display text-xl uppercase tracking-wide" style={{ color: '#ffffff' }}>Men&apos;s Thirds</h3>
                     <p className="text-sm" style={{ color: '#facc15' }}>Gwent County League Div 3</p>
                   </div>
                 </div>
