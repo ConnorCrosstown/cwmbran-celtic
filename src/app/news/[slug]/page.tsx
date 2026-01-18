@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import DOMPurify from 'isomorphic-dompurify';
 import { getNewsArticle, mockNews } from '@/data/news-data';
 import CelticBondBanner from '@/components/banners/CelticBondBanner';
 
@@ -114,7 +115,7 @@ export default async function NewsArticlePage({ params }: PageProps) {
               <div className="lg:col-span-2">
                 <article
                   className="prose prose-lg max-w-none prose-headings:text-celtic-dark prose-a:text-celtic-blue"
-                  dangerouslySetInnerHTML={{ __html: article.content }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
                 />
 
                 {/* Tags */}

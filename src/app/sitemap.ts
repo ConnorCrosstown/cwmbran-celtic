@@ -5,29 +5,46 @@ import { mockAlbums } from '@/data/gallery-data';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://cwmbranceltic.com';
 
-  // Static pages
+  // Static pages - comprehensive list of all routes
   const staticPages = [
-    '',
-    '/news',
-    '/fixtures',
-    '/teams',
-    '/teams/mens',
-    '/teams/ladies',
-    '/gallery',
-    '/community',
-    '/community/walking-football',
-    '/community/youth',
-    '/visit',
-    '/club',
-    '/club/history',
-    '/celtic-bond',
-    '/sponsors',
-    '/contact',
-  ].map((route) => ({
+    // Main pages
+    { route: '', priority: 1, changeFrequency: 'daily' as const },
+    { route: '/news', priority: 0.9, changeFrequency: 'daily' as const },
+    { route: '/fixtures', priority: 0.9, changeFrequency: 'daily' as const },
+
+    // Teams
+    { route: '/teams', priority: 0.8, changeFrequency: 'weekly' as const },
+    { route: '/teams/mens', priority: 0.8, changeFrequency: 'weekly' as const },
+    { route: '/teams/ladies', priority: 0.8, changeFrequency: 'weekly' as const },
+
+    // Gallery
+    { route: '/gallery', priority: 0.7, changeFrequency: 'weekly' as const },
+
+    // Community
+    { route: '/community', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/community/walking-football', priority: 0.6, changeFrequency: 'monthly' as const },
+    { route: '/community/youth', priority: 0.6, changeFrequency: 'monthly' as const },
+    { route: '/community/volunteers', priority: 0.6, changeFrequency: 'monthly' as const },
+
+    // Club info
+    { route: '/club', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/club/history', priority: 0.6, changeFrequency: 'yearly' as const },
+
+    // Commercial
+    { route: '/celtic-bond', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/sponsors', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/sponsors/packages', priority: 0.6, changeFrequency: 'monthly' as const },
+    { route: '/tickets', priority: 0.8, changeFrequency: 'weekly' as const },
+    { route: '/shop', priority: 0.7, changeFrequency: 'weekly' as const },
+
+    // Visitor info
+    { route: '/visit', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/contact', priority: 0.7, changeFrequency: 'monthly' as const },
+  ].map(({ route, priority, changeFrequency }) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: route === '' ? 'daily' as const : 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    changeFrequency,
+    priority,
   }));
 
   // News articles

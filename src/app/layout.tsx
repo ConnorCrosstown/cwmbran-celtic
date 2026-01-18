@@ -4,6 +4,8 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/ui/ScrollToTop';
+import SkipToContent from '@/components/ui/SkipToContent';
+import { SportsClubJsonLd, cwmbranCelticData } from '@/components/seo/JsonLd';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
 const inter = Inter({
@@ -61,10 +63,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>
+      <head>
+        <SportsClubJsonLd data={cwmbranCelticData} />
+      </head>
       <body className="min-h-screen flex flex-col bg-gray-50 transition-colors">
         <ThemeProvider>
+          <SkipToContent />
           <Header />
-          <main className="flex-grow">{children}</main>
+          <main id="main-content" className="flex-grow">{children}</main>
           <Footer />
           <ScrollToTop />
         </ThemeProvider>

@@ -62,7 +62,8 @@
 }
 
 /* ========================================
-   FORCE WHITE TEXT ON BLUE BACKGROUNDS
+   TEXT COLORS FOR BLUE BACKGROUNDS
+   Using higher specificity instead of !important
    ======================================== */
 
 /* Section-level blue backgrounds get white text */
@@ -82,25 +83,26 @@ section[class*="from-celtic-blue"] > div {
   color: #ffffff;
 }
 
-section[class*="bg-celtic-blue"] h1,
-section[class*="bg-celtic-blue"] h2,
-section[class*="bg-celtic-blue"] > div h1,
-section[class*="bg-celtic-blue"] > div h2,
-section[class*="bg-celtic-blue"] > div p,
-section[class*="from-celtic-blue"] h1,
-section[class*="from-celtic-blue"] h2,
-section[class*="from-celtic-blue"] > div h1,
-section[class*="from-celtic-blue"] > div h2,
-section[class*="from-celtic-blue"] > div p {
-  color: #ffffff !important;
+/* Headings and paragraphs in blue sections - using double attribute selector for specificity */
+section[class*="bg-celtic-blue"][class] h1,
+section[class*="bg-celtic-blue"][class] h2,
+section[class*="bg-celtic-blue"][class] > div h1,
+section[class*="bg-celtic-blue"][class] > div h2,
+section[class*="bg-celtic-blue"][class] > div p,
+section[class*="from-celtic-blue"][class] h1,
+section[class*="from-celtic-blue"][class] h2,
+section[class*="from-celtic-blue"][class] > div h1,
+section[class*="from-celtic-blue"][class] > div h2,
+section[class*="from-celtic-blue"][class] > div p {
+  color: #ffffff;
 }
 
 /* Text that should be slightly dimmed on blue backgrounds */
-section[class*="bg-celtic-blue"] .text-gray-200,
-section[class*="bg-celtic-blue"] .text-gray-300,
-section[class*="from-celtic-blue"] .text-gray-200,
-section[class*="from-celtic-blue"] .text-gray-300 {
-  color: #e5e7eb !important;
+section[class*="bg-celtic-blue"][class] .text-gray-200,
+section[class*="bg-celtic-blue"][class] .text-gray-300,
+section[class*="from-celtic-blue"][class] .text-gray-200,
+section[class*="from-celtic-blue"][class] .text-gray-300 {
+  color: #e5e7eb;
 }
 
 /* Cards should NOT inherit white text - reset to dark */
@@ -117,23 +119,25 @@ section[class*="from-celtic-blue"] .text-gray-300 {
   color: #475569;
 }
 
-/* Blue header inside cards - white text */
+/* Blue header inside cards - white text (using nested specificity) */
 .card > div[class*="bg-celtic-blue"],
 .card-static > div[class*="bg-celtic-blue"] {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 .card > div[class*="bg-celtic-blue"] h3,
-.card > div[class*="bg-celtic-blue"] p {
-  color: #ffffff !important;
+.card > div[class*="bg-celtic-blue"] p,
+.card-static > div[class*="bg-celtic-blue"] h3,
+.card-static > div[class*="bg-celtic-blue"] p {
+  color: #ffffff;
 }
 
-/* Buttons with blue background inside cards should have white text */
+/* Buttons with blue background should have white text */
 .card a[class*="bg-celtic-blue"],
 .card button[class*="bg-celtic-blue"],
 a.bg-celtic-blue,
 button.bg-celtic-blue {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 /* Outline buttons should keep their blue text */
@@ -141,7 +145,7 @@ button.bg-celtic-blue {
 .card button[class*="border-celtic-blue"]:not([class*="bg-celtic-blue"]),
 a.border-celtic-blue:not(.bg-celtic-blue),
 button.border-celtic-blue:not(.bg-celtic-blue) {
-  color: #1e3a8a !important;
+  color: #1e3a8a;
 }
 
 /* ========================================
@@ -906,21 +910,7 @@ input:focus, textarea:focus, select:focus {
    ANIMATIONS & TRANSITIONS
    ======================================== */
 
-/* Page fade-in animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeInUp 0.4s ease-out forwards;
-}
+/* Note: fadeInUp animation is defined above in ANIMATIONS section */
 
 /* Staggered children animation */
 .animate-stagger > * {
