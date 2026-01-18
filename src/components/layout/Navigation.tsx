@@ -27,7 +27,7 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    label: 'Match Day',
+    label: 'Matchday',
     href: '/tickets',
     children: [
       { label: 'Buy Tickets', href: '/tickets' },

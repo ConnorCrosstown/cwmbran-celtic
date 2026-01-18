@@ -57,12 +57,12 @@ export default function Footer() {
                 <div className="text-sm text-celtic-yellow font-medium">Est. 1924</div>
               </div>
             </div>
-            <p className="text-white/80 text-sm mb-5 leading-relaxed max-w-sm">
+            <p className="text-white text-sm mb-5 leading-relaxed max-w-sm">
               The home of football in Cwmbran. Competing in the JD Cymru South (Men&apos;s)
               and Genero Adran South (Women&apos;s). Come support your local club!
             </p>
             <div className="mb-6">
-              <p className="text-white/70 text-sm">
+              <p className="text-white text-sm">
                 <strong className="text-celtic-yellow">{clubInfo.ground.name}</strong><br />
                 {clubInfo.ground.address.street}<br />
                 {clubInfo.ground.address.town}, {clubInfo.ground.address.postcode}

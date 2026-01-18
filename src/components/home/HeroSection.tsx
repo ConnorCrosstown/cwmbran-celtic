@@ -58,6 +58,12 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
   const opponent = fixture ? getOpponent(fixture) : null;
   const isHome = fixture?.homeAway === 'H';
 
+  // Determine which Celtic team is playing based on the team name
+  const celticTeamName = fixture ? (isHome ? fixture.homeTeam : fixture.awayTeam) : '';
+  const isLadies = celticTeamName.toLowerCase().includes('ladies') || celticTeamName.toLowerCase().includes('women');
+  const teamLabel = isLadies ? "Women's Team" : "Men's First Team";
+  const leagueName = isLadies ? "Genero Adran South" : "JD Cymru South";
+
   return (
     <section className="relative min-h-[420px] md:min-h-[500px] flex items-center overflow-hidden">
       {/* Background */}
@@ -85,7 +91,8 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                   </span>
                   NEXT {isHome ? 'HOME' : 'AWAY'} MATCH
                 </span>
-                <span className="badge-league">JD Cymru South</span>
+                <span className="badge-league">{teamLabel}</span>
+                <span className="badge-league">{leagueName}</span>
               </div>
 
               {/* Match Title */}
@@ -192,16 +199,16 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {/* Home Team Logo */}
               <div className="flex flex-col items-center">
-                <div className="w-28 h-28 xl:w-36 xl:h-36 rounded-full overflow-hidden border-2 border-white/30">
+                <div className="w-28 h-28 xl:w-36 xl:h-36">
                   <Image
                     src="/images/club-logo.webp"
                     alt="Cwmbran Celtic"
                     width={144}
                     height={144}
-                    className="object-contain w-full h-full p-2"
+                    className="object-contain w-full h-full"
                   />
                 </div>
-                <span className="mt-3 text-white/80 text-sm font-medium uppercase tracking-wide">Celtic</span>
+                <span className="mt-3 text-white text-sm font-medium uppercase tracking-wide">Celtic</span>
               </div>
 
               {/* VS */}
@@ -211,13 +218,13 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
 
               {/* Away Team Logo */}
               <div className="flex flex-col items-center">
-                <div className="w-28 h-28 xl:w-36 xl:h-36 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center">
+                <div className="w-28 h-28 xl:w-36 xl:h-36 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
                   {/* Placeholder for opposition logo - shows first letter */}
                   <span className="text-4xl xl:text-5xl font-display text-white/60">
                     {opponent?.charAt(0) || '?'}
                   </span>
                 </div>
-                <span className="mt-3 text-white/80 text-sm font-medium uppercase tracking-wide">{opponent?.split(' ')[0] || 'TBC'}</span>
+                <span className="mt-3 text-white text-sm font-medium uppercase tracking-wide">{opponent?.split(' ')[0] || 'TBC'}</span>
               </div>
             </div>
           </div>

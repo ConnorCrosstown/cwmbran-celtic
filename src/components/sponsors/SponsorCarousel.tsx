@@ -22,15 +22,31 @@ export default function SponsorCarousel({ sponsors, title = "Our Partners" }: Sp
                   rel="noopener noreferrer"
                   className="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
-                    {sponsor.name}
-                  </div>
+                  {sponsor.logo ? (
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      className="h-12 w-auto max-w-[140px] object-contain"
+                    />
+                  ) : (
+                    <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
+                      {sponsor.name}
+                    </div>
+                  )}
                 </a>
               ) : (
                 <div className="block bg-white p-4 rounded-lg shadow-sm">
-                  <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
-                    {sponsor.name}
-                  </div>
+                  {sponsor.logo ? (
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      className="h-12 w-auto max-w-[140px] object-contain"
+                    />
+                  ) : (
+                    <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
+                      {sponsor.name}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
