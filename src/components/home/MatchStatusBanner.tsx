@@ -68,30 +68,34 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
     return (
       <div className="bg-gradient-to-r from-celtic-yellow to-yellow-500">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-2.5">
-            <div className="flex items-center gap-4">
-              <span className="bg-white text-celtic-dark px-3 py-1 rounded text-xs font-bold uppercase tracking-wide">
-                FT
-              </span>
-              <div className="flex items-center gap-3">
-                <span className="font-semibold text-sm sm:text-base text-celtic-dark">Cwmbran Celtic</span>
-                <div className="flex items-center gap-2 bg-white text-celtic-dark px-3 py-1 rounded">
-                  <span className="text-xl sm:text-2xl font-display">{celticScore}</span>
-                  <span className="text-celtic-dark/50">-</span>
-                  <span className="text-xl sm:text-2xl font-display">{oppScore}</span>
-                </div>
-                <span className="font-semibold text-sm sm:text-base text-celtic-dark">{getOpponentFromResult(latestResult)}</span>
+          <div className="flex items-center justify-center py-2.5 gap-3 sm:gap-4">
+            {/* FT Badge */}
+            <span className="bg-celtic-dark text-white px-2.5 py-1 rounded text-xs font-bold uppercase tracking-wide">
+              FT
+            </span>
+
+            {/* Match Info - Centered */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="font-semibold text-sm sm:text-base text-celtic-dark">Cwmbran Celtic</span>
+              <div className="flex items-center gap-1.5 bg-celtic-dark text-white px-3 py-1 rounded-lg">
+                <span className="text-lg sm:text-xl font-display">{celticScore}</span>
+                <span className="text-white/50">-</span>
+                <span className="text-lg sm:text-xl font-display">{oppScore}</span>
               </div>
-              <span className={`hidden sm:inline-block text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded ${badgeColor} text-white`}>
-                {resultText}
-              </span>
+              <span className="font-semibold text-sm sm:text-base text-celtic-dark">{getOpponentFromResult(latestResult)}</span>
             </div>
+
+            {/* Result Badge */}
+            <span className={`text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded ${badgeColor} text-white`}>
+              {resultText}
+            </span>
+
+            {/* Match Report Link */}
             <Link
               href={`/news`}
-              className="text-sm font-semibold hover:underline flex items-center gap-1 text-celtic-dark"
+              className="hidden sm:flex text-sm font-semibold hover:underline items-center gap-1 text-celtic-dark ml-2"
             >
-              <span className="hidden sm:inline">Match Report</span>
-              <span className="sm:hidden">Report</span>
+              Match Report
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
