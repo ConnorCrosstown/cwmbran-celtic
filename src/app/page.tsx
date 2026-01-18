@@ -163,6 +163,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Celtic Bond CTA */}
+      <CelticBondBanner variant="full" />
+
       {/* Latest News */}
       <LatestNews articles={getLatestNews(3)} />
 
@@ -241,9 +244,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Celtic Bond CTA */}
-      <CelticBondBanner variant="full" />
 
       {/* Newsletter Signup */}
       <NewsletterSignup />
