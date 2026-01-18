@@ -191,7 +191,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                     alt="Cwmbran Celtic"
                     width={144}
                     height={144}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full scale-125"
                   />
                 </div>
                 <span className="mt-3 text-white/80 text-sm font-medium uppercase tracking-wide">Celtic</span>
