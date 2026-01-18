@@ -26,7 +26,14 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
     if (!fixture) return;
 
     const calculateTimeLeft = () => {
-      const difference = fixture.date - Date.now();
+      // Combine date and kick-off time for accurate countdown
+      const matchDate = new Date(fixture.date);
+      if (fixture.time) {
+        const [hours, minutes] = fixture.time.split(':').map(Number);
+        matchDate.setHours(hours, minutes, 0, 0);
+      }
+
+      const difference = matchDate.getTime() - Date.now();
 
       if (difference <= 0) {
         return null;
