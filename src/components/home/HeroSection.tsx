@@ -77,7 +77,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue-dark/90 via-celtic-blue/85 to-celtic-blue-dark/90" />
         {/* Crossed Keys Pattern Overlay */}
         <div className="absolute inset-0 opacity-[0.08]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round'%3E%3C!-- Crossed Keys --%3E%3Cg transform='translate(40,40)'%3E%3C!-- Key 1 (top-left to bottom-right) --%3E%3Cline x1='-12' y1='-12' x2='12' y2='12'/%3E%3Ccircle cx='-14' cy='-14' r='4'/%3E%3Cline x1='8' y1='8' x2='8' y2='14'/%3E%3Cline x1='11' y1='11' x2='11' y2='14'/%3E%3C!-- Key 2 (top-right to bottom-left) --%3E%3Cline x1='12' y1='-12' x2='-12' y2='12'/%3E%3Ccircle cx='14' cy='-14' r='4'/%3E%3Cline x1='-8' y1='8' x2='-8' y2='14'/%3E%3Cline x1='-11' y1='11' x2='-11' y2='14'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1' stroke-linecap='round'%3E%3Cg transform='translate(25,25)'%3E%3Cline x1='-7' y1='-7' x2='7' y2='7'/%3E%3Ccircle cx='-8' cy='-8' r='2.5'/%3E%3Cline x1='5' y1='5' x2='5' y2='8'/%3E%3Cline x1='7' y1='7' x2='7' y2='9'/%3E%3Cline x1='7' y1='-7' x2='-7' y2='7'/%3E%3Ccircle cx='8' cy='-8' r='2.5'/%3E%3Cline x1='-5' y1='5' x2='-5' y2='8'/%3E%3Cline x1='-7' y1='7' x2='-7' y2='9'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
       </div>
 
