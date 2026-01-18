@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Result } from '@/types';
-import { getOpponentFromResult, getResultOutcome, isHomeResult } from '@/lib/comet';
+import { getOpponentFromResult, isHomeResult } from '@/lib/comet';
 
 interface MatchStatusBannerProps {
   latestResult: Result | null;
@@ -53,14 +53,7 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
 
   // If there's a recent result (within last 24 hours - we'll simulate this)
   if (latestResult) {
-    const outcome = getResultOutcome(latestResult);
-    const isWin = outcome === 'W';
-    const isDraw = outcome === 'D';
     const isHome = isHomeResult(latestResult);
-
-    // Result badge colors: WIN = green, DRAW = orange, LOSS = red
-    const badgeColor = isWin ? 'bg-green-500' : isDraw ? 'bg-orange-500' : 'bg-red-500';
-    const resultText = isWin ? 'WIN' : isDraw ? 'DRAW' : 'LOSS';
 
     const celticScore = isHome ? latestResult.homeScore : latestResult.awayScore;
     const oppScore = isHome ? latestResult.awayScore : latestResult.homeScore;
@@ -85,15 +78,10 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
               <span className="font-semibold text-sm sm:text-base text-celtic-dark">{getOpponentFromResult(latestResult)}</span>
             </div>
 
-            {/* Result Badge */}
-            <span className={`text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded ${badgeColor} text-white`}>
-              {resultText}
-            </span>
-
             {/* Match Report Link */}
             <Link
               href={`/news`}
-              className="hidden sm:flex text-sm font-semibold hover:underline items-center gap-1 text-celtic-dark ml-2"
+              className="hidden sm:flex text-sm font-semibold hover:underline items-center gap-1 text-celtic-dark"
             >
               Match Report
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
