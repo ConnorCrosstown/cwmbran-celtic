@@ -167,7 +167,6 @@ h1, h2, .font-display {
   font-family: var(--font-oswald), 'Oswald', system-ui, sans-serif;
   font-weight: 600;
   line-height: 1.1;
-  color: var(--celtic-dark);
   letter-spacing: 0.01em;
 }
 
@@ -175,7 +174,6 @@ h3, h4, h5, h6 {
   font-family: var(--font-inter), system-ui, sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--celtic-dark);
   letter-spacing: -0.01em;
 }
 
