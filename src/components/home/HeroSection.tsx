@@ -118,10 +118,10 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             </div>
 
             {/* Countdown & CTAs */}
-            <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-start gap-6">
               {/* Countdown */}
               {timeLeft && (
-                <div className="flex items-end gap-2 sm:gap-3">
+                <div className="flex items-start gap-2 sm:gap-3">
                   <div className="text-center">
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
@@ -130,7 +130,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                     </div>
                     <span className="text-xs sm:text-sm text-white/70 mt-1 block">Days</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light pb-6">:</span>
+                  <span className="text-white/50 text-2xl font-light h-[52px] sm:h-[64px] flex items-center">:</span>
                   <div className="text-center">
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
@@ -139,7 +139,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                     </div>
                     <span className="text-xs sm:text-sm text-white/70 mt-1 block">Hours</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light pb-6">:</span>
+                  <span className="text-white/50 text-2xl font-light h-[52px] sm:h-[64px] flex items-center">:</span>
                   <div className="text-center">
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
@@ -148,7 +148,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                     </div>
                     <span className="text-xs sm:text-sm text-white/70 mt-1 block">Mins</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light hidden sm:block pb-6">:</span>
+                  <span className="text-white/50 text-2xl font-light hidden sm:flex h-[52px] sm:h-[64px] items-center">:</span>
                   <div className="text-center hidden sm:block">
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
                       <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
@@ -161,7 +161,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
               )}
 
               {/* CTA Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-3 h-[52px] sm:h-[64px]">
                 <Link href="/tickets" className="btn-tickets">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
