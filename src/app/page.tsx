@@ -55,6 +55,9 @@ export default async function HomePage() {
       {/* Hero Section - Dramatic Next Match Display */}
       <HeroSection fixture={nextHomeFixture} />
 
+      {/* Newsletter Signup */}
+      <NewsletterSignup />
+
       {/* All Teams */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -244,9 +247,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Newsletter Signup */}
-      <NewsletterSignup />
 
       {/* Sponsors */}
       <SponsorCarousel sponsors={sponsors.partners} title="Our Partners" />
