@@ -57,25 +57,25 @@ export default function Footer() {
                 <div className="text-sm text-celtic-yellow font-medium">Est. 1924</div>
               </div>
             </div>
-            <p className="text-gray-400 text-sm mb-5 leading-relaxed max-w-sm">
+            <p className="text-white/80 text-sm mb-5 leading-relaxed max-w-sm">
               The home of football in Cwmbran. Competing in the JD Cymru South (Men&apos;s)
               and Genero Adran South (Women&apos;s). Come support your local club!
             </p>
             <div className="mb-6">
-              <p className="text-gray-400 text-sm">
-                <strong className="text-white">{clubInfo.ground.name}</strong><br />
+              <p className="text-white/70 text-sm">
+                <strong className="text-celtic-yellow">{clubInfo.ground.name}</strong><br />
                 {clubInfo.ground.address.street}<br />
                 {clubInfo.ground.address.town}, {clubInfo.ground.address.postcode}
               </p>
             </div>
             {/* Social Links */}
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gray-500 mr-2">Follow us:</span>
+              <span className="text-sm text-celtic-yellow font-medium mr-2">Follow us:</span>
               <a
                 href={clubInfo.social.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-celtic-blue hover:text-white transition-all"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-celtic-yellow hover:text-celtic-dark hover:scale-110 transition-all duration-200"
                 aria-label="Twitter/X"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@ export default function Footer() {
                 href={clubInfo.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 hover:text-white transition-all"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-celtic-yellow hover:text-celtic-dark hover:scale-110 transition-all duration-200"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ export default function Footer() {
                 href={clubInfo.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-all"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-celtic-yellow hover:text-celtic-dark hover:scale-110 transition-all duration-200"
                 aria-label="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -243,7 +243,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-gray-500 text-sm">Official Partners:</p>
+            <p className="text-celtic-yellow text-sm font-medium">Official Partners:</p>
             <div className="flex items-center gap-6 flex-wrap justify-center">
               {sponsors.partners.slice(0, 4).map((sponsor, index) => (
                 sponsor.logo ? (
