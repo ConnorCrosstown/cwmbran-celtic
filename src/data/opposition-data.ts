@@ -109,6 +109,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Windmill Lane',
     founded: 1962,
     colours: 'Blue and White',
+    badge: '/images/teams/llantwit-major.png',
     lastMeeting: { date: '12 Apr 2025', result: 'W', score: '1-0' },
     headToHead: { played: 12, celticWins: 6, draws: 3, oppositionWins: 3 }
   },

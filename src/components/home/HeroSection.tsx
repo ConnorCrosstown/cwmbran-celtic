@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDateLong, getOpponent } from '@/lib/comet';
+import { oppositionTeams } from '@/data/opposition-data';
 
 // Note: Image import kept for club logo fallback display
 
@@ -57,6 +58,11 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
 
   const opponent = fixture ? getOpponent(fixture) : null;
   const isHome = fixture?.homeAway === 'H';
+
+  // Look up opponent badge from opposition data
+  const opponentData = opponent ? oppositionTeams.find(team =>
+    team.name.toLowerCase() === opponent.toLowerCase()
+  ) : null;
 
   // Determine which Celtic team is playing based on the team name
   const celticTeamName = fixture ? (isHome ? fixture.homeTeam : fixture.awayTeam) : '';
@@ -203,33 +209,34 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             {/* Right Side - Team Logos */}
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {/* Home Team Logo */}
-              <div className="flex flex-col items-center">
-                <div className="w-28 h-28 xl:w-36 xl:h-36">
-                  <Image
-                    src="/images/club-logo.webp"
-                    alt="Cwmbran Celtic"
-                    width={144}
-                    height={144}
-                    className="object-contain w-full h-full"
-                  />
-                </div>
-                <span className="mt-3 text-white text-sm font-medium uppercase tracking-wide">Celtic</span>
+              <div className="w-28 h-28 xl:w-36 xl:h-36">
+                <Image
+                  src="/images/club-logo.webp"
+                  alt="Cwmbran Celtic"
+                  width={144}
+                  height={144}
+                  className="object-contain w-full h-full"
+                />
               </div>
 
               {/* VS */}
-              <div className="flex flex-col items-center">
-                <span className="text-4xl xl:text-5xl font-display text-celtic-yellow">V</span>
-              </div>
+              <span className="text-4xl xl:text-5xl font-display text-celtic-yellow">V</span>
 
               {/* Away Team Logo */}
-              <div className="flex flex-col items-center">
-                <div className="w-28 h-28 xl:w-36 xl:h-36 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                  {/* Placeholder for opposition logo - shows first letter */}
+              <div className="w-28 h-28 xl:w-36 xl:h-36 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center overflow-hidden">
+                {opponentData?.badge ? (
+                  <Image
+                    src={opponentData.badge}
+                    alt={opponent || 'Opposition'}
+                    width={144}
+                    height={144}
+                    className="object-contain w-full h-full p-2"
+                  />
+                ) : (
                   <span className="text-4xl xl:text-5xl font-display text-white/60">
                     {opponent?.charAt(0) || '?'}
                   </span>
-                </div>
-                <span className="mt-3 text-white text-sm font-medium uppercase tracking-wide">{opponent?.split(' ')[0] || 'TBC'}</span>
+                )}
               </div>
             </div>
           </div>
