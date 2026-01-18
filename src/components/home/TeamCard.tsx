@@ -25,13 +25,13 @@ export default function TeamCard({
       {/* Header */}
       <div className="card-header-gradient p-5">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
+          <div className="w-14 h-14 rounded-full flex-shrink-0 overflow-hidden">
             <Image
               src="/images/club-logo.webp"
               alt="Cwmbran Celtic"
-              width={40}
-              height={40}
-              className="object-contain"
+              width={56}
+              height={56}
+              className="object-cover w-full h-full"
             />
           </div>
           <div>
