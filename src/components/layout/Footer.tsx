@@ -112,37 +112,37 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-5">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/news" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/news" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Latest News
                 </Link>
               </li>
               <li>
-                <Link href="/fixtures" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/fixtures" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Fixtures & Results
                 </Link>
               </li>
               <li>
-                <Link href="/teams" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/teams" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Our Teams
                 </Link>
               </li>
               <li>
-                <Link href="/tickets" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/tickets" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Buy Tickets
                 </Link>
               </li>
               <li>
-                <Link href="/shop" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/shop" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Official Shop
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/gallery" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Photo Gallery
                 </Link>
@@ -155,37 +155,37 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-5">The Club</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/club" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/club" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/club/history" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/club/history" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Club History
                 </Link>
               </li>
               <li>
-                <Link href="/visit" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/visit" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Visit Us
                 </Link>
               </li>
               <li>
-                <Link href="/community" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/community" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Community
                 </Link>
               </li>
               <li>
-                <Link href="/sponsors" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/sponsors" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Sponsors
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/contact" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Contact Us
                 </Link>
@@ -198,19 +198,19 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-5">Supporters</h3>
             <ul className="space-y-3 mb-6">
               <li>
-                <Link href="/celtic-bond" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/celtic-bond" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Celtic Bond
                 </Link>
               </li>
               <li>
-                <Link href="/celtic-card" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/celtic-card" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Celtic Card
                 </Link>
               </li>
               <li>
-                <Link href="/events" className="text-white/80 hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/events" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
                   Events
                 </Link>
@@ -222,15 +222,15 @@ export default function Footer() {
               <h4 className="font-semibold text-sm mb-3 text-celtic-yellow">Match Day Prices</h4>
               <ul className="space-y-2 text-sm mb-4">
                 <li className="flex justify-between">
-                  <span className="text-white/70">Adults</span>
+                  <span className="text-white">Adults</span>
                   <span className="text-white font-medium">£{clubInfo.admission.adults}</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-white/70">Concessions</span>
+                  <span className="text-white">Concessions</span>
                   <span className="text-white font-medium">£{clubInfo.admission.concessions}</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-white/70">Under 16s</span>
+                  <span className="text-white">Under 16s</span>
                   <span className="text-celtic-yellow font-bold">FREE</span>
                 </li>
               </ul>
