@@ -3,71 +3,174 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getBoardStats } from '@/data/advertising-boards';
+import {
+  initializeStaff,
+  authenticateStaff,
+  createSession,
+  getSession,
+  endSession,
+  requestPasswordReset,
+  roleLabels,
+  type AuthSession,
+} from '@/lib/auth';
 
 export default function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState<AuthSession | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetMessage, setResetMessage] = useState('');
 
   const boardStats = getBoardStats();
 
-  // Check sessionStorage on mount
+  // Check for existing session on mount
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const auth = sessionStorage.getItem('admin-auth');
-      if (auth === 'true') {
-        setIsAuthenticated(true);
-      }
-    }
+    initializeStaff();
+    const existingSession = getSession();
+    setSession(existingSession);
+    setIsLoading(false);
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'celtic2025') {
-      setIsAuthenticated(true);
-      // Store auth in sessionStorage so it persists during navigation
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('admin-auth', 'true');
-      }
+    setError('');
+
+    const result = authenticateStaff(email, password);
+
+    if (result.success && result.staff) {
+      createSession(result.staff);
+      setSession(getSession());
     } else {
-      alert('Incorrect password');
+      setError(result.error || 'Login failed');
     }
   };
 
-  // Password screen
-  if (!isAuthenticated) {
+  const handleLogout = () => {
+    endSession();
+    setSession(null);
+    setEmail('');
+    setPassword('');
+  };
+
+  const handleForgotPassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = requestPasswordReset(email);
+    setResetMessage(result.message);
+    setTimeout(() => {
+      setShowForgotPassword(false);
+      setResetMessage('');
+    }, 3000);
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-celtic-blue border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  // Login screen
+  if (!session) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="card p-8 max-w-md w-full">
           <div className="text-center mb-6">
             <div className="w-16 h-16 bg-celtic-blue rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🔒</span>
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
             </div>
-            <h1 className="text-xl font-bold text-celtic-dark">Admin Area</h1>
-            <p className="text-sm text-gray-500">Enter password to access</p>
+            <h1 className="text-xl font-bold text-celtic-dark">Staff Login</h1>
+            <p className="text-sm text-gray-500">Cwmbran Celtic AFC Admin</p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full px-4 py-3 border rounded-lg text-center text-lg tracking-widest"
-              autoFocus
-            />
-            <button type="submit" className="btn-primary w-full py-3">
-              Access Admin
-            </button>
-          </form>
+          {showForgotPassword ? (
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 border rounded-lg"
+                  required
+                />
+              </div>
+
+              {resetMessage && (
+                <p className="text-sm text-green-600 bg-green-50 p-3 rounded-lg">{resetMessage}</p>
+              )}
+
+              <button type="submit" className="btn-primary w-full py-3">
+                Send Reset Link
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(false)}
+                className="w-full text-sm text-gray-500 hover:text-celtic-blue"
+              >
+                Back to Login
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  className="w-full px-4 py-3 border rounded-lg"
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full px-4 py-3 border rounded-lg"
+                  required
+                />
+              </div>
+
+              {error && (
+                <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
+              )}
+
+              <button type="submit" className="btn-primary w-full py-3">
+                Sign In
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="w-full text-sm text-gray-500 hover:text-celtic-blue"
+              >
+                Forgot password?
+              </button>
+            </form>
+          )}
 
           <Link href="/" className="block text-center text-sm text-gray-500 mt-6 hover:text-celtic-blue">
-            ← Back to Website
+            Back to Website
           </Link>
         </div>
       </div>
     );
   }
 
+  // Authenticated dashboard
   return (
     <>
       {/* Header */}
@@ -78,9 +181,23 @@ export default function AdminDashboard() {
               <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
               <p className="text-sm text-white/80">Cwmbran Celtic AFC Management</p>
             </div>
-            <Link href="/" className="text-sm text-white/80 hover:text-white">
-              ← Back to Website
-            </Link>
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className="text-sm font-medium text-white">{session.staffName}</p>
+                <p className="text-xs text-white/70">{roleLabels[session.role]}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link href="/admin/staff" className="text-sm text-white/80 hover:text-white px-3 py-1 rounded hover:bg-white/10">
+                  Staff
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-white/80 hover:text-white px-3 py-1 rounded hover:bg-white/10"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -123,7 +240,9 @@ export default function AdminDashboard() {
             <Link href="/admin/programme" className="card p-6 hover:shadow-lg transition-shadow group">
               <div className="flex items-start gap-4">
                 <div className="w-14 h-14 bg-celtic-blue/10 rounded-lg flex items-center justify-center group-hover:bg-celtic-blue/20 transition-colors">
-                  <span className="text-3xl">📰</span>
+                  <svg className="w-7 h-7 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
@@ -143,7 +262,9 @@ export default function AdminDashboard() {
             <Link href="/admin/advertising" className="card p-6 hover:shadow-lg transition-shadow group">
               <div className="flex items-start gap-4">
                 <div className="w-14 h-14 bg-celtic-yellow/20 rounded-lg flex items-center justify-center group-hover:bg-celtic-yellow/30 transition-colors">
-                  <span className="text-3xl">📋</span>
+                  <svg className="w-7 h-7 text-celtic-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                  </svg>
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
@@ -297,6 +418,30 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </Link>
+
+            {/* Staff Management - Super Admin Only */}
+            {(session.role === 'super_admin' || session.role === 'admin') && (
+              <Link href="/admin/staff" className="card p-6 hover:shadow-lg transition-shadow group">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                    <svg className="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
+                      Staff Management
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Manage staff accounts and permissions
+                    </p>
+                    <div className="mt-3 flex items-center gap-2 text-xs">
+                      <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full">Admin Only</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -343,6 +488,15 @@ export default function AdminDashboard() {
               <p className="text-sm font-semibold text-celtic-dark">Programmes</p>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Footer with session info */}
+      <section className="py-4 bg-gray-100 border-t">
+        <div className="container mx-auto px-4">
+          <p className="text-xs text-gray-500 text-center">
+            Logged in as {session.staffEmail} since {new Date(session.loginTime).toLocaleString()}
+          </p>
         </div>
       </section>
     </>
