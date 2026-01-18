@@ -52,7 +52,7 @@ export default function NewsletterSignup() {
             </form>
           )}
 
-          <p className="text-xs mt-4" style={{ color: '#d1d5db' }}>
+          <p className="text-xs mt-4 text-white">
             We respect your privacy. Unsubscribe at any time.
           </p>
         </div>
