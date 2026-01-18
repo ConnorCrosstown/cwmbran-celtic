@@ -174,25 +174,25 @@ export default function AdminDashboard() {
   return (
     <>
       {/* Header */}
-      <section className="bg-celtic-blue py-6">
+      <section className="bg-celtic-blue py-4 sm:py-6">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
-              <p className="text-sm text-white/80">Cwmbran Celtic AFC Management</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Admin Dashboard</h1>
+              <p className="text-xs sm:text-sm text-white/80">Cwmbran Celtic AFC Management</p>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
+            <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
+              <div className="text-left sm:text-right">
                 <p className="text-sm font-medium text-white">{session.staffName}</p>
                 <p className="text-xs text-white/70">{roleLabels[session.role]}</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Link href="/admin/staff" className="text-sm text-white/80 hover:text-white px-3 py-1 rounded hover:bg-white/10">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Link href="/admin/staff" className="text-xs sm:text-sm text-white/80 hover:text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded hover:bg-white/10">
                   Staff
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="text-sm text-white/80 hover:text-white px-3 py-1 rounded hover:bg-white/10"
+                  className="text-xs sm:text-sm text-white/80 hover:text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded hover:bg-white/10"
                 >
                   Logout
                 </button>
@@ -203,28 +203,28 @@ export default function AdminDashboard() {
       </section>
 
       {/* Quick Stats */}
-      <section className="py-6 bg-gray-50">
+      <section className="py-4 sm:py-6 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="card p-4">
-              <p className="text-xs text-gray-500 uppercase">Board Revenue</p>
-              <p className="text-2xl font-bold text-celtic-dark">£{boardStats.totalRevenue.toLocaleString()}</p>
-              <p className="text-xs text-green-600">This season</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+            <div className="card p-3 sm:p-4">
+              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">Board Revenue</p>
+              <p className="text-lg sm:text-2xl font-bold text-celtic-dark">£{boardStats.totalRevenue.toLocaleString()}</p>
+              <p className="text-[10px] sm:text-xs text-green-600">This season</p>
             </div>
-            <div className="card p-4">
-              <p className="text-xs text-gray-500 uppercase">Available Boards</p>
-              <p className="text-2xl font-bold text-celtic-dark">{boardStats.available}</p>
-              <p className="text-xs text-gray-500">of {boardStats.total} total</p>
+            <div className="card p-3 sm:p-4">
+              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">Available</p>
+              <p className="text-lg sm:text-2xl font-bold text-celtic-dark">{boardStats.available}</p>
+              <p className="text-[10px] sm:text-xs text-gray-500">of {boardStats.total} total</p>
             </div>
-            <div className="card p-4">
-              <p className="text-xs text-gray-500 uppercase">Renewals Due</p>
-              <p className="text-2xl font-bold text-orange-600">{boardStats.renewalDue}</p>
-              <p className="text-xs text-orange-600">Need attention</p>
+            <div className="card p-3 sm:p-4">
+              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">Renewals</p>
+              <p className="text-lg sm:text-2xl font-bold text-orange-600">{boardStats.renewalDue}</p>
+              <p className="text-[10px] sm:text-xs text-orange-600">Need attention</p>
             </div>
-            <div className="card p-4">
-              <p className="text-xs text-gray-500 uppercase">Occupancy</p>
-              <p className="text-2xl font-bold text-celtic-dark">{boardStats.occupancyRate}%</p>
-              <p className="text-xs text-gray-500">Board sponsorship</p>
+            <div className="card p-3 sm:p-4">
+              <p className="text-[10px] sm:text-xs text-gray-500 uppercase">Occupancy</p>
+              <p className="text-lg sm:text-2xl font-bold text-celtic-dark">{boardStats.occupancyRate}%</p>
+              <p className="text-[10px] sm:text-xs text-gray-500">Board sponsorship</p>
             </div>
           </div>
         </div>

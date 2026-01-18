@@ -34,21 +34,21 @@ export default function Footer() {
 
       {/* Newsletter Section */}
       <div className="border-b border-white/10">
-        <div className="container mx-auto px-4 py-10">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="container mx-auto px-4 py-8 sm:py-10">
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
             <div className="text-center md:text-left">
-              <h3 className="text-xl font-bold mb-2">Stay Updated</h3>
-              <p className="text-celtic-yellow text-sm">Get the latest news, fixtures & exclusive offers</p>
+              <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">Stay Updated</h3>
+              <p className="text-celtic-yellow text-xs sm:text-sm">Get the latest news, fixtures & exclusive offers</p>
             </div>
-            <form className="flex w-full md:w-auto gap-2">
+            <form className="flex flex-col xs:flex-row w-full md:w-auto gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 md:w-80 px-4 py-3 rounded-lg bg-white border border-white/20 text-celtic-dark placeholder-gray-500 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow"
+                className="flex-1 md:w-80 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-white border border-white/20 text-celtic-dark placeholder-gray-500 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow text-sm sm:text-base"
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-celtic-yellow text-celtic-dark font-semibold rounded-lg hover:bg-celtic-yellow-light transition-colors whitespace-nowrap"
+                className="px-4 sm:px-6 py-2.5 sm:py-3 bg-celtic-yellow text-celtic-dark font-semibold rounded-lg hover:bg-celtic-yellow-light transition-colors whitespace-nowrap text-sm sm:text-base"
               >
                 Subscribe
               </button>
@@ -350,14 +350,14 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10 bg-black/20">
-        <div className="container mx-auto px-4 py-5">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p className="text-white">
+        <div className="container mx-auto px-4 py-4 sm:py-5">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm">
+            <p className="text-white text-center md:text-left">
               © {currentYear} Cwmbran Celtic AFC. All rights reserved.
             </p>
-            <div className="flex items-center gap-6 text-white">
-              <Link href="/privacy" className="hover:text-celtic-yellow transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-celtic-yellow transition-colors">Terms of Use</Link>
+            <div className="flex items-center justify-center flex-wrap gap-3 sm:gap-6 text-white">
+              <Link href="/privacy" className="hover:text-celtic-yellow transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-celtic-yellow transition-colors">Terms</Link>
               <Link href="/accessibility" className="hover:text-celtic-yellow transition-colors">Accessibility</Link>
             </div>
           </div>

@@ -136,14 +136,14 @@ export default function StaffManagementPage() {
   return (
     <>
       {/* Header */}
-      <section className="bg-celtic-blue py-6">
+      <section className="bg-celtic-blue py-4 sm:py-6">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-white">Staff Management</h1>
-              <p className="text-sm text-white/80">Manage accounts and view activity</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-white">Staff Management</h1>
+              <p className="text-xs sm:text-sm text-white/80">Manage accounts and view activity</p>
             </div>
-            <Link href="/admin" className="text-sm text-white/80 hover:text-white">
+            <Link href="/admin" className="text-xs sm:text-sm text-white/80 hover:text-white">
               Back to Dashboard
             </Link>
           </div>
@@ -153,36 +153,36 @@ export default function StaffManagementPage() {
       {/* Tabs */}
       <section className="bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="flex gap-4">
+          <div className="flex gap-1 sm:gap-4 overflow-x-auto">
             <button
               onClick={() => setActiveTab('staff')}
-              className={`py-4 px-2 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'staff'
                   ? 'border-celtic-blue text-celtic-blue'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Staff Accounts
+              Staff
             </button>
             <button
               onClick={() => setActiveTab('logs')}
-              className={`py-4 px-2 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'logs'
                   ? 'border-celtic-blue text-celtic-blue'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Activity Logs
+              Activity
             </button>
             <button
               onClick={() => setActiveTab('password')}
-              className={`py-4 px-2 border-b-2 font-medium text-sm ${
+              className={`py-3 sm:py-4 px-2 sm:px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
                 activeTab === 'password'
                   ? 'border-celtic-blue text-celtic-blue'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Change Password
+              Password
             </button>
           </div>
         </div>
@@ -295,17 +295,17 @@ export default function StaffManagementPage() {
                   </div>
                 )}
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {staff.map((member) => (
                     <div
                       key={member.id}
-                      className={`card p-6 ${!member.active ? 'opacity-60' : ''}`}
+                      className={`card p-4 sm:p-6 ${!member.active ? 'opacity-60' : ''}`}
                     >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="flex items-center gap-3 mb-1">
-                            <h3 className="font-bold text-lg text-celtic-dark">{member.name}</h3>
-                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 className="font-bold text-base sm:text-lg text-celtic-dark">{member.name}</h3>
+                            <span className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full ${
                               member.active
                                 ? 'bg-green-100 text-green-700'
                                 : 'bg-red-100 text-red-700'
@@ -313,31 +313,31 @@ export default function StaffManagementPage() {
                               {member.active ? 'Active' : 'Inactive'}
                             </span>
                             {member.id === session.staffId && (
-                              <span className="text-xs px-2 py-0.5 rounded-full bg-celtic-blue/10 text-celtic-blue">
+                              <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-celtic-blue/10 text-celtic-blue">
                                 You
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-600">{member.email}</p>
-                          <p className="text-sm text-gray-500">{roleLabels[member.role]}</p>
+                          <p className="text-xs sm:text-sm text-gray-600 truncate">{member.email}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">{roleLabels[member.role]}</p>
                           {member.lastLogin && (
-                            <p className="text-xs text-gray-400 mt-2">
+                            <p className="text-[10px] sm:text-xs text-gray-400 mt-1 sm:mt-2">
                               Last login: {new Date(member.lastLogin).toLocaleString()}
                             </p>
                           )}
                         </div>
 
                         {canManageStaff && member.id !== session.staffId && (
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 sm:gap-3 text-xs sm:text-sm">
                             <button
                               onClick={() => handleResetPassword(member.id, member.name)}
-                              className="text-sm text-celtic-blue hover:underline"
+                              className="text-celtic-blue hover:underline"
                             >
-                              Reset Password
+                              Reset
                             </button>
                             <button
                               onClick={() => handleToggleActive(member.id, member.active)}
-                              className={`text-sm ${
+                              className={`${
                                 member.active ? 'text-red-600' : 'text-green-600'
                               } hover:underline`}
                             >

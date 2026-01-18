@@ -94,27 +94,27 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
             {/* Left Side - Match Info */}
             <div className="max-w-2xl">
-              {/* Badge Row */}
-              <div className="flex items-center gap-3 mb-6">
-                <span className={`${isHome ? 'badge-home' : 'badge-away'} flex items-center gap-2`}>
+              {/* Badge Row - Wrap on mobile */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <span className={`${isHome ? 'badge-home' : 'badge-away'} flex items-center gap-1.5 sm:gap-2`}>
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
                   </span>
-                  NEXT {isHome ? 'HOME' : 'AWAY'} MATCH
+                  <span className="hidden xs:inline">NEXT</span> {isHome ? 'HOME' : 'AWAY'}
                 </span>
-                <span className="badge-league">{teamLabel}</span>
+                <span className="badge-league hidden sm:inline-block">{teamLabel}</span>
                 <span className="badge-league">{leagueName}</span>
               </div>
 
               {/* Match Title */}
-              <div className="mb-8">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display uppercase tracking-wide text-white leading-none mb-2">
+              <div className="mb-6 sm:mb-8">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display uppercase tracking-wide text-white leading-none mb-2">
                   Cwmbran Celtic
                 </h1>
-                <div className="flex items-center gap-4 text-white">
-                  <span className="text-2xl md:text-3xl font-light">vs</span>
-                  <span className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-celtic-yellow">
+                <div className="flex items-center gap-2 sm:gap-4 text-white">
+                  <span className="text-xl sm:text-2xl md:text-3xl font-light">vs</span>
+                  <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display uppercase tracking-wide text-celtic-yellow break-words">
                     {opponent}
                   </span>
                 </div>
@@ -148,61 +148,61 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
             </div>
 
             {/* Countdown & CTAs */}
-            <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+            <div className="flex flex-col gap-4 sm:gap-6">
               {/* Countdown */}
               {timeLeft && (
-                <div className="flex items-start gap-2 sm:gap-3">
+                <div className="flex items-start gap-1.5 sm:gap-2 md:gap-3">
                   <div className="text-center">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[48px] sm:w-[56px] md:w-[68px] h-[44px] sm:h-[52px] md:h-[64px] flex items-center justify-center border border-white/20">
+                      <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-display">
                         {timeLeft.days}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Days</span>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-gray-300 mt-1 block">Days</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light h-[52px] sm:h-[64px] flex items-center">:</span>
+                  <span className="text-white/50 text-xl sm:text-2xl font-light h-[44px] sm:h-[52px] md:h-[64px] flex items-center">:</span>
                   <div className="text-center">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[48px] sm:w-[56px] md:w-[68px] h-[44px] sm:h-[52px] md:h-[64px] flex items-center justify-center border border-white/20">
+                      <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-display">
                         {timeLeft.hours.toString().padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Hours</span>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-gray-300 mt-1 block">Hrs</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light h-[52px] sm:h-[64px] flex items-center">:</span>
+                  <span className="text-white/50 text-xl sm:text-2xl font-light h-[44px] sm:h-[52px] md:h-[64px] flex items-center">:</span>
                   <div className="text-center">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[48px] sm:w-[56px] md:w-[68px] h-[44px] sm:h-[52px] md:h-[64px] flex items-center justify-center border border-white/20">
+                      <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-display">
                         {timeLeft.minutes.toString().padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Mins</span>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-gray-300 mt-1 block">Mins</span>
                   </div>
-                  <span className="text-white/50 text-2xl font-light hidden sm:flex h-[52px] sm:h-[64px] items-center">:</span>
+                  <span className="text-white/50 text-xl sm:text-2xl font-light hidden sm:flex h-[44px] sm:h-[52px] md:h-[64px] items-center">:</span>
                   <div className="text-center hidden sm:block">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[56px] sm:w-[68px] h-[52px] sm:h-[64px] flex items-center justify-center border border-white/20">
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white font-display">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg w-[48px] sm:w-[56px] md:w-[68px] h-[44px] sm:h-[52px] md:h-[64px] flex items-center justify-center border border-white/20">
+                      <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white font-display">
                         {timeLeft.seconds.toString().padStart(2, '0')}
                       </span>
                     </div>
-                    <span className="text-xs sm:text-sm text-gray-300 mt-1 block">Secs</span>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-gray-300 mt-1 block">Secs</span>
                   </div>
                 </div>
               )}
 
-              {/* CTA Buttons */}
-              <div className="flex gap-3 h-[52px] sm:h-[64px]">
-                <Link href="/tickets" className="btn-tickets">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* CTA Buttons - Stack on mobile, row on larger */}
+              <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
+                <Link href="/tickets" className="btn-tickets text-sm sm:text-base">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                   </svg>
                   Get Tickets
                 </Link>
                 <Link
                   href="/visit"
-                  className="px-5 py-3 bg-celtic-yellow text-celtic-dark rounded-lg font-semibold hover:bg-celtic-yellow-light transition-all flex items-center gap-2"
+                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-celtic-yellow text-celtic-dark rounded-lg font-semibold hover:bg-celtic-yellow-light transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                   </svg>
                   Get Directions

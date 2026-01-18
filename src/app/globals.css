@@ -1205,3 +1205,181 @@ input:focus, textarea:focus, select:focus {
 .dark .breadcrumb a:hover {
   color: var(--celtic-yellow-light);
 }
+
+/* ========================================
+   MOBILE RESPONSIVE FIXES
+   ======================================== */
+
+/* Prevent horizontal overflow on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Mobile-first touch targets - ensure minimum 44px for accessibility */
+@media (max-width: 767px) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-tickets,
+  .btn-outline {
+    min-height: 44px;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .btn-tickets-sm {
+    min-height: 40px;
+    padding: 0.5rem 0.875rem;
+  }
+
+  /* Reduce padding on mobile containers */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Reduce section padding on mobile */
+  section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Better text sizing on mobile */
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  /* Card spacing on mobile */
+  .card, .card-static {
+    border-radius: 0.75rem;
+  }
+
+  /* Badges - more compact on mobile */
+  .badge-home,
+  .badge-away,
+  .badge-league,
+  .badge-cup,
+  .badge-friendly {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+  }
+
+  /* Section headers */
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-header-accent {
+    height: 2.5rem;
+    width: 3px;
+  }
+}
+
+/* Small mobile devices (320px-375px) */
+@media (max-width: 374px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-tickets {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Stack buttons vertically on very small screens */
+  .flex-wrap {
+    gap: 0.5rem;
+  }
+}
+
+/* Fix for tables on mobile */
+@media (max-width: 639px) {
+  table {
+    font-size: 0.8125rem;
+  }
+
+  table th,
+  table td {
+    padding: 0.5rem 0.375rem;
+  }
+
+  /* Truncate long team names in tables */
+  table td:nth-child(2) {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Mobile scroll hints for horizontal scrollable content */
+.scroll-hint {
+  position: relative;
+}
+
+.scroll-hint::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to right, transparent, white);
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .scroll-hint::after {
+    display: none;
+  }
+}
+
+/* Fix flex items wrapping better on mobile */
+@media (max-width: 639px) {
+  .flex-mobile-col {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .flex-mobile-col > * {
+    width: 100%;
+  }
+}
+
+/* Safe area padding for notched devices */
+@supports (padding: max(0px)) {
+  .safe-area-padding {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Improve tap highlighting on mobile */
+@media (hover: none) {
+  a, button {
+    -webkit-tap-highlight-color: rgba(250, 204, 21, 0.2);
+  }
+
+  .card:active {
+    transform: scale(0.98);
+  }
+}
