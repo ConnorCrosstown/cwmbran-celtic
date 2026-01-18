@@ -54,7 +54,7 @@ function VideoCard({ video }: { video: Video }) {
   };
 
   return (
-    <div className="group cursor-pointer">
+    <Link href="/celtic-tv" className="group cursor-pointer card-hover block rounded-lg">
       <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 mb-3">
         {/* Placeholder for video thumbnail */}
         <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue to-celtic-blue-dark flex items-center justify-center">
@@ -89,7 +89,7 @@ function VideoCard({ video }: { video: Video }) {
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
         {new Date(video.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
       </p>
-    </div>
+    </Link>
   );
 }
 

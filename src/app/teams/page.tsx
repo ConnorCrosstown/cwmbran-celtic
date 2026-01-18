@@ -15,6 +15,20 @@ const teams = [
     color: 'bg-celtic-blue',
   },
   {
+    name: "Men's Seconds",
+    href: '/teams/mens-seconds',
+    description: 'Competing in the Gwent County League Division 2',
+    league: 'Gwent County League Division 2',
+    color: 'bg-celtic-blue',
+  },
+  {
+    name: "Men's Thirds",
+    href: '/teams/mens-thirds',
+    description: 'Competing in the Gwent County League Division 3',
+    league: 'Gwent County League Division 3',
+    color: 'bg-celtic-blue',
+  },
+  {
     name: "Women's Team",
     href: '/teams/ladies',
     description: 'Competing in the Genero Adran South league',

@@ -46,7 +46,12 @@ const featuredProducts: Product[] = [
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group">
+    <a
+      href="https://www.rhinodirect.co.uk/collections/cwmbran-celtic"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group card-hover block rounded-lg"
+    >
       <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 mb-3">
         {/* Placeholder for product image */}
         <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue/10 to-celtic-yellow/10 flex items-center justify-center">
@@ -81,7 +86,7 @@ function ProductCard({ product }: { product: Product }) {
       <p className="font-bold text-celtic-blue dark:text-celtic-yellow">
         £{product.price.toFixed(2)}
       </p>
-    </div>
+    </a>
   );
 }
 
