@@ -58,14 +58,15 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
     const isDraw = outcome === 'D';
     const isHome = isHomeResult(latestResult);
 
-    const bgColor = isWin ? 'from-celtic-yellow to-yellow-500' : isDraw ? 'from-amber-500 to-amber-600' : 'from-red-500 to-red-600';
+    // Result badge colors: WIN = green, DRAW = orange, LOSS = red
+    const badgeColor = isWin ? 'bg-green-500' : isDraw ? 'bg-orange-500' : 'bg-red-500';
     const resultText = isWin ? 'WIN' : isDraw ? 'DRAW' : 'LOSS';
 
     const celticScore = isHome ? latestResult.homeScore : latestResult.awayScore;
     const oppScore = isHome ? latestResult.awayScore : latestResult.homeScore;
 
     return (
-      <div className={`bg-gradient-to-r ${bgColor}`}>
+      <div className="bg-gradient-to-r from-celtic-yellow to-yellow-500">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-2.5">
             <div className="flex items-center gap-4">
@@ -81,7 +82,7 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
                 </div>
                 <span className="font-semibold text-sm sm:text-base text-celtic-dark">{getOpponentFromResult(latestResult)}</span>
               </div>
-              <span className="hidden sm:inline-block text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded bg-white text-celtic-dark">
+              <span className={`hidden sm:inline-block text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded ${badgeColor} text-white`}>
                 {resultText}
               </span>
             </div>
