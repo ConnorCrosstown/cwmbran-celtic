@@ -379,7 +379,6 @@ p {
 /* Card header with gradient */
 .card-header-gradient {
   background: linear-gradient(135deg, var(--celtic-blue) 0%, var(--celtic-blue-dark) 100%);
-  color: white;
   position: relative;
   overflow: hidden;
 }
