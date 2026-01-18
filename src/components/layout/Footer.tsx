@@ -280,13 +280,13 @@ export default function Footer() {
       <div className="border-t border-white/10 bg-black/20">
         <div className="container mx-auto px-4 py-5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <p className="text-gray-500">
+            <p className="text-white">
               © {currentYear} Cwmbran Celtic AFC. All rights reserved.
             </p>
-            <div className="flex items-center gap-6 text-gray-500">
-              <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms of Use</Link>
-              <Link href="/accessibility" className="hover:text-gray-300 transition-colors">Accessibility</Link>
+            <div className="flex items-center gap-6 text-white">
+              <Link href="/privacy" className="hover:text-celtic-yellow transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-celtic-yellow transition-colors">Terms of Use</Link>
+              <Link href="/accessibility" className="hover:text-celtic-yellow transition-colors">Accessibility</Link>
             </div>
           </div>
         </div>
