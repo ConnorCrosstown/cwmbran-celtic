@@ -73,8 +73,16 @@ interface NavigationProps {
   onItemClick?: () => void;
 }
 
-function DropdownMenu({ item, mobile, onItemClick }: { item: NavItem; mobile?: boolean; onItemClick?: () => void }) {
-  const [isOpen, setIsOpen] = useState(false);
+interface DropdownMenuProps {
+  item: NavItem;
+  mobile?: boolean;
+  onItemClick?: () => void;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
+
+function DropdownMenu({ item, mobile, onItemClick, isOpen, onOpen, onClose }: DropdownMenuProps) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
 
@@ -85,13 +93,13 @@ function DropdownMenu({ item, mobile, onItemClick }: { item: NavItem; mobile?: b
   const handleMouseEnter = () => {
     if (!mobile) {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      setIsOpen(true);
+      onOpen();
     }
   };
 
   const handleMouseLeave = () => {
     if (!mobile) {
-      timeoutRef.current = setTimeout(() => setIsOpen(false), 150);
+      timeoutRef.current = setTimeout(() => onClose(), 150);
     }
   };
 
@@ -105,7 +113,7 @@ function DropdownMenu({ item, mobile, onItemClick }: { item: NavItem; mobile?: b
     return (
       <div className="space-y-1">
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => isOpen ? onClose() : onOpen()}
           className={`w-full flex items-center justify-between py-2 px-4 rounded-lg ${
             isActive ? 'bg-celtic-blue-dark text-celtic-yellow' : 'text-white hover:bg-celtic-blue-dark'
           }`}
@@ -185,6 +193,7 @@ function DropdownMenu({ item, mobile, onItemClick }: { item: NavItem; mobile?: b
 
 export default function Navigation({ mobile = false, onItemClick }: NavigationProps) {
   const pathname = usePathname();
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const baseClasses = mobile
     ? 'block py-2 px-4 rounded-lg'
@@ -203,6 +212,9 @@ export default function Navigation({ mobile = false, onItemClick }: NavigationPr
               item={item}
               mobile={mobile}
               onItemClick={onItemClick}
+              isOpen={openDropdown === item.href}
+              onOpen={() => setOpenDropdown(item.href)}
+              onClose={() => setOpenDropdown(null)}
             />
           );
         }
