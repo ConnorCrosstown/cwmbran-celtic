@@ -157,7 +157,7 @@ export default async function MensTeamPage() {
             <div className="card p-4 mb-4">
               <p className="text-sm text-gray-700 mb-2">
                 Cwmbran Celtic Men&apos;s First Team compete in the JD Cymru South, the third tier of
-                Welsh football. The club has a proud history dating back to 1924 and plays home games
+                Welsh football. The club has a proud history dating back to 1925 and plays home games
                 at the Avondale Motor Park Arena.
               </p>
               <p className="text-sm text-gray-700">

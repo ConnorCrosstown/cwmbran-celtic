@@ -59,7 +59,7 @@ export default function TeamsPage() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-xl md:text-2xl font-bold text-white">Our Teams</h1>
           <p className="text-xs text-celtic-yellow">
-            Football for everyone since 1924
+            Football for everyone since 1925
           </p>
         </div>
       </section>

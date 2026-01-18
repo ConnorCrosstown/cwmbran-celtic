@@ -137,7 +137,7 @@ function DropdownMenu({ item, mobile, onItemClick, isOpen, onOpen, onClose }: Dr
                 className={`block py-2 px-4 rounded-lg text-sm ${
                   pathname === child.href
                     ? 'bg-celtic-blue-dark text-celtic-yellow'
-                    : 'text-white/80 hover:bg-celtic-blue-dark hover:text-white'
+                    : 'text-white hover:bg-celtic-blue-dark hover:text-white'
                 }`}
                 onClick={onItemClick}
               >

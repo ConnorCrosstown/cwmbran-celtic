@@ -9,7 +9,7 @@
  * - FAW Cymru Leagues (fixtures, tables)
  * - allwalessport.co.uk (league tables)
  *
- * Last updated: January 2025
+ * Last updated: January 2026
  */
 
 // Helper to convert date to Comet format (ms since epoch)
@@ -127,8 +127,8 @@ export const mockFixtures = {
 };
 
 /**
- * RESULTS - Recent match results (2024-25 season)
- * Source: FAW Cymru Leagues, allwalessport.co.uk
+ * RESULTS - Recent match results (2025-26 season)
+ * Source: FAW Cymru Leagues, Flashscore, AiScore
  */
 export const mockResults = {
   reportName: "Club Results",
@@ -136,105 +136,182 @@ export const mockResults = {
   columnNames: ["Match ID", "Date", "Home Team", "Away Team", "Home Score", "Away Score", "Competition", "Scorers", "Attendance"],
   columnKeys: ["matchId", "date", "homeTeam", "awayTeam", "homeScore", "awayScore", "competition", "scorers", "attendance"],
   results: [
-    // Men's results - 2024-25 season (most recent first)
+    // Men's results - 2025-26 season (most recent first)
     {
       matchId: 901,
-      date: toComet("2025-01-11"),
+      date: toComet("2026-01-11"),
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Carmarthen Town",
-      homeScore: 3,
-      awayScore: 1,
+      homeScore: 2,
+      awayScore: 2,
       competition: "JD Cymru South",
-      scorers: "Berry 23', van Dieren 56', Hughes 78'",
-      attendance: 195
+      scorers: "",
+      attendance: 120
     },
     {
       matchId: 902,
-      date: toComet("2025-04-04"),
-      homeTeam: "Newport City",
+      date: toComet("2026-01-02"),
+      homeTeam: "Treowen Stars",
       awayTeam: "Cwmbran Celtic",
       homeScore: 2,
-      awayScore: 0,
+      awayScore: 2,
       competition: "JD Cymru South",
       scorers: "",
-      attendance: 245
+      attendance: 95
     },
     {
       matchId: 903,
-      date: toComet("2025-03-29"),
+      date: toComet("2025-12-27"),
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Ynyshir Albions",
+      homeScore: 1,
+      awayScore: 1,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 110
+    },
+    {
+      matchId: 904,
+      date: toComet("2025-12-05"),
+      homeTeam: "Cardiff Draconians",
+      awayTeam: "Cwmbran Celtic",
+      homeScore: 2,
+      awayScore: 1,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 145
+    },
+    {
+      matchId: 905,
+      date: toComet("2025-11-08"),
+      homeTeam: "Pontypridd United",
+      awayTeam: "Cwmbran Celtic",
+      homeScore: 7,
+      awayScore: 0,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 210
+    },
+    {
+      matchId: 906,
+      date: toComet("2025-11-01"),
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Baglan Dragons",
+      homeScore: 0,
+      awayScore: 1,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 125
+    },
+    {
+      matchId: 907,
+      date: toComet("2025-10-25"),
+      homeTeam: "Ammanford",
+      awayTeam: "Cwmbran Celtic",
+      homeScore: 2,
+      awayScore: 1,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 180
+    },
+    {
+      matchId: 908,
+      date: toComet("2025-10-11"),
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Caerau Ely",
       homeScore: 0,
       awayScore: 2,
       competition: "JD Cymru South",
       scorers: "",
-      attendance: 156
+      attendance: 135
     },
     {
-      matchId: 904,
-      date: toComet("2025-03-22"),
+      matchId: 909,
+      date: toComet("2025-09-27"),
       homeTeam: "Cwmbran Celtic",
-      awayTeam: "Afan Lido",
+      awayTeam: "Trethomas Bluebirds",
       homeScore: 2,
       awayScore: 2,
       competition: "JD Cymru South",
-      scorers: "McDowell 23', van Dieren 67'",
-      attendance: 189
-    },
-    {
-      matchId: 905,
-      date: toComet("2025-01-11"),
-      homeTeam: "Caerau Ely",
-      awayTeam: "Cwmbran Celtic",
-      homeScore: 1,
-      awayScore: 2,
-      competition: "JD Cymru South",
-      scorers: "McDowell 2', Furness 78'",
-      attendance: 134
-    },
-    // Women's results - 2024-25 season
-    {
-      matchId: 2901,
-      date: toComet("2025-01-05"),
-      homeTeam: "Cwmbran Celtic Ladies",
-      awayTeam: "Caldicot Town",
-      homeScore: 6,
-      awayScore: 1,
-      competition: "Genero Adran South",
-      scorers: "Boyd 12', 37', Crofts 22', 45', 90+2', Meaney 86'",
-      attendance: 95
-    },
-    {
-      matchId: 2902,
-      date: toComet("2025-02-09"),
-      homeTeam: "Pontypridd United",
-      awayTeam: "Cwmbran Celtic Ladies",
-      homeScore: 1,
-      awayScore: 0,
-      competition: "Genero Adran South",
       scorers: "",
-      attendance: 112
+      attendance: 145
     },
     {
-      matchId: 2903,
-      date: toComet("2024-09-15"),
-      homeTeam: "Llanelli Town",
-      awayTeam: "Cwmbran Celtic Ladies",
+      matchId: 910,
+      date: toComet("2025-09-13"),
+      homeTeam: "Aberystwyth Town",
+      awayTeam: "Cwmbran Celtic",
+      homeScore: 2,
+      awayScore: 0,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 320
+    },
+    {
+      matchId: 911,
+      date: toComet("2025-08-25"),
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Newport City",
       homeScore: 1,
-      awayScore: 2,
-      competition: "Genero Adran South",
-      scorers: "Crofts 34', Boyd 71'",
-      attendance: 78
+      awayScore: 1,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 165
+    },
+    {
+      matchId: 912,
+      date: toComet("2025-08-23"),
+      homeTeam: "Trefelin BGC",
+      awayTeam: "Cwmbran Celtic",
+      homeScore: 4,
+      awayScore: 0,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 190
+    },
+    {
+      matchId: 913,
+      date: toComet("2025-08-16"),
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Afan Lido",
+      homeScore: 1,
+      awayScore: 4,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 140
+    },
+    {
+      matchId: 914,
+      date: toComet("2025-08-09"),
+      homeTeam: "Cambrian United",
+      awayTeam: "Cwmbran Celtic",
+      homeScore: 4,
+      awayScore: 0,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 225
+    },
+    {
+      matchId: 915,
+      date: toComet("2025-07-26"),
+      homeTeam: "Cwmbran Celtic",
+      awayTeam: "Carmarthen Town",
+      homeScore: 0,
+      awayScore: 4,
+      competition: "JD Cymru South",
+      scorers: "",
+      attendance: 175
     }
   ],
-  totalSize: 8,
+  totalSize: 15,
   page: 0,
   pageSize: 25
 };
 
 /**
- * LEAGUE TABLE - JD Cymru South 2024-25 (Final)
- * Source: Transfermarkt, allwalessport.co.uk
+ * LEAGUE TABLE - JD Cymru South 2025-26 (Current)
+ * Source: thefishy.net, FAW Cymru Leagues
+ * Last updated: January 2026
  */
 export const mockLeagueTable = {
   reportName: "JD Cymru South League Table",
@@ -242,22 +319,22 @@ export const mockLeagueTable = {
   columnNames: ["Position", "Club", "Played", "Won", "Drawn", "Lost", "GD", "Points", "Form"],
   columnKeys: ["position", "club", "played", "won", "drawn", "lost", "gd", "points", "form"],
   results: [
-    { position: 1, club: "Llanelli Town", played: 30, won: 18, drawn: 10, lost: 2, gd: 39, points: 64 },
-    { position: 2, club: "Trethomas Bluebirds", played: 30, won: 17, drawn: 8, lost: 5, gd: 20, points: 59 },
-    { position: 3, club: "Newport City", played: 30, won: 16, drawn: 6, lost: 8, gd: 18, points: 54 },
-    { position: 4, club: "Trefelin BGC", played: 30, won: 15, drawn: 8, lost: 7, gd: 13, points: 53 },
-    { position: 5, club: "Pontypridd United", played: 30, won: 16, drawn: 5, lost: 9, gd: 10, points: 53 },
-    { position: 6, club: "Cambrian United", played: 30, won: 13, drawn: 11, lost: 6, gd: 12, points: 47 },
-    { position: 7, club: "Carmarthen Town", played: 30, won: 12, drawn: 9, lost: 9, gd: 11, points: 45 },
-    { position: 8, club: "Baglan Dragons", played: 30, won: 11, drawn: 10, lost: 9, gd: 10, points: 43 },
-    { position: 9, club: "Llantwit Major", played: 30, won: 11, drawn: 10, lost: 9, gd: 3, points: 43 },
-    { position: 10, club: "Ammanford", played: 30, won: 11, drawn: 3, lost: 16, gd: -3, points: 36 },
-    { position: 11, club: "Afan Lido", played: 30, won: 8, drawn: 10, lost: 12, gd: -7, points: 34 },
-    { position: 12, club: "Caerau Ely", played: 30, won: 9, drawn: 5, lost: 16, gd: -1, points: 32 },
-    { position: 13, club: "Cwmbran Celtic", played: 30, won: 9, drawn: 3, lost: 18, gd: -23, points: 30 },
-    { position: 14, club: "Penrhiwceiber Rangers", played: 30, won: 7, drawn: 7, lost: 16, gd: -27, points: 28 },
-    { position: 15, club: "Goytre United", played: 30, won: 6, drawn: 5, lost: 19, gd: -31, points: 23 },
-    { position: 16, club: "Taffs Well", played: 30, won: 3, drawn: 6, lost: 21, gd: -44, points: 15 }
+    { position: 1, club: "Cambrian United", played: 19, won: 15, drawn: 2, lost: 2, gd: 33, points: 47 },
+    { position: 2, club: "Trefelin BGC", played: 17, won: 13, drawn: 3, lost: 1, gd: 28, points: 42 },
+    { position: 3, club: "Ammanford", played: 18, won: 10, drawn: 7, lost: 1, gd: 18, points: 37 },
+    { position: 4, club: "Caerau Ely", played: 19, won: 9, drawn: 5, lost: 5, gd: 10, points: 32 },
+    { position: 5, club: "Cardiff Draconians", played: 18, won: 9, drawn: 2, lost: 7, gd: 5, points: 29 },
+    { position: 6, club: "Newport City", played: 18, won: 6, drawn: 9, lost: 3, gd: 4, points: 27 },
+    { position: 7, club: "Aberystwyth Town", played: 17, won: 8, drawn: 3, lost: 6, gd: 4, points: 27 },
+    { position: 8, club: "Carmarthen Town", played: 19, won: 6, drawn: 9, lost: 4, gd: 2, points: 27 },
+    { position: 9, club: "Treowen Stars", played: 18, won: 6, drawn: 5, lost: 7, gd: -4, points: 23 },
+    { position: 10, club: "Llantwit Major", played: 18, won: 4, drawn: 9, lost: 5, gd: -2, points: 21 },
+    { position: 11, club: "Baglan Dragons", played: 17, won: 4, drawn: 7, lost: 6, gd: -1, points: 19 },
+    { position: 12, club: "Pontypridd United", played: 19, won: 4, drawn: 4, lost: 11, gd: -7, points: 16 },
+    { position: 13, club: "Trethomas Bluebirds", played: 18, won: 3, drawn: 7, lost: 8, gd: -11, points: 16 },
+    { position: 14, club: "Afan Lido", played: 18, won: 3, drawn: 3, lost: 12, gd: -22, points: 12 },
+    { position: 15, club: "Ynyshir Albions", played: 18, won: 3, drawn: 3, lost: 12, gd: -25, points: 12 },
+    { position: 16, club: "Cwmbran Celtic", played: 19, won: 0, drawn: 6, lost: 13, gd: -32, points: 6 }
   ],
   totalSize: 16,
   page: 0,
@@ -290,8 +367,8 @@ export const mockLadiesLeagueTable = {
 };
 
 /**
- * SQUAD - Men's First Team 2024-25
- * Source: Transfermarkt
+ * SQUAD - Men's First Team 2025-26
+ * Source: Transfermarkt (January 2026)
  */
 export const mockSquad = {
   reportName: "Squad List - Men's First Team",
@@ -306,7 +383,7 @@ export const mockSquad = {
       firstName: "Lewis",
       lastName: "Watkins",
       position: "Goalkeeper",
-      appearances: 25,
+      appearances: 15,
       dateOfBirth: toComet("1992-06-15")
     },
     {
@@ -315,302 +392,203 @@ export const mockSquad = {
       firstName: "Iwan",
       lastName: "Hooper",
       position: "Goalkeeper",
-      appearances: 8,
+      appearances: 4,
       dateOfBirth: toComet("2002-09-22")
     },
     // Defenders
-    {
-      photo: "/images/players/oliver-berry.webp",
-      squadNo: 2,
-      firstName: "Oliver",
-      lastName: "Berry",
-      position: "Right Back",
-      appearances: 28,
-      dateOfBirth: toComet("1999-03-18")
-    },
-    {
-      photo: "/images/players/sam-powell.webp",
-      squadNo: 3,
-      firstName: "Sam",
-      lastName: "Powell",
-      position: "Left Back",
-      appearances: 26,
-      dateOfBirth: toComet("1996-11-08")
-    },
-    {
-      photo: "/images/players/dominic-connor.webp",
-      squadNo: 4,
-      firstName: "Dominic",
-      lastName: "Connor",
-      position: "Centre Back",
-      appearances: 24,
-      dateOfBirth: toComet("1998-05-30")
-    },
     {
       photo: "/images/players/andrew-larcombe.webp",
       squadNo: 5,
       firstName: "Andrew",
       lastName: "Larcombe",
       position: "Centre Back",
-      appearances: 27,
+      appearances: 17,
       dateOfBirth: toComet("1987-09-12")
+    },
+    {
+      photo: "/images/players/josh-hinwood.webp",
+      squadNo: 4,
+      firstName: "Josh",
+      lastName: "Hinwood",
+      position: "Centre Back",
+      appearances: 14,
+      dateOfBirth: toComet("1997-05-22")
+    },
+    {
+      photo: "/images/players/oliver-berry.webp",
+      squadNo: 2,
+      firstName: "Oliver",
+      lastName: "Berry",
+      position: "Left Back",
+      appearances: 12,
+      dateOfBirth: toComet("1999-03-18")
+    },
+    {
+      photo: "/images/players/luke-edwards.webp",
+      squadNo: 3,
+      firstName: "Luke",
+      lastName: "Edwards",
+      position: "Left Back",
+      appearances: 10,
+      dateOfBirth: toComet("1999-08-18")
     },
     {
       photo: "/images/players/jac-evans.webp",
       squadNo: 6,
       firstName: "Jac",
       lastName: "Evans",
-      position: "Centre Back",
-      appearances: 22,
-      dateOfBirth: toComet("1997-02-18")
+      position: "Left Back",
+      appearances: 8,
+      dateOfBirth: toComet("2005-02-18")
+    },
+    {
+      photo: "/images/players/sam-powell.webp",
+      squadNo: 15,
+      firstName: "Sam",
+      lastName: "Powell",
+      position: "Right Back",
+      appearances: 16,
+      dateOfBirth: toComet("1996-11-08")
     },
     {
       photo: "/images/players/kian-bodenham.webp",
-      squadNo: 15,
+      squadNo: 16,
       firstName: "Kian",
       lastName: "Bodenham",
-      position: "Left Back",
-      appearances: 18,
-      dateOfBirth: toComet("2003-04-25")
-    },
-    {
-      photo: "/images/players/lloyd-perkins.webp",
-      squadNo: 16,
-      firstName: "Lloyd",
-      lastName: "Perkins",
       position: "Right Back",
-      appearances: 15,
-      dateOfBirth: toComet("2002-08-03")
+      appearances: 9,
+      dateOfBirth: toComet("2004-04-25")
     },
     {
-      photo: "/images/players/tyler-broom.webp",
-      squadNo: 21,
-      firstName: "Tyler",
-      lastName: "Broom",
+      photo: "/images/players/dominic-morris.webp",
+      squadNo: 17,
+      firstName: "Dominic",
+      lastName: "Morris",
       position: "Centre Back",
-      appearances: 12,
-      dateOfBirth: toComet("2001-03-15")
+      appearances: 6,
+      dateOfBirth: toComet("2000-07-12")
     },
     // Midfielders
     {
-      photo: "/images/players/mario-van-dieren.webp",
-      squadNo: 7,
-      firstName: "Mario",
-      lastName: "van Dieren",
-      position: "Central Midfield",
-      appearances: 28,
-      dateOfBirth: toComet("1995-01-14")
-    },
-    {
-      photo: "/images/players/alex-mcdowell.webp",
-      squadNo: 8,
-      firstName: "Alex",
-      lastName: "McDowell",
-      position: "Central Midfield",
-      appearances: 30,
-      dateOfBirth: toComet("1996-12-07")
-    },
-    {
-      photo: "/images/players/isaac-powell.webp",
-      squadNo: 10,
-      firstName: "Isaac",
-      lastName: "Powell",
-      position: "Attacking Midfield",
-      appearances: 25,
-      dateOfBirth: toComet("2000-06-19")
-    },
-    {
-      photo: "/images/players/louis-cochrane.webp",
-      squadNo: 11,
-      firstName: "Louis",
-      lastName: "Cochrane",
-      position: "Left Wing",
-      appearances: 22,
-      dateOfBirth: toComet("1997-11-22")
-    },
-    {
-      photo: "/images/players/cole-doolan.webp",
-      squadNo: 14,
-      firstName: "Cole",
-      lastName: "Doolan",
-      position: "Central Midfield",
-      appearances: 20,
-      dateOfBirth: toComet("2000-07-15")
-    },
-    {
-      photo: "/images/players/joseph-bowen.webp",
-      squadNo: 17,
-      firstName: "Joseph",
-      lastName: "Bowen",
-      position: "Central Midfield",
-      appearances: 16,
-      dateOfBirth: toComet("2003-02-28")
-    },
-    {
-      photo: "/images/players/efan-fletcher.webp",
-      squadNo: 18,
-      firstName: "Efan",
-      lastName: "Fletcher",
-      position: "Defensive Midfield",
-      appearances: 19,
-      dateOfBirth: toComet("1998-05-10")
-    },
-    {
-      photo: "/images/players/gabriel-howells.webp",
-      squadNo: 19,
-      firstName: "Gabriel",
-      lastName: "Howells",
-      position: "Right Wing",
-      appearances: 12,
-      dateOfBirth: toComet("2006-09-03")
-    },
-    {
-      photo: "/images/players/tommy-challenger.webp",
-      squadNo: 20,
-      firstName: "Tommy",
-      lastName: "Challenger",
-      position: "Central Midfield",
-      appearances: 10,
-      dateOfBirth: toComet("2007-03-20")
-    },
-    {
-      photo: "/images/players/ethan-hooper.webp",
-      squadNo: 22,
-      firstName: "Ethan",
-      lastName: "Hooper",
-      position: "Central Midfield",
-      appearances: 8,
-      dateOfBirth: toComet("2004-06-12")
-    },
-    {
-      photo: "/images/players/jack-prosser.webp",
-      squadNo: 23,
-      firstName: "Jack",
-      lastName: "Prosser",
-      position: "Central Midfield",
-      appearances: 6,
-      dateOfBirth: toComet("2003-09-28")
-    },
-    {
-      photo: "/images/players/evan-maidment.webp",
-      squadNo: 24,
-      firstName: "Evan",
-      lastName: "Maidment",
-      position: "Central Midfield",
-      appearances: 5,
-      dateOfBirth: toComet("2004-01-15")
-    },
-    {
       photo: "/images/players/finley-hayman.webp",
-      squadNo: 25,
+      squadNo: 7,
       firstName: "Finley",
       lastName: "Hayman",
       position: "Central Midfield",
-      appearances: 4,
-      dateOfBirth: toComet("2005-07-22")
+      appearances: 15,
+      dateOfBirth: toComet("2003-07-22")
+    },
+    {
+      photo: "/images/players/isaac-powell.webp",
+      squadNo: 8,
+      firstName: "Isaac",
+      lastName: "Powell",
+      position: "Central Midfield",
+      appearances: 17,
+      dateOfBirth: toComet("2000-06-19")
+    },
+    {
+      photo: "/images/players/efan-fletcher.webp",
+      squadNo: 10,
+      firstName: "Efan",
+      lastName: "Fletcher",
+      position: "Central Midfield",
+      appearances: 11,
+      dateOfBirth: toComet("2006-05-10")
+    },
+    {
+      photo: "/images/players/tom-dean.webp",
+      squadNo: 11,
+      firstName: "Tom",
+      lastName: "Dean",
+      position: "Central Midfield",
+      appearances: 8,
+      dateOfBirth: toComet("2006-09-15")
+    },
+    {
+      photo: "/images/players/mario-van-dieren.webp",
+      squadNo: 14,
+      firstName: "Mario",
+      lastName: "van Dieren",
+      position: "Central Midfield",
+      appearances: 16,
+      dateOfBirth: toComet("1996-01-14")
+    },
+    {
+      photo: "/images/players/joseph-bowen.webp",
+      squadNo: 18,
+      firstName: "Joseph",
+      lastName: "Bowen",
+      position: "Central Midfield",
+      appearances: 12,
+      dateOfBirth: toComet("2003-02-28")
+    },
+    {
+      photo: "/images/players/alex-mcdowell.webp",
+      squadNo: 19,
+      firstName: "Alex",
+      lastName: "McDowell",
+      position: "Attacking Midfield",
+      appearances: 18,
+      dateOfBirth: toComet("1997-12-07")
+    },
+    {
+      photo: "/images/players/cole-doolan.webp",
+      squadNo: 20,
+      firstName: "Cole",
+      lastName: "Doolan",
+      position: "Attacking Midfield",
+      appearances: 14,
+      dateOfBirth: toComet("2000-07-15")
+    },
+    {
+      photo: "/images/players/gabriel-howells.webp",
+      squadNo: 21,
+      firstName: "Gabriel",
+      lastName: "Howells",
+      position: "Attacking Midfield",
+      appearances: 10,
+      dateOfBirth: toComet("2006-09-03")
     },
     // Forwards
     {
-      photo: "/images/players/arthur-furness.webp",
-      squadNo: 9,
-      firstName: "Arthur",
-      lastName: "Furness",
-      position: "Striker",
-      appearances: 26,
-      dateOfBirth: toComet("1993-08-25")
-    },
-    {
-      photo: "/images/players/connor-james.webp",
-      squadNo: 12,
-      firstName: "Connor",
-      lastName: "James",
-      position: "Striker",
-      appearances: 14,
-      dateOfBirth: toComet("2000-04-12")
-    },
-    {
-      photo: "/images/players/joshua-gibson.webp",
-      squadNo: 26,
-      firstName: "Joshua",
-      lastName: "Gibson",
-      position: "Striker",
-      appearances: 8,
-      dateOfBirth: toComet("2003-11-05")
-    },
-    {
-      photo: "/images/players/luke-edwards.webp",
-      squadNo: 27,
-      firstName: "Luke",
-      lastName: "Edwards",
-      position: "Striker",
-      appearances: 7,
-      dateOfBirth: toComet("2002-08-18")
-    },
-    {
-      photo: "/images/players/martin-ingram.webp",
-      squadNo: 28,
-      firstName: "Martin",
-      lastName: "Ingram",
-      position: "Striker",
-      appearances: 5,
-      dateOfBirth: toComet("1999-02-14")
-    },
-    {
-      photo: "/images/players/robert-jones.webp",
-      squadNo: 29,
-      firstName: "Robert",
-      lastName: "Jones",
-      position: "Striker",
-      appearances: 4,
-      dateOfBirth: toComet("2001-05-30")
-    },
-    {
-      photo: "/images/players/ryan-saunders.webp",
-      squadNo: 30,
-      firstName: "Ryan",
-      lastName: "Saunders",
-      position: "Striker",
-      appearances: 3,
-      dateOfBirth: toComet("2000-12-08")
-    },
-    {
-      photo: "/images/players/ryan-thomas.webp",
-      squadNo: 31,
-      firstName: "Ryan",
-      lastName: "Thomas",
-      position: "Striker",
-      appearances: 6,
-      dateOfBirth: toComet("1998-09-22")
-    },
-    {
-      photo: "/images/players/sam-lewis.webp",
-      squadNo: 32,
-      firstName: "Sam",
-      lastName: "Lewis",
-      position: "Striker",
-      appearances: 5,
-      dateOfBirth: toComet("2001-03-18")
-    },
-    {
-      photo: "/images/players/steven-muir.webp",
-      squadNo: 33,
-      firstName: "Steven",
-      lastName: "Muir",
-      position: "Striker",
-      appearances: 4,
-      dateOfBirth: toComet("1997-06-25")
-    },
-    {
       photo: "/images/players/tom-berry.webp",
-      squadNo: 34,
+      squadNo: 9,
       firstName: "Tom",
       lastName: "Berry",
       position: "Striker",
-      appearances: 3,
-      dateOfBirth: toComet("2002-11-12")
+      appearances: 15,
+      dateOfBirth: toComet("1997-11-12")
+    },
+    {
+      photo: "/images/players/josh-gibson.webp",
+      squadNo: 12,
+      firstName: "Josh",
+      lastName: "Gibson",
+      position: "Striker",
+      appearances: 12,
+      dateOfBirth: toComet("2005-11-05")
+    },
+    {
+      photo: "/images/players/arthur-furness.webp",
+      squadNo: 22,
+      firstName: "Arthur",
+      lastName: "Furness",
+      position: "Striker",
+      appearances: 16,
+      dateOfBirth: toComet("1994-08-25")
+    },
+    {
+      photo: "/images/players/evan-maidment.webp",
+      squadNo: 23,
+      firstName: "Evan",
+      lastName: "Maidment",
+      position: "Striker",
+      appearances: 7,
+      dateOfBirth: toComet("2004-01-15")
     }
   ],
-  totalSize: 34,
+  totalSize: 23,
   page: 0,
   pageSize: 25
 };
@@ -721,12 +699,307 @@ export const sponsors = {
 
 /**
  * WOMEN'S TEAM KEY PLAYERS
- * Source: FAW Adran Leagues news
+ * Source: FAW Adran Leagues news, Clwb Peldroed
+ * Last updated: January 2026
  */
 export const womensKeyPlayers = [
-  { name: "Natalia Shwartz", position: "Defender", notes: "Consistent performer, defensive rock" },
-  { name: "Jade Crofts", position: "Forward", notes: "Top scorer before move to Briton Ferry - 8 goals in 7 games" },
-  { name: "Lauren Boyd", position: "Forward", notes: "Stepped up after Crofts departure, clinical finisher" },
+  { name: "Natalia Shwartz", position: "Defender", notes: "Defensive rock, key to clean sheet record" },
+  { name: "Jade Crofts", position: "Forward", notes: "Hat-trick hero, prolific scorer" },
+  { name: "Lauren Boyd", position: "Forward", notes: "Clinical finisher, regular goalscorer" },
   { name: "Eloise Meaney", position: "Midfielder", notes: "Captain, leadership and composure" },
-  { name: "Katie Williams", position: "Midfielder", notes: "Summer signing from TNS" }
+  { name: "Katie Williams", position: "Midfielder", notes: "Summer signing from TNS" },
+  { name: "Georgina Cridland", position: "Midfielder", notes: "Key midfielder, goalscorer" },
+  { name: "Alex Cridland", position: "Forward", notes: "Attacking threat" }
 ];
+
+/**
+ * MEN'S RESERVES SQUAD - Gwent County League
+ * Source: Transfermarkt (January 2026)
+ */
+export const mockReservesSquad = {
+  reportName: "Squad List - Men's Reserves",
+  columnTypes: ["IMAGELINK", "NUMBER", "STRING", "STRING", "STRING", "NUMBER", "DATE"],
+  columnNames: ["Photo", "Squad No", "First Name", "Last Name", "Position", "Appearances", "Date of Birth"],
+  columnKeys: ["photo", "squadNo", "firstName", "lastName", "position", "appearances", "dateOfBirth"],
+  results: [
+    // Defenders
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 2,
+      firstName: "Lloyd",
+      lastName: "Perkins",
+      position: "Right Back",
+      appearances: 12,
+      dateOfBirth: toComet("1995-08-03")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 3,
+      firstName: "Joshua",
+      lastName: "Winstone",
+      position: "Centre Back",
+      appearances: 14,
+      dateOfBirth: toComet("2002-05-15")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 4,
+      firstName: "Curtis",
+      lastName: "Patel",
+      position: "Centre Back",
+      appearances: 10,
+      dateOfBirth: toComet("1993-11-22")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 5,
+      firstName: "Rory",
+      lastName: "Coleman",
+      position: "Centre Back",
+      appearances: 11,
+      dateOfBirth: toComet("1999-03-18")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 6,
+      firstName: "Jack",
+      lastName: "Prosser",
+      position: "Centre Back",
+      appearances: 8,
+      dateOfBirth: toComet("2007-09-28")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 15,
+      firstName: "Bailey",
+      lastName: "Goodall",
+      position: "Right Back",
+      appearances: 9,
+      dateOfBirth: toComet("2002-06-14")
+    },
+    // Midfielders
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 7,
+      firstName: "Jai-Jnr",
+      lastName: "Johnson",
+      position: "Defensive Midfield",
+      appearances: 13,
+      dateOfBirth: toComet("2001-04-20")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 8,
+      firstName: "Evan",
+      lastName: "Prosser",
+      position: "Central Midfield",
+      appearances: 12,
+      dateOfBirth: toComet("1997-02-10")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 10,
+      firstName: "George",
+      lastName: "Jenkins",
+      position: "Central Midfield",
+      appearances: 11,
+      dateOfBirth: toComet("2002-07-25")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 11,
+      firstName: "Tommy",
+      lastName: "Challenger",
+      position: "Central Midfield",
+      appearances: 7,
+      dateOfBirth: toComet("2007-03-20")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 14,
+      firstName: "Louis",
+      lastName: "Cochrane",
+      position: "Central Midfield",
+      appearances: 10,
+      dateOfBirth: toComet("1997-11-22")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 16,
+      firstName: "Sam",
+      lastName: "Smith",
+      position: "Central Midfield",
+      appearances: 6,
+      dateOfBirth: toComet("2000-01-15")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 17,
+      firstName: "Kyle",
+      lastName: "Jones",
+      position: "Central Midfield",
+      appearances: 5,
+      dateOfBirth: toComet("2001-08-30")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 18,
+      firstName: "Ethan",
+      lastName: "Hooper",
+      position: "Central Midfield",
+      appearances: 8,
+      dateOfBirth: toComet("2004-06-12")
+    },
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 19,
+      firstName: "Tom",
+      lastName: "Barrett",
+      position: "Central Midfield",
+      appearances: 4,
+      dateOfBirth: toComet("2003-12-05")
+    },
+    // Forwards
+    {
+      photo: "/images/players/placeholder.webp",
+      squadNo: 9,
+      firstName: "Callum",
+      lastName: "Wakeham",
+      position: "Left Wing",
+      appearances: 11,
+      dateOfBirth: toComet("1998-05-18")
+    }
+  ],
+  totalSize: 16,
+  page: 0,
+  pageSize: 25
+};
+
+/**
+ * WOMEN'S TEAM RESULTS - Genero Adran South 2025-26
+ * Source: FAW Adran Leagues
+ */
+export const mockWomensResults = {
+  reportName: "Club Results - Women's Team",
+  columnTypes: ["NUMBER", "DATE", "STRING", "STRING", "NUMBER", "NUMBER", "STRING", "STRING", "NUMBER"],
+  columnNames: ["Match ID", "Date", "Home Team", "Away Team", "Home Score", "Away Score", "Competition", "Scorers", "Attendance"],
+  columnKeys: ["matchId", "date", "homeTeam", "awayTeam", "homeScore", "awayScore", "competition", "scorers", "attendance"],
+  results: [
+    {
+      matchId: 3001,
+      date: toComet("2025-12-07"),
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Caldicot Town",
+      homeScore: 6,
+      awayScore: 1,
+      competition: "Genero Adran South",
+      scorers: "Boyd 12', 37', Crofts 22', 45', 90+2', Meaney 86'",
+      attendance: 95
+    },
+    {
+      matchId: 3002,
+      date: toComet("2025-11-14"),
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Llantwit Major",
+      homeScore: 3,
+      awayScore: 0,
+      competition: "Genero Adran South",
+      scorers: "",
+      attendance: 85
+    },
+    {
+      matchId: 3003,
+      date: toComet("2025-10-31"),
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Baglan Dragons",
+      homeScore: 2,
+      awayScore: 0,
+      competition: "Genero Adran South",
+      scorers: "",
+      attendance: 78
+    },
+    {
+      matchId: 3004,
+      date: toComet("2025-10-10"),
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Caerau Ely",
+      homeScore: 4,
+      awayScore: 1,
+      competition: "Genero Adran South",
+      scorers: "",
+      attendance: 92
+    },
+    {
+      matchId: 3005,
+      date: toComet("2025-09-26"),
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Trethomas Bluebirds",
+      homeScore: 3,
+      awayScore: 1,
+      competition: "Genero Adran South",
+      scorers: "",
+      attendance: 88
+    },
+    {
+      matchId: 3006,
+      date: toComet("2025-08-25"),
+      homeTeam: "Cwmbran Celtic Ladies",
+      awayTeam: "Newport City",
+      homeScore: 2,
+      awayScore: 1,
+      competition: "Genero Adran South",
+      scorers: "",
+      attendance: 102
+    },
+    {
+      matchId: 3007,
+      date: toComet("2025-03-16"),
+      homeTeam: "Caldicot Town",
+      awayTeam: "Cwmbran Celtic Ladies",
+      homeScore: 1,
+      awayScore: 3,
+      competition: "Genero Adran South",
+      scorers: "G. Cridland, A. Cridland, Boyd",
+      attendance: 65
+    },
+    {
+      matchId: 3008,
+      date: toComet("2025-02-09"),
+      homeTeam: "Pontypridd United",
+      awayTeam: "Cwmbran Celtic Ladies",
+      homeScore: 1,
+      awayScore: 0,
+      competition: "Genero Adran South",
+      scorers: "",
+      attendance: 112
+    }
+  ],
+  totalSize: 8,
+  page: 0,
+  pageSize: 25
+};
+
+/**
+ * WOMEN'S LEAGUE TABLE - Genero Adran South 2025-26
+ * Source: FAW Adran Leagues
+ * Note: Women's season runs Sept-April
+ */
+export const mockWomensLeagueTable = {
+  reportName: "Genero Adran South League Table",
+  columnTypes: ["NUMBER", "STRING", "NUMBER", "NUMBER", "NUMBER", "NUMBER", "NUMBER", "NUMBER"],
+  columnNames: ["Position", "Club", "Played", "Won", "Drawn", "Lost", "GD", "Points"],
+  columnKeys: ["position", "club", "played", "won", "drawn", "lost", "gd", "points"],
+  results: [
+    { position: 1, club: "Cardiff Met", played: 10, won: 8, drawn: 1, lost: 1, gd: 18, points: 25 },
+    { position: 2, club: "Cwmbran Celtic Ladies", played: 10, won: 8, drawn: 0, lost: 2, gd: 16, points: 24 },
+    { position: 3, club: "Cascade YC", played: 10, won: 7, drawn: 1, lost: 2, gd: 12, points: 22 },
+    { position: 4, club: "Pure Swansea", played: 10, won: 5, drawn: 2, lost: 3, gd: 6, points: 17 },
+    { position: 5, club: "Penybont Women", played: 10, won: 4, drawn: 2, lost: 4, gd: 2, points: 14 },
+    { position: 6, club: "Taffs Well Women", played: 10, won: 3, drawn: 1, lost: 6, gd: -8, points: 10 },
+    { position: 7, club: "Carmarthen Town", played: 10, won: 2, drawn: 2, lost: 6, gd: -12, points: 8 },
+    { position: 8, club: "Llanelli Town", played: 10, won: 1, drawn: 1, lost: 8, gd: -18, points: 4 }
+  ],
+  totalSize: 8,
+  page: 0,
+  pageSize: 25
+};

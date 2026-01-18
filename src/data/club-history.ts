@@ -12,9 +12,9 @@ export interface HistoryEvent {
 
 export const clubHistory: HistoryEvent[] = [
   {
-    year: 1924,
-    title: "Club Founded",
-    description: "Cwmbran Celtic AFC was established, becoming one of the oldest football clubs in the Torfaen area.",
+    year: 1925,
+    title: "Club Founded as CYMS",
+    description: "Cwmbran Celtic AFC was founded as CYMS (Catholic Young Men's Society), one of the oldest football clubs in the Torfaen area.",
     type: "founding"
   },
   {
@@ -24,10 +24,22 @@ export const clubHistory: HistoryEvent[] = [
     type: "milestone"
   },
   {
+    year: 1960,
+    title: "Became Cwmbran Catholics",
+    description: "The club was renamed from CYMS to Cwmbran Catholics, reflecting the club's continued community ties.",
+    type: "milestone"
+  },
+  {
     year: 1970,
     title: "Gwent County League Success",
     description: "Celtic enjoyed a successful period in the Gwent County League, establishing themselves as a competitive force in local football.",
     type: "achievement"
+  },
+  {
+    year: 1972,
+    title: "Renamed Cwmbran Celtic",
+    description: "The club adopted its current name, Cwmbran Celtic, while maintaining its proud heritage and Irish-Catholic roots.",
+    type: "milestone"
   },
   {
     year: 1992,
@@ -54,16 +66,16 @@ export const clubHistory: HistoryEvent[] = [
     type: "milestone"
   },
   {
-    year: 2022,
-    title: "Coleg Gwent Partnership",
-    description: "Historic collaboration agreement signed with Coleg Gwent, creating pathways for young players to combine education with football development.",
-    type: "milestone"
+    year: 2024,
+    title: "Simon Berry Appointed Manager",
+    description: "Simon Berry took charge of the Men's First Team in May 2024, bringing seven years of experience from Risca United and a focus on developing local talent.",
+    type: "general"
   },
   {
-    year: 2023,
-    title: "Simon Berry Appointed Manager",
-    description: "Simon Berry took charge of the Men's First Team, bringing fresh ideas and a focus on developing local talent.",
-    type: "general"
+    year: 2024,
+    title: "Coleg Gwent Partnership",
+    description: "Historic collaboration agreement signed with Coleg Gwent in October 2024, creating pathways for young players to combine education with football development.",
+    type: "milestone"
   },
   {
     year: 2024,

@@ -4,7 +4,7 @@ import { clubHistory, honours } from '@/data/club-history';
 
 export const metadata: Metadata = {
   title: 'Club History',
-  description: 'The history of Cwmbran Celtic AFC from 1924 to present day. From CYMS to the JD Cymru South.',
+  description: 'The history of Cwmbran Celtic AFC from 1925 to present day. From CYMS to the JD Cymru South.',
 };
 
 export default function HistoryPage() {
@@ -28,7 +28,7 @@ export default function HistoryPage() {
               <h2 className="text-2xl font-bold text-celtic-dark mb-4">Our Story</h2>
               <p className="text-lg text-gray-700 mb-6">
                 Cwmbran Celtic AFC has been at the heart of football in Cwmbran for over 100 years.
-                Founded in 1924 as CYMS (Catholic Young Men&apos;s Society), the club has evolved
+                Founded in 1925 as CYMS (Catholic Young Men&apos;s Society), the club has evolved
                 from humble beginnings to become one of the established clubs in Welsh football.
               </p>
               <p className="text-gray-700 mb-6">
@@ -104,7 +104,7 @@ export default function HistoryPage() {
                   for young Catholic men. Football clubs were often formed under the CYMS banner.
                 </p>
                 <p className="text-gray-700 mb-4">
-                  In 1924, a group of young men in Cwmbran came together to form a football team,
+                  In 1925, a group of young men in Cwmbran came together to form a football team,
                   laying the foundations for what would become Cwmbran Celtic AFC.
                 </p>
                 <p className="text-gray-700">
@@ -125,7 +125,7 @@ export default function HistoryPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-celtic-yellow">•</span>
-                    <span>We celebrated our centenary in 2024</span>
+                    <span>We celebrated our centenary in 2025</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-celtic-yellow">•</span>

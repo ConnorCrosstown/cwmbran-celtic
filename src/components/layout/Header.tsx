@@ -76,7 +76,7 @@ export default function Header() {
               <div className="font-bold text-lg md:text-xl text-white group-hover:text-celtic-yellow transition-colors">
                 Cwmbran Celtic
               </div>
-              <div className="text-xs text-celtic-yellow font-medium">Est. 1924</div>
+              <div className="text-xs text-celtic-yellow font-medium">Est. 1925</div>
             </div>
           </Link>
 

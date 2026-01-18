@@ -64,7 +64,9 @@ export default function DevelopmentSquadPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="card p-4">
                 <div className="w-10 h-10 bg-celtic-blue/10 rounded-full flex items-center justify-center mb-2">
-                  <span className="text-xl">🎯</span>
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
                 </div>
                 <h3 className="font-bold text-sm mb-1">Pathway to First Team</h3>
                 <p className="text-xs text-gray-600">
@@ -73,7 +75,9 @@ export default function DevelopmentSquadPage() {
               </div>
               <div className="card p-4">
                 <div className="w-10 h-10 bg-celtic-blue/10 rounded-full flex items-center justify-center mb-2">
-                  <span className="text-xl">📈</span>
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                  </svg>
                 </div>
                 <h3 className="font-bold text-sm mb-1">Player Development</h3>
                 <p className="text-xs text-gray-600">
@@ -81,8 +85,11 @@ export default function DevelopmentSquadPage() {
                 </p>
               </div>
               <div className="card p-4">
-                <div className="w-10 h-10 bg-celtic-blue/10 rounded-full flex items-center justify-center mb-2">
-                  <span className="text-xl">⚽</span>
+                <div className="w-10 h-10 bg-celtic-yellow/20 rounded-full flex items-center justify-center mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                    <polygon points="12,7 13.5,10 17,10.5 14.5,13 15,16.5 12,15 9,16.5 9.5,13 7,10.5 10.5,10" fill="currentColor"/>
+                  </svg>
                 </div>
                 <h3 className="font-bold text-sm mb-1">Competitive Football</h3>
                 <p className="text-xs text-gray-600">

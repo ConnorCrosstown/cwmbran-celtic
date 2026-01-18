@@ -88,22 +88,39 @@ export default function SponsorshipOpportunitiesPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
               <div className="card p-3 text-center">
-                <span className="text-2xl mb-2 block">📍</span>
+                <div className="w-10 h-10 bg-celtic-blue/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                  </svg>
+                </div>
                 <p className="text-xs font-semibold text-celtic-dark">Local Reach</p>
                 <p className="text-[10px] text-gray-500">Torfaen & Gwent audience</p>
               </div>
               <div className="card p-3 text-center">
-                <span className="text-2xl mb-2 block">📱</span>
+                <div className="w-10 h-10 bg-celtic-blue/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                  </svg>
+                </div>
                 <p className="text-xs font-semibold text-celtic-dark">Digital Exposure</p>
                 <p className="text-[10px] text-gray-500">Social media & website</p>
               </div>
               <div className="card p-3 text-center">
-                <span className="text-2xl mb-2 block">🏆</span>
+                <div className="w-10 h-10 bg-celtic-yellow/20 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+                  </svg>
+                </div>
                 <p className="text-xs font-semibold text-celtic-dark">100+ Years</p>
                 <p className="text-[10px] text-gray-500">Historic community club</p>
               </div>
               <div className="card p-3 text-center">
-                <span className="text-2xl mb-2 block">🤝</span>
+                <div className="w-10 h-10 bg-celtic-blue/10 rounded-lg flex items-center justify-center mx-auto mb-2">
+                  <svg className="w-5 h-5 text-celtic-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.05 4.575a1.575 1.575 0 10-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 013.15 0v1.5m-3.15 0l.075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 013.15 0V15M6.9 7.575a1.575 1.575 0 10-3.15 0v8.175a6.75 6.75 0 006.75 6.75h2.018a5.25 5.25 0 003.712-1.538l1.732-1.732a5.25 5.25 0 001.538-3.712l.003-2.024a.668.668 0 01.198-.471 1.575 1.575 0 10-2.228-2.228 3.818 3.818 0 00-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0116.35 15" />
+                  </svg>
+                </div>
                 <p className="text-xs font-semibold text-celtic-dark">Networking</p>
                 <p className="text-[10px] text-gray-500">Local business community</p>
               </div>

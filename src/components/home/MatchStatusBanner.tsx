@@ -34,7 +34,7 @@ export default function MatchStatusBanner({ latestResult, isLive = false, liveSc
                 </div>
                 <span className="font-display text-lg uppercase">{latestResult ? getOpponentFromResult(latestResult) : 'Opposition'}</span>
               </div>
-              <span className="text-sm text-white/80">{liveScore.minute}&apos;</span>
+              <span className="text-sm text-white">{liveScore.minute}&apos;</span>
             </div>
             <Link
               href="/fixtures"
