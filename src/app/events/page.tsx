@@ -73,10 +73,10 @@ const upcomingEvents: ClubEvent[] = [
 
 const getCategoryBadge = (category: ClubEvent['category']) => {
   const badges = {
-    social: 'bg-blue-100 text-blue-800',
-    fundraiser: 'bg-green-100 text-green-800',
+    social: 'bg-celtic-blue/10 text-celtic-blue',
+    fundraiser: 'bg-celtic-blue-dark/10 text-celtic-blue-dark',
     awards: 'bg-celtic-yellow text-celtic-dark',
-    family: 'bg-purple-100 text-purple-800',
+    family: 'bg-celtic-blue-light/10 text-celtic-blue-light',
   };
   const labels = {
     social: 'Social',

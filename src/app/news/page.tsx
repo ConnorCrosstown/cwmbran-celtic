@@ -17,19 +17,19 @@ function formatDate(timestamp: number): string {
 
 function getCategoryBadge(category: string): { label: string; color: string } {
   const badges: Record<string, { label: string; color: string }> = {
-    'match-report': { label: 'Match Report', color: 'bg-green-600' },
-    'club-news': { label: 'Club News', color: 'bg-celtic-blue' },
-    'transfer': { label: 'Transfer', color: 'bg-purple-600' },
-    'community': { label: 'Community', color: 'bg-orange-500' },
-    'announcement': { label: 'Announcement', color: 'bg-red-600' },
+    'match-report': { label: 'Match Report', color: 'bg-celtic-blue' },
+    'club-news': { label: 'Club News', color: 'bg-celtic-blue-dark' },
+    'transfer': { label: 'Transfer', color: 'bg-celtic-blue-light' },
+    'community': { label: 'Community', color: 'bg-celtic-yellow text-celtic-dark' },
+    'announcement': { label: 'Announcement', color: 'bg-celtic-blue' },
   };
-  return badges[category] || { label: category, color: 'bg-gray-600' };
+  return badges[category] || { label: category, color: 'bg-celtic-blue' };
 }
 
 function getTeamBadge(team?: string): { label: string; color: string } | null {
   if (!team || team === 'both') return null;
   return team === 'ladies'
-    ? { label: "Women's", color: 'bg-purple-600' }
+    ? { label: "Women's", color: 'bg-celtic-yellow text-celtic-dark' }
     : { label: "Men's", color: 'bg-celtic-blue' };
 }
 
@@ -42,7 +42,7 @@ export default function NewsPage() {
       <section className="bg-celtic-blue text-white py-12 md:py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Latest News</h1>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
+          <p className="text-lg text-celtic-yellow max-w-2xl mx-auto">
             Match reports, club updates, and all the latest from Cwmbran Celtic
           </p>
         </div>

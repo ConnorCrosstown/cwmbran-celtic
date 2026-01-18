@@ -47,7 +47,7 @@ const teams = [
     href: '/teams/walking',
     description: 'Football for all ages and abilities',
     league: 'Community',
-    color: 'bg-celtic-green',
+    color: 'bg-celtic-blue',
   },
 ];
 
@@ -58,7 +58,7 @@ export default function TeamsPage() {
       <section className="bg-celtic-blue py-4 md:py-6">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-xl md:text-2xl font-bold text-white">Our Teams</h1>
-          <p className="text-xs text-gray-200">
+          <p className="text-xs text-celtic-yellow">
             Football for everyone since 1924
           </p>
         </div>

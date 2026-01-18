@@ -17,13 +17,13 @@ function formatDate(timestamp: number): string {
 
 function getCategoryBadge(category: string): { label: string; color: string } {
   const badges: Record<string, { label: string; color: string }> = {
-    'match': { label: 'Match Day', color: 'bg-green-600' },
-    'training': { label: 'Training', color: 'bg-blue-600' },
-    'event': { label: 'Event', color: 'bg-purple-600' },
-    'ground': { label: 'The Park', color: 'bg-orange-500' },
-    'history': { label: 'History', color: 'bg-gray-600' },
+    'match': { label: 'Match Day', color: 'bg-celtic-blue' },
+    'training': { label: 'Training', color: 'bg-celtic-blue-dark' },
+    'event': { label: 'Event', color: 'bg-celtic-yellow text-celtic-dark' },
+    'ground': { label: 'The Park', color: 'bg-celtic-blue-light' },
+    'history': { label: 'History', color: 'bg-celtic-blue-dark' },
   };
-  return badges[category] || { label: category, color: 'bg-gray-600' };
+  return badges[category] || { label: category, color: 'bg-celtic-blue' };
 }
 
 function getTeamBadge(team?: string): { label: string; color: string; textColor: string } | null {

@@ -42,9 +42,9 @@ const mockVideos: Video[] = [
 
 function VideoCard({ video }: { video: Video }) {
   const typeColors = {
-    highlights: 'bg-red-600',
-    interview: 'bg-celtic-blue',
-    'behind-the-scenes': 'bg-purple-600',
+    highlights: 'bg-celtic-blue',
+    interview: 'bg-celtic-yellow text-celtic-dark',
+    'behind-the-scenes': 'bg-celtic-blue-dark',
   };
 
   const typeLabels = {
@@ -102,7 +102,7 @@ export default function CelticTVSection() {
             <div className="section-header-accent" />
             <div className="section-header-content">
               <h2 className="section-title flex items-center gap-3">
-                <span className="bg-red-600 text-white px-2 py-1 rounded text-lg">
+                <span className="bg-celtic-yellow text-celtic-dark px-2 py-1 rounded text-lg">
                   <svg className="w-5 h-5 inline" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z"/>
                   </svg>

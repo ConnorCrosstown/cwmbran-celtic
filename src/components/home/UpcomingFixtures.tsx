@@ -19,12 +19,12 @@ function getTeamInfo(fixture: Fixture): { label: string; fullName: string; color
 
   // Check for 3rd team (Thirds)
   if (teamLower.includes('third') || teamLower.includes('3rd') || teamLower.includes('iii')) {
-    return { label: '3', fullName: "Men's 3rds", color: 'bg-emerald-600', textColor: 'text-white' };
+    return { label: '3', fullName: "Men's 3rds", color: 'bg-celtic-blue-light', textColor: 'text-white' };
   }
 
   // Check for 2nd team (Seconds/Reserves)
   if (teamLower.includes('second') || teamLower.includes('2nd') || teamLower.includes('reserve') || teamLower.includes('ii')) {
-    return { label: '2', fullName: "Men's 2nds", color: 'bg-purple-600', textColor: 'text-white' };
+    return { label: '2', fullName: "Men's 2nds", color: 'bg-celtic-blue-dark', textColor: 'text-white' };
   }
 
   // Default to Men's 1st team
@@ -91,11 +91,11 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
             <span>Men&apos;s 1st</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="bg-purple-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">2</span>
+            <span className="bg-celtic-blue-dark text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">2</span>
             <span>Men&apos;s 2nds</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="bg-emerald-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">3</span>
+            <span className="bg-celtic-blue-light text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">3</span>
             <span>Men&apos;s 3rds</span>
           </div>
           <div className="flex items-center gap-1.5">
