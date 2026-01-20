@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDateLong, getOpponent } from '@/lib/comet';
 import { oppositionTeams } from '@/data/opposition-data';
+import { getAwayDayByTeamName } from '@/data/away-days';
 import MatchWeather from '@/components/weather/MatchWeather';
 
 // Note: Image import kept for club logo fallback display
@@ -60,10 +61,14 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
   const opponent = fixture ? getOpponent(fixture) : null;
   const isHome = fixture?.homeAway === 'H';
 
-  // Look up opponent badge from opposition data
+  // Look up opponent badge from opposition data or away-days data
   const opponentData = opponent ? oppositionTeams.find(team =>
     team.name.toLowerCase() === opponent.toLowerCase()
   ) : null;
+
+  // Also check away-days data for badge
+  const awayDayData = opponent ? getAwayDayByTeamName(opponent) : null;
+  const opponentBadge = opponentData?.badge || awayDayData?.badge;
 
   // Determine which Celtic team is playing based on the team name
   const celticTeamName = fixture ? (isHome ? fixture.homeTeam : fixture.awayTeam) : '';
@@ -229,9 +234,9 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
 
               {/* Away Team Logo */}
               <div className="w-32 h-32 xl:w-40 xl:h-40">
-                {opponentData?.badge ? (
+                {opponentBadge ? (
                   <Image
-                    src={opponentData.badge}
+                    src={opponentBadge}
                     alt={opponent || 'Opposition'}
                     width={160}
                     height={160}
