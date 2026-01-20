@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { getSession, initializeStaff, type AuthSession } from '@/lib/auth';
 
 // Block types for the newsletter
-type BlockType = 'hero' | 'message' | 'results' | 'fixtures' | 'news' | 'standings' | 'cta' | 'image' | 'divider';
+type BlockType = 'hero' | 'message' | 'results' | 'fixtures' | 'news' | 'standings' | 'cta' | 'image' | 'divider' | 'shop' | 'celticbond' | 'membership' | 'sponsor' | 'volunteer' | 'matchday';
 
 interface NewsletterBlock {
   id: string;
@@ -62,6 +62,12 @@ const defaultBlocks: NewsletterBlock[] = [
   { id: 'results', type: 'results', enabled: true, content: { title: 'Recent Results' } },
   { id: 'fixtures', type: 'fixtures', enabled: true, content: { title: 'Upcoming Fixtures' } },
   { id: 'news', type: 'news', enabled: true, content: { title: 'Latest News' } },
+  { id: 'shop', type: 'shop', enabled: false, content: {} },
+  { id: 'celticbond', type: 'celticbond', enabled: false, content: {} },
+  { id: 'membership', type: 'membership', enabled: false, content: {} },
+  { id: 'sponsor', type: 'sponsor', enabled: false, content: {} },
+  { id: 'volunteer', type: 'volunteer', enabled: false, content: {} },
+  { id: 'matchday', type: 'matchday', enabled: false, content: {} },
   { id: 'cta', type: 'cta', enabled: true, content: { title: 'Support the Club', text: 'Come and support us at the Avondale Motor Park Arena!', buttonText: 'Buy Tickets', buttonUrl: '/tickets' } },
 ];
 
@@ -382,6 +388,151 @@ export default function AdminNewsletterPage() {
             <button className="mt-4 px-8 py-3 bg-celtic-blue text-white font-bold rounded-lg hover:bg-celtic-blue-dark transition-colors">
               {(block.content.buttonText as string) || 'Learn More'}
             </button>
+          </div>
+        );
+
+      case 'shop':
+        return (
+          <div className="p-6 md:p-8 bg-gradient-to-r from-celtic-blue to-celtic-blue-dark text-white">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold">Official Club Shop</h2>
+                <p className="text-white/80 text-sm mt-1">Get your official Cwmbran Celtic merchandise - replica kits, training wear, and accessories.</p>
+              </div>
+            </div>
+            <button className="mt-4 w-full px-6 py-3 bg-celtic-yellow text-celtic-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors">
+              Shop Now
+            </button>
+          </div>
+        );
+
+      case 'celticbond':
+        return (
+          <div className="p-6 md:p-8 bg-gradient-to-br from-green-600 to-green-800 text-white">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-display uppercase">Celtic Bond</h2>
+              <p className="text-white/80 mt-2">Join the Celtic Bond monthly draw! Win cash prizes while supporting your club.</p>
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div className="bg-white/10 rounded-lg p-2">
+                  <p className="text-xl font-bold text-celtic-yellow">£100</p>
+                  <p className="text-xs opacity-80">1st Prize</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-2">
+                  <p className="text-xl font-bold text-celtic-yellow">£50</p>
+                  <p className="text-xs opacity-80">2nd Prize</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-2">
+                  <p className="text-xl font-bold text-celtic-yellow">£25</p>
+                  <p className="text-xs opacity-80">3rd Prize</p>
+                </div>
+              </div>
+              <button className="mt-4 px-8 py-3 bg-celtic-yellow text-celtic-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors">
+                Join for £5/month
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'membership':
+        return (
+          <div className="p-6 md:p-8 bg-gradient-to-r from-purple-600 to-purple-800 text-white">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold">Become a Member</h2>
+                <p className="text-white/80 text-sm mt-1">Join the Cwmbran Celtic family with official membership. Get exclusive benefits and support grassroots football.</p>
+              </div>
+            </div>
+            <button className="mt-4 w-full px-6 py-3 bg-white text-purple-700 font-bold rounded-lg hover:bg-gray-100 transition-colors">
+              Join Today
+            </button>
+          </div>
+        );
+
+      case 'sponsor':
+        return (
+          <div className="p-6 md:p-8 bg-gray-900 text-white">
+            <div className="text-center">
+              <h2 className="text-xl font-bold text-celtic-yellow">Become a Sponsor</h2>
+              <p className="text-white/80 mt-2">Partner with Cwmbran Celtic AFC and reach thousands of local supporters. Sponsorship packages available from £100.</p>
+              <div className="mt-4 flex justify-center gap-4 flex-wrap">
+                <span className="px-3 py-1 bg-white/10 rounded-full text-sm">Match Ball Sponsor</span>
+                <span className="px-3 py-1 bg-white/10 rounded-full text-sm">Pitch Side Boards</span>
+                <span className="px-3 py-1 bg-white/10 rounded-full text-sm">Kit Sponsor</span>
+              </div>
+              <button className="mt-4 px-8 py-3 bg-celtic-yellow text-celtic-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors">
+                Sponsorship Enquiry
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'volunteer':
+        return (
+          <div className="p-6 md:p-8 bg-gradient-to-r from-orange-500 to-red-500 text-white">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold">Volunteer With Us</h2>
+                <p className="text-white/80 text-sm mt-1">Help your local club thrive! We need matchday helpers, coaches, and committee members.</p>
+              </div>
+            </div>
+            <button className="mt-4 w-full px-6 py-3 bg-white text-orange-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
+              Get Involved
+            </button>
+          </div>
+        );
+
+      case 'matchday':
+        return (
+          <div className="p-6 md:p-8 bg-celtic-blue text-white">
+            <div className="text-center">
+              <p className="text-celtic-yellow font-bold text-sm uppercase tracking-wider">Next Home Game</p>
+              <h2 className="text-2xl font-display uppercase mt-2">Matchday Experience</h2>
+              <p className="text-white/80 mt-2">Join us at the Avondale Motor Park Arena for an unforgettable matchday. Hot food, drinks, and great atmosphere!</p>
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div className="bg-white/10 rounded-lg p-3">
+                  <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <p className="text-xs">Free Parking</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-3">
+                  <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-xs">Gates 1:30pm</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-3">
+                  <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                  </svg>
+                  <p className="text-xs">£5 Entry</p>
+                </div>
+              </div>
+              <button className="mt-4 px-8 py-3 bg-celtic-yellow text-celtic-dark font-bold rounded-lg hover:bg-yellow-400 transition-colors">
+                View Fixtures
+              </button>
+            </div>
           </div>
         );
 
@@ -711,6 +862,18 @@ export default function AdminNewsletterPage() {
                     <p className="text-xs text-gray-500">
                       This content is automatically populated from the website.
                     </p>
+                  )}
+
+                  {/* Promotional blocks info */}
+                  {['shop', 'celticbond', 'membership', 'sponsor', 'volunteer', 'matchday'].includes(selectedBlockData.type) && (
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">
+                        This is a pre-designed promotional block. Enable it to include in your newsletter.
+                      </p>
+                      <div className="p-2 bg-green-50 border border-green-200 rounded text-xs text-green-700">
+                        Tip: These blocks link to the relevant pages on your website.
+                      </div>
+                    </div>
                   )}
                 </div>
               )}
