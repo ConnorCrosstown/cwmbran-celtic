@@ -48,18 +48,19 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
             const teamInfo = getTeamInfo(fixture);
             const opponent = getOpponent(fixture);
             const isAway = !isHomeGame(fixture);
-            const awayInfo = isAway ? getAwayDayByTeamName(opponent) : null;
+            // Get opponent info for badge (works for both home and away games)
+            const opponentInfo = getAwayDayByTeamName(opponent);
 
             return (
               <div
                 key={fixture.matchId}
                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
               >
-                {/* Team indicator badge or opponent badge for away games */}
-                {isAway && awayInfo?.badge ? (
+                {/* Show opponent badge if available, otherwise team indicator */}
+                {opponentInfo?.badge ? (
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 border border-gray-200 p-1">
                     <Image
-                      src={awayInfo.badge}
+                      src={opponentInfo.badge}
                       alt={`${opponent} badge`}
                       width={32}
                       height={32}
@@ -94,9 +95,9 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
                   {isAway ? (
                     <>
                       <span className="badge-away">AWAY</span>
-                      {awayInfo && (
+                      {opponentInfo && (
                         <Link
-                          href={`/away-days/${awayInfo.teamId}`}
+                          href={`/away-days/${opponentInfo.teamId}`}
                           className="text-[10px] text-celtic-blue hover:underline"
                         >
                           Away guide →
