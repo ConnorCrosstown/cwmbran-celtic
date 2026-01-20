@@ -69,7 +69,7 @@ function generateToken(): string {
 /**
  * Add a new subscriber
  */
-export async function addSubscriber(email: string, firstName?: string): Promise<{ success: boolean; message: string }> {
+export async function addSubscriber(email: string, firstName?: string): Promise<{ success: boolean; message: string; unsubscribeToken?: string; isNew?: boolean }> {
   const data = await readSubscribers();
 
   // Check if already subscribed
@@ -83,7 +83,7 @@ export async function addSubscriber(email: string, firstName?: string): Promise<
     existing.active = true;
     existing.subscribedAt = new Date().toISOString();
     await writeSubscribers(data);
-    return { success: true, message: 'Welcome back! Your subscription has been reactivated.' };
+    return { success: true, message: 'Welcome back! Your subscription has been reactivated.', unsubscribeToken: existing.unsubscribeToken, isNew: false };
   }
 
   // Add new subscriber
@@ -99,7 +99,7 @@ export async function addSubscriber(email: string, firstName?: string): Promise<
   data.subscribers.push(subscriber);
   await writeSubscribers(data);
 
-  return { success: true, message: 'Successfully subscribed to the newsletter!' };
+  return { success: true, message: 'Successfully subscribed to the newsletter!', unsubscribeToken: subscriber.unsubscribeToken, isNew: true };
 }
 
 /**
