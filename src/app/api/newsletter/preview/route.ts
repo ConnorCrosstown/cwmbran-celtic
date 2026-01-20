@@ -39,10 +39,18 @@ export async function GET() {
       mensPosition: mensPosition ? {
         position: mensPosition.position,
         points: mensPosition.points,
+        played: mensPosition.played,
+        won: mensPosition.won,
+        drawn: mensPosition.drawn,
+        lost: mensPosition.lost,
       } : null,
       ladiesPosition: ladiesPosition ? {
         position: ladiesPosition.position,
         points: ladiesPosition.points,
+        played: ladiesPosition.played,
+        won: ladiesPosition.won,
+        drawn: ladiesPosition.drawn,
+        lost: ladiesPosition.lost,
       } : null,
       subscriberCount,
     });
