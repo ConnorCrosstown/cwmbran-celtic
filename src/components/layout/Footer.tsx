@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { clubInfo, sponsors } from '@/data/mock-data';
+import NewsletterSignup from '@/components/newsletter/NewsletterSignup';
 
 function PepperShaker() {
   return (
@@ -40,19 +41,9 @@ export default function Footer() {
               <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">Stay Updated</h3>
               <p className="text-celtic-yellow text-xs sm:text-sm">Get the latest news, fixtures & exclusive offers</p>
             </div>
-            <form className="flex flex-col xs:flex-row w-full md:w-auto gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 md:w-80 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg bg-white border border-white/20 text-celtic-dark placeholder-gray-500 focus:outline-none focus:border-celtic-yellow focus:ring-1 focus:ring-celtic-yellow text-sm sm:text-base"
-              />
-              <button
-                type="submit"
-                className="px-4 sm:px-6 py-2.5 sm:py-3 bg-celtic-yellow text-celtic-dark font-semibold rounded-lg hover:bg-celtic-yellow-light transition-colors whitespace-nowrap text-sm sm:text-base"
-              >
-                Subscribe
-              </button>
-            </form>
+            <div className="w-full md:w-auto md:max-w-md">
+              <NewsletterSignup variant="inline" />
+            </div>
           </div>
         </div>
       </div>
@@ -220,9 +211,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/celtic-card" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
+                <Link href="/membership" className="text-white hover:text-celtic-yellow transition-colors text-sm flex items-center gap-2 group">
                   <span className="w-1.5 h-1.5 bg-celtic-yellow rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                  Celtic Card
+                  Membership
                 </Link>
               </li>
               <li>

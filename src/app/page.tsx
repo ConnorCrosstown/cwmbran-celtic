@@ -7,6 +7,7 @@ import SponsorCarousel from '@/components/sponsors/SponsorCarousel';
 import SponsorTicker from '@/components/sponsors/SponsorTicker';
 import SectionHeader from '@/components/ui/SectionHeader';
 import MatchStatusBanner from '@/components/home/MatchStatusBanner';
+import NewsletterSignup from '@/components/newsletter/NewsletterSignup';
 import Link from 'next/link';
 
 import {
@@ -169,6 +170,23 @@ export default async function HomePage() {
                 Plan Your Visit
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Signup */}
+      <section className="py-16 md:py-20 bg-celtic-blue">
+        <div className="container mx-auto px-4">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-display uppercase text-white mb-2">
+                Stay Updated
+              </h2>
+              <p className="text-gray-300">
+                Get the latest news, results, and fixtures delivered to your inbox
+              </p>
+            </div>
+            <NewsletterSignup variant="card" />
           </div>
         </div>
       </section>
