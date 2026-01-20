@@ -240,7 +240,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
                     alt={opponent || 'Opposition'}
                     width={160}
                     height={160}
-                    className="object-contain w-full h-full drop-shadow-lg"
+                    className="object-contain w-full h-full drop-shadow-lg rounded-full"
                   />
                 ) : (
                   <div className="w-full h-full bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
