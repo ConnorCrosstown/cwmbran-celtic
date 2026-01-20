@@ -441,6 +441,28 @@ export default function AdminDashboard() {
               </div>
             </Link>
 
+            {/* Social Media Manager */}
+            <Link href="/admin/social" className="card p-6 hover:shadow-lg transition-shadow group">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-blue-100 rounded-lg flex items-center justify-center group-hover:from-pink-200 group-hover:to-blue-200 transition-colors">
+                  <svg className="w-7 h-7 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
+                    Social Media
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Auto-post to Twitter, Facebook & Instagram
+                  </p>
+                  <div className="mt-3 flex items-center gap-2 text-xs">
+                    <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">Test Mode</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
             {/* Staff Management - Super Admin Only */}
             {(session.role === 'super_admin' || session.role === 'admin') && (
               <Link href="/admin/staff" className="card p-6 hover:shadow-lg transition-shadow group">
