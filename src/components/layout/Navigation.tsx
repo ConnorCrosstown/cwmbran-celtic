@@ -31,6 +31,7 @@ const navItems: NavItem[] = [
     children: [
       { label: 'Plan Your Visit', href: '/visit' },
       { label: 'Buy Tickets', href: '/tickets' },
+      { label: 'Away Days Guide', href: '/away-days' },
       { label: 'Away Fans', href: '/visitors' },
       { label: 'Hospitality', href: '/hospitality' },
       { label: 'Pass the Pepper', href: '/ban-the-bovril' },
