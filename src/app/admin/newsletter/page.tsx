@@ -4,6 +4,23 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { getSession, initializeStaff, type AuthSession } from '@/lib/auth';
 
 // Dynamically import rich text editor to avoid SSR issues
@@ -115,6 +132,93 @@ const templatePresets: NewsletterTemplate[] = [
   },
 ];
 
+// Sortable Block Item Component
+interface SortableBlockItemProps {
+  block: NewsletterBlock;
+  isSelected: boolean;
+  onSelect: () => void;
+  onToggle: (enabled: boolean) => void;
+}
+
+function SortableBlockItem({ block, isSelected, onSelect, onToggle }: SortableBlockItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: block.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  // Format block type for display
+  const formatBlockType = (type: string) => {
+    const labels: Record<string, string> = {
+      'hero': 'Hero',
+      'message': 'Message',
+      'standings': 'Standings',
+      'results': 'Results',
+      'fixtures': 'Fixtures',
+      'news': 'News',
+      'shop': 'Shop',
+      'celticbond': 'Celtic Bond',
+      'membership': 'Membership',
+      'sponsor': 'Sponsorship',
+      'volunteer': 'Volunteer',
+      'matchday': 'Matchday',
+      'playerspotlight': 'Player Spotlight',
+      'managermessage': "Manager's Message",
+      'cta': 'Call to Action',
+      'image': 'Image',
+      'divider': 'Divider',
+    };
+    return labels[type] || type;
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      onClick={onSelect}
+      className={`p-3 rounded-lg cursor-pointer transition-all ${isSelected ? 'bg-celtic-blue text-white' : 'bg-gray-50 hover:bg-gray-100'} ${isDragging ? 'shadow-lg ring-2 ring-celtic-blue' : ''}`}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {/* Drag Handle */}
+          <button
+            {...attributes}
+            {...listeners}
+            className={`p-1 cursor-grab active:cursor-grabbing ${isSelected ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-gray-600'}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM14 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM14 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
+            </svg>
+          </button>
+          <input
+            type="checkbox"
+            checked={block.enabled}
+            onChange={(e) => {
+              e.stopPropagation();
+              onToggle(e.target.checked);
+            }}
+            className="rounded"
+          />
+          <span className="text-sm font-medium">{formatBlockType(block.type)}</span>
+        </div>
+        {!block.enabled && (
+          <span className={`text-xs ${isSelected ? 'text-white/50' : 'text-gray-400'}`}>Hidden</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function AdminNewsletterPage() {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [preview, setPreview] = useState<NewsletterPreview | null>(null);
@@ -125,6 +229,30 @@ export default function AdminNewsletterPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [testEmail, setTestEmail] = useState('');
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setBlocks((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  }
   const [mobilePreview, setMobilePreview] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
 
@@ -872,53 +1000,29 @@ export default function AdminNewsletterPage() {
                 </div>
               </div>
 
-              {/* Block List */}
+              {/* Block List - Drag and Drop */}
               <div className="bg-white rounded-xl shadow p-4">
-                <h3 className="font-bold text-sm text-gray-700 mb-3">Content Blocks</h3>
-                <div className="space-y-2">
-                  {blocks.map((block, index) => (
-                    <div
-                      key={block.id}
-                      onClick={() => setSelectedBlock(block.id)}
-                      className={`p-3 rounded-lg cursor-pointer transition-all ${selectedBlock === block.id ? 'bg-celtic-blue text-white' : 'bg-gray-50 hover:bg-gray-100'}`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={block.enabled}
-                            onChange={(e) => {
-                              e.stopPropagation();
-                              updateBlock(block.id, { enabled: e.target.checked });
-                            }}
-                            className="rounded"
-                          />
-                          <span className="text-sm font-medium capitalize">{block.type}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); moveBlock(block.id, 'up'); }}
-                            disabled={index === 0}
-                            className="p-1 opacity-50 hover:opacity-100 disabled:opacity-20"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); moveBlock(block.id, 'down'); }}
-                            disabled={index === blocks.length - 1}
-                            className="p-1 opacity-50 hover:opacity-100 disabled:opacity-20"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
+                <h3 className="font-bold text-sm text-gray-700 mb-2">Content Blocks</h3>
+                <p className="text-xs text-gray-400 mb-3">Drag to reorder</p>
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext items={blocks.map(b => b.id)} strategy={verticalListSortingStrategy}>
+                    <div className="space-y-2">
+                      {blocks.map((block) => (
+                        <SortableBlockItem
+                          key={block.id}
+                          block={block}
+                          isSelected={selectedBlock === block.id}
+                          onSelect={() => setSelectedBlock(block.id)}
+                          onToggle={(enabled) => updateBlock(block.id, { enabled })}
+                        />
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </SortableContext>
+                </DndContext>
               </div>
 
               {/* Block Editor */}
