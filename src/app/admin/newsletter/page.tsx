@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getSession, initializeStaff, type AuthSession } from '@/lib/auth';
 
 interface NewsletterPreview {
   recentResults: Array<{
@@ -35,18 +36,25 @@ interface NewsletterPreview {
   subscriberCount: number;
 }
 
-export default function StaffNewsletterPage() {
+export default function AdminNewsletterPage() {
+  const [session, setSession] = useState<AuthSession | null>(null);
   const [preview, setPreview] = useState<NewsletterPreview | null>(null);
   const [customMessage, setCustomMessage] = useState('');
   const [testEmail, setTestEmail] = useState('');
-  const [staffSecret, setStaffSecret] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load preview data
-    loadPreview();
+    initializeStaff();
+    const existingSession = getSession();
+    setSession(existingSession);
+
+    if (existingSession) {
+      loadPreview();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   async function loadPreview() {
@@ -64,19 +72,21 @@ export default function StaffNewsletterPage() {
   }
 
   async function sendTestEmail() {
-    if (!testEmail || !staffSecret) {
-      setMessage('Please enter test email and staff secret.');
+    if (!testEmail) {
+      setMessage('Please enter a test email address.');
       setStatus('error');
       return;
     }
 
     setStatus('loading');
+    setMessage('');
+
     try {
       const response = await fetch('/api/newsletter/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${staffSecret}`,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NEWSLETTER_SECRET || 'admin-session'}`,
         },
         body: JSON.stringify({ customMessage, testEmail }),
       });
@@ -96,23 +106,19 @@ export default function StaffNewsletterPage() {
   }
 
   async function sendToAllSubscribers() {
-    if (!staffSecret) {
-      setMessage('Please enter staff secret.');
-      setStatus('error');
-      return;
-    }
-
     if (!confirm(`Are you sure you want to send the newsletter to ${preview?.subscriberCount || 0} subscribers?`)) {
       return;
     }
 
     setStatus('loading');
+    setMessage('');
+
     try {
       const response = await fetch('/api/newsletter/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${staffSecret}`,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NEWSLETTER_SECRET || 'admin-session'}`,
         },
         body: JSON.stringify({ customMessage }),
       });
@@ -131,12 +137,33 @@ export default function StaffNewsletterPage() {
     }
   }
 
+  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-celtic-blue mx-auto mb-4" />
-          <p className="text-gray-600">Loading newsletter preview...</p>
+          <p className="text-gray-600">Loading newsletter...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not authenticated - redirect to admin
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="card p-8 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-bold text-celtic-dark mb-2">Authentication Required</h1>
+          <p className="text-gray-500 mb-6">Please log in to access the newsletter manager.</p>
+          <Link href="/admin" className="btn-primary">
+            Go to Admin Login
+          </Link>
         </div>
       </div>
     );
@@ -145,15 +172,15 @@ export default function StaffNewsletterPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-celtic-blue text-white py-8">
+      <div className="bg-celtic-blue text-white py-6">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-display uppercase">Newsletter Manager</h1>
-              <p className="text-gray-300 mt-1">Preview and send the weekly newsletter</p>
+              <h1 className="text-2xl md:text-3xl font-display uppercase">Newsletter Manager</h1>
+              <p className="text-gray-300 text-sm mt-1">Preview and send the weekly newsletter</p>
             </div>
-            <Link href="/staff" className="text-celtic-yellow hover:text-white transition-colors">
-              ← Back to Staff
+            <Link href="/admin" className="text-celtic-yellow hover:text-white transition-colors text-sm">
+              ← Back to Dashboard
             </Link>
           </div>
         </div>
@@ -273,27 +300,16 @@ export default function StaffNewsletterPage() {
               />
             </div>
 
-            {/* Authentication */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="font-bold text-celtic-dark mb-3">Staff Authentication</h3>
-              <input
-                type="password"
-                value={staffSecret}
-                onChange={(e) => setStaffSecret(e.target.value)}
-                placeholder="Staff secret key"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-celtic-blue"
-              />
-            </div>
-
             {/* Send Test */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h3 className="font-bold text-celtic-dark mb-3">Send Test Email</h3>
+              <p className="text-sm text-gray-500 mb-3">Preview the newsletter in your inbox first</p>
               <div className="space-y-3">
                 <input
                   type="email"
                   value={testEmail}
                   onChange={(e) => setTestEmail(e.target.value)}
-                  placeholder="test@example.com"
+                  placeholder="your@email.com"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-celtic-blue"
                 />
                 <button
@@ -301,7 +317,7 @@ export default function StaffNewsletterPage() {
                   disabled={status === 'loading'}
                   className="w-full btn-outline"
                 >
-                  {status === 'loading' ? 'Sending...' : 'Send Test'}
+                  {status === 'loading' ? 'Sending...' : 'Send Test Email'}
                 </button>
               </div>
             </div>
@@ -327,6 +343,17 @@ export default function StaffNewsletterPage() {
                 {message}
               </div>
             )}
+
+            {/* Info */}
+            <div className="bg-blue-50 rounded-xl p-4 text-sm text-blue-700">
+              <p className="font-medium mb-1">How it works:</p>
+              <ul className="list-disc list-inside space-y-1 text-blue-600">
+                <li>Content is automatically pulled from the site</li>
+                <li>Add a custom message for timely updates</li>
+                <li>Send a test email to yourself first</li>
+                <li>Then send to all subscribers</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

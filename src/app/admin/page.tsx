@@ -419,6 +419,28 @@ export default function AdminDashboard() {
               </div>
             </Link>
 
+            {/* Newsletter Manager */}
+            <Link href="/admin/newsletter" className="card p-6 hover:shadow-lg transition-shadow group">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 bg-cyan-100 rounded-lg flex items-center justify-center group-hover:bg-cyan-200 transition-colors">
+                  <svg className="w-7 h-7 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
+                    Newsletter
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Send weekly updates to subscribers
+                  </p>
+                  <div className="mt-3 flex items-center gap-2 text-xs">
+                    <span className="px-2 py-0.5 bg-cyan-100 text-cyan-700 rounded-full">Auto-content</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
             {/* Staff Management - Super Admin Only */}
             {(session.role === 'super_admin' || session.role === 'admin') && (
               <Link href="/admin/staff" className="card p-6 hover:shadow-lg transition-shadow group">
