@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { awayDays, getAwayDayInfo, getGoogleMapsUrl, CWMBRAN_COORDS } from '@/data/away-days';
 import { getFixtures } from '@/lib/comet';
@@ -56,8 +57,23 @@ export default async function AwayDayPage({ params }: PageProps) {
             </svg>
             Back to Away Days
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-white">{info.teamName}</h1>
-          <p className="text-white/80 mt-2">{info.ground.name}</p>
+          <div className="flex items-center gap-4">
+            {info.badge && (
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-lg p-2 flex-shrink-0">
+                <Image
+                  src={info.badge}
+                  alt={`${info.teamName} badge`}
+                  width={80}
+                  height={80}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            )}
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{info.teamName}</h1>
+              <p className="text-white/80 mt-1">{info.ground.name}</p>
+            </div>
+          </div>
         </div>
       </section>
 

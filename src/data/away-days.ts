@@ -6,6 +6,7 @@
 export interface AwayDayInfo {
   teamId: string;
   teamName: string;
+  badge?: string;
   ground: {
     name: string;
     address: string;
@@ -63,6 +64,7 @@ export const awayDays: AwayDayInfo[] = [
   {
     teamId: 'pontypridd-united',
     teamName: 'Pontypridd United',
+    badge: '/images/opponents/pontypridd-united.jpg',
     ground: {
       name: 'Ynysangharad Park',
       address: 'Ynysangharad Park, Pontypridd',

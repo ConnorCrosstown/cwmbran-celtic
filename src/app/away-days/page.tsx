@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getFixtures } from '@/lib/comet';
 import { awayDays, getAwayDayByTeamName } from '@/data/away-days';
 
@@ -119,10 +120,31 @@ export default async function AwayDaysPage() {
                   href={`/away-days/${info.teamId}`}
                   className="card p-4 hover:shadow-lg transition-shadow group"
                 >
-                  <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
-                    {info.teamName}
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">{info.ground.name}</p>
+                  <div className="flex items-center gap-3">
+                    {info.badge ? (
+                      <div className="w-10 h-10 bg-gray-100 rounded flex-shrink-0 p-1">
+                        <Image
+                          src={info.badge}
+                          alt={`${info.teamName} badge`}
+                          width={40}
+                          height={40}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-10 h-10 bg-gray-100 rounded flex-shrink-0 flex items-center justify-center">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
+                        {info.teamName}
+                      </h3>
+                      <p className="text-sm text-gray-500">{info.ground.name}</p>
+                    </div>
+                  </div>
                   <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
                     <span className="flex items-center gap-1">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
