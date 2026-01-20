@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDate, getOpponent, isHomeGame } from '@/lib/comet';
+import { getAwayDayByTeamName } from '@/data/away-days';
 
 interface UpcomingFixturesProps {
   fixtures: Fixture[];
@@ -44,18 +46,34 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
         <div className="space-y-3">
           {fixtures.map((fixture) => {
             const teamInfo = getTeamInfo(fixture);
+            const opponent = getOpponent(fixture);
+            const isAway = !isHomeGame(fixture);
+            const awayInfo = isAway ? getAwayDayByTeamName(opponent) : null;
+
             return (
               <div
                 key={fixture.matchId}
                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
               >
-                {/* Team indicator badge */}
-                <div
-                  className={`${teamInfo.color} ${teamInfo.textColor} w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0`}
-                  title={teamInfo.fullName}
-                >
-                  {teamInfo.label}
-                </div>
+                {/* Team indicator badge or opponent badge for away games */}
+                {isAway && awayInfo?.badge ? (
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 border border-gray-200 p-1">
+                    <Image
+                      src={awayInfo.badge}
+                      alt={`${opponent} badge`}
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className={`${teamInfo.color} ${teamInfo.textColor} w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0`}
+                    title={teamInfo.fullName}
+                  >
+                    {teamInfo.label}
+                  </div>
+                )}
 
                 <div className="text-center min-w-[70px]">
                   <p className="text-sm font-semibold text-gray-700">
@@ -67,16 +85,26 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-medium text-celtic-blue mb-0.5">{teamInfo.fullName}</p>
                   <p className="font-semibold text-celtic-dark truncate">
-                    vs {getOpponent(fixture)}
+                    vs {opponent}
                   </p>
                   <p className="text-xs text-gray-500 truncate">{fixture.competition}</p>
                 </div>
 
-                <div className="flex-shrink-0">
-                  {isHomeGame(fixture) ? (
-                    <span className="badge-home">HOME</span>
+                <div className="flex-shrink-0 flex flex-col items-end gap-1">
+                  {isAway ? (
+                    <>
+                      <span className="badge-away">AWAY</span>
+                      {awayInfo && (
+                        <Link
+                          href={`/away-days/${awayInfo.teamId}`}
+                          className="text-[10px] text-celtic-blue hover:underline"
+                        >
+                          Away guide →
+                        </Link>
+                      )}
+                    </>
                   ) : (
-                    <span className="badge-away">AWAY</span>
+                    <span className="badge-home">HOME</span>
                   )}
                 </div>
               </div>
