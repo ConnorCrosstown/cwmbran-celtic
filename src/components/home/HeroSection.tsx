@@ -233,14 +233,14 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
               <span className="text-4xl xl:text-5xl font-display text-celtic-yellow">V</span>
 
               {/* Away Team Logo */}
-              <div className="w-32 h-32 xl:w-40 xl:h-40">
+              <div className="w-32 h-32 xl:w-40 xl:h-40 flex items-center justify-center">
                 {opponentBadge ? (
                   <Image
                     src={opponentBadge}
                     alt={opponent || 'Opposition'}
                     width={160}
                     height={160}
-                    className="object-contain w-full h-full"
+                    className="object-contain w-full h-full drop-shadow-lg"
                   />
                 ) : (
                   <div className="w-full h-full bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
