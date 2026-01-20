@@ -3,10 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { getSession, initializeStaff, type AuthSession } from '@/lib/auth';
 
+// Dynamically import rich text editor to avoid SSR issues
+const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), {
+  ssr: false,
+  loading: () => <div className="border rounded-lg p-3 min-h-[100px] bg-gray-50 animate-pulse" />
+});
+
 // Block types for the newsletter
-type BlockType = 'hero' | 'message' | 'results' | 'fixtures' | 'news' | 'standings' | 'cta' | 'image' | 'divider' | 'shop' | 'celticbond' | 'membership' | 'sponsor' | 'volunteer' | 'matchday';
+type BlockType = 'hero' | 'message' | 'results' | 'fixtures' | 'news' | 'standings' | 'cta' | 'image' | 'divider' | 'shop' | 'celticbond' | 'membership' | 'sponsor' | 'volunteer' | 'matchday' | 'playerspotlight' | 'managermessage';
 
 interface NewsletterBlock {
   id: string;
@@ -55,12 +62,22 @@ interface NewsletterPreview {
   subscriberCount: number;
 }
 
+// Template presets
+interface NewsletterTemplate {
+  id: string;
+  name: string;
+  description: string;
+  blocks: NewsletterBlock[];
+}
+
 const defaultBlocks: NewsletterBlock[] = [
   { id: 'hero', type: 'hero', enabled: true, content: { title: 'Weekly Update', subtitle: 'Your Cwmbran Celtic Newsletter', imageUrl: '' } },
+  { id: 'managermessage', type: 'managermessage', enabled: false, content: { message: '', managerName: 'Simon Berry', managerTitle: 'First Team Manager' } },
   { id: 'message', type: 'message', enabled: false, content: { text: '' } },
   { id: 'standings', type: 'standings', enabled: true, content: {} },
   { id: 'results', type: 'results', enabled: true, content: { title: 'Recent Results' } },
   { id: 'fixtures', type: 'fixtures', enabled: true, content: { title: 'Upcoming Fixtures' } },
+  { id: 'playerspotlight', type: 'playerspotlight', enabled: false, content: { playerName: '', position: '', bio: '', imageUrl: '', stats: '' } },
   { id: 'news', type: 'news', enabled: true, content: { title: 'Latest News' } },
   { id: 'shop', type: 'shop', enabled: false, content: {} },
   { id: 'celticbond', type: 'celticbond', enabled: false, content: {} },
@@ -69,6 +86,33 @@ const defaultBlocks: NewsletterBlock[] = [
   { id: 'volunteer', type: 'volunteer', enabled: false, content: {} },
   { id: 'matchday', type: 'matchday', enabled: false, content: {} },
   { id: 'cta', type: 'cta', enabled: true, content: { title: 'Support the Club', text: 'Come and support us at the Avondale Motor Park Arena!', buttonText: 'Buy Tickets', buttonUrl: '/tickets' } },
+];
+
+const templatePresets: NewsletterTemplate[] = [
+  {
+    id: 'weekly',
+    name: 'Weekly Update',
+    description: 'Standard weekly newsletter with results, fixtures & news',
+    blocks: defaultBlocks,
+  },
+  {
+    id: 'matchday',
+    name: 'Match Day Special',
+    description: 'Pre-match newsletter with fixtures and ticket info',
+    blocks: defaultBlocks.map(b => ({
+      ...b,
+      enabled: ['hero', 'fixtures', 'matchday', 'cta'].includes(b.id)
+    })),
+  },
+  {
+    id: 'fundraising',
+    name: 'Fundraising Focus',
+    description: 'Promote Celtic Bond, membership and sponsorship',
+    blocks: defaultBlocks.map(b => ({
+      ...b,
+      enabled: ['hero', 'message', 'celticbond', 'membership', 'sponsor', 'cta'].includes(b.id)
+    })),
+  },
 ];
 
 export default function AdminNewsletterPage() {
@@ -81,6 +125,8 @@ export default function AdminNewsletterPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [testEmail, setTestEmail] = useState('');
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+  const [mobilePreview, setMobilePreview] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
 
   useEffect(() => {
     initializeStaff();
@@ -125,6 +171,37 @@ export default function AdminNewsletterPage() {
     setMessage('Draft saved!');
     setStatus('success');
     setTimeout(() => setMessage(''), 2000);
+  }
+
+  function loadTemplate(template: NewsletterTemplate) {
+    setBlocks(JSON.parse(JSON.stringify(template.blocks)));
+    setShowTemplates(false);
+    setMessage(`Loaded "${template.name}" template`);
+    setStatus('success');
+    setTimeout(() => setMessage(''), 2000);
+  }
+
+  function saveAsTemplate() {
+    const name = prompt('Enter a name for this template:');
+    if (!name) return;
+
+    const savedTemplates = JSON.parse(localStorage.getItem('newsletter-templates') || '[]');
+    const newTemplate = {
+      id: `custom-${Date.now()}`,
+      name,
+      description: 'Custom saved template',
+      blocks: JSON.parse(JSON.stringify(blocks)),
+    };
+    savedTemplates.push(newTemplate);
+    localStorage.setItem('newsletter-templates', JSON.stringify(savedTemplates));
+    setMessage(`Template "${name}" saved!`);
+    setStatus('success');
+    setTimeout(() => setMessage(''), 2000);
+  }
+
+  function getSavedTemplates(): NewsletterTemplate[] {
+    if (typeof window === 'undefined') return [];
+    return JSON.parse(localStorage.getItem('newsletter-templates') || '[]');
   }
 
   function updateBlock(id: string, updates: Partial<NewsletterBlock>) {
@@ -536,6 +613,68 @@ export default function AdminNewsletterPage() {
           </div>
         );
 
+      case 'playerspotlight':
+        return (
+          <div className="p-6 md:p-8 bg-gradient-to-br from-celtic-blue-dark to-celtic-blue text-white">
+            <div className="text-center mb-4">
+              <p className="text-celtic-yellow font-bold text-sm uppercase tracking-wider">Player Spotlight</p>
+            </div>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              {block.content.imageUrl ? (
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-celtic-yellow flex-shrink-0">
+                  <Image
+                    src={block.content.imageUrl as string}
+                    alt={(block.content.playerName as string) || 'Player'}
+                    width={128}
+                    height={128}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              ) : (
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white/20 border-4 border-celtic-yellow flex-shrink-0 flex items-center justify-center">
+                  <svg className="w-12 h-12 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              )}
+              <div className="text-center md:text-left flex-1">
+                <h2 className="text-2xl font-display uppercase">{(block.content.playerName as string) || 'Player Name'}</h2>
+                <p className="text-celtic-yellow font-medium">{(block.content.position as string) || 'Position'}</p>
+                {block.content.bio ? (
+                  <p className="text-white/80 text-sm mt-2">{block.content.bio as string}</p>
+                ) : null}
+                {block.content.stats ? (
+                  <p className="text-xs text-white/60 mt-2">{block.content.stats as string}</p>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'managermessage':
+        return (
+          <div className="p-6 md:p-8 bg-gray-50">
+            <div className="flex items-start gap-4">
+              <div className="w-16 h-16 rounded-full bg-celtic-blue flex-shrink-0 flex items-center justify-center text-white text-2xl font-display">
+                {((block.content.managerName as string) || 'SB').split(' ').map(n => n[0]).join('')}
+              </div>
+              <div className="flex-1">
+                <div className="mb-2">
+                  <p className="font-bold text-celtic-dark">{(block.content.managerName as string) || 'Simon Berry'}</p>
+                  <p className="text-xs text-gray-500">{(block.content.managerTitle as string) || 'First Team Manager'}</p>
+                </div>
+                <div className="bg-white rounded-lg p-4 shadow-sm border-l-4 border-celtic-blue">
+                  {block.content.message ? (
+                    <div className="text-gray-700 text-sm prose prose-sm" dangerouslySetInnerHTML={{ __html: block.content.message as string }} />
+                  ) : (
+                    <p className="text-gray-400 text-sm italic">Add a message from the manager...</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -590,7 +729,35 @@ export default function AdminNewsletterPage() {
                 <p className="text-xs text-white/70">{preview?.subscriberCount || 0} subscribers</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Templates Button */}
+              <button
+                onClick={() => setShowTemplates(!showTemplates)}
+                className="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                </svg>
+                Templates
+              </button>
+
+              {/* Mobile Preview Toggle */}
+              <button
+                onClick={() => setMobilePreview(!mobilePreview)}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${mobilePreview ? 'bg-white text-celtic-blue' : 'bg-white/10 hover:bg-white/20'}`}
+                title={mobilePreview ? 'Switch to desktop view' : 'Switch to mobile view'}
+              >
+                {mobilePreview ? (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                )}
+              </button>
+
               {/* View Toggle */}
               <div className="bg-white/10 rounded-lg p-1 flex">
                 <button
@@ -606,13 +773,16 @@ export default function AdminNewsletterPage() {
                   Preview
                 </button>
               </div>
-              <button onClick={saveDraft} className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors">
+              <button onClick={saveDraft} className="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors">
                 Save Draft
+              </button>
+              <button onClick={saveAsTemplate} className="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors">
+                Save as Template
               </button>
               <button
                 onClick={() => sendNewsletter(true)}
                 disabled={status === 'loading'}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors"
+                className="px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-medium transition-colors"
               >
                 Test Send
               </button>
@@ -632,6 +802,34 @@ export default function AdminNewsletterPage() {
       {message && (
         <div className={`py-2 px-4 text-center text-sm ${status === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
           {message}
+        </div>
+      )}
+
+      {/* Templates Panel */}
+      {showTemplates && (
+        <div className="bg-white border-b shadow-sm">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-gray-700">Choose a Template</h3>
+              <button onClick={() => setShowTemplates(false)} className="text-gray-400 hover:text-gray-600">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {[...templatePresets, ...getSavedTemplates()].map((template) => (
+                <button
+                  key={template.id}
+                  onClick={() => loadTemplate(template)}
+                  className="p-3 bg-gray-50 hover:bg-celtic-blue hover:text-white rounded-lg text-left transition-colors group"
+                >
+                  <p className="font-medium text-sm">{template.name}</p>
+                  <p className="text-xs text-gray-500 group-hover:text-white/70 mt-1">{template.description}</p>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
@@ -774,17 +972,105 @@ export default function AdminNewsletterPage() {
                     </div>
                   )}
 
-                  {/* Message Editor */}
+                  {/* Message Editor - Rich Text */}
                   {selectedBlockData.type === 'message' && (
                     <div>
                       <label className="block text-xs text-gray-500 mb-1">Message</label>
-                      <textarea
-                        value={(selectedBlockData.content.text as string) || ''}
-                        onChange={(e) => updateBlockContent(selectedBlockData.id, { text: e.target.value })}
-                        className="w-full px-3 py-2 border rounded-lg text-sm"
-                        rows={4}
+                      <RichTextEditor
+                        content={(selectedBlockData.content.text as string) || ''}
+                        onChange={(html) => updateBlockContent(selectedBlockData.id, { text: html })}
                         placeholder="Add a personal message to your newsletter..."
                       />
+                    </div>
+                  )}
+
+                  {/* Manager Message Editor */}
+                  {selectedBlockData.type === 'managermessage' && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Manager Name</label>
+                        <input
+                          type="text"
+                          value={(selectedBlockData.content.managerName as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { managerName: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          placeholder="Simon Berry"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Title</label>
+                        <input
+                          type="text"
+                          value={(selectedBlockData.content.managerTitle as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { managerTitle: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          placeholder="First Team Manager"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Message</label>
+                        <RichTextEditor
+                          content={(selectedBlockData.content.message as string) || ''}
+                          onChange={(html) => updateBlockContent(selectedBlockData.id, { message: html })}
+                          placeholder="Write a message from the manager..."
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Player Spotlight Editor */}
+                  {selectedBlockData.type === 'playerspotlight' && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Player Name</label>
+                        <input
+                          type="text"
+                          value={(selectedBlockData.content.playerName as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { playerName: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          placeholder="Lewis Watkins"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Position</label>
+                        <input
+                          type="text"
+                          value={(selectedBlockData.content.position as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { position: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          placeholder="Midfielder"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Photo URL</label>
+                        <input
+                          type="text"
+                          value={(selectedBlockData.content.imageUrl as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { imageUrl: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          placeholder="https://..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Bio</label>
+                        <textarea
+                          value={(selectedBlockData.content.bio as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { bio: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          rows={3}
+                          placeholder="Brief player bio..."
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500 mb-1">Stats (optional)</label>
+                        <input
+                          type="text"
+                          value={(selectedBlockData.content.stats as string) || ''}
+                          onChange={(e) => updateBlockContent(selectedBlockData.id, { stats: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg text-sm"
+                          placeholder="10 apps, 3 goals this season"
+                        />
+                      </div>
                     </div>
                   )}
 
@@ -894,9 +1180,12 @@ export default function AdminNewsletterPage() {
           )}
 
           {/* Email Preview */}
-          <div className="flex-1">
-            <div className="bg-gray-300 rounded-xl p-4 md:p-8">
-              <div className="max-w-[600px] mx-auto bg-white shadow-2xl rounded-lg overflow-hidden">
+          <div className="flex-1 flex justify-center">
+            <div className={`bg-gray-300 rounded-xl p-4 md:p-8 transition-all ${mobilePreview ? 'w-[375px]' : 'w-full'}`}>
+              {mobilePreview && (
+                <div className="text-center text-xs text-gray-500 mb-2">Mobile Preview (375px)</div>
+              )}
+              <div className={`mx-auto bg-white shadow-2xl rounded-lg overflow-hidden ${mobilePreview ? 'max-w-[343px]' : 'max-w-[600px]'}`}>
                 {/* Email Content */}
                 {blocks.filter(b => b.enabled).map((block) => (
                   <div
