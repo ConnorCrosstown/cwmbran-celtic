@@ -227,7 +227,30 @@ export const getOppositionById = (id: string): OppositionTeam | undefined => {
 };
 
 export const getOppositionByName = (name: string): OppositionTeam | undefined => {
-  return oppositionTeams.find(team =>
-    team.name.toLowerCase() === name.toLowerCase()
+  const nameLower = name.toLowerCase();
+
+  // First try exact match
+  const exactMatch = oppositionTeams.find(team =>
+    team.name.toLowerCase() === nameLower
   );
+  if (exactMatch) return exactMatch;
+
+  // Then try partial match (handles "Taffs Well Women" matching "Taffs Well")
+  // Remove common suffixes like "Women", "Ladies", "FC", "AFC" for matching
+  const cleanedName = nameLower
+    .replace(/\s*(women|ladies|fc|afc|town|united|city)(\s+fc|\s+afc)?$/gi, '')
+    .trim();
+
+  return oppositionTeams.find(team => {
+    const teamNameLower = team.name.toLowerCase();
+    const cleanedTeamName = teamNameLower
+      .replace(/\s*(women|ladies|fc|afc|town|united|city)(\s+fc|\s+afc)?$/gi, '')
+      .trim();
+
+    // Check if either contains the other (for partial matches)
+    return cleanedTeamName.includes(cleanedName) ||
+           cleanedName.includes(cleanedTeamName) ||
+           nameLower.includes(teamNameLower) ||
+           teamNameLower.includes(nameLower.replace(/\s*(women|ladies).*$/i, '').trim());
+  });
 };

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDate, getOpponent, isHomeGame } from '@/lib/comet';
 import { getAwayDayByTeamName } from '@/data/away-days';
+import { getOppositionByName } from '@/data/opposition-data';
 
 interface UpcomingFixturesProps {
   fixtures: Fixture[];
@@ -48,8 +49,10 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
             const teamInfo = getTeamInfo(fixture);
             const opponent = getOpponent(fixture);
             const isAway = !isHomeGame(fixture);
-            // Get opponent info for badge (works for both home and away games)
-            const opponentInfo = getAwayDayByTeamName(opponent);
+            // Get opponent info for badge from opposition-data (has all badges)
+            const opponentData = getOppositionByName(opponent);
+            // Also get away day info for away guide links
+            const awayDayInfo = getAwayDayByTeamName(opponent);
 
             return (
               <div
@@ -57,10 +60,10 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
               >
                 {/* Show opponent badge if available, otherwise team indicator */}
-                {opponentInfo?.badge ? (
+                {opponentData?.badge ? (
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 border border-gray-200 p-1">
                     <Image
-                      src={opponentInfo.badge}
+                      src={opponentData.badge}
                       alt={`${opponent} badge`}
                       width={32}
                       height={32}
@@ -95,9 +98,9 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
                   {isAway ? (
                     <>
                       <span className="badge-away">AWAY</span>
-                      {opponentInfo && (
+                      {awayDayInfo && (
                         <Link
-                          href={`/away-days/${opponentInfo.teamId}`}
+                          href={`/away-days/${awayDayInfo.teamId}`}
                           className="text-[10px] text-celtic-blue hover:underline"
                         >
                           Away guide →
