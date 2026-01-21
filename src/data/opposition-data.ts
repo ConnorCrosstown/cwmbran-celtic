@@ -207,7 +207,6 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Ynyshir Park',
     founded: 1903,
     colours: 'Red and White',
-    badge: '/images/opponents/ynyshir-albions.png',
     headToHead: { played: 2, celticWins: 0, draws: 2, oppositionWins: 0 }
   },
   {
