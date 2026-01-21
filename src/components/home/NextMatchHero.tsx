@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Fixture, Admission } from '@/types';
 import { formatMatchDateLong, getOpponent } from '@/lib/comet';
+import { getOppositionByName } from '@/data/opposition-data';
 
 interface NextMatchHeroProps {
   fixture: Fixture | null;
@@ -58,6 +60,8 @@ export default function NextMatchHero({ fixture, admission }: NextMatchHeroProps
   }
 
   const opponent = getOpponent(fixture);
+  const opponentData = getOppositionByName(opponent);
+  const opponentBadge = opponentData?.badge;
   const isWomensGame = fixture.homeTeam.includes('Ladies') || fixture.awayTeam.includes('Ladies') ||
                        fixture.competition.includes('Adran') || fixture.competition.includes('Women');
   const teamLabel = isWomensGame ? "Cwmbran Celtic Women" : "Cwmbran Celtic";
@@ -68,20 +72,51 @@ export default function NextMatchHero({ fixture, admission }: NextMatchHeroProps
       <section className="bg-gradient-to-r from-celtic-blue to-celtic-blue-dark text-white py-6 md:py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-            {/* Match Info */}
+            {/* Match Info with Badges */}
             <div className="flex items-center gap-4 md:gap-6">
-              {/* Team Badge */}
-              <span className={`text-[10px] font-bold px-2 py-1 rounded ${isWomensGame ? 'bg-pink-500/80' : 'bg-celtic-yellow text-celtic-dark'}`}>
-                {isWomensGame ? "WOMEN'S" : "MEN'S"}
-              </span>
+              {/* Cwmbran Celtic Badge */}
+              <div className="flex-shrink-0 hidden sm:block">
+                <Image
+                  src="/images/club-logo.webp"
+                  alt="Cwmbran Celtic"
+                  width={56}
+                  height={56}
+                  className="rounded-full border-2 border-celtic-yellow"
+                />
+              </div>
+
               <div className="text-center lg:text-left">
-                <p className="text-celtic-yellow text-xs uppercase tracking-wide mb-1">Next Home Game</p>
+                <div className="flex items-center gap-2 justify-center lg:justify-start mb-1">
+                  <span className={`text-[10px] font-bold px-2 py-1 rounded ${isWomensGame ? 'bg-pink-500/80' : 'bg-celtic-yellow text-celtic-dark'}`}>
+                    {isWomensGame ? "WOMEN'S" : "MEN'S"}
+                  </span>
+                  <p className="text-celtic-yellow text-xs uppercase tracking-wide">Next Home Game</p>
+                </div>
                 <p className="font-bold text-lg md:text-xl">
                   {teamLabel} <span className="text-gray-300 font-normal">vs</span> {opponent}
                 </p>
                 <p className="text-gray-300 text-sm">
                   {formatMatchDateLong(fixture.date)} • {fixture.time} • {fixture.venue}
                 </p>
+              </div>
+
+              {/* Opponent Badge */}
+              <div className="flex-shrink-0 hidden sm:block">
+                {opponentBadge ? (
+                  <Image
+                    src={opponentBadge}
+                    alt={opponent}
+                    width={56}
+                    height={56}
+                    className="rounded-full border-2 border-white/30 bg-white object-contain"
+                  />
+                ) : (
+                  <div className="w-14 h-14 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center">
+                    <span className="text-sm font-bold text-white/80">
+                      {opponent.split(' ').map(w => w[0]).join('').slice(0, 2)}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -35,6 +35,7 @@ export const oppositionTeams: OppositionTeam[] = [
     founded: 1896,
     colours: 'Red and White',
     website: 'https://llanellitownafc.co.uk',
+    badge: '/images/opponents/llanelli-town.png',
     headToHead: { played: 12, celticWins: 3, draws: 2, oppositionWins: 7 }
   },
   {
@@ -44,6 +45,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Graig Y Rhacca',
     founded: 1946,
     colours: 'Blue and White',
+    badge: '/images/opponents/trethomas-bluebirds.png',
     headToHead: { played: 10, celticWins: 4, draws: 3, oppositionWins: 3 }
   },
   {
@@ -52,6 +54,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Newport Stadium',
     founded: 2017,
     colours: 'Amber and Black',
+    badge: '/images/opponents/newport-city.png',
     lastMeeting: { date: '4 Apr 2025', result: 'L', score: '2-0' },
     headToHead: { played: 8, celticWins: 2, draws: 2, oppositionWins: 4 }
   },
@@ -72,6 +75,7 @@ export const oppositionTeams: OppositionTeam[] = [
     founded: 2016,
     colours: 'Black and White',
     website: 'https://www.pontypriddunited.co.uk',
+    badge: '/images/opponents/pontypridd-united.jpg',
     headToHead: { played: 14, celticWins: 5, draws: 4, oppositionWins: 5 }
   },
   {
@@ -81,6 +85,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'King George V Playing Fields',
     founded: 2009,
     colours: 'Red and Black',
+    badge: '/images/opponents/cambrian-united.png',
     headToHead: { played: 8, celticWins: 3, draws: 2, oppositionWins: 3 }
   },
   {
@@ -91,6 +96,7 @@ export const oppositionTeams: OppositionTeam[] = [
     founded: 1948,
     colours: 'Gold and Black',
     website: 'https://carmarthentownafc.co.uk',
+    badge: '/images/opponents/carmarthen-town.png',
     headToHead: { played: 6, celticWins: 1, draws: 2, oppositionWins: 3 }
   },
   {
@@ -99,6 +105,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Baglan Playing Fields',
     founded: 2017,
     colours: 'Red and Black',
+    badge: '/images/opponents/baglan-dragons.png',
     lastMeeting: { date: '29 Mar 2025', result: 'L', score: '0-2' },
     headToHead: { played: 6, celticWins: 2, draws: 1, oppositionWins: 3 }
   },
@@ -109,7 +116,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Windmill Lane',
     founded: 1962,
     colours: 'Blue and White',
-    badge: '/images/teams/llantwit-major.png',
+    badge: '/images/opponents/llantwit-major.png',
     lastMeeting: { date: '12 Apr 2025', result: 'W', score: '1-0' },
     headToHead: { played: 12, celticWins: 6, draws: 3, oppositionWins: 3 }
   },
@@ -120,6 +127,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'The Recreation Ground',
     founded: 1903,
     colours: 'Red and White',
+    badge: '/images/opponents/ammanford.png',
     headToHead: { played: 8, celticWins: 4, draws: 1, oppositionWins: 3 }
   },
   {
@@ -129,6 +137,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'The Runtech Group Stadium',
     founded: 1967,
     colours: 'Maroon and Blue',
+    badge: '/images/opponents/afan-lido.png',
     lastMeeting: { date: '22 Mar 2025', result: 'D', score: '2-2' },
     headToHead: { played: 14, celticWins: 5, draws: 4, oppositionWins: 5 }
   },
@@ -139,6 +148,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Cwrt-Yr-Ala Playing Fields',
     founded: 1946,
     colours: 'Green and White',
+    badge: '/images/opponents/caerau-ely.png',
     lastMeeting: { date: '11 Jan 2025', result: 'W', score: '2-1' },
     headToHead: { played: 10, celticWins: 5, draws: 2, oppositionWins: 3 }
   },
@@ -149,6 +159,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Welfare Ground',
     founded: 1947,
     colours: 'Red and Black',
+    badge: '/images/opponents/penrhiwceiber-rangers.png',
     headToHead: { played: 8, celticWins: 4, draws: 2, oppositionWins: 2 }
   },
   {
@@ -157,6 +168,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Plough Road',
     founded: 1948,
     colours: 'Yellow and Black',
+    badge: '/images/opponents/goytre-united.png',
     headToHead: { played: 16, celticWins: 8, draws: 4, oppositionWins: 4 }
   },
   {
@@ -166,6 +178,7 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Rhiw Dda\'r',
     founded: 1946,
     colours: 'Green and White',
+    badge: '/images/opponents/taffs-well.png',
     headToHead: { played: 14, celticWins: 7, draws: 3, oppositionWins: 4 }
   },
   {
@@ -174,7 +187,38 @@ export const oppositionTeams: OppositionTeam[] = [
     ground: 'Cyncoed Campus',
     founded: 1990,
     colours: 'Black and Gold',
+    badge: '/images/opponents/cardiff-draconians.png',
     headToHead: { played: 4, celticWins: 1, draws: 1, oppositionWins: 2 }
+  },
+  {
+    id: 'aberystwyth-town',
+    name: 'Aberystwyth Town',
+    nickname: 'The Seasiders',
+    ground: 'Park Avenue',
+    founded: 1884,
+    colours: 'Green and Black',
+    badge: '/images/opponents/aberystwyth-town.png',
+    headToHead: { played: 2, celticWins: 0, draws: 0, oppositionWins: 2 }
+  },
+  {
+    id: 'ynyshir-albions',
+    name: 'Ynyshir Albions',
+    nickname: 'The Albions',
+    ground: 'Ynyshir Park',
+    founded: 1903,
+    colours: 'Red and White',
+    badge: '/images/opponents/ynyshir-albions.png',
+    headToHead: { played: 2, celticWins: 0, draws: 2, oppositionWins: 0 }
+  },
+  {
+    id: 'treowen-stars',
+    name: 'Treowen Stars',
+    nickname: 'The Stars',
+    ground: 'Treowen Recreation Ground',
+    founded: 1972,
+    colours: 'Blue and White',
+    badge: '/images/opponents/treowen-stars.png',
+    headToHead: { played: 2, celticWins: 0, draws: 2, oppositionWins: 0 }
   },
 ];
 
