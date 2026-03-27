@@ -28,7 +28,7 @@ const STAFF_ACCOUNTS: StaffMember[] = [
     email: 'connor@cwmbranceltic.com',
     role: 'super_admin',
     // Hash of 'celtic2025'
-    passwordHash: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4.GQHhVqYqYqYqYq',
+    passwordHash: '$2b$12$SDBwyYlelHheDhgwunU6bOkG7HxnziTICpcYivcyuBAXbrVCQSFky',
   },
   {
     id: 'staff_matt',
@@ -36,7 +36,7 @@ const STAFF_ACCOUNTS: StaffMember[] = [
     email: 'matt@cwmbranceltic.com',
     role: 'super_admin',
     // Hash of 'celtic2025'
-    passwordHash: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4.GQHhVqYqYqYqYq',
+    passwordHash: '$2b$12$SDBwyYlelHheDhgwunU6bOkG7HxnziTICpcYivcyuBAXbrVCQSFky',
   },
 ];
 
@@ -91,10 +91,8 @@ const authConfig: NextAuthConfig = {
             return null;
           }
 
-          // For the default password, do a simple comparison
-          // In production, always use bcrypt.compare with proper hashes
-          const isValidPassword = password === 'celtic2025' ||
-            await bcrypt.compare(password, staff.passwordHash);
+          // Verify password against bcrypt hash
+          const isValidPassword = await bcrypt.compare(password, staff.passwordHash);
 
           if (!isValidPassword) {
             return null;
