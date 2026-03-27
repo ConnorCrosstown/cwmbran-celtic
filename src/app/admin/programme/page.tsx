@@ -1,10 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { oppositionTeams, getOppositionById } from '@/data/opposition-data';
-import { mockSquad } from '@/data/mock-data';
+import { mockSquad, mockFixtures } from '@/data/mock-data';
 import ProgrammePreview from '@/components/programme/ProgrammePreview';
+
+// Helper to get opponent ID from team name
+const getOpponentIdFromName = (teamName: string): string => {
+  const team = oppositionTeams.find(t =>
+    teamName.toLowerCase().includes(t.name.toLowerCase()) ||
+    t.name.toLowerCase().includes(teamName.toLowerCase().replace('fc', '').replace('afc', '').trim())
+  );
+  return team?.id || '';
+};
+
+// Helper to format fixture for display
+const formatFixtureDate = (dateValue: string | number) => {
+  const date = new Date(dateValue);
+  return date.toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
+};
 
 interface SquadPlayer {
   squadNo: number;
@@ -90,13 +109,55 @@ const defaultFormData: ProgrammeData = {
 };
 
 export default function ProgrammeGeneratorPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
+  // Auth is now handled by NextAuth middleware - no need for internal auth
   const [showPreview, setShowPreview] = useState(false);
   const [showSavedList, setShowSavedList] = useState(false);
   const [savedProgrammes, setSavedProgrammes] = useState<SavedProgramme[]>([]);
   const [activeSection, setActiveSection] = useState(1);
   const [formData, setFormData] = useState<ProgrammeData>(defaultFormData);
+  const [selectedFixtureId, setSelectedFixtureId] = useState<number | null>(null);
+
+  // Get upcoming HOME fixtures for men's team (most likely to need programmes)
+  const upcomingHomeFixtures = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return mockFixtures.results
+      .filter(f => {
+        const fixtureDate = new Date(f.date);
+        const isHome = f.homeTeam.includes('Cwmbran Celtic') && !f.homeTeam.includes('Ladies');
+        const isFuture = fixtureDate >= today;
+        return isHome && isFuture;
+      })
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(0, 10); // Next 10 home fixtures
+  }, []);
+
+  // Handle fixture selection - auto-populate form
+  const handleFixtureSelect = (fixtureId: number) => {
+    const fixture = mockFixtures.results.find(f => f.matchId === fixtureId);
+    if (!fixture) return;
+
+    setSelectedFixtureId(fixtureId);
+
+    const opponent = fixture.homeTeam.includes('Cwmbran Celtic') ? fixture.awayTeam : fixture.homeTeam;
+    const opponentId = getOpponentIdFromName(opponent);
+    const fixtureDate = new Date(fixture.date);
+    // Format as YYYY-MM-DD for the date input
+    const year = fixtureDate.getFullYear();
+    const month = String(fixtureDate.getMonth() + 1).padStart(2, '0');
+    const day = String(fixtureDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+
+    setFormData(prev => ({
+      ...prev,
+      opponent: opponentId,
+      date: dateStr,
+      kickoff: fixture.time,
+      competition: fixture.competition,
+      venue: fixture.homeTeam.includes('Cwmbran Celtic') ? 'home' : 'away',
+    }));
+  };
 
   // Get squad for current team
   const squad = mockSquad.results as SquadPlayer[];
@@ -126,15 +187,6 @@ export default function ProgrammeGeneratorPage() {
     }
     programmes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
     setSavedProgrammes(programmes);
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'celtic2025') {
-      setIsAuthenticated(true);
-    } else {
-      alert('Incorrect password');
-    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -305,38 +357,6 @@ export default function ProgrammeGeneratorPage() {
       setFormData(defaultFormData);
     }
   };
-
-  // Login screen
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="card p-6 w-full max-w-sm">
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-celtic-blue rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-celtic-yellow text-2xl">🔒</span>
-            </div>
-            <h1 className="text-xl font-bold text-celtic-dark">Staff Access</h1>
-            <p className="text-sm text-gray-500">Programme Generator</p>
-          </div>
-          <form onSubmit={handleLogin}>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 text-center text-lg"
-            />
-            <button
-              type="submit"
-              className="w-full bg-celtic-blue text-white py-3 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors"
-            >
-              Access Generator
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  }
 
   // Preview mode
   if (showPreview) {
@@ -595,23 +615,85 @@ export default function ProgrammeGeneratorPage() {
 
           {/* Section 1: Match Details */}
           {activeSection === 1 && (
-            <div className="card p-4 md:p-6">
-              <h2 className="font-bold text-lg text-celtic-dark mb-4">Match Details</h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Team *</label>
-                  <select
-                    name="team"
-                    value={formData.team}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue"
-                  >
-                    <option value="mens">Men&apos;s First Team</option>
-                    <option value="womens">Women&apos;s Team</option>
-                    <option value="development">Development Squad</option>
-                  </select>
+            <div className="space-y-4">
+              {/* Quick Fixture Selector */}
+              <div className="card p-4 md:p-6 bg-celtic-blue/5 border-2 border-celtic-blue/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg">⚡</span>
+                  <h2 className="font-bold text-lg text-celtic-dark">Quick Start: Select Fixture</h2>
                 </div>
+                <p className="text-sm text-gray-600 mb-3">
+                  Pick an upcoming home fixture to auto-fill match details
+                </p>
+
+                {upcomingHomeFixtures.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {upcomingHomeFixtures.map((fixture) => {
+                      const opponent = fixture.awayTeam;
+                      const isSelected = selectedFixtureId === fixture.matchId;
+                      const opponentData = getOppositionById(getOpponentIdFromName(opponent));
+
+                      return (
+                        <button
+                          key={fixture.matchId}
+                          onClick={() => handleFixtureSelect(fixture.matchId)}
+                          className={`p-3 rounded-lg text-left transition-all ${
+                            isSelected
+                              ? 'bg-celtic-blue text-white ring-2 ring-celtic-yellow'
+                              : 'bg-white hover:bg-gray-50 border border-gray-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {opponentData?.badge && (
+                              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                <Image
+                                  src={opponentData.badge}
+                                  alt={opponent}
+                                  width={24}
+                                  height={24}
+                                  className="object-contain"
+                                />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className={`font-semibold text-sm truncate ${isSelected ? 'text-white' : 'text-gray-800'}`}>
+                                vs {opponent}
+                              </p>
+                              <p className={`text-xs ${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
+                                {formatFixtureDate(fixture.date)} • {fixture.time}
+                              </p>
+                            </div>
+                            {isSelected && (
+                              <span className="text-celtic-yellow text-lg">✓</span>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500 italic">No upcoming home fixtures found</p>
+                )}
+              </div>
+
+              {/* Manual Entry Form */}
+              <div className="card p-4 md:p-6">
+                <h2 className="font-bold text-lg text-celtic-dark mb-4">Match Details</h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Team *</label>
+                    <select
+                      name="team"
+                      value={formData.team}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue"
+                    >
+                      <option value="mens">Men&apos;s First Team</option>
+                      <option value="womens">Women&apos;s Team</option>
+                      <option value="development">Development Squad</option>
+                    </select>
+                  </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Venue</label>
@@ -716,6 +798,7 @@ export default function ProgrammeGeneratorPage() {
                     <option value="£3">£3</option>
                   </select>
                 </div>
+              </div>
               </div>
             </div>
           )}

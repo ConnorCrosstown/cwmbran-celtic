@@ -16,6 +16,14 @@ interface ProgrammeData {
   matchSponsor: string;
   coverImage?: string;
   actionImage?: string;
+  // Team selection
+  startingXI?: number[];
+  substitutes?: number[];
+  captain?: number | null;
+  // Match officials
+  referee?: string;
+  assistantRef1?: string;
+  assistantRef2?: string;
 }
 
 interface ProgrammePreviewProps {
@@ -151,16 +159,22 @@ First Team Manager`;
                   <div className="absolute inset-0 bg-gradient-to-t from-celtic-dark via-celtic-blue/80 to-celtic-blue/40" />
                 </div>
               ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue via-celtic-blue-dark to-celtic-blue">
+                <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue via-celtic-blue-dark to-[#0a1628]">
                   {/* Decorative pattern */}
-                  <div className="absolute inset-0 opacity-5">
+                  <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-celtic-yellow blur-3xl transform translate-x-1/2 -translate-y-1/2" />
-                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-white blur-3xl transform -translate-x-1/2 translate-y-1/2" />
+                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-celtic-blue blur-3xl transform -translate-x-1/2 translate-y-1/2" />
                   </div>
-                  {/* Diagonal stripes */}
-                  <div className="absolute inset-0 opacity-[0.03]" style={{
-                    backgroundImage: 'repeating-linear-gradient(45deg, white 0, white 2px, transparent 2px, transparent 20px)'
+                  {/* Geometric pattern */}
+                  <div className="absolute inset-0 opacity-[0.05]" style={{
+                    backgroundImage: `
+                      linear-gradient(30deg, transparent 49.5%, white 49.5%, white 50.5%, transparent 50.5%),
+                      linear-gradient(-30deg, transparent 49.5%, white 49.5%, white 50.5%, transparent 50.5%)
+                    `,
+                    backgroundSize: '60px 100px'
                   }} />
+                  {/* Football pitch lines effect */}
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[80%] h-[40%] border-t-2 border-white/10 rounded-t-full" />
                 </div>
               )}
 
@@ -419,26 +433,66 @@ First Team Manager`;
                     <p className="text-white/80 text-[10px]">Home</p>
                   </div>
                   <div className="p-3 space-y-0.5">
-                    {/* Show all squad in compact list */}
-                    {[...goalkeepers.slice(0, 1), ...defenders.slice(0, 4), ...midfielders.slice(0, 4), ...forwards.slice(0, 2)].map((player, idx) => (
-                      <div key={player.squadNo} className="flex items-center gap-1.5 py-0.5">
-                        <span className="w-4 h-4 bg-celtic-yellow text-celtic-dark rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
-                          {player.squadNo}
-                        </span>
-                        <span className="text-white text-[10px]">{player.firstName} {player.lastName}</span>
-                      </div>
-                    ))}
-                    <div className="border-t border-white/20 mt-2 pt-2">
-                      <p className="text-celtic-yellow text-[9px] font-semibold">SUBSTITUTES</p>
-                      {[...goalkeepers.slice(1, 2), ...defenders.slice(4, 5), ...midfielders.slice(4, 6), ...forwards.slice(2, 3)].map((player) => (
-                        <div key={player.squadNo} className="flex items-center gap-1.5 py-0.5">
-                          <span className="w-4 h-4 bg-white/20 text-white rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
-                            {player.squadNo}
-                          </span>
-                          <span className="text-white/80 text-[10px]">{player.firstName} {player.lastName}</span>
+                    {/* Show selected starting XI if available, otherwise default squad */}
+                    {data.startingXI && data.startingXI.length > 0 ? (
+                      <>
+                        {data.startingXI.map((squadNo) => {
+                          const player = mockSquad.results.find(p => p.squadNo === squadNo);
+                          if (!player) return null;
+                          const isCaptain = data.captain === squadNo;
+                          return (
+                            <div key={squadNo} className="flex items-center gap-1.5 py-0.5">
+                              <span className="w-4 h-4 bg-celtic-yellow text-celtic-dark rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                                {player.squadNo}
+                              </span>
+                              <span className="text-white text-[10px]">
+                                {player.firstName} {player.lastName}
+                                {isCaptain && <span className="text-celtic-yellow ml-1">(C)</span>}
+                              </span>
+                            </div>
+                          );
+                        })}
+                        {data.substitutes && data.substitutes.length > 0 && (
+                          <div className="border-t border-white/20 mt-2 pt-2">
+                            <p className="text-celtic-yellow text-[9px] font-semibold">SUBSTITUTES</p>
+                            {data.substitutes.map((squadNo) => {
+                              const player = mockSquad.results.find(p => p.squadNo === squadNo);
+                              if (!player) return null;
+                              return (
+                                <div key={squadNo} className="flex items-center gap-1.5 py-0.5">
+                                  <span className="w-4 h-4 bg-white/20 text-white rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                                    {player.squadNo}
+                                  </span>
+                                  <span className="text-white/80 text-[10px]">{player.firstName} {player.lastName}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {[...goalkeepers.slice(0, 1), ...defenders.slice(0, 4), ...midfielders.slice(0, 4), ...forwards.slice(0, 2)].map((player) => (
+                          <div key={player.squadNo} className="flex items-center gap-1.5 py-0.5">
+                            <span className="w-4 h-4 bg-celtic-yellow text-celtic-dark rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                              {player.squadNo}
+                            </span>
+                            <span className="text-white text-[10px]">{player.firstName} {player.lastName}</span>
+                          </div>
+                        ))}
+                        <div className="border-t border-white/20 mt-2 pt-2">
+                          <p className="text-celtic-yellow text-[9px] font-semibold">SUBSTITUTES</p>
+                          {[...goalkeepers.slice(1, 2), ...defenders.slice(4, 5), ...midfielders.slice(4, 6), ...forwards.slice(2, 3)].map((player) => (
+                            <div key={player.squadNo} className="flex items-center gap-1.5 py-0.5">
+                              <span className="w-4 h-4 bg-white/20 text-white rounded text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                                {player.squadNo}
+                              </span>
+                              <span className="text-white/80 text-[10px]">{player.firstName} {player.lastName}</span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -481,15 +535,15 @@ First Team Manager`;
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="text-[9px] text-gray-400 uppercase">Referee</p>
-                      <p className="text-[10px] text-gray-600 font-medium">_____________</p>
+                      <p className="text-[10px] text-gray-600 font-medium">{data.referee || '_____________'}</p>
                     </div>
                     <div>
                       <p className="text-[9px] text-gray-400 uppercase">Assistant 1</p>
-                      <p className="text-[10px] text-gray-600 font-medium">_____________</p>
+                      <p className="text-[10px] text-gray-600 font-medium">{data.assistantRef1 || '_____________'}</p>
                     </div>
                     <div>
                       <p className="text-[9px] text-gray-400 uppercase">Assistant 2</p>
-                      <p className="text-[10px] text-gray-600 font-medium">_____________</p>
+                      <p className="text-[10px] text-gray-600 font-medium">{data.assistantRef2 || '_____________'}</p>
                     </div>
                   </div>
                 </div>

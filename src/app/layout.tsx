@@ -7,7 +7,6 @@ import ScrollToTop from '@/components/ui/ScrollToTop';
 import SkipToContent from '@/components/ui/SkipToContent';
 import { SportsClubJsonLd, cwmbranCelticData } from '@/components/seo/JsonLd';
 import { ThemeProvider } from '@/contexts/ThemeContext';
-import SessionProvider from '@/components/providers/SessionProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -68,15 +67,13 @@ export default function RootLayout({
         <SportsClubJsonLd data={cwmbranCelticData} />
       </head>
       <body className="min-h-screen flex flex-col bg-gray-50 transition-colors">
-        <SessionProvider>
-          <ThemeProvider>
-            <SkipToContent />
-            <Header />
-            <main id="main-content" className="flex-grow">{children}</main>
-            <Footer />
-            <ScrollToTop />
-          </ThemeProvider>
-        </SessionProvider>
+        <ThemeProvider>
+          <SkipToContent />
+          <Header />
+          <main id="main-content" className="flex-grow">{children}</main>
+          <Footer />
+          <ScrollToTop />
+        </ThemeProvider>
       </body>
     </html>
   );

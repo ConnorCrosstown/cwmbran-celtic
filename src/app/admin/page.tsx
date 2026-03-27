@@ -1,43 +1,9 @@
-'use client';
-
-import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { getBoardStats } from '@/data/advertising-boards';
 
-// Role display names
-const roleLabels: Record<string, string> = {
-  super_admin: 'Super Admin',
-  admin: 'Admin',
-  editor: 'Content Editor',
-  commercial: 'Commercial Manager',
-  operations: 'Operations',
-};
-
 export default function AdminDashboard() {
-  const { data: session, status } = useSession();
   const boardStats = getBoardStats();
 
-  // Loading state
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-celtic-blue border-t-transparent rounded-full"></div>
-      </div>
-    );
-  }
-
-  // This shouldn't happen due to middleware, but handle it anyway
-  if (!session?.user) {
-    return null;
-  }
-
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: '/admin/login' });
-  };
-
-  const userRole = session.user.role || 'editor';
-
-  // Authenticated dashboard
   return (
     <>
       {/* Header */}
@@ -47,26 +13,6 @@ export default function AdminDashboard() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold text-white">Admin Dashboard</h1>
               <p className="text-xs sm:text-sm text-white/80">Cwmbran Celtic AFC Management</p>
-            </div>
-            <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4">
-              <div className="text-left sm:text-right">
-                <p className="text-sm font-medium text-white">{session.user.name}</p>
-                <p className="text-xs text-white/70">{roleLabels[userRole]}</p>
-              </div>
-              <div className="flex items-center gap-1 sm:gap-2">
-                <Link
-                  href="/admin/staff"
-                  className="text-xs sm:text-sm text-white/80 hover:text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded hover:bg-white/10"
-                >
-                  Staff
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="text-xs sm:text-sm text-white/80 hover:text-white px-2 sm:px-3 py-1.5 sm:py-1 rounded hover:bg-white/10"
-                >
-                  Logout
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -493,42 +439,40 @@ export default function AdminDashboard() {
               </div>
             </Link>
 
-            {/* Staff Management - Super Admin Only */}
-            {(userRole === 'super_admin' || userRole === 'admin') && (
-              <Link href="/admin/staff" className="card p-6 hover:shadow-lg transition-shadow group">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                    <svg
-                      className="w-7 h-7 text-gray-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
-                      Staff Management
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Manage staff accounts and permissions
-                    </p>
-                    <div className="mt-3 flex items-center gap-2 text-xs">
-                      <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full">
-                        Admin Only
-                      </span>
-                    </div>
+            {/* Staff Management */}
+            <Link href="/admin/staff" className="card p-6 hover:shadow-lg transition-shadow group">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                  <svg
+                    className="w-7 h-7 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
+                    Staff Management
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Manage staff accounts and permissions
+                  </p>
+                  <div className="mt-3 flex items-center gap-2 text-xs">
+                    <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full">
+                      Admin Only
+                    </span>
                   </div>
                 </div>
-              </Link>
-            )}
+              </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -650,15 +594,6 @@ export default function AdminDashboard() {
               <p className="text-sm font-semibold text-celtic-dark">Programmes</p>
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Footer with session info */}
-      <section className="py-4 bg-gray-100 border-t">
-        <div className="container mx-auto px-4">
-          <p className="text-xs text-gray-500 text-center">
-            Logged in as {session.user.email}
-          </p>
         </div>
       </section>
     </>
