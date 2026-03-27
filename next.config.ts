@@ -9,7 +9,12 @@ const nextConfig: NextConfig = {
         pathname: '/resources/images/**',
       },
     ],
+    // Enable modern image formats
+    formats: ['image/webp', 'image/avif'],
   },
+  // Optimize production builds
+  compress: true,
+  poweredByHeader: false,
   async headers() {
     return [
       {
@@ -19,14 +24,17 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              // Remove unsafe-eval; keep unsafe-inline for Next.js inline scripts
+              // In production, consider using nonces with next-safe
+              "script-src 'self' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: https: blob:",
-              "connect-src 'self' https://comet.faw.cymru",
+              "connect-src 'self' https://comet.faw.cymru https://script.google.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
+              "upgrade-insecure-requests",
             ].join('; '),
           },
           {
@@ -44,6 +52,14 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
           },
         ],
       },

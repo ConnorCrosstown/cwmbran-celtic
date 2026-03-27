@@ -8,29 +8,29 @@ export const metadata: Metadata = {
 
 const recentProgrammes = [
   {
-    match: 'Cwmbran Celtic vs Llantwit Major',
-    date: '12 April 2025',
+    match: 'Cwmbran Celtic vs Treowen Stars',
+    date: '4 April 2026',
     competition: 'JD Cymru South',
-    downloadUrl: '#',
+    downloadUrl: '/programme/2026-04-04-treowen-stars',
     featured: true,
   },
   {
+    match: 'Cwmbran Celtic vs Ynyshir Albions',
+    date: '21 March 2026',
+    competition: 'JD Cymru South',
+    downloadUrl: '/programme/2026-03-21-ynyshir-albions',
+  },
+  {
     match: 'Cwmbran Celtic vs Baglan Dragons',
-    date: '29 March 2025',
+    date: '7 March 2026',
     competition: 'JD Cymru South',
-    downloadUrl: '#',
+    downloadUrl: '/programme/2026-03-07-baglan-dragons',
   },
   {
-    match: 'Cwmbran Celtic vs Afan Lido',
-    date: '22 March 2025',
+    match: 'Cwmbran Celtic vs Aberystwyth Town',
+    date: '21 February 2026',
     competition: 'JD Cymru South',
-    downloadUrl: '#',
-  },
-  {
-    match: 'Cwmbran Celtic Ladies vs Caldicot Town',
-    date: '5 January 2025',
-    competition: 'Genero Adran South',
-    downloadUrl: '#',
+    downloadUrl: '/programme/2026-02-21-aberystwyth-town',
   },
 ];
 

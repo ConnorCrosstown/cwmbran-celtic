@@ -22,7 +22,21 @@ import {
 import { getLatestNews } from '@/data/news-data';
 import { clubInfo, sponsors } from '@/data/mock-data';
 
+// Helper to safely fetch data with fallback
+async function safelyFetch<T>(
+  fetcher: () => Promise<T>,
+  fallback: T
+): Promise<T> {
+  try {
+    return await fetcher();
+  } catch (error) {
+    console.error('Data fetch error:', error);
+    return fallback;
+  }
+}
+
 export default async function HomePage() {
+  // Fetch all data in parallel with individual error handling
   const [
     nextHomeFixture,
     nextMensHome,
@@ -32,13 +46,13 @@ export default async function HomePage() {
     ladiesPosition,
     upcomingFixtures,
   ] = await Promise.all([
-    getNextHomeFixture(),
-    getNextMensHomeFixture(),
-    getNextLadiesHomeFixture(),
-    getLatestResult(),
-    getLeaguePosition(),
-    getLadiesLeaguePosition(),
-    getUpcomingFixtures(6),
+    safelyFetch(getNextHomeFixture, null),
+    safelyFetch(getNextMensHomeFixture, null),
+    safelyFetch(getNextLadiesHomeFixture, null),
+    safelyFetch(getLatestResult, null),
+    safelyFetch(getLeaguePosition, null),
+    safelyFetch(getLadiesLeaguePosition, null),
+    safelyFetch(() => getUpcomingFixtures(6), []),
   ]);
 
   return (
