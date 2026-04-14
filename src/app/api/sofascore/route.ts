@@ -47,6 +47,7 @@ export async function GET(request: NextRequest) {
     const includeData = searchParams.get('includeData') === 'true';
 
     const cacheStatus = await getCacheStatus();
+    const memoryCacheData = await getFromCache();
 
     const response: {
       configured: boolean;
@@ -221,15 +222,21 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// In-memory cache for serverless environments (Vercel)
+let memoryCache: {
+  lastUpdated: number;
+  teamData: unknown;
+  fixtures: unknown[];
+  results: unknown[];
+  standings: unknown[];
+} | null = null;
+
 /**
  * Helper to save Apify data to cache
+ * Uses in-memory cache for Vercel (read-only filesystem)
+ * Falls back to file cache for local development
  */
 async function saveToCache(datasetItems: Array<{ url?: string; data?: unknown }>): Promise<void> {
-  const cacheDir = path.join(process.cwd(), '.cache');
-  await fs.mkdir(cacheDir, { recursive: true });
-
-  const cacheFile = path.join(cacheDir, 'sofascore-data.json');
-
   // Extract team data from the first item
   const teamData = datasetItems[0]?.data || null;
 
@@ -241,5 +248,36 @@ async function saveToCache(datasetItems: Array<{ url?: string; data?: unknown }>
     standings: [],
   };
 
-  await fs.writeFile(cacheFile, JSON.stringify(cacheData, null, 2));
+  // Always update memory cache
+  memoryCache = cacheData;
+
+  // Try file cache (works locally, fails silently on Vercel)
+  try {
+    const cacheDir = path.join(process.cwd(), '.cache');
+    await fs.mkdir(cacheDir, { recursive: true });
+    const cacheFile = path.join(cacheDir, 'sofascore-data.json');
+    await fs.writeFile(cacheFile, JSON.stringify(cacheData, null, 2));
+  } catch (error) {
+    // File write failed (expected on Vercel), using memory cache only
+    console.log('File cache unavailable, using memory cache');
+  }
+}
+
+/**
+ * Get cached data (memory or file)
+ */
+async function getFromCache(): Promise<typeof memoryCache> {
+  // Check memory cache first
+  if (memoryCache) {
+    return memoryCache;
+  }
+
+  // Try file cache
+  try {
+    const cacheFile = path.join(process.cwd(), '.cache', 'sofascore-data.json');
+    const data = await fs.readFile(cacheFile, 'utf-8');
+    return JSON.parse(data);
+  } catch {
+    return null;
+  }
 }

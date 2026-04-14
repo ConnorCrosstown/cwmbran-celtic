@@ -1,21 +1,29 @@
 /**
  * Comet API Client
- * 
- * Stub implementation using mock data.
- * Replace with real API calls when access is granted.
- * 
+ *
+ * Data sources (in priority order):
+ * 1. Comet API (FAW) - when API keys are granted
+ * 2. SofaScore data (via Apify) - web-scraped data
+ * 3. Mock data - fallback for development
+ *
  * Comet API docs: https://kb.analyticom.de/comet/api-access-to-comet-data
  */
 
 import { CometResponse, Fixture, Result, LeagueTableRow, Player, PlayerStats } from '@/types';
-import { 
-  mockFixtures, 
-  mockResults, 
-  mockLeagueTable, 
+import {
+  mockFixtures,
+  mockResults,
+  mockLeagueTable,
   mockLadiesLeagueTable,
   mockSquad,
-  mockPlayerStats 
+  mockPlayerStats
 } from '@/data/mock-data';
+import {
+  getSofaScoreFixtures,
+  getSofaScoreResults,
+  getSofaScoreLeagueTable,
+  getSofaScoreData,
+} from '@/lib/sofascore';
 
 // ============================================
 // CONFIGURATION
@@ -35,6 +43,9 @@ const API_KEYS = {
 
 // Set to true when API keys are available
 const USE_LIVE_API = false;
+
+// Use SofaScore data when available (scraped via Apify)
+const USE_SOFASCORE = true;
 
 // ============================================
 // API CLIENT
@@ -73,9 +84,24 @@ async function fetchFromComet<T>(
  * Get all fixtures
  */
 export async function getFixtures(): Promise<CometResponse<Fixture>> {
+  // Priority 1: Comet API
   if (USE_LIVE_API && API_KEYS.fixtures) {
     return fetchFromComet<Fixture>(API_KEYS.fixtures);
   }
+
+  // Priority 2: SofaScore data
+  if (USE_SOFASCORE) {
+    try {
+      const sofaData = await getSofaScoreData();
+      if (sofaData.fixtures.length > 0) {
+        return getSofaScoreFixtures();
+      }
+    } catch (error) {
+      console.warn('SofaScore fixtures unavailable:', error);
+    }
+  }
+
+  // Priority 3: Mock data
   return mockFixtures as CometResponse<Fixture>;
 }
 
@@ -124,9 +150,24 @@ export async function getFixturesByTeam(team: 'mens' | 'ladies'): Promise<Fixtur
  * Get all results
  */
 export async function getResults(): Promise<CometResponse<Result>> {
+  // Priority 1: Comet API
   if (USE_LIVE_API && API_KEYS.results) {
     return fetchFromComet<Result>(API_KEYS.results);
   }
+
+  // Priority 2: SofaScore data
+  if (USE_SOFASCORE) {
+    try {
+      const sofaData = await getSofaScoreData();
+      if (sofaData.results.length > 0) {
+        return getSofaScoreResults();
+      }
+    } catch (error) {
+      console.warn('SofaScore results unavailable:', error);
+    }
+  }
+
+  // Priority 3: Mock data
   return mockResults as CometResponse<Result>;
 }
 
@@ -153,9 +194,24 @@ export async function getLatestResult(): Promise<Result | null> {
  * Get men's league table
  */
 export async function getMensLeagueTable(): Promise<CometResponse<LeagueTableRow>> {
+  // Priority 1: Comet API
   if (USE_LIVE_API && API_KEYS.leagueTable) {
     return fetchFromComet<LeagueTableRow>(API_KEYS.leagueTable);
   }
+
+  // Priority 2: SofaScore data
+  if (USE_SOFASCORE) {
+    try {
+      const sofaData = await getSofaScoreData();
+      if (sofaData.standings.length > 0) {
+        return getSofaScoreLeagueTable();
+      }
+    } catch (error) {
+      console.warn('SofaScore league table unavailable:', error);
+    }
+  }
+
+  // Priority 3: Mock data
   return mockLeagueTable as CometResponse<LeagueTableRow>;
 }
 
