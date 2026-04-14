@@ -18,12 +18,14 @@ import {
   mockSquad,
   mockPlayerStats
 } from '@/data/mock-data';
-import {
-  getSofaScoreFixtures,
-  getSofaScoreResults,
-  getSofaScoreLeagueTable,
-  getSofaScoreData,
-} from '@/lib/sofascore';
+// SofaScore imports disabled - fs module can't be used in client components
+// Data is fetched via /api/sofascore instead
+// import {
+//   getSofaScoreFixtures,
+//   getSofaScoreResults,
+//   getSofaScoreLeagueTable,
+//   getSofaScoreData,
+// } from '@/lib/sofascore';
 
 // ============================================
 // CONFIGURATION
@@ -45,7 +47,9 @@ const API_KEYS = {
 const USE_LIVE_API = false;
 
 // Use SofaScore data when available (scraped via Apify)
-const USE_SOFASCORE = true;
+// Disabled - fs module can't be used in client components
+// Data should be fetched via /api/sofascore API route instead
+const USE_SOFASCORE = false;
 
 // ============================================
 // API CLIENT
@@ -89,17 +93,17 @@ export async function getFixtures(): Promise<CometResponse<Fixture>> {
     return fetchFromComet<Fixture>(API_KEYS.fixtures);
   }
 
-  // Priority 2: SofaScore data
-  if (USE_SOFASCORE) {
-    try {
-      const sofaData = await getSofaScoreData();
-      if (sofaData.fixtures.length > 0) {
-        return getSofaScoreFixtures();
-      }
-    } catch (error) {
-      console.warn('SofaScore fixtures unavailable:', error);
-    }
-  }
+  // Priority 2: SofaScore data (disabled - use /api/sofascore instead)
+  // if (USE_SOFASCORE) {
+  //   try {
+  //     const sofaData = await getSofaScoreData();
+  //     if (sofaData.fixtures.length > 0) {
+  //       return getSofaScoreFixtures();
+  //     }
+  //   } catch (error) {
+  //     console.warn('SofaScore fixtures unavailable:', error);
+  //   }
+  // }
 
   // Priority 3: Mock data
   return mockFixtures as CometResponse<Fixture>;
@@ -155,17 +159,17 @@ export async function getResults(): Promise<CometResponse<Result>> {
     return fetchFromComet<Result>(API_KEYS.results);
   }
 
-  // Priority 2: SofaScore data
-  if (USE_SOFASCORE) {
-    try {
-      const sofaData = await getSofaScoreData();
-      if (sofaData.results.length > 0) {
-        return getSofaScoreResults();
-      }
-    } catch (error) {
-      console.warn('SofaScore results unavailable:', error);
-    }
-  }
+  // Priority 2: SofaScore data (disabled - use /api/sofascore instead)
+  // if (USE_SOFASCORE) {
+  //   try {
+  //     const sofaData = await getSofaScoreData();
+  //     if (sofaData.results.length > 0) {
+  //       return getSofaScoreResults();
+  //     }
+  //   } catch (error) {
+  //     console.warn('SofaScore results unavailable:', error);
+  //   }
+  // }
 
   // Priority 3: Mock data
   return mockResults as CometResponse<Result>;
@@ -199,17 +203,17 @@ export async function getMensLeagueTable(): Promise<CometResponse<LeagueTableRow
     return fetchFromComet<LeagueTableRow>(API_KEYS.leagueTable);
   }
 
-  // Priority 2: SofaScore data
-  if (USE_SOFASCORE) {
-    try {
-      const sofaData = await getSofaScoreData();
-      if (sofaData.standings.length > 0) {
-        return getSofaScoreLeagueTable();
-      }
-    } catch (error) {
-      console.warn('SofaScore league table unavailable:', error);
-    }
-  }
+  // Priority 2: SofaScore data (disabled - use /api/sofascore instead)
+  // if (USE_SOFASCORE) {
+  //   try {
+  //     const sofaData = await getSofaScoreData();
+  //     if (sofaData.standings.length > 0) {
+  //       return getSofaScoreLeagueTable();
+  //     }
+  //   } catch (error) {
+  //     console.warn('SofaScore league table unavailable:', error);
+  //   }
+  // }
 
   // Priority 3: Mock data
   return mockLeagueTable as CometResponse<LeagueTableRow>;
