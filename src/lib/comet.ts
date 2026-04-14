@@ -203,17 +203,58 @@ export async function getMensLeagueTable(): Promise<CometResponse<LeagueTableRow
     return fetchFromComet<LeagueTableRow>(API_KEYS.leagueTable);
   }
 
-  // Priority 2: SofaScore data (disabled - use /api/sofascore instead)
-  // if (USE_SOFASCORE) {
-  //   try {
-  //     const sofaData = await getSofaScoreData();
-  //     if (sofaData.standings.length > 0) {
-  //       return getSofaScoreLeagueTable();
-  //     }
-  //   } catch (error) {
-  //     console.warn('SofaScore league table unavailable:', error);
-  //   }
-  // }
+  // Priority 2: SofaScore data via API endpoint
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
+
+    const response = await fetch(`${baseUrl}/api/sofascore`, {
+      next: { revalidate: 3600 } // Cache for 1 hour
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const standings = data.memoryCache?.standings || [];
+
+      if (standings.length > 0) {
+        // Transform SofaScore standings to our format
+        const leagueTable: LeagueTableRow[] = standings.map((row: {
+          position: number;
+          team: { name: string };
+          matches: number;
+          wins: number;
+          draws: number;
+          losses: number;
+          scoresFor: number;
+          scoresAgainst: number;
+          points: number;
+        }) => ({
+          position: row.position,
+          club: row.team.name,
+          played: row.matches,
+          won: row.wins,
+          drawn: row.draws,
+          lost: row.losses,
+          gd: row.scoresFor - row.scoresAgainst,
+          points: row.points,
+        }));
+
+        return {
+          reportName: 'SofaScore League Table',
+          columnTypes: ['NUMBER', 'STRING', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER'],
+          columnNames: ['Position', 'Club', 'Played', 'Won', 'Drawn', 'Lost', 'GD', 'Points'],
+          columnKeys: ['position', 'club', 'played', 'won', 'drawn', 'lost', 'gd', 'points'],
+          results: leagueTable,
+          totalSize: leagueTable.length,
+          page: 0,
+          pageSize: leagueTable.length,
+        };
+      }
+    }
+  } catch (error) {
+    console.warn('SofaScore API unavailable:', error);
+  }
 
   // Priority 3: Mock data
   return mockLeagueTable as CometResponse<LeagueTableRow>;
