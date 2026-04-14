@@ -35,15 +35,35 @@ let memoryCache: {
  * Falls back to file cache for local development
  */
 async function saveToCache(datasetItems: Array<{ url?: string; data?: unknown }>): Promise<void> {
-  // Extract team data from the first item
-  const teamData = datasetItems[0]?.data || null;
+  // Find team data and tournament data from the items
+  let teamData = null;
+  let standings: unknown[] = [];
+
+  for (const item of datasetItems) {
+    const data = item.data as Record<string, unknown>;
+    if (!data) continue;
+
+    // Team page data
+    if (data.teamDetails) {
+      teamData = data;
+    }
+
+    // Tournament page data - extract standings
+    if (data.standings && Array.isArray(data.standings)) {
+      const standingsData = data.standings as Array<{ type?: string; rows?: unknown[] }>;
+      const totalStandings = standingsData.find(s => s.type === 'total');
+      if (totalStandings?.rows) {
+        standings = totalStandings.rows;
+      }
+    }
+  }
 
   const cacheData = {
     lastUpdated: Date.now(),
     teamData,
     fixtures: [],
     results: [],
-    standings: [],
+    standings,
   };
 
   // Always update memory cache
