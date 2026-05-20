@@ -14,6 +14,10 @@ export const metadata: Metadata = {
 export default function TicketsPage() {
   const { matchDay, seasonTickets, giftATicket, calculateSavings } = ticketPricing;
 
+  // Hide the "Early Bird Ends ..." banner once the deadline has passed so we
+  // never advertise an expired promotion. See AUDIT-2026-05-20.md P0-3.
+  const earlyBirdActive = new Date() <= new Date(seasonTickets.earlyBird.endsDate);
+
   return (
     <>
       {/* Hero */}
@@ -23,12 +27,14 @@ export default function TicketsPage() {
           <div className="absolute bottom-10 right-10 w-60 h-60 border-4 border-white rounded-full" />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full mb-4">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span className="text-sm font-semibold uppercase tracking-wide">Early Bird Ends {seasonTickets.earlyBird.endsFormatted}</span>
-          </div>
+          {earlyBirdActive && (
+            <div className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full mb-4">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-sm font-semibold uppercase tracking-wide">Early Bird Ends {seasonTickets.earlyBird.endsFormatted}</span>
+            </div>
+          )}
           <h1 className="text-3xl md:text-5xl font-display uppercase mb-4 text-white">Tickets</h1>
           <p className="text-lg max-w-2xl mx-auto text-white/80">
             Get your tickets for Cwmbran Celtic home matches at the Avondale Motor Park Arena

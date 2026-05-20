@@ -1,9 +1,24 @@
 /**
  * Staff Authentication System
  *
- * Currently uses localStorage for demo purposes.
- * Ready to migrate to Supabase when needed.
+ * Currently uses localStorage for demo/admin-tool purposes.
+ *
+ * IMPORTANT (AUDIT-2026-05-20.md P0-6): this module runs entirely in the
+ * browser. Anyone can reach `/admin` and read/write the localStorage hashes,
+ * so it does NOT provide real authentication. Treat it as a soft gate.
+ * Real auth (httpOnly session cookies + server-validated middleware) is the
+ * next-step fix.
  */
+
+import bcrypt from 'bcryptjs';
+
+// Bcrypt cost factor — 10 is the bcryptjs default and is the right balance
+// between brute-force resistance and browser-side hashing latency (~100ms).
+const BCRYPT_ROUNDS = 10;
+
+// Storage key bumped to v2 so the old XOR-style hashes are invalidated
+// rather than silently accepted (they would never compare equal anyway).
+const STAFF_STORAGE_KEY = 'staff-accounts-v2';
 
 export interface StaffMember {
   id: string;
@@ -33,15 +48,19 @@ export interface AuthSession {
   loginTime: string;
 }
 
-// Simple hash function for demo (in production, use bcrypt via API)
-function simpleHash(str: string): string {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+// Hash a password with bcryptjs (sync). bcryptjs is JS-only and runs fine in
+// the browser, though the hashing pause is ~100ms at cost 10 — acceptable for
+// staff login flows.
+function hashPassword(password: string): string {
+  return bcrypt.hashSync(password, BCRYPT_ROUNDS);
+}
+
+function verifyPassword(password: string, hash: string): boolean {
+  try {
+    return bcrypt.compareSync(password, hash);
+  } catch {
+    return false;
   }
-  return 'hash_' + Math.abs(hash).toString(16);
 }
 
 // Role display names
@@ -77,15 +96,15 @@ const defaultStaff: Omit<StaffMember, 'passwordHash'>[] = [
 export function initializeStaff(): void {
   if (typeof window === 'undefined') return;
 
-  const existing = localStorage.getItem('staff-accounts');
+  const existing = localStorage.getItem(STAFF_STORAGE_KEY);
   if (!existing) {
     // Create default accounts with temporary passwords
     const staffWithPasswords: StaffMember[] = defaultStaff.map(staff => ({
       ...staff,
       // Default password is 'celtic2025' - staff should change on first login
-      passwordHash: simpleHash('celtic2025'),
+      passwordHash: hashPassword('celtic2025'),
     }));
-    localStorage.setItem('staff-accounts', JSON.stringify(staffWithPasswords));
+    localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(staffWithPasswords));
   }
 }
 
@@ -93,7 +112,7 @@ export function initializeStaff(): void {
 export function getStaffAccounts(): StaffMember[] {
   if (typeof window === 'undefined') return [];
   initializeStaff();
-  const data = localStorage.getItem('staff-accounts');
+  const data = localStorage.getItem(STAFF_STORAGE_KEY);
   return data ? JSON.parse(data) : [];
 }
 
@@ -121,8 +140,7 @@ export function authenticateStaff(email: string, password: string): { success: b
     return { success: false, error: 'Account has been deactivated' };
   }
 
-  const passwordHash = simpleHash(password);
-  if (staff.passwordHash !== passwordHash) {
+  if (!verifyPassword(password, staff.passwordHash)) {
     return { success: false, error: 'Incorrect password' };
   }
 
@@ -131,7 +149,7 @@ export function authenticateStaff(email: string, password: string): { success: b
   const updatedStaff = allStaff.map(s =>
     s.id === staff.id ? { ...s, lastLogin: new Date().toISOString() } : s
   );
-  localStorage.setItem('staff-accounts', JSON.stringify(updatedStaff));
+  localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(updatedStaff));
 
   return { success: true, staff };
 }
@@ -198,14 +216,14 @@ export function addStaffMember(
     name,
     email,
     role,
-    passwordHash: simpleHash(temporaryPassword),
+    passwordHash: hashPassword(temporaryPassword),
     createdAt: new Date().toISOString(),
     active: true,
   };
 
   const allStaff = getStaffAccounts();
   allStaff.push(newStaff);
-  localStorage.setItem('staff-accounts', JSON.stringify(allStaff));
+  localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(allStaff));
 
   const session = getSession();
   if (session) {
@@ -223,7 +241,7 @@ export function updateStaffMember(id: string, updates: Partial<Pick<StaffMember,
   if (index === -1) return false;
 
   allStaff[index] = { ...allStaff[index], ...updates };
-  localStorage.setItem('staff-accounts', JSON.stringify(allStaff));
+  localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(allStaff));
 
   const session = getSession();
   if (session) {
@@ -240,15 +258,15 @@ export function changePassword(staffId: string, currentPassword: string, newPass
     return { success: false, error: 'Staff member not found' };
   }
 
-  if (staff.passwordHash !== simpleHash(currentPassword)) {
+  if (!verifyPassword(currentPassword, staff.passwordHash)) {
     return { success: false, error: 'Current password is incorrect' };
   }
 
   const allStaff = getStaffAccounts();
   const updated = allStaff.map(s =>
-    s.id === staffId ? { ...s, passwordHash: simpleHash(newPassword) } : s
+    s.id === staffId ? { ...s, passwordHash: hashPassword(newPassword) } : s
   );
-  localStorage.setItem('staff-accounts', JSON.stringify(updated));
+  localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(updated));
 
   logActivity(staffId, staff.name, 'change_password', 'Changed password');
 
@@ -262,8 +280,9 @@ export function resetPassword(staffId: string, newPassword: string): boolean {
 
   if (index === -1) return false;
 
-  allStaff[index].passwordHash = simpleHash(newPassword);
-  localStorage.setItem('staff-accounts', JSON.stringify(allStaff));
+  allStaff[index].passwordHash = hashPassword(newPassword);
+  // NB: bcryptjs is sync but slow (~100ms); fine for one-off resets.
+  localStorage.setItem(STAFF_STORAGE_KEY, JSON.stringify(allStaff));
 
   const session = getSession();
   if (session) {

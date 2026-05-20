@@ -145,26 +145,24 @@ export function SportsEventJsonLd({ data }: { data: SportsEventData }) {
 }
 
 // Default club data for Cwmbran Celtic
+import { SITE_URL } from '@/lib/site';
+
 export const cwmbranCelticData: SportsClubData = {
   name: 'Cwmbran Celtic AFC',
   alternateName: 'Cwmbran Celtic',
   description:
     'Cwmbran Celtic AFC is a Welsh football club based in Cwmbran, Torfaen. The club competes in the JD Cymru South league.',
-  url: 'https://cwmbranceltic.com',
-  logo: 'https://cwmbranceltic.com/images/club-logo.webp',
-  image: 'https://cwmbranceltic.com/og-image.jpg',
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/club-logo.webp`,
+  image: `${SITE_URL}/og-image.jpg`,
   foundingDate: '1925',
   sport: 'Football',
   address: {
-    streetAddress: 'Cwmbran Stadium',
+    streetAddress: 'Avondale Motor Park Arena, Henllys Way',
     addressLocality: 'Cwmbran',
     addressRegion: 'Torfaen',
-    postalCode: 'NP44 3YS',
+    postalCode: 'NP44 3FS',
     addressCountry: 'GB',
-  },
-  geo: {
-    latitude: 51.6508,
-    longitude: -3.0217,
   },
   sameAs: [
     'https://twitter.com/cwmbranceltic',

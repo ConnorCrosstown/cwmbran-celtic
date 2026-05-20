@@ -1,0 +1,38 @@
+# CI for cwmbran-celtic.
+#
+# Security note (reviewed 2026-05-20): this workflow does NOT consume any
+# user-controlled `github.event.*` inputs in shell commands. The only shell
+# steps run `npm ci`, `npm run build`, `npm run lint`, and a non-failing
+# `npm audit`. No issue/PR/comment titles, bodies, refs or commit messages
+# are interpolated.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PUPPETEER_SKIP_DOWNLOAD: 'true'
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm run build
+      # `npm audit` exits non-zero on any vulnerability, which would break CI
+      # any time a transitive dep gets a CVE between deploys. Run it advisory
+      # only — surface in the job log without failing the build.
+      - run: npm audit --audit-level=high || true

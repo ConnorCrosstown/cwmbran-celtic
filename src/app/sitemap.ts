@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
 import { mockNews } from '@/data/news-data';
 import { mockAlbums } from '@/data/gallery-data';
+import { SITE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cwmbranceltic.com';
+  const baseUrl = SITE_URL;
 
   // Static pages - comprehensive list of all routes
   const staticPages = [
@@ -24,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: '/community', priority: 0.7, changeFrequency: 'monthly' as const },
     { route: '/community/walking-football', priority: 0.6, changeFrequency: 'monthly' as const },
     { route: '/community/youth', priority: 0.6, changeFrequency: 'monthly' as const },
-    { route: '/community/volunteers', priority: 0.6, changeFrequency: 'monthly' as const },
+    { route: '/community/volunteer', priority: 0.6, changeFrequency: 'monthly' as const },
 
     // Club info
     { route: '/club', priority: 0.7, changeFrequency: 'monthly' as const },
@@ -33,13 +34,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Commercial
     { route: '/celtic-bond', priority: 0.7, changeFrequency: 'monthly' as const },
     { route: '/sponsors', priority: 0.7, changeFrequency: 'monthly' as const },
-    { route: '/sponsors/packages', priority: 0.6, changeFrequency: 'monthly' as const },
+    { route: '/sponsors/opportunities', priority: 0.6, changeFrequency: 'monthly' as const },
     { route: '/tickets', priority: 0.8, changeFrequency: 'weekly' as const },
     { route: '/shop', priority: 0.7, changeFrequency: 'weekly' as const },
 
     // Visitor info
     { route: '/visit', priority: 0.7, changeFrequency: 'monthly' as const },
     { route: '/contact', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/matchday', priority: 0.6, changeFrequency: 'monthly' as const },
   ].map(({ route, priority, changeFrequency }) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),

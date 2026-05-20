@@ -807,6 +807,12 @@ export const clubInfo = {
     accent: "#FFFFFF"
   },
   admission: {
+    // TODO(audit AUDIT-2026-05-20.md P0-4): these values contradict
+    // `ticketPricing.matchDay` below (Men's £7.50/£5, Women's £3.50/£2.50).
+    // Reconcile to a single source of truth — likely point this at
+    // `ticketPricing.matchDay.mens` and remove the duplicate entry, then
+    // update `clubInfo.admission` consumers (homepage Visit block, Footer
+    // Match Day Prices).
     adults: 5,
     concessions: 3,
     under16: 0, // Free
@@ -817,6 +823,13 @@ export const clubInfo = {
 /**
  * TICKET PRICING - Match Day & Season Tickets
  * Updated: January 2026
+ *
+ * TODO(audit AUDIT-2026-05-20.md P0-4): the Men's £7.50 / Women's £3.50 match
+ * day prices below disagree with `clubInfo.admission` (£5 adults). Pick one
+ * canonical source and have the homepage Visit block + Footer Match Day
+ * Prices both read from it. Also update `earlyBird.endsDate` for the current
+ * season — the banner now self-hides once the date passes (see
+ * `src/app/tickets/page.tsx`).
  */
 export const ticketPricing = {
   // Match Day Tickets (via Gigantic - £0.50 fee per ticket)

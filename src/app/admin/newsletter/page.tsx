@@ -395,11 +395,16 @@ export default function AdminNewsletterPage() {
     const heroBlock = blocks.find(b => b.id === 'hero');
 
     try {
+      // Server-side auth is enforced via NEWSLETTER_STAFF_SECRET in the API route;
+      // it must be paired with a real staff-only auth gate (httpOnly session cookie,
+      // Vercel password protection on /admin/*, etc.) before this endpoint is usable.
+      // The previous NEXT_PUBLIC_NEWSLETTER_SECRET fallback leaked the secret to the
+      // browser bundle and has been removed — see AUDIT-2026-05-20.md, P0-5.
       const response = await fetch('/api/newsletter/send', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_NEWSLETTER_SECRET || 'admin-session'}`,
         },
         body: JSON.stringify({
           customMessage,

@@ -1,9 +1,30 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Sponsor } from '@/types';
 
 interface SponsorCarouselProps {
   sponsors: Sponsor[];
   title?: string;
+}
+
+function SponsorLogo({ sponsor }: { sponsor: Sponsor }) {
+  if (!sponsor.logo) {
+    return (
+      <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
+        {sponsor.name}
+      </div>
+    );
+  }
+  return (
+    <Image
+      src={sponsor.logo}
+      alt={sponsor.name}
+      width={140}
+      height={48}
+      className="h-12 w-auto max-w-[140px] object-contain"
+      unoptimized={!sponsor.logo.startsWith('/')}
+    />
+  );
 }
 
 export default function SponsorCarousel({ sponsors, title = "Our Partners" }: SponsorCarouselProps) {
@@ -22,31 +43,11 @@ export default function SponsorCarousel({ sponsors, title = "Our Partners" }: Sp
                   rel="noopener noreferrer"
                   className="block bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  {sponsor.logo ? (
-                    <img
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      className="h-12 w-auto max-w-[140px] object-contain"
-                    />
-                  ) : (
-                    <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
-                      {sponsor.name}
-                    </div>
-                  )}
+                  <SponsorLogo sponsor={sponsor} />
                 </a>
               ) : (
                 <div className="block bg-white p-4 rounded-lg shadow-sm">
-                  {sponsor.logo ? (
-                    <img
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      className="h-12 w-auto max-w-[140px] object-contain"
-                    />
-                  ) : (
-                    <div className="h-12 w-32 flex items-center justify-center text-celtic-dark font-semibold text-sm text-center">
-                      {sponsor.name}
-                    </div>
-                  )}
+                  <SponsorLogo sponsor={sponsor} />
                 </div>
               )}
             </div>

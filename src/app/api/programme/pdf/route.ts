@@ -1,68 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const slug = searchParams.get('slug');
-
-  if (!slug) {
-    return NextResponse.json({ error: 'Missing slug parameter' }, { status: 400 });
-  }
-
-  try {
-    // Launch Puppeteer
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-
-    const page = await browser.newPage();
-
-    // Set viewport to A4 size at 96 DPI
-    await page.setViewport({
-      width: 794,
-      height: 1123,
-      deviceScaleFactor: 2, // Higher quality
-    });
-
-    // Get the base URL from the request
-    const protocol = request.headers.get('x-forwarded-proto') || 'http';
-    const host = request.headers.get('host') || 'localhost:3000';
-    const baseUrl = `${protocol}://${host}`;
-
-    // Navigate to the print page
-    // Note: We need to pass the programme data via URL or the page needs to fetch it
-    const printUrl = `${baseUrl}/programme/${slug}/print`;
-
-    await page.goto(printUrl, {
-      waitUntil: 'networkidle0',
-      timeout: 30000,
-    });
-
-    // Wait a bit for any images to load
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Generate PDF
-    const pdfBuffer = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      preferCSSPageSize: true,
-    });
-
-    await browser.close();
-
-    // Return the PDF
-    return new NextResponse(Buffer.from(pdfBuffer), {
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="cwmbran-celtic-programme-${slug}.pdf"`,
-      },
-    });
-  } catch (error) {
-    console.error('PDF generation error:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate PDF', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    );
-  }
+/**
+ * Programme PDF generation endpoint.
+ *
+ * AUDIT-2026-05-20.md P1-3: the previous implementation imported `puppeteer`
+ * directly at module top-level. Puppeteer is a `devDependency` (and ships a
+ * ~280MB Chromium binary that exceeds Vercel's function size limit anyway),
+ * so the route would 500 in production every time it was hit and inflate
+ * cold-start times.
+ *
+ * The replacement plan is to render the programme via `@react-pdf/renderer`
+ * (already in `dependencies`) using the existing `<ProgrammePDF />` component
+ * in `src/components/programme-pdf/`. Until that is wired up, this endpoint
+ * returns 501 so callers see a clear error rather than a build-time failure.
+ */
+export async function GET(_request: NextRequest) {
+  return NextResponse.json(
+    {
+      error: 'PDF generation is temporarily unavailable.',
+      detail:
+        'The Puppeteer-based PDF renderer was removed pending migration to @react-pdf/renderer. See AUDIT-2026-05-20.md P1-3.',
+    },
+    { status: 501 },
+  );
 }

@@ -7,6 +7,7 @@ import ScrollToTop from '@/components/ui/ScrollToTop';
 import SkipToContent from '@/components/ui/SkipToContent';
 import { SportsClubJsonLd, cwmbranCelticData } from '@/components/seo/JsonLd';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { SITE_URL } from '@/lib/site';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -25,9 +26,8 @@ export const metadata: Metadata = {
     template: '%s | Cwmbran Celtic AFC',
   },
   description: 'Official website of Cwmbran Celtic AFC. Get the latest fixtures, results, news and information about Welsh football in Torfaen.',
-  keywords: ['Cwmbran Celtic', 'Welsh football', 'JD Cymru South', 'Genero Adran South', 'Torfaen', 'football club', 'Cwmbran', 'Wales'],
   authors: [{ name: 'Cwmbran Celtic AFC' }],
-  metadataBase: new URL('https://cwmbranceltic.com'),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: 'website',
     locale: 'en_GB',

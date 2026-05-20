@@ -4,10 +4,23 @@ interface CelticBondBannerProps {
   variant?: 'full' | 'compact' | 'sidebar' | 'topbar';
 }
 
-// Mock jackpot data - in production this would come from an API
+// Compute the next draw date: the 25th of the current month, or next month if
+// today is past the 25th. Formatted as e.g. "25th May 2026".
+function getNextDrawDate(now: Date = new Date()): string {
+  const draw = new Date(now.getFullYear(), now.getMonth(), 25);
+  if (now.getDate() > 25) {
+    draw.setMonth(draw.getMonth() + 1);
+  }
+  const day = 25;
+  const suffix = day % 10 === 1 ? 'st' : day % 10 === 2 ? 'nd' : day % 10 === 3 ? 'rd' : 'th';
+  return `${day}${suffix} ${draw.toLocaleString('en-GB', { month: 'long' })} ${draw.getFullYear()}`;
+}
+
+// TODO(audit): hook these up to the real Celtic Bond admin data source.
+// Tracked in AUDIT-2026-05-20.md P0-2 (mock data) and P3 (placeholder figures).
 const jackpotData = {
   currentJackpot: 175,
-  nextDraw: '25th January 2025',
+  nextDraw: getNextDrawDate(),
   lastWinner: 'D. Williams',
   lastPrize: 100,
   totalMembers: 87,
