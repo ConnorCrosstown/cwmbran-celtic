@@ -56,42 +56,6 @@ export default function AdminDashboard() {
           <h2 className="text-lg font-bold text-celtic-dark mb-4">Management Tools</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Fixtures & Results */}
-            <Link
-              href="/admin/fixtures"
-              className="card p-6 hover:shadow-lg transition-shadow group"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-14 h-14 bg-emerald-100 rounded-lg flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
-                  <svg
-                    className="w-7 h-7 text-emerald-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-celtic-dark group-hover:text-celtic-blue transition-colors">
-                    Fixtures & Results
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">Manage fixtures and add match results</p>
-                  <div className="mt-3 flex items-center gap-2 text-xs">
-                    <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">
-                      Active
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Link>
-
             {/* Programme Generator */}
             <Link
               href="/admin/programme"
