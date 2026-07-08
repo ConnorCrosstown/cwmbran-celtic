@@ -24,7 +24,7 @@ describe('parseLeagueTable', () => {
     expect(top.won).toBe(13);
     expect(Number.isInteger(top.drawn)).toBe(true);
     expect(Number.isInteger(top.lost)).toBe(true);
-    expect(Number.isInteger(top.gd)).toBe(true);
-    expect(Number.isInteger(top.points)).toBe(true);
+    expect(top.gd).toBe(95);
+    expect(top.points).toBe(40);
   });
 });
