@@ -20,7 +20,7 @@ import {
   mockPlayerStats
 } from '@/data/mock-data';
 import { fetchAllTeams } from '@/lib/allwalessport';
-import type { TeamKey } from '@/data/allwalessport-teams';
+import { AWS_TEAMS, type TeamKey } from '@/data/allwalessport-teams';
 // SofaScore imports disabled - fs module can't be used in client components
 // Data is fetched via /api/sofascore instead
 // import {
@@ -103,6 +103,33 @@ function wrap<T>(reportName: string, results: T[]): CometResponse<T> {
   };
 }
 
+/** Tag mock rows with a team key from the club-name convention, so mock and
+ *  live rows share the same `team` discriminator. */
+function tagMockByName<T extends { homeTeam: string; awayTeam: string; team?: TeamKey }>(
+  rows: T[],
+): T[] {
+  return rows.map(r => ({
+    ...r,
+    team: (r.homeTeam.includes('Ladies') || r.awayTeam.includes('Ladies') ? 'ladies' : 'mens') as TeamKey,
+  }));
+}
+
+/** Merge per registry team: use a team's LIVE rows when present, else its own
+ *  MOCK rows. Wiring one team live never blanks another (and a source outage
+ *  falls that team back to mock). */
+function mergeByTeam<T extends { team?: TeamKey; homeTeam: string; awayTeam: string }>(
+  live: T[],
+  mock: T[],
+): T[] {
+  const taggedMock = tagMockByName(mock);
+  const out: T[] = [];
+  for (const t of AWS_TEAMS) {
+    const liveRows = live.filter(r => r.team === t.key);
+    out.push(...(liveRows.length > 0 ? liveRows : taggedMock.filter(r => r.team === t.key)));
+  }
+  return out;
+}
+
 /**
  * Get all fixtures
  */
@@ -112,14 +139,9 @@ export async function getFixtures(): Promise<CometResponse<Fixture>> {
     return fetchFromComet<Fixture>(API_KEYS.fixtures);
   }
 
-  // Priority 2: allwalessport
+  // Priority 2/3: allwalessport per-team, falling back to mock per team
   const aws = await loadAllwalessport();
-  if (aws.fixtures.length > 0) {
-    return wrap('Fixtures', aws.fixtures);
-  }
-
-  // Priority 3: Mock data
-  return mockFixtures as CometResponse<Fixture>;
+  return wrap('Fixtures', mergeByTeam(aws.fixtures, (mockFixtures as CometResponse<Fixture>).results));
 }
 
 /**
@@ -154,11 +176,7 @@ export async function getNextHomeFixture(): Promise<Fixture | null> {
  */
 export async function getFixturesByTeam(team: TeamKey): Promise<Fixture[]> {
   const data = await getFixtures();
-  return data.results.filter(f => f.team ? f.team === team : (
-    team === 'ladies'
-      ? f.homeTeam.includes('Ladies') || f.awayTeam.includes('Ladies')
-      : !f.homeTeam.includes('Ladies') && !f.awayTeam.includes('Ladies')
-  ));
+  return data.results.filter(f => f.team === team);
 }
 
 /**
@@ -170,14 +188,9 @@ export async function getResults(): Promise<CometResponse<Result>> {
     return fetchFromComet<Result>(API_KEYS.results);
   }
 
-  // Priority 2: allwalessport
+  // Priority 2/3: allwalessport per-team, falling back to mock per team
   const aws = await loadAllwalessport();
-  if (aws.results.length > 0) {
-    return wrap('Results', aws.results);
-  }
-
-  // Priority 3: Mock data
-  return mockResults as CometResponse<Result>;
+  return wrap('Results', mergeByTeam(aws.results, (mockResults as CometResponse<Result>).results));
 }
 
 /**
@@ -246,7 +259,7 @@ export async function getLeaguePosition(
  * Get club's position in ladies league
  */
 export async function getLadiesLeaguePosition(
-  clubName = 'Cwmbran Celtic Ladies'
+  clubName = 'Cwmbran Celtic'
 ): Promise<LeagueTableRow | null> {
   const data = await getLadiesLeagueTable();
   return data.results.find(row => row.club.includes(clubName)) || null;
@@ -260,7 +273,7 @@ export async function getNextMensHomeFixture(): Promise<Fixture | null> {
   const now = Date.now();
 
   const homeFixtures = data.results
-    .filter(f => f.date > now && f.homeAway === 'H' && !f.homeTeam.includes('Ladies'))
+    .filter(f => f.date > now && f.homeAway === 'H' && f.team === 'mens')
     .sort((a, b) => a.date - b.date);
 
   return homeFixtures[0] || null;
@@ -274,7 +287,7 @@ export async function getNextLadiesHomeFixture(): Promise<Fixture | null> {
   const now = Date.now();
 
   const homeFixtures = data.results
-    .filter(f => f.date > now && f.homeAway === 'H' && f.homeTeam.includes('Ladies'))
+    .filter(f => f.date > now && f.homeAway === 'H' && f.team === 'ladies')
     .sort((a, b) => a.date - b.date);
 
   return homeFixtures[0] || null;
@@ -288,7 +301,7 @@ export async function getUpcomingMensFixtures(limit = 5): Promise<Fixture[]> {
   const now = Date.now();
 
   return data.results
-    .filter(f => f.date > now && !f.homeTeam.includes('Ladies') && !f.awayTeam.includes('Ladies'))
+    .filter(f => f.date > now && f.team === 'mens')
     .sort((a, b) => a.date - b.date)
     .slice(0, limit);
 }
@@ -301,7 +314,7 @@ export async function getUpcomingLadiesFixtures(limit = 5): Promise<Fixture[]> {
   const now = Date.now();
 
   return data.results
-    .filter(f => f.date > now && (f.homeTeam.includes('Ladies') || f.awayTeam.includes('Ladies')))
+    .filter(f => f.date > now && f.team === 'ladies')
     .sort((a, b) => a.date - b.date)
     .slice(0, limit);
 }
