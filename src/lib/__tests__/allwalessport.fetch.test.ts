@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { readFileSync } from 'fs';
 import path from 'path';
-import { divisionUrl, fetchTeamData } from '@/lib/allwalessport';
+import { divisionUrl, fetchTeamData, fetchAllTeams } from '@/lib/allwalessport';
 import type { AwsTeam } from '@/data/allwalessport-teams';
 
 const html = readFileSync(
@@ -31,5 +31,18 @@ describe('fetchTeamData', () => {
     expect(data.fixtures).toEqual([]);
     expect(data.results).toEqual([]);
     expect(data.table).toEqual([]);
+  });
+});
+
+describe('fetchAllTeams', () => {
+  it('fetches only active registry teams and keys tables by team', async () => {
+    const fake = vi.fn(async () => new Response(html, { status: 200 }));
+    const data = await fetchAllTeams(fake as unknown as typeof fetch);
+    // Only the mens team (cid 20149) is active; ladies (cid 0) is skipped.
+    expect(fake).toHaveBeenCalledTimes(1);
+    expect(data.tables).toHaveProperty('mens');
+    expect(data.tables).not.toHaveProperty('ladies');
+    expect(data.fixtures.length).toBeGreaterThan(0);
+    expect(data.fixtures.every(f => f.team === 'mens')).toBe(true);
   });
 });
