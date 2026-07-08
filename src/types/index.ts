@@ -3,6 +3,8 @@
  * Matches Comet API response structures
  */
 
+import type { TeamKey } from '@/data/allwalessport-teams';
+
 // ============================================
 // COMET API RESPONSE TYPES
 // ============================================
@@ -43,6 +45,7 @@ export interface Fixture {
   competition: string;
   venue: string;
   homeAway: 'H' | 'A';
+  team?: TeamKey; // which Cwmbran side this belongs to (allwalessport feed)
 }
 
 export interface Result {
@@ -55,6 +58,7 @@ export interface Result {
   competition: string;
   scorers: string;
   attendance: number;
+  team?: TeamKey; // which Cwmbran side this belongs to (allwalessport feed)
 }
 
 // ============================================
