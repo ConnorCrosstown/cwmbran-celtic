@@ -1,14 +1,15 @@
 /**
- * Comet API Client
+ * Match-data façade.
  *
  * Data sources (in priority order):
- * 1. Comet API (FAW) - when API keys are granted
- * 2. SofaScore data (via Apify) - web-scraped data
- * 3. Mock data - fallback for development
+ * 1. Comet API (FAW) — when API keys are granted (currently off)
+ * 2. allwalessport — scraped live data (src/lib/allwalessport.ts)
+ * 3. Mock data — fallback
  *
- * Comet API docs: https://kb.analyticom.de/comet/api-access-to-comet-data
+ * SERVER-ONLY: this module pulls in the cheerio-based scraper. Client components
+ * must import pure display helpers from '@/lib/match-format', not from here.
  */
-
+import 'server-only';
 import { cache } from 'react';
 import { CometResponse, Fixture, Result, LeagueTableRow, Player, PlayerStats } from '@/types';
 import {
@@ -340,87 +341,19 @@ export async function getPlayerStats(): Promise<CometResponse<PlayerStats>> {
 }
 
 // ============================================
-// UTILITY FUNCTIONS
+// FORMATTING / DISPLAY HELPERS
 // ============================================
-
-/**
- * Convert Comet date (milliseconds) to JavaScript Date
- */
-export function fromCometDate(ms: number): Date {
-  return new Date(ms);
-}
-
-/**
- * Format date for display
- */
-export function formatMatchDate(ms: number): string {
-  const date = fromCometDate(ms);
-  return date.toLocaleDateString('en-GB', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short'
-  });
-}
-
-/**
- * Format date for display (long format)
- */
-export function formatMatchDateLong(ms: number): string {
-  const date = fromCometDate(ms);
-  return date.toLocaleDateString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-}
-
-/**
- * Check if fixture is a home game
- */
-export function isHomeGame(fixture: Fixture): boolean {
-  return fixture.homeAway === 'H';
-}
-
-/**
- * Get opponent name from fixture
- */
-export function getOpponent(fixture: Fixture): string {
-  return isHomeGame(fixture) ? fixture.awayTeam : fixture.homeTeam;
-}
-
-/**
- * Determine result outcome for Cwmbran Celtic
- */
-export function getResultOutcome(result: Result): 'W' | 'D' | 'L' {
-  const isCwmbranHome = result.homeTeam.includes('Cwmbran');
-  
-  if (result.homeScore === result.awayScore) return 'D';
-  
-  if (isCwmbranHome) {
-    return result.homeScore > result.awayScore ? 'W' : 'L';
-  } else {
-    return result.awayScore > result.homeScore ? 'W' : 'L';
-  }
-}
-
-/**
- * Get score display string
- */
-export function getScoreDisplay(result: Result): string {
-  return `${result.homeScore} - ${result.awayScore}`;
-}
-
-/**
- * Check if result was a home game for Cwmbran Celtic
- */
-export function isHomeResult(result: Result): boolean {
-  return result.homeTeam.includes('Cwmbran');
-}
-
-/**
- * Get opponent name from result
- */
-export function getOpponentFromResult(result: Result): string {
-  return isHomeResult(result) ? result.awayTeam : result.homeTeam;
-}
+// Re-exported from the client-safe module so server callers can keep importing
+// them from '@/lib/comet'. Client components must import from
+// '@/lib/match-format' directly (importing this server-only module would fail).
+export {
+  fromCometDate,
+  formatMatchDate,
+  formatMatchDateLong,
+  isHomeGame,
+  getOpponent,
+  getResultOutcome,
+  getScoreDisplay,
+  isHomeResult,
+  getOpponentFromResult,
+} from './match-format';

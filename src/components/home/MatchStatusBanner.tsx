@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Result } from '@/types';
-import { getOpponentFromResult, isHomeResult } from '@/lib/comet';
+import { getOpponentFromResult, isHomeResult } from '@/lib/match-format';
 
 interface MatchStatusBannerProps {
   latestResult: Result | null;

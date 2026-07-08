@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Fixture } from '@/types';
-import { formatMatchDateLong, getOpponent } from '@/lib/comet';
+import { formatMatchDateLong, getOpponent } from '@/lib/match-format';
 import { oppositionTeams } from '@/data/opposition-data';
 import { getAwayDayByTeamName } from '@/data/away-days';
 import MatchWeather from '@/components/weather/MatchWeather';

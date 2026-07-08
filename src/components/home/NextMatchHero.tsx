@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Fixture, Admission } from '@/types';
-import { formatMatchDateLong, getOpponent } from '@/lib/comet';
+import { formatMatchDateLong, getOpponent } from '@/lib/match-format';
 import { getOppositionByName } from '@/data/opposition-data';
 
 interface NextMatchHeroProps {
