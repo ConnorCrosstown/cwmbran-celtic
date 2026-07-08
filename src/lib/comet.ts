@@ -18,6 +18,8 @@ import {
   mockSquad,
   mockPlayerStats
 } from '@/data/mock-data';
+import { fetchAllTeams } from '@/lib/allwalessport';
+import type { TeamKey } from '@/data/allwalessport-teams';
 // SofaScore imports disabled - fs module can't be used in client components
 // Data is fetched via /api/sofascore instead
 // import {
@@ -50,6 +52,14 @@ const USE_LIVE_API = false;
 // Disabled - fs module can't be used in client components
 // Data should be fetched via /api/sofascore API route instead
 const USE_SOFASCORE = false;
+
+// allwalessport is the primary live provider. One fetch of all active teams,
+// memoised per server render (ISR handles cross-render caching).
+let _awsPromise: ReturnType<typeof fetchAllTeams> | null = null;
+function loadAllwalessport() {
+  if (!_awsPromise) _awsPromise = fetchAllTeams();
+  return _awsPromise;
+}
 
 // ============================================
 // API CLIENT
@@ -84,6 +94,20 @@ async function fetchFromComet<T>(
 // DATA FETCHERS
 // ============================================
 
+/** Wrap a typed row array in the CometResponse envelope the UI expects. */
+function wrap<T>(reportName: string, results: T[]): CometResponse<T> {
+  return {
+    reportName,
+    columnTypes: [],
+    columnNames: [],
+    columnKeys: [],
+    results,
+    totalSize: results.length,
+    page: 0,
+    pageSize: results.length,
+  };
+}
+
 /**
  * Get all fixtures
  */
@@ -93,17 +117,11 @@ export async function getFixtures(): Promise<CometResponse<Fixture>> {
     return fetchFromComet<Fixture>(API_KEYS.fixtures);
   }
 
-  // Priority 2: SofaScore data (disabled - use /api/sofascore instead)
-  // if (USE_SOFASCORE) {
-  //   try {
-  //     const sofaData = await getSofaScoreData();
-  //     if (sofaData.fixtures.length > 0) {
-  //       return getSofaScoreFixtures();
-  //     }
-  //   } catch (error) {
-  //     console.warn('SofaScore fixtures unavailable:', error);
-  //   }
-  // }
+  // Priority 2: allwalessport
+  const aws = await loadAllwalessport();
+  if (aws.fixtures.length > 0) {
+    return wrap('Fixtures', aws.fixtures);
+  }
 
   // Priority 3: Mock data
   return mockFixtures as CometResponse<Fixture>;
@@ -139,15 +157,13 @@ export async function getNextHomeFixture(): Promise<Fixture | null> {
 /**
  * Get fixtures by team
  */
-export async function getFixturesByTeam(team: 'mens' | 'ladies'): Promise<Fixture[]> {
+export async function getFixturesByTeam(team: TeamKey): Promise<Fixture[]> {
   const data = await getFixtures();
-  
-  return data.results.filter(f => {
-    if (team === 'ladies') {
-      return f.homeTeam.includes('Ladies') || f.awayTeam.includes('Ladies');
-    }
-    return !f.homeTeam.includes('Ladies') && !f.awayTeam.includes('Ladies');
-  });
+  return data.results.filter(f => f.team ? f.team === team : (
+    team === 'ladies'
+      ? f.homeTeam.includes('Ladies') || f.awayTeam.includes('Ladies')
+      : !f.homeTeam.includes('Ladies') && !f.awayTeam.includes('Ladies')
+  ));
 }
 
 /**
@@ -159,17 +175,11 @@ export async function getResults(): Promise<CometResponse<Result>> {
     return fetchFromComet<Result>(API_KEYS.results);
   }
 
-  // Priority 2: SofaScore data (disabled - use /api/sofascore instead)
-  // if (USE_SOFASCORE) {
-  //   try {
-  //     const sofaData = await getSofaScoreData();
-  //     if (sofaData.results.length > 0) {
-  //       return getSofaScoreResults();
-  //     }
-  //   } catch (error) {
-  //     console.warn('SofaScore results unavailable:', error);
-  //   }
-  // }
+  // Priority 2: allwalessport
+  const aws = await loadAllwalessport();
+  if (aws.results.length > 0) {
+    return wrap('Results', aws.results);
+  }
 
   // Priority 3: Mock data
   return mockResults as CometResponse<Result>;
@@ -203,58 +213,10 @@ export async function getMensLeagueTable(): Promise<CometResponse<LeagueTableRow
     return fetchFromComet<LeagueTableRow>(API_KEYS.leagueTable);
   }
 
-  // Priority 2: SofaScore data via API endpoint
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
-
-    const response = await fetch(`${baseUrl}/api/sofascore`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const standings = data.memoryCache?.standings || [];
-
-      if (standings.length > 0) {
-        // Transform SofaScore standings to our format
-        const leagueTable: LeagueTableRow[] = standings.map((row: {
-          position: number;
-          team: { name: string };
-          matches: number;
-          wins: number;
-          draws: number;
-          losses: number;
-          scoresFor: number;
-          scoresAgainst: number;
-          points: number;
-        }) => ({
-          position: row.position,
-          club: row.team.name,
-          played: row.matches,
-          won: row.wins,
-          drawn: row.draws,
-          lost: row.losses,
-          gd: row.scoresFor - row.scoresAgainst,
-          points: row.points,
-        }));
-
-        return {
-          reportName: 'SofaScore League Table',
-          columnTypes: ['NUMBER', 'STRING', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER', 'NUMBER'],
-          columnNames: ['Position', 'Club', 'Played', 'Won', 'Drawn', 'Lost', 'GD', 'Points'],
-          columnKeys: ['position', 'club', 'played', 'won', 'drawn', 'lost', 'gd', 'points'],
-          results: leagueTable,
-          totalSize: leagueTable.length,
-          page: 0,
-          pageSize: leagueTable.length,
-        };
-      }
-    }
-  } catch (error) {
-    console.warn('SofaScore API unavailable:', error);
-  }
+  // Priority 2: allwalessport
+  const aws = await loadAllwalessport();
+  const table = aws.tables['mens'] ?? [];
+  if (table.length > 0) return wrap('League Table', table);
 
   // Priority 3: Mock data
   return mockLeagueTable as CometResponse<LeagueTableRow>;
@@ -267,6 +229,11 @@ export async function getLadiesLeagueTable(): Promise<CometResponse<LeagueTableR
   if (USE_LIVE_API && API_KEYS.ladiesLeague) {
     return fetchFromComet<LeagueTableRow>(API_KEYS.ladiesLeague);
   }
+
+  const aws = await loadAllwalessport();
+  const table = aws.tables['ladies'] ?? [];
+  if (table.length > 0) return wrap('Ladies League Table', table);
+
   return mockLadiesLeagueTable as CometResponse<LeagueTableRow>;
 }
 
