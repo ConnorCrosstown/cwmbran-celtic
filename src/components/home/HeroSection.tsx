@@ -8,6 +8,7 @@ import { formatMatchDateLong, getOpponent } from '@/lib/comet';
 import { oppositionTeams } from '@/data/opposition-data';
 import { getAwayDayByTeamName } from '@/data/away-days';
 import MatchWeather from '@/components/weather/MatchWeather';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 // Note: Image import kept for club logo fallback display
 
@@ -74,7 +75,7 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
   const celticTeamName = fixture ? (isHome ? fixture.homeTeam : fixture.awayTeam) : '';
   const isLadies = celticTeamName.toLowerCase().includes('ladies') || celticTeamName.toLowerCase().includes('women');
   const teamLabel = isLadies ? "Women's Team" : "Men's First Team";
-  const leagueName = isLadies ? "Genero Adran South" : "JD Cymru South";
+  const leagueName = isLadies ? "Genero Adran South" : MENS_LEAGUE_NAME;
 
   return (
     <section className="relative min-h-[420px] md:min-h-[500px] flex items-center overflow-hidden">

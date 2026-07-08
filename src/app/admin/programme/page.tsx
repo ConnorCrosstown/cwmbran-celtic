@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { oppositionTeams, getOppositionById } from '@/data/opposition-data';
 import { mockSquad, mockFixtures } from '@/data/mock-data';
 import ProgrammePreview from '@/components/programme/ProgrammePreview';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 // Helper to get opponent ID from team name
 const getOpponentIdFromName = (teamName: string): string => {
@@ -84,7 +85,7 @@ const defaultFormData: ProgrammeData = {
   opponent: '',
   date: '',
   kickoff: '15:00',
-  competition: 'JD Cymru South',
+  competition: MENS_LEAGUE_NAME,
   matchdayNumber: '',
   venue: 'home',
   team: 'mens',
@@ -733,7 +734,7 @@ export default function ProgrammeGeneratorPage() {
                     onChange={handleChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue"
                   >
-                    <option value="JD Cymru South">JD Cymru South</option>
+                    <option value={MENS_LEAGUE_NAME}>{MENS_LEAGUE_NAME}</option>
                     <option value="FAW Trophy">FAW Trophy</option>
                     <option value="FAW Amateur Trophy">FAW Amateur Trophy</option>
                     <option value="Nathaniel MG Cup">Nathaniel MG Cup</option>

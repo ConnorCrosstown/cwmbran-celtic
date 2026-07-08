@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 interface TeamInfo {
   name: string;
@@ -12,7 +13,7 @@ interface TeamInfo {
 
 const teams: TeamInfo[] = [
   // Senior Teams
-  { name: "Men's First Team", category: 'senior', league: 'JD Cymru South', href: '/teams/mens', badge: 'M', badgeColor: 'bg-celtic-blue' },
+  { name: "Men's First Team", category: 'senior', league: MENS_LEAGUE_NAME, href: '/teams/mens', badge: 'M', badgeColor: 'bg-celtic-blue' },
   { name: "Women's Team", category: 'senior', league: 'Genero Adran South', href: '/teams/ladies', badge: 'W', badgeColor: 'bg-celtic-yellow text-celtic-dark' },
   { name: "Men's Seconds", category: 'senior', league: 'Gwent County Div 2', href: '/teams/mens-seconds', badge: '2', badgeColor: 'bg-celtic-blue' },
   { name: "Men's Thirds", category: 'senior', league: 'Gwent County Div 3', href: '/teams/mens-thirds', badge: '3', badgeColor: 'bg-celtic-blue' },

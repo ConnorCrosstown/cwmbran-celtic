@@ -104,7 +104,7 @@ export default function ClubPage() {
                 of all ages and abilities.
               </p>
               <p className="text-gray-700 mb-6">
-                Today, we compete in the <strong>JD Cymru South</strong> league and continue
+                Today, we compete in the <strong>Ardal League South East</strong> league and continue
                 to develop football at all levels, from our first team to our thriving
                 ladies section and community walking football programme.
               </p>

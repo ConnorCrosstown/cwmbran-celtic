@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { getOppositionById } from '@/data/opposition-data';
 import { mockSquad, mockLeagueTable, mockResults, mockFixtures, clubInfo, sponsors } from '@/data/mock-data';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 interface ProgrammeData {
   opponent: string;
@@ -758,7 +759,7 @@ First Team Manager`;
                     <h4 className="font-bold text-gray-800 mb-2 text-sm">About Cwmbran Celtic AFC</h4>
                     <p className="text-xs text-gray-600 leading-relaxed">
                       Founded in {clubInfo.founded}, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales.
-                      Playing our home games at the Avondale Motor Park Arena, we compete in the JD Cymru South league.
+                      Playing our home games at the Avondale Motor Park Arena, we compete in the {MENS_LEAGUE_NAME} league.
                       The club is committed to developing local talent and providing football opportunities for players of all ages and abilities.
                     </p>
                     <div className="grid grid-cols-3 gap-3 mt-3">

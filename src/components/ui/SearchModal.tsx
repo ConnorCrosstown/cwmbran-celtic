@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 interface SearchResult {
   title: string;
@@ -20,7 +21,7 @@ const searchableContent: SearchResult[] = [
   { title: 'Contact Us', description: 'Get in touch with the club', href: '/contact', category: 'Pages' },
 
   // Teams
-  { title: "Men's First Team", description: 'JD Cymru South squad and info', href: '/teams/mens', category: 'Teams' },
+  { title: "Men's First Team", description: `${MENS_LEAGUE_NAME} squad and info`, href: '/teams/mens', category: 'Teams' },
   { title: "Women's Team", description: 'Genero Adran South squad and info', href: '/teams/ladies', category: 'Teams' },
   { title: 'Development Squad', description: 'Youth development team', href: '/teams/development', category: 'Teams' },
   { title: 'Walking Football', description: 'Over 50s walking football', href: '/teams/walking', category: 'Teams' },

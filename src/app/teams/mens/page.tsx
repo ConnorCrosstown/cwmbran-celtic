@@ -76,7 +76,7 @@ export default async function MensTeamPage() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-white">Men&apos;s First Team</h1>
-                <p className="text-xs text-gray-200">JD Cymru South</p>
+                <p className="text-xs text-gray-200">Ardal League South East</p>
               </div>
 
               {/* Stats Row */}
@@ -156,7 +156,7 @@ export default async function MensTeamPage() {
 
             <div className="card p-4 mb-4">
               <p className="text-sm text-gray-700 mb-2">
-                Cwmbran Celtic Men&apos;s First Team compete in the JD Cymru South, the third tier of
+                Cwmbran Celtic Men&apos;s First Team compete in the Ardal League South East, the third tier of
                 Welsh football. The club has a proud history dating back to 1925 and plays home games
                 at the Avondale Motor Park Arena.
               </p>
@@ -218,7 +218,7 @@ export default async function MensTeamPage() {
       <section className="py-6 md:py-8 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-lg font-bold text-celtic-dark mb-4">JD Cymru South Table</h2>
+            <h2 className="text-lg font-bold text-celtic-dark mb-4">Ardal League South East Table</h2>
             <div className="card overflow-hidden">
               <LeagueTable
                 data={leagueData.results}

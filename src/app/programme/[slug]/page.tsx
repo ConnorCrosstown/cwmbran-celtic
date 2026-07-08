@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { getOppositionById } from '@/data/opposition-data';
 import { mockSquad, mockLeagueTable, mockResults, mockFixtures } from '@/data/mock-data';
 import CoverPage from '@/components/programme/CoverPage';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 interface SquadPlayer {
   squadNo: number;
@@ -260,7 +261,7 @@ export default function ShareableProgrammePage() {
 
       // ==================== PAGE 2: MANAGER'S NOTES ====================
       case 'managers-notes':
-        const defaultNotes = `Good afternoon and welcome to the Avondale Motor Park Arena for today's JD Cymru South fixture against ${opposition.name}.
+        const defaultNotes = `Good afternoon and welcome to the Avondale Motor Park Arena for today's ${MENS_LEAGUE_NAME} fixture against ${opposition.name}.
 
 Thank you for your continued support - it means the world to everyone at the club. The lads have been working hard in training and we're looking forward to putting on a performance for you today.
 
@@ -398,7 +399,7 @@ Enjoy the game and Up The Celtic!`;
 
         return (
           <div className="h-full flex flex-col" style={{ backgroundColor: COLORS.offWhite }}>
-            <PageHeader title="Today's Match" subtitle={programmeData?.competition || 'JD Cymru South'} />
+            <PageHeader title="Today's Match" subtitle={programmeData?.competition || MENS_LEAGUE_NAME} />
 
             <div className="flex-1 p-3 overflow-auto">
               {/* Match header */}
@@ -564,7 +565,7 @@ Enjoy the game and Up The Celtic!`;
               <Card>
                 <SectionHeader>About Cwmbran Celtic</SectionHeader>
                 <div className="p-3 text-sm" style={{ color: COLORS.gray700 }}>
-                  <p>Founded in 1925, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales. Playing at the Avondale Motor Park Arena, we compete in the JD Cymru South league.</p>
+                  <p>Founded in 1925, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales. Playing at the Avondale Motor Park Arena, we compete in the {MENS_LEAGUE_NAME} league.</p>
                 </div>
               </Card>
             </div>
@@ -575,7 +576,7 @@ Enjoy the game and Up The Celtic!`;
       case 'league-table':
         return (
           <div className="h-full flex flex-col" style={{ backgroundColor: COLORS.offWhite }}>
-            <PageHeader title="League Table" subtitle="JD Cymru South" />
+            <PageHeader title="League Table" subtitle={MENS_LEAGUE_NAME} />
 
             <div className="flex-1 p-2 overflow-auto">
               <Card>

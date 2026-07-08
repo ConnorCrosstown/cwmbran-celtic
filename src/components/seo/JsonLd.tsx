@@ -145,13 +145,13 @@ export function SportsEventJsonLd({ data }: { data: SportsEventData }) {
 }
 
 // Default club data for Cwmbran Celtic
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL, MENS_LEAGUE_NAME } from '@/lib/site';
 
 export const cwmbranCelticData: SportsClubData = {
   name: 'Cwmbran Celtic AFC',
   alternateName: 'Cwmbran Celtic',
   description:
-    'Cwmbran Celtic AFC is a Welsh football club based in Cwmbran, Torfaen. The club competes in the JD Cymru South league.',
+    `Cwmbran Celtic AFC is a Welsh football club based in Cwmbran, Torfaen. The club competes in the ${MENS_LEAGUE_NAME} league.`,
   url: SITE_URL,
   logo: `${SITE_URL}/images/club-logo.webp`,
   image: `${SITE_URL}/og-image.jpg`,
@@ -170,7 +170,7 @@ export const cwmbranCelticData: SportsClubData = {
     'https://www.facebook.com/groups/171728059584376',
   ],
   memberOf: {
-    name: 'Cymru South (JD Cymru South)',
+    name: MENS_LEAGUE_NAME,
     url: 'https://www.faw.cymru',
   },
 };

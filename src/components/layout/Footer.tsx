@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { clubInfo, sponsors } from '@/data/mock-data';
 import NewsletterSignup from '@/components/newsletter/NewsletterSignup';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 function PepperShaker() {
   return (
@@ -65,7 +66,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm mb-5 leading-relaxed max-w-sm text-white">
-              The home of football in Cwmbran. Competing in the JD Cymru South (Men&apos;s)
+              The home of football in Cwmbran. Competing in the {MENS_LEAGUE_NAME} (Men&apos;s)
               and Genero Adran South (Women&apos;s). Come support your local club!
             </p>
             <div className="mb-6">

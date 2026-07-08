@@ -95,7 +95,7 @@ export default async function FixturesPage() {
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <span className="bg-celtic-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">M</span>
               <h2 className="text-2xl font-bold text-celtic-dark">Men&apos;s First Team</h2>
-              <span className="text-sm text-gray-500">JD Cymru South</span>
+              <span className="text-sm text-gray-500">Ardal League South East</span>
               <div className="ml-auto">
                 <CalendarExport fixtures={mensFixtures} team="mens" />
               </div>

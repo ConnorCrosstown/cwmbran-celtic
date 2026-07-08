@@ -49,7 +49,7 @@ export default function PlayersPage() {
             Men&apos;s First Team Squad
           </h1>
           <p className="text-xl text-gray-300">
-            2025-26 Season • JD Cymru South
+            2025-26 Season • Ardal League South East
           </p>
         </div>
       </section>

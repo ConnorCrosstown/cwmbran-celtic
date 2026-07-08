@@ -300,7 +300,7 @@ export default function MembershipPage() {
             <div className="card-static p-5">
               <h3 className="font-bold text-celtic-dark mb-2">What matches are included?</h3>
               <p className="text-sm text-gray-600">
-                Season tickets cover all JD Cymru South home league matches. Cup matches and friendlies may require separate purchase, though season ticket holders receive priority booking.
+                Season tickets cover all Ardal League South East home league matches. Cup matches and friendlies may require separate purchase, though season ticket holders receive priority booking.
               </p>
             </div>
             <div className="card-static p-5">

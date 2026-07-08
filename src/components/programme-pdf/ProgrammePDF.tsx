@@ -1188,7 +1188,7 @@ export default function ProgrammePDF({
     ? programmeData.substitutes.map(no => squad.find(p => p.squadNo === no)).filter(Boolean)
     : [];
 
-  const defaultNotes = `Good afternoon and welcome to the Avondale Motor Park Arena for today's JD Cymru South fixture against ${opposition.name}.\n\nThank you for your continued support - it means the world to everyone at the club. The lads have been working hard in training and we're looking forward to putting on a performance for you today.\n\nEnjoy the game!`;
+  const defaultNotes = `Good afternoon and welcome to the Avondale Motor Park Arena for today's Ardal League South East fixture against ${opposition.name}.\n\nThank you for your continued support - it means the world to everyone at the club. The lads have been working hard in training and we're looking forward to putting on a performance for you today.\n\nEnjoy the game!`;
 
   return (
     <Document>
@@ -1201,7 +1201,7 @@ export default function ProgrammePDF({
             <View style={styles.coverTopRow}>
               <View style={styles.officialBadge}>
                 <Text style={styles.officialBadgeText}>Official Match Programme</Text>
-                <Text style={styles.officialBadgeLeague}>JD Cymru South</Text>
+                <Text style={styles.officialBadgeLeague}>Ardal League South East</Text>
               </View>
               <View style={styles.kickoffBox}>
                 <Text style={styles.kickoffTime}>{programmeData?.kickoff || '15:00'}</Text>
@@ -1571,7 +1571,7 @@ export default function ProgrammePDF({
         <View style={styles.card}>
           <Text style={[styles.historyTitle, { marginBottom: 8 }]}>About Cwmbran Celtic AFC</Text>
           <Text style={styles.historyText}>
-            Founded in 1925, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales. Playing our home games at the Avondale Motor Park Arena, we compete in the JD Cymru South league. The club is committed to developing local talent and providing football opportunities for players of all ages and abilities.
+            Founded in 1925, Cwmbran Celtic AFC is a community football club based in Cwmbran, South Wales. Playing our home games at the Avondale Motor Park Arena, we compete in the Ardal League South East league. The club is committed to developing local talent and providing football opportunities for players of all ages and abilities.
           </Text>
           <View style={[styles.statsRow, { marginTop: 16, borderTopWidth: 1, borderTopColor: COLORS.gray200, paddingTop: 16 }]}>
             {[
@@ -1599,7 +1599,7 @@ export default function ProgrammePDF({
         <View style={styles.pageHeader}>
           <View style={[styles.pageHeaderBar, { height: 32 }]} />
           <View>
-            <Text style={styles.pageHeaderTitle}>JD Cymru South Table</Text>
+            <Text style={styles.pageHeaderTitle}>Ardal League South East Table</Text>
           </View>
         </View>
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 interface Player {
   id: number;
@@ -45,7 +46,7 @@ const currentMatch = {
   id: 'mens-2026-01-20',
   opponent: 'Llantwit Major',
   date: '2026-01-20',
-  competition: 'JD Cymru South',
+  competition: MENS_LEAGUE_NAME,
   result: null as { home: number; away: number } | null, // null = match not yet played
   votingOpen: true,
   votingEnds: '2026-01-21T23:59:59',

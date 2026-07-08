@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Digital Match Programme',
@@ -10,26 +11,26 @@ const recentProgrammes = [
   {
     match: 'Cwmbran Celtic vs Treowen Stars',
     date: '4 April 2026',
-    competition: 'JD Cymru South',
+    competition: MENS_LEAGUE_NAME,
     downloadUrl: '/programme/2026-04-04-treowen-stars',
     featured: true,
   },
   {
     match: 'Cwmbran Celtic vs Ynyshir Albions',
     date: '21 March 2026',
-    competition: 'JD Cymru South',
+    competition: MENS_LEAGUE_NAME,
     downloadUrl: '/programme/2026-03-21-ynyshir-albions',
   },
   {
     match: 'Cwmbran Celtic vs Baglan Dragons',
     date: '7 March 2026',
-    competition: 'JD Cymru South',
+    competition: MENS_LEAGUE_NAME,
     downloadUrl: '/programme/2026-03-07-baglan-dragons',
   },
   {
     match: 'Cwmbran Celtic vs Aberystwyth Town',
     date: '21 February 2026',
-    competition: 'JD Cymru South',
+    competition: MENS_LEAGUE_NAME,
     downloadUrl: '/programme/2026-02-21-aberystwyth-town',
   },
 ];

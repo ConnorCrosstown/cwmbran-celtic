@@ -14,6 +14,7 @@ import {
   Column,
 } from '@react-email/components';
 import * as React from 'react';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 interface Fixture {
   date: string;
@@ -111,7 +112,7 @@ export default function NewsletterEmail({
                   <Column style={standingCard}>
                     <Text style={standingTeam}>Men&apos;s First Team</Text>
                     <Text style={standingPosition}>{getOrdinal(mensPosition.position)}</Text>
-                    <Text style={standingLeague}>JD Cymru South</Text>
+                    <Text style={standingLeague}>{MENS_LEAGUE_NAME}</Text>
                     <Text style={standingStats}>
                       P{mensPosition.played} W{mensPosition.won} D{mensPosition.drawn} L{mensPosition.lost} • {mensPosition.points}pts
                     </Text>

@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import GoldenTicketBanner from '@/components/banners/GoldenTicketBanner';
 import SeasonTicketBanner from '@/components/banners/SeasonTicketBanner';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Our Teams',
@@ -12,8 +13,8 @@ const teams = [
   {
     name: "Men's First Team",
     href: '/teams/mens',
-    description: 'Competing in the JD Cymru South league',
-    league: 'JD Cymru South',
+    description: `Competing in the ${MENS_LEAGUE_NAME} league`,
+    league: MENS_LEAGUE_NAME,
     color: 'bg-celtic-blue',
   },
   {

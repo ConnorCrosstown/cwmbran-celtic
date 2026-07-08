@@ -133,7 +133,7 @@ function SponsorFooter() {
 // Page 2: Manager's Notes
 function ManagersNotesPage({ programmeData }: { programmeData: ProgrammeData }) {
   const notes = programmeData.managersNotes ||
-    `Good afternoon and welcome to the Avondale Motor Park Arena for today's JD Cymru South fixture.
+    `Good afternoon and welcome to the Avondale Motor Park Arena for today's Ardal League South East fixture.
 
 A warm welcome to our visitors and their supporters who have made the journey today. We hope you enjoy your visit to Cwmbran.
 
@@ -852,7 +852,7 @@ function VisitorsPage({ opposition }: { opposition: OppositionTeam }) {
             margin: 0,
           }}>
             Cwmbran Celtic AFC, founded in 1925, is one of the most established football clubs in South Wales.
-            Playing at the Avondale Motor Park Arena, the club competes in the JD Cymru South league and has a
+            Playing at the Avondale Motor Park Arena, the club competes in the Ardal League South East league and has a
             proud history of developing local talent. With men's, women's, and youth teams, Celtic is at the
             heart of the Cwmbran community.
           </p>
@@ -902,7 +902,7 @@ function LeagueTablePage({ opposition }: { opposition: OppositionTeam }) {
   return (
     <div style={pageStyle}>
       <div style={{ padding: '24px 32px 80px 32px' }}>
-        <PageHeader title="JD Cymru South Table" />
+        <PageHeader title="Ardal League South East Table" />
 
         <div style={{
           backgroundColor: '#fff',
@@ -1458,7 +1458,7 @@ export default function PrintProgrammePage() {
       const parsed = parseSlug(slug);
       if (parsed) {
         const kickoff = searchParams.get('kickoff') || '15:00';
-        const competition = searchParams.get('competition') || 'JD Cymru South';
+        const competition = searchParams.get('competition') || 'Ardal League South East';
         const coverImage = searchParams.get('coverImage') || undefined;
         const uploadedCover = searchParams.get('uploadedCover') || undefined;
 

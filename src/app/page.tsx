@@ -21,6 +21,7 @@ import {
 } from '@/lib/comet';
 import { getLatestNews } from '@/data/news-data';
 import { clubInfo, sponsors } from '@/data/mock-data';
+import { MENS_LEAGUE_NAME } from '@/lib/site';
 
 // Helper to safely fetch data with fallback
 async function safelyFetch<T>(
@@ -89,7 +90,7 @@ export default async function HomePage() {
             <TeamCard
               teamName="Men's First Team"
               teamType="mens"
-              league="JD Cymru South"
+              league={MENS_LEAGUE_NAME}
               position={mensPosition}
               nextFixture={nextMensHome}
               href="/teams/mens"

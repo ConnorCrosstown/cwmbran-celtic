@@ -1,5 +1,7 @@
 'use client';
 
+import { MENS_LEAGUE_NAME } from '@/lib/site';
+
 interface Team {
   id: string;
   name: string;
@@ -9,7 +11,7 @@ interface Team {
 }
 
 const teams: Team[] = [
-  { id: 'mens', name: "Men's First Team", shortName: "Men's 1st", league: 'JD Cymru South', color: 'blue' },
+  { id: 'mens', name: "Men's First Team", shortName: "Men's 1st", league: MENS_LEAGUE_NAME, color: 'blue' },
   { id: 'womens', name: "Women's Team", shortName: "Women's", league: 'Genero Adran South', color: 'yellow' },
   { id: 'mens-seconds', name: "Men's Seconds", shortName: "Men's 2nd", league: 'Gwent County Div 2', color: 'blue' },
   { id: 'mens-thirds', name: "Men's Thirds", shortName: "Men's 3rd", league: 'Gwent County Div 3', color: 'blue' },
