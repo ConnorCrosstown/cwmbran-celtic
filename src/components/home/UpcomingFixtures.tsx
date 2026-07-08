@@ -98,26 +98,6 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
           })}
         </div>
 
-        {/* Legend */}
-        <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-gray-200 text-xs text-gray-500">
-          <div className="flex items-center gap-1.5">
-            <span className="bg-celtic-blue text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">1</span>
-            <span>Men&apos;s 1st</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="bg-celtic-blue-dark text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">2</span>
-            <span>Men&apos;s 2nds</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="bg-celtic-blue-light text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">3</span>
-            <span>Men&apos;s 3rds</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="bg-celtic-yellow text-celtic-dark w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold">W</span>
-            <span>Women&apos;s</span>
-          </div>
-        </div>
-
         <Link
           href="/fixtures"
           className="block mt-4 text-celtic-blue font-semibold hover:text-celtic-blue-dark transition-colors text-sm"
