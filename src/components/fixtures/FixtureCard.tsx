@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDate, isHomeGame } from '@/lib/comet';
 import TeamCrest from '@/components/teams/TeamCrest';
@@ -34,13 +33,7 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
       <div className="flex items-center gap-3 mb-3">
         {/* Cwmbran Celtic badge */}
         <div className="flex-shrink-0">
-          <Image
-            src="/images/club-logo.webp"
-            alt="Cwmbran Celtic"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
+          <TeamCrest name={cwmbranTeam} size={40} />
         </div>
 
         <div className="flex-1 text-center">

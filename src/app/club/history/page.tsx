@@ -4,7 +4,7 @@ import { clubHistory, honours } from '@/data/club-history';
 
 export const metadata: Metadata = {
   title: 'Club History',
-  description: 'The history of Cwmbran Celtic AFC from 1925 to present day. From CYMS to the JD Cymru South.',
+  description: 'The history of Cwmbran Celtic AFC from 1925 to present day. From CYMS to the Ardal Leagues.',
 };
 
 export default function HistoryPage() {
@@ -37,7 +37,7 @@ export default function HistoryPage() {
                 like walking football, Celtic has always been about more than just results on the pitch.
               </p>
               <p className="text-gray-700">
-                Today, competing in the JD Cymru South (Tier 3 of the Welsh football pyramid), we
+                Today, competing in the Ardal League South East (Tier 3 of the Welsh football pyramid), we
                 continue to build on the foundations laid by those who came before us, while looking
                 forward to the next chapter in our story.
               </p>

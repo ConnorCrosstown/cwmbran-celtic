@@ -13,7 +13,6 @@ import { cache } from 'react';
 import { CometResponse, Fixture, Result, LeagueTableRow, Player, PlayerStats } from '@/types';
 import {
   mockFixtures,
-  mockResults,
   mockLeagueTable,
   mockLadiesLeagueTable,
   mockSquad,
@@ -188,9 +187,10 @@ export async function getResults(): Promise<CometResponse<Result>> {
     return fetchFromComet<Result>(API_KEYS.results);
   }
 
-  // Priority 2/3: allwalessport per-team, falling back to mock per team
+  // Live results only — no mock fallback. Pre-season there are no results yet,
+  // so the site shows nothing (empty state) rather than last-season demo rows.
   const aws = await loadAllwalessport();
-  return wrap('Results', mergeByTeam(aws.results, (mockResults as CometResponse<Result>).results));
+  return wrap('Results', aws.results);
 }
 
 /**
