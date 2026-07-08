@@ -9,6 +9,7 @@
  * Comet API docs: https://kb.analyticom.de/comet/api-access-to-comet-data
  */
 
+import { cache } from 'react';
 import { CometResponse, Fixture, Result, LeagueTableRow, Player, PlayerStats } from '@/types';
 import {
   mockFixtures,
@@ -48,18 +49,12 @@ const API_KEYS = {
 // Set to true when API keys are available
 const USE_LIVE_API = false;
 
-// Use SofaScore data when available (scraped via Apify)
-// Disabled - fs module can't be used in client components
-// Data should be fetched via /api/sofascore API route instead
-const USE_SOFASCORE = false;
-
-// allwalessport is the primary live provider. One fetch of all active teams,
-// memoised per server render (ISR handles cross-render caching).
-let _awsPromise: ReturnType<typeof fetchAllTeams> | null = null;
-function loadAllwalessport() {
-  if (!_awsPromise) _awsPromise = fetchAllTeams();
-  return _awsPromise;
-}
+// allwalessport is the primary live provider. React cache() memoises one
+// fetchAllTeams() call per request so all fetchers share it, while the inner
+// fetch()'s ISR revalidate refreshes data across requests. (A module-level
+// promise would freeze the result — and cache a transient empty/failed feed —
+// for the whole process lifetime.)
+const loadAllwalessport = cache(() => fetchAllTeams());
 
 // ============================================
 // API CLIENT
