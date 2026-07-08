@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { LeagueTableRow } from '@/types';
+import TeamCrest from '@/components/teams/TeamCrest';
 
 interface LeaguePositionProps {
   position: LeagueTableRow | null;
@@ -14,7 +15,10 @@ export default function LeaguePosition({ position, leagueName }: LeaguePositionP
   return (
     <div className="card">
       <div className="p-6">
-        <h3 className="text-lg font-bold text-celtic-dark mb-4">League Position</h3>
+        <div className="flex items-center gap-2 mb-4">
+          <TeamCrest name={position.club} size={28} />
+          <h3 className="text-lg font-bold text-celtic-dark">League Position</h3>
+        </div>
 
         <div className="text-sm text-gray-500 mb-4">{leagueName}</div>
 

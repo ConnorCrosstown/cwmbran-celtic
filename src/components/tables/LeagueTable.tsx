@@ -1,4 +1,5 @@
 import { LeagueTableRow } from '@/types';
+import TeamCrest from '@/components/teams/TeamCrest';
 
 interface LeagueTableProps {
   data: LeagueTableRow[];
@@ -47,8 +48,11 @@ export default function LeagueTable({ data, highlightTeam = 'Cwmbran Celtic', co
                     {row.position}
                   </span>
                 </td>
-                <td className={`px-1.5 sm:px-3 py-2 sm:py-3 ${isHighlighted ? 'text-celtic-blue' : ''} max-w-[100px] sm:max-w-none truncate`}>
-                  {row.club}
+                <td className={`px-1.5 sm:px-3 py-2 sm:py-3 ${isHighlighted ? 'text-celtic-blue' : ''} max-w-[100px] sm:max-w-none`}>
+                  <span className="flex items-center gap-2 min-w-0">
+                    <span className="flex-shrink-0"><TeamCrest name={row.club} size={20} /></span>
+                    <span className="truncate">{row.club}</span>
+                  </span>
                 </td>
                 <td className="px-1.5 sm:px-3 py-2 sm:py-3 text-center">{row.played}</td>
                 {!compact && (
