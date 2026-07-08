@@ -58,6 +58,8 @@ export default function Footer() {
               <img
                 src="/images/club-logo.webp"
                 alt="Cwmbran Celtic AFC"
+                width={56}
+                height={56}
                 className="w-14 h-14"
               />
               <div>

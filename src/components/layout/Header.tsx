@@ -70,6 +70,8 @@ export default function Header() {
             <img
               src="/images/club-logo.webp"
               alt="Cwmbran Celtic AFC"
+              width={48}
+              height={48}
               className="w-10 h-10 md:w-12 md:h-12 transition-transform group-hover:scale-105"
             />
             <div className="hidden sm:block">
@@ -186,6 +188,8 @@ export default function Header() {
               <img
                 src="/images/club-logo.webp"
                 alt="Cwmbran Celtic AFC"
+                width={40}
+                height={40}
                 className="w-10 h-10"
               />
               <span className="font-bold text-white">Menu</span>

@@ -81,10 +81,14 @@ export default function HeroSection({ fixture }: HeroSectionProps) {
     <section className="relative min-h-[420px] md:min-h-[500px] flex items-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        {/* Ground Image Background */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/images/ground-hero.jpg')` }}
+        {/* Ground Image Background (LCP — optimised + preloaded) */}
+        <Image
+          src="/images/ground-hero.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
         {/* Dark Blue Overlay for readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-celtic-blue-dark/90 via-celtic-blue/85 to-celtic-blue-dark/90" />
