@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDate, isHomeGame } from '@/lib/comet';
-import { getOppositionByName } from '@/data/opposition-data';
+import TeamCrest from '@/components/teams/TeamCrest';
 import AddToCalendar from './AddToCalendar';
 
 interface FixtureCardProps {
@@ -14,10 +14,6 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
   const isHome = isHomeGame(fixture);
   const cwmbranTeam = isHome ? fixture.homeTeam : fixture.awayTeam;
   const opponent = isHome ? fixture.awayTeam : fixture.homeTeam;
-
-  // Get opponent badge
-  const opponentData = getOppositionByName(opponent);
-  const opponentBadge = opponentData?.badge;
 
   return (
     <div className="card p-4">
@@ -55,21 +51,7 @@ export default function FixtureCard({ fixture }: FixtureCardProps) {
 
         {/* Opponent badge */}
         <div className="flex-shrink-0">
-          {opponentBadge ? (
-            <Image
-              src={opponentBadge}
-              alt={opponent}
-              width={40}
-              height={40}
-              className="rounded-full object-contain bg-white"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-              <span className="text-xs text-gray-500 font-bold">
-                {opponent.split(' ').map(w => w[0]).join('').slice(0, 2)}
-              </span>
-            </div>
-          )}
+          <TeamCrest name={opponent} size={40} />
         </div>
       </div>
 

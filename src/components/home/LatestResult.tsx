@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Result } from '@/types';
 import { formatMatchDate, getResultOutcome, getScoreDisplay } from '@/lib/comet';
-import { getOppositionByName } from '@/data/opposition-data';
+import TeamCrest from '@/components/teams/TeamCrest';
 
 interface LatestResultProps {
   result: Result | null;
@@ -33,9 +32,6 @@ export default function LatestResult({ result }: LatestResultProps) {
   };
 
   const isCwmbranHome = result.homeTeam.includes('Cwmbran');
-  const opponent = isCwmbranHome ? result.awayTeam : result.homeTeam;
-  const opponentData = getOppositionByName(opponent);
-  const opponentBadge = opponentData?.badge;
   const teamBadgeLabel = getTeamBadgeLabel(result);
 
   return (
@@ -61,29 +57,7 @@ export default function LatestResult({ result }: LatestResultProps) {
           {/* Home team with badge */}
           <div className="flex-1 text-center">
             <div className="flex flex-col items-center">
-              {isCwmbranHome ? (
-                <Image
-                  src="/images/club-logo.webp"
-                  alt="Cwmbran Celtic"
-                  width={48}
-                  height={48}
-                  className="rounded-full mb-2"
-                />
-              ) : opponentBadge ? (
-                <Image
-                  src={opponentBadge}
-                  alt={opponent}
-                  width={48}
-                  height={48}
-                  className="rounded-full mb-2 object-contain bg-white"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mb-2">
-                  <span className="text-sm font-bold text-gray-500">
-                    {result.homeTeam.split(' ').map(w => w[0]).join('').slice(0, 2)}
-                  </span>
-                </div>
-              )}
+              <div className="mb-2"><TeamCrest name={result.homeTeam} size={48} /></div>
               <p className={`font-bold text-sm ${isCwmbranHome ? 'text-celtic-blue' : 'text-gray-700'}`}>
                 {result.homeTeam}
               </p>
@@ -100,29 +74,7 @@ export default function LatestResult({ result }: LatestResultProps) {
           {/* Away team with badge */}
           <div className="flex-1 text-center">
             <div className="flex flex-col items-center">
-              {!isCwmbranHome ? (
-                <Image
-                  src="/images/club-logo.webp"
-                  alt="Cwmbran Celtic"
-                  width={48}
-                  height={48}
-                  className="rounded-full mb-2"
-                />
-              ) : opponentBadge ? (
-                <Image
-                  src={opponentBadge}
-                  alt={opponent}
-                  width={48}
-                  height={48}
-                  className="rounded-full mb-2 object-contain bg-white"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mb-2">
-                  <span className="text-sm font-bold text-gray-500">
-                    {result.awayTeam.split(' ').map(w => w[0]).join('').slice(0, 2)}
-                  </span>
-                </div>
-              )}
+              <div className="mb-2"><TeamCrest name={result.awayTeam} size={48} /></div>
               <p className={`font-bold text-sm ${!isCwmbranHome ? 'text-celtic-blue' : 'text-gray-700'}`}>
                 {result.awayTeam}
               </p>

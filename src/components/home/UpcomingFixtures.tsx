@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Fixture } from '@/types';
 import { formatMatchDate, getOpponent, isHomeGame } from '@/lib/comet';
 import { getAwayDayByTeamName } from '@/data/away-days';
-import { getOppositionByName } from '@/data/opposition-data';
+import TeamCrest from '@/components/teams/TeamCrest';
 
 interface UpcomingFixturesProps {
   fixtures: Fixture[];
@@ -49,9 +48,7 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
             const teamInfo = getTeamInfo(fixture);
             const opponent = getOpponent(fixture);
             const isAway = !isHomeGame(fixture);
-            // Get opponent info for badge from opposition-data (has all badges)
-            const opponentData = getOppositionByName(opponent);
-            // Also get away day info for away guide links
+            // Away day info for away guide links
             const awayDayInfo = getAwayDayByTeamName(opponent);
 
             return (
@@ -59,25 +56,10 @@ export default function UpcomingFixtures({ fixtures }: UpcomingFixturesProps) {
                 key={fixture.matchId}
                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
               >
-                {/* Show opponent badge if available, otherwise team indicator */}
-                {opponentData?.badge ? (
-                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0 border border-gray-200 p-1">
-                    <Image
-                      src={opponentData.badge}
-                      alt={`${opponent} badge`}
-                      width={32}
-                      height={32}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className={`${teamInfo.color} ${teamInfo.textColor} w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0`}
-                    title={teamInfo.fullName}
-                  >
-                    {teamInfo.label}
-                  </div>
-                )}
+                {/* Opponent crest (monogram fallback) */}
+                <div className="flex-shrink-0">
+                  <TeamCrest name={opponent} size={40} />
+                </div>
 
                 <div className="text-center min-w-[70px]">
                   <p className="text-sm font-semibold text-gray-700">
