@@ -20,8 +20,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, firstName } = body;
 
-    // Validate email
-    if (!email || !validateEmail(email)) {
+    // Validate email (validateEmail returns a ValidationResult object — must
+    // check .isValid; the object itself is always truthy)
+    if (!email || !validateEmail(email).isValid) {
       return NextResponse.json(
         { success: false, message: 'Please enter a valid email address.' },
         { status: 400 }

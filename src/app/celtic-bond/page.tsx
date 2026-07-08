@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import CelticBondForm from '@/components/forms/CelticBondForm';
 
 export const metadata: Metadata = {
   title: 'Celtic Bond',
@@ -158,104 +159,7 @@ export default function CelticBondPage() {
           <div className="max-w-2xl mx-auto">
             <h2 className="section-title text-center">Join Celtic Bond</h2>
 
-            <div className="card p-8">
-              <div className="text-center mb-8">
-                <p className="text-3xl font-bold text-celtic-blue mb-2">£5 / month</p>
-                <p className="text-gray-600">Cancel anytime</p>
-              </div>
-
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                      First Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                      Last Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="bonds" className="block text-sm font-medium text-gray-700 mb-2">
-                    Number of Bonds
-                  </label>
-                  <select
-                    id="bonds"
-                    name="bonds"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-celtic-blue focus:border-celtic-blue outline-none"
-                  >
-                    <option value="1">1 Bond - £5/month</option>
-                    <option value="2">2 Bonds - £10/month</option>
-                    <option value="3">3 Bonds - £15/month</option>
-                    <option value="5">5 Bonds - £25/month</option>
-                  </select>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    id="terms"
-                    name="terms"
-                    required
-                    className="mt-1"
-                  />
-                  <label htmlFor="terms" className="text-sm text-gray-600">
-                    I agree to the Celtic Bond terms and conditions and understand that £5 per bond
-                    will be collected monthly until I cancel.
-                  </label>
-                </div>
-
-                <button type="submit" className="btn-primary w-full">
-                  Continue to Payment
-                </button>
-              </form>
-
-              <p className="text-xs text-gray-500 text-center mt-6">
-                Payment processed securely. You can cancel your membership at any time.
-              </p>
-            </div>
+            <CelticBondForm />
           </div>
         </div>
       </section>
