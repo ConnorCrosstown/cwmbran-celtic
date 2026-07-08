@@ -35,7 +35,7 @@ export const mockFixtures = {
       time: "19:30",
       homeTeam: "Cardiff Draconians",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Jubilee Park",
       homeAway: "A"
     },
@@ -45,7 +45,7 @@ export const mockFixtures = {
       time: "19:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Llantwit Major",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -55,7 +55,7 @@ export const mockFixtures = {
       time: "19:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Pontypridd United",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -65,7 +65,7 @@ export const mockFixtures = {
       time: "19:45",
       homeTeam: "Trethomas Bluebirds",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Trethomas Park",
       homeAway: "A"
     },
@@ -75,7 +75,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Afan Lido",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -85,7 +85,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Trefelin BGC",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Ynys Park",
       homeAway: "A"
     },
@@ -95,7 +95,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Aberystwyth Town",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -105,7 +105,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cambrian United",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Clydach Vale",
       homeAway: "A"
     },
@@ -115,7 +115,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Baglan Dragons",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -125,7 +125,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Ammanford",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Recreation Ground",
       homeAway: "A"
     },
@@ -135,7 +135,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Ynyshir Albions",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -145,7 +145,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Newport City",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Newport Stadium",
       homeAway: "A"
     },
@@ -155,7 +155,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Treowen Stars",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -165,7 +165,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Caerau Ely",
       awayTeam: "Cwmbran Celtic",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Cwrt-yr-Ala Road",
       homeAway: "A"
     },
@@ -175,7 +175,7 @@ export const mockFixtures = {
       time: "14:30",
       homeTeam: "Cwmbran Celtic",
       awayTeam: "Carmarthen Town",
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       venue: "Avondale Motor Park Arena",
       homeAway: "H"
     },
@@ -284,7 +284,7 @@ export const mockResults = {
       awayTeam: "Carmarthen Town",
       homeScore: 2,
       awayScore: 2,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 120
     },
@@ -295,7 +295,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 2,
       awayScore: 2,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 95
     },
@@ -306,7 +306,7 @@ export const mockResults = {
       awayTeam: "Ynyshir Albions",
       homeScore: 1,
       awayScore: 1,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 110
     },
@@ -317,7 +317,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 2,
       awayScore: 1,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 145
     },
@@ -328,7 +328,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 7,
       awayScore: 0,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 210
     },
@@ -339,7 +339,7 @@ export const mockResults = {
       awayTeam: "Baglan Dragons",
       homeScore: 0,
       awayScore: 1,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 125
     },
@@ -350,7 +350,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 2,
       awayScore: 1,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 180
     },
@@ -361,7 +361,7 @@ export const mockResults = {
       awayTeam: "Caerau Ely",
       homeScore: 0,
       awayScore: 2,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 135
     },
@@ -372,7 +372,7 @@ export const mockResults = {
       awayTeam: "Trethomas Bluebirds",
       homeScore: 2,
       awayScore: 2,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 145
     },
@@ -383,7 +383,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 2,
       awayScore: 0,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 320
     },
@@ -394,7 +394,7 @@ export const mockResults = {
       awayTeam: "Newport City",
       homeScore: 1,
       awayScore: 1,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 165
     },
@@ -405,7 +405,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 4,
       awayScore: 0,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 190
     },
@@ -416,7 +416,7 @@ export const mockResults = {
       awayTeam: "Afan Lido",
       homeScore: 1,
       awayScore: 4,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 140
     },
@@ -427,7 +427,7 @@ export const mockResults = {
       awayTeam: "Cwmbran Celtic",
       homeScore: 4,
       awayScore: 0,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 225
     },
@@ -438,7 +438,7 @@ export const mockResults = {
       awayTeam: "Carmarthen Town",
       homeScore: 0,
       awayScore: 4,
-      competition: "JD Cymru South",
+      competition: "Ardal League South East",
       scorers: "",
       attendance: 175
     }
@@ -449,32 +449,32 @@ export const mockResults = {
 };
 
 /**
- * LEAGUE TABLE - JD Cymru South 2025-26 (Current)
- * Source: thefishy.net, FAW Cymru Leagues
- * Last updated: January 2026
+ * LEAGUE TABLE - Ardal League South East 2026-27 (pre-season placeholder)
+ * Shown until the live allwalessport table populates once the season starts.
+ * All 16 clubs on zero — no games played yet.
  */
 export const mockLeagueTable = {
-  reportName: "JD Cymru South League Table",
+  reportName: "Ardal League South East League Table",
   columnTypes: ["NUMBER", "STRING", "NUMBER", "NUMBER", "NUMBER", "NUMBER", "NUMBER", "NUMBER", "NUMBER"],
   columnNames: ["Position", "Club", "Played", "Won", "Drawn", "Lost", "GD", "Points", "Form"],
   columnKeys: ["position", "club", "played", "won", "drawn", "lost", "gd", "points", "form"],
   results: [
-    { position: 1, club: "Cambrian United", played: 19, won: 15, drawn: 2, lost: 2, gd: 33, points: 47 },
-    { position: 2, club: "Trefelin BGC", played: 17, won: 13, drawn: 3, lost: 1, gd: 28, points: 42 },
-    { position: 3, club: "Ammanford", played: 18, won: 10, drawn: 7, lost: 1, gd: 18, points: 37 },
-    { position: 4, club: "Caerau Ely", played: 19, won: 9, drawn: 5, lost: 5, gd: 10, points: 32 },
-    { position: 5, club: "Cardiff Draconians", played: 18, won: 9, drawn: 2, lost: 7, gd: 5, points: 29 },
-    { position: 6, club: "Newport City", played: 18, won: 6, drawn: 9, lost: 3, gd: 4, points: 27 },
-    { position: 7, club: "Aberystwyth Town", played: 17, won: 8, drawn: 3, lost: 6, gd: 4, points: 27 },
-    { position: 8, club: "Carmarthen Town", played: 19, won: 6, drawn: 9, lost: 4, gd: 2, points: 27 },
-    { position: 9, club: "Treowen Stars", played: 18, won: 6, drawn: 5, lost: 7, gd: -4, points: 23 },
-    { position: 10, club: "Llantwit Major", played: 18, won: 4, drawn: 9, lost: 5, gd: -2, points: 21 },
-    { position: 11, club: "Baglan Dragons", played: 17, won: 4, drawn: 7, lost: 6, gd: -1, points: 19 },
-    { position: 12, club: "Pontypridd United", played: 19, won: 4, drawn: 4, lost: 11, gd: -7, points: 16 },
-    { position: 13, club: "Trethomas Bluebirds", played: 18, won: 3, drawn: 7, lost: 8, gd: -11, points: 16 },
-    { position: 14, club: "Afan Lido", played: 18, won: 3, drawn: 3, lost: 12, gd: -22, points: 12 },
-    { position: 15, club: "Ynyshir Albions", played: 18, won: 3, drawn: 3, lost: 12, gd: -25, points: 12 },
-    { position: 16, club: "Cwmbran Celtic", played: 19, won: 0, drawn: 6, lost: 13, gd: -32, points: 6 }
+    { position: 1, club: "Abercarn United", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 2, club: "Abergavenny Town", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 3, club: "Blaenavon Blues", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 4, club: "Brecon Corries", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 5, club: "Caldicot Town", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 6, club: "Chepstow Town", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 7, club: "Croesyceiliog", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 8, club: "Cwmbran Celtic", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 9, club: "Cwmbran Town", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 10, club: "Goytre", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 11, club: "Lliswerry", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 12, club: "New Inn", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 13, club: "Newport Corinthians", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 14, club: "Risca United", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 15, club: "Tredegar Town", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 },
+    { position: 16, club: "Undy", played: 0, won: 0, drawn: 0, lost: 0, gd: 0, points: 0 }
   ],
   totalSize: 16,
   page: 0,
