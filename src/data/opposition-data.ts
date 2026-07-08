@@ -1,6 +1,7 @@
 /**
  * Opposition Data for Programme Generator
- * Contains info about teams in JD Cymru South for auto-filling programmes
+ * Contains info about teams for auto-filling programmes: the historical
+ * JD Cymru South clubs and the current Ardal League South East clubs.
  */
 
 export interface OppositionTeam {
@@ -8,7 +9,7 @@ export interface OppositionTeam {
   name: string;
   nickname?: string;
   ground: string;
-  founded: number;
+  founded?: number;
   colours: string;
   manager?: string;
   website?: string;
@@ -219,6 +220,22 @@ export const oppositionTeams: OppositionTeam[] = [
     badge: '/images/opponents/treowen-stars.png',
     headToHead: { played: 2, celticWins: 0, draws: 2, oppositionWins: 0 }
   },
+  // Ardal League South East (current league, 2025/26 onwards)
+  { id: 'abercarn-united', name: 'Abercarn United', ground: 'Recreation Ground', colours: 'Blue and White' },
+  { id: 'abergavenny-town', name: 'Abergavenny Town', ground: 'Pen-y-Pound', colours: 'Blue and White' },
+  { id: 'blaenavon-blues', name: 'Blaenavon Blues', ground: 'Recreation Ground', colours: 'Blue' },
+  { id: 'brecon-corries', name: 'Brecon Corries', ground: 'The Rich Field', colours: 'Green and White' },
+  { id: 'caldicot-town', name: 'Caldicot Town', ground: 'Jubilee Way', colours: 'Yellow and Black' },
+  { id: 'chepstow-town', name: 'Chepstow Town', ground: 'Larkfield Park', colours: 'Red and Black' },
+  { id: 'croesyceiliog', name: 'Croesyceiliog', ground: 'Woodland Road', colours: 'Blue and White' },
+  { id: 'cwmbran-town', name: 'Cwmbran Town', ground: 'Cwmbran Stadium', colours: 'Green and White' },
+  { id: 'goytre', name: 'Goytre', ground: 'Plough Road', colours: 'Blue and White' },
+  { id: 'lliswerry', name: 'Lliswerry', ground: 'Lliswerry Rec', colours: 'Red' },
+  { id: 'new-inn', name: 'New Inn', ground: 'Hazell Drive', colours: 'Red and Black' },
+  { id: 'newport-corinthians', name: 'Newport Corinthians', ground: 'Coronation Park', colours: 'Green and White' },
+  { id: 'risca-united', name: 'Risca United', ground: 'Ty-Isaf', colours: 'Red and Black' },
+  { id: 'tredegar-town', name: 'Tredegar Town', ground: 'Tredegar Recreation Ground', colours: 'Blue and White' },
+  { id: 'undy', name: 'Undy', ground: 'The Causeway', colours: 'Yellow and Blue' },
 ];
 
 export const getOppositionById = (id: string): OppositionTeam | undefined => {

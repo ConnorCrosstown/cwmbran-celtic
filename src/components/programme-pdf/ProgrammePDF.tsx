@@ -26,7 +26,7 @@ interface Opposition {
   name: string;
   nickname?: string;
   ground: string;
-  founded: number;
+  founded?: number;
   colours: string;
   headToHead?: {
     played: number;
