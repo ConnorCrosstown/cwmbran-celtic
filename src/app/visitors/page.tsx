@@ -111,12 +111,12 @@ export default function VisitorsPage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
             <div>
-              <p className="text-2xl font-display">£{clubInfo.admission.adults}</p>
-              <p className="text-xs text-gray-300 uppercase tracking-wide">Adult Entry</p>
+              <p className="text-2xl font-display">£{clubInfo.admission.adultAdvance}</p>
+              <p className="text-xs text-gray-300 uppercase tracking-wide">Adult (£{clubInfo.admission.adultGate} gate)</p>
             </div>
             <div>
-              <p className="text-2xl font-display">£{clubInfo.admission.concessions}</p>
-              <p className="text-xs text-gray-300 uppercase tracking-wide">Concessions</p>
+              <p className="text-2xl font-display">£{clubInfo.admission.concessionAdvance}</p>
+              <p className="text-xs text-gray-300 uppercase tracking-wide">Concession (£{clubInfo.admission.concessionGate} gate)</p>
             </div>
             <div>
               <p className="text-2xl font-display">FREE</p>

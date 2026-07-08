@@ -1136,11 +1136,11 @@ First Team Manager`;
                       <div className="space-y-1 text-sm">
                         <div className="flex justify-between">
                           <span className="text-white/70">Adults</span>
-                          <span className="font-bold">£{clubInfo.admission.adults}</span>
+                          <span className="font-bold">£{clubInfo.admission.adultAdvance} <span className="text-white/60 text-xs">(£{clubInfo.admission.adultGate} gate)</span></span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-white/70">Concessions</span>
-                          <span className="font-bold">£{clubInfo.admission.concessions}</span>
+                          <span className="font-bold">£{clubInfo.admission.concessionAdvance} <span className="text-white/60 text-xs">(£{clubInfo.admission.concessionGate} gate)</span></span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-white/70">Under 16s</span>

@@ -807,15 +807,14 @@ export const clubInfo = {
     accent: "#FFFFFF"
   },
   admission: {
-    // TODO(audit AUDIT-2026-05-20.md P0-4): these values contradict
-    // `ticketPricing.matchDay` below (Men's £7.50/£5, Women's £3.50/£2.50).
-    // Reconcile to a single source of truth — likely point this at
-    // `ticketPricing.matchDay.mens` and remove the duplicate entry, then
-    // update `clubInfo.admission` consumers (homepage Visit block, Footer
-    // Match Day Prices).
-    adults: 5,
-    concessions: 3,
-    under16: 0, // Free
+    // CANONICAL match-day prices — single source of truth (ticketPricing.matchDay
+    // derives from this). Men's home games are priced advance vs on-the-gate.
+    // Women's home games are FREE entry. Under-16s free.
+    adultAdvance: 5,
+    adultGate: 6,
+    concessionAdvance: 3,
+    concessionGate: 4,
+    under16: 0, // FREE
     programme: 2
   }
 };
@@ -832,20 +831,18 @@ export const clubInfo = {
  * `src/app/tickets/page.tsx`).
  */
 export const ticketPricing = {
-  // Match Day Tickets (via Gigantic - £0.50 fee per ticket)
+  // Match Day Tickets — derived from clubInfo.admission (single source of truth).
   matchDay: {
     mens: {
-      adult: 7.50,
-      concession: 5.00,
+      adultAdvance: clubInfo.admission.adultAdvance,
+      adultGate: clubInfo.admission.adultGate,
+      concessionAdvance: clubInfo.admission.concessionAdvance,
+      concessionGate: clubInfo.admission.concessionGate,
       under16: 0, // FREE
-      giganticFee: 0.50,
       homeGames: 15,
     },
     womens: {
-      adult: 3.50,
-      concession: 2.50,
-      under16: 0, // FREE
-      giganticFee: 0.50,
+      free: true, // Women's home games are free entry
       homeGames: 8,
     },
   },
@@ -936,9 +933,9 @@ export const ticketPricing = {
 
   // Calculate savings vs Pay-As-You-Go
   calculateSavings: {
-    mensPayg: 7.50 * 15, // £112.50
-    womensPayg: 3.50 * 8, // £28.00
-    bothPayg: (7.50 * 15) + (3.50 * 8), // £140.50
+    mensPayg: clubInfo.admission.adultGate * 15, // pay on the gate every game: £90.00
+    womensPayg: 0, // Women's home games are free
+    bothPayg: clubInfo.admission.adultGate * 15, // £90.00
   },
 };
 

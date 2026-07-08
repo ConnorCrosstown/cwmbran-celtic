@@ -19,12 +19,12 @@ export default function MatchDayBanner() {
               <span>
                 <span className="font-bold">MATCH DAY TICKETS</span>
                 {' '}- Adults{' '}
-                <span className="font-bold">£{matchDay.mens.adult.toFixed(2)}</span>
+                <span className="font-bold">£{matchDay.mens.adultAdvance.toFixed(2)} adv / £{matchDay.mens.adultGate.toFixed(2)} gate</span>
               </span>
               <span className="text-white/70">|</span>
               <span>
                 Concessions{' '}
-                <span className="font-bold">£{matchDay.mens.concession.toFixed(2)}</span>
+                <span className="font-bold">£{matchDay.mens.concessionAdvance.toFixed(2)} adv / £{matchDay.mens.concessionGate.toFixed(2)} gate</span>
               </span>
               <span className="text-white/70">|</span>
               <span>

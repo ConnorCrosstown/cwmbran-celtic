@@ -9,6 +9,11 @@ export default function SeasonTicketBanner({ variant = 'full' }: SeasonTicketBan
   const { seasonTickets } = ticketPricing;
   const earlyBirdEnds = seasonTickets.earlyBird.endsFormatted;
 
+  // Don't advertise an expired early-bird promo. Matches the /tickets guard;
+  // the banner reappears when a future season's earlyBird.endsDate is set.
+  const earlyBirdActive = new Date() <= new Date(seasonTickets.earlyBird.endsDate);
+  if (!earlyBirdActive) return null;
+
   if (variant === 'topbar') {
     return (
       <Link href="/tickets" className="block bg-gradient-to-r from-celtic-blue via-celtic-blue-dark to-celtic-blue text-white overflow-hidden hover:from-celtic-blue-light hover:via-celtic-blue hover:to-celtic-blue-light transition-all cursor-pointer">

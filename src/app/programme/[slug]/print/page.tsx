@@ -1379,8 +1379,8 @@ function BackCoverPage() {
               Admission Prices
             </h4>
             <div style={{ fontSize: 11, color: '#fff', lineHeight: 2 }}>
-              <p style={{ margin: 0 }}>Adults: £{clubInfo.admission.adults}</p>
-              <p style={{ margin: 0 }}>Concessions: £{clubInfo.admission.concessions}</p>
+              <p style={{ margin: 0 }}>Adults: £{clubInfo.admission.adultAdvance} (£{clubInfo.admission.adultGate} gate)</p>
+              <p style={{ margin: 0 }}>Concessions: £{clubInfo.admission.concessionAdvance} (£{clubInfo.admission.concessionGate} gate)</p>
               <p style={{ margin: 0 }}>Under 16s: FREE</p>
               <p style={{ margin: 0 }}>Programme: £{clubInfo.admission.programme}</p>
             </div>

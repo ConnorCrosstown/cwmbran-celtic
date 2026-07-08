@@ -158,9 +158,9 @@ export default async function HomePage() {
                 </div>
                 <h3 className="font-bold text-lg mb-2 text-celtic-dark">Admission</h3>
                 <p className="text-sm text-gray-600">
-                  Adults: £{clubInfo.admission.adults}<br />
-                  Concessions: £{clubInfo.admission.concessions}<br />
-                  Under 16s: FREE
+                  Adults: £{clubInfo.admission.adultAdvance} advance / £{clubInfo.admission.adultGate} gate<br />
+                  Concessions: £{clubInfo.admission.concessionAdvance} advance / £{clubInfo.admission.concessionGate} gate<br />
+                  Under 16s: FREE · Women&apos;s games: FREE
                 </p>
               </Link>
               <Link href="/visit#facilities" className="p-8 bg-gray-50 rounded-2xl card-hover text-center block">

@@ -332,9 +332,6 @@ export default function MembershipPage() {
             <Link href="/contact" className="btn-secondary">
               Contact Us
             </Link>
-            <a href="tel:+441633000000" className="bg-white/10 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors">
-              Call: 01633 000000
-            </a>
           </div>
         </div>
       </section>

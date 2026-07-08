@@ -231,11 +231,11 @@ export default function Footer() {
               <ul className="space-y-2 text-sm mb-4">
                 <li className="flex justify-between">
                   <span className="text-white">Adults</span>
-                  <span className="text-white font-medium">£{clubInfo.admission.adults}</span>
+                  <span className="text-white font-medium">£{clubInfo.admission.adultAdvance} <span className="text-white/60 text-xs">(£{clubInfo.admission.adultGate} gate)</span></span>
                 </li>
                 <li className="flex justify-between">
                   <span className="text-white">Concessions</span>
-                  <span className="text-white font-medium">£{clubInfo.admission.concessions}</span>
+                  <span className="text-white font-medium">£{clubInfo.admission.concessionAdvance} <span className="text-white/60 text-xs">(£{clubInfo.admission.concessionGate} gate)</span></span>
                 </li>
                 <li className="flex justify-between">
                   <span className="text-white">Under 16s</span>

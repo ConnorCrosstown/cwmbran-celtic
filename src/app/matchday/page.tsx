@@ -60,12 +60,12 @@ export default function MatchDayPage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Adults</p>
-              <p className="text-2xl font-bold">£{clubInfo.admission.adults}</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Adults (£{clubInfo.admission.adultGate} gate)</p>
+              <p className="text-2xl font-bold">£{clubInfo.admission.adultAdvance}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Concessions</p>
-              <p className="text-2xl font-bold">£{clubInfo.admission.concessions}</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Concessions (£{clubInfo.admission.concessionGate} gate)</p>
+              <p className="text-2xl font-bold">£{clubInfo.admission.concessionAdvance}</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Under 16s</p>
@@ -195,12 +195,12 @@ export default function MatchDayPage() {
             <div className="card p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div className="text-center p-4 bg-celtic-blue rounded-xl text-white">
-                  <p className="text-sm mb-2">Adults</p>
-                  <p className="text-4xl font-bold">£{clubInfo.admission.adults}</p>
+                  <p className="text-sm mb-2">Adults <span className="text-xs opacity-80">(£{clubInfo.admission.adultGate} gate)</span></p>
+                  <p className="text-4xl font-bold">£{clubInfo.admission.adultAdvance}</p>
                 </div>
                 <div className="text-center p-4 bg-celtic-blue rounded-xl text-white">
-                  <p className="text-sm mb-2">Concessions</p>
-                  <p className="text-4xl font-bold">£{clubInfo.admission.concessions}</p>
+                  <p className="text-sm mb-2">Concessions <span className="text-xs opacity-80">(£{clubInfo.admission.concessionGate} gate)</span></p>
+                  <p className="text-4xl font-bold">£{clubInfo.admission.concessionAdvance}</p>
                 </div>
                 <div className="text-center p-4 bg-celtic-yellow rounded-xl">
                   <p className="text-sm mb-2">Under 16s</p>

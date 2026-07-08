@@ -85,12 +85,12 @@ export default function TicketsPage() {
                 <div className="p-6">
                   <div className="grid grid-cols-3 gap-4 mb-6">
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-celtic-blue">£{matchDay.mens.adult.toFixed(2)}</p>
-                      <p className="text-sm text-gray-600">Adult</p>
+                      <p className="text-3xl font-bold text-celtic-blue">£{matchDay.mens.adultAdvance.toFixed(2)}</p>
+                      <p className="text-sm text-gray-600">Adult (£{matchDay.mens.adultGate.toFixed(2)} gate)</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-celtic-blue">£{matchDay.mens.concession.toFixed(2)}</p>
-                      <p className="text-sm text-gray-600">Concession</p>
+                      <p className="text-3xl font-bold text-celtic-blue">£{matchDay.mens.concessionAdvance.toFixed(2)}</p>
+                      <p className="text-sm text-gray-600">Concession (£{matchDay.mens.concessionGate.toFixed(2)} gate)</p>
                     </div>
                     <div className="text-center bg-celtic-yellow/20 rounded-lg py-2">
                       <p className="text-3xl font-bold text-celtic-dark">FREE</p>
@@ -116,18 +116,10 @@ export default function TicketsPage() {
                   <p className="text-white/70 text-sm text-center">Genero Adran South</p>
                 </div>
                 <div className="p-6">
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    <div className="text-center">
-                      <p className="text-3xl font-bold text-celtic-blue">£{matchDay.womens.adult.toFixed(2)}</p>
-                      <p className="text-sm text-gray-600">Adult</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-3xl font-bold text-celtic-blue">£{matchDay.womens.concession.toFixed(2)}</p>
-                      <p className="text-sm text-gray-600">Concession</p>
-                    </div>
-                    <div className="text-center bg-celtic-yellow/20 rounded-lg py-2">
-                      <p className="text-3xl font-bold text-celtic-dark">FREE</p>
-                      <p className="text-sm text-celtic-dark/70">Under 16s</p>
+                  <div className="mb-6">
+                    <div className="text-center bg-celtic-yellow/20 rounded-lg py-6">
+                      <p className="text-3xl font-bold text-celtic-dark">FREE ENTRY</p>
+                      <p className="text-sm text-celtic-dark/70">All welcome — no charge for women&apos;s home games</p>
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 text-center mb-4">{matchDay.womens.homeGames} home league games per season</p>
