@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import type { Fixture, Result } from '@/types';
+import type { Fixture, Result, LeagueTableRow } from '@/types';
 import type { AwsTeam } from '@/data/allwalessport-teams';
 import { parseAwsDate, stableMatchId } from '@/lib/allwalessport-parse';
 
@@ -56,4 +56,32 @@ export function parseFixturesAndResults(
   });
 
   return { fixtures, results };
+}
+
+/**
+ * Parse the standings table. Each club row is a <tr> containing a td.tableteam
+ * followed by five td.tablecolumn cells (P, W, D, L, GD) and one td.tablepoints
+ * cell (Pts). Position = row order (there's no position column in the markup).
+ */
+export function parseLeagueTable(html: string): LeagueTableRow[] {
+  const $ = cheerio.load(html);
+  const rows: LeagueTableRow[] = [];
+
+  $('tr').each((_, el) => {
+    const row = $(el);
+    const club = row.find('td.tableteam').first().text().trim();
+    if (!club) return;
+    const cols = row.find('td.tablecolumn');
+    const pts = row.find('td.tablepoints').first();
+    if (cols.length < 5 || pts.length === 0) return;
+    const n = (i: number) => parseInt($(cols[i]).text().trim(), 10) || 0;
+    rows.push({
+      position: rows.length + 1,
+      club,
+      played: n(0), won: n(1), drawn: n(2), lost: n(3), gd: n(4),
+      points: parseInt(pts.text().trim(), 10) || 0,
+    });
+  });
+
+  return rows;
 }
