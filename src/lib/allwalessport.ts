@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import type { Fixture, Result, LeagueTableRow } from '@/types';
-import type { AwsTeam } from '@/data/allwalessport-teams';
+import { activeTeams, type AwsTeam } from '@/data/allwalessport-teams';
 import { parseAwsDate, stableMatchId } from '@/lib/allwalessport-parse';
 
 /**
@@ -84,4 +84,46 @@ export function parseLeagueTable(html: string): LeagueTableRow[] {
   });
 
   return rows;
+}
+
+const BASE = 'https://www.allwalessport.co.uk/football.aspx';
+
+export function divisionUrl(cid: number): string {
+  return `${BASE}?cid=${cid}`;
+}
+
+/** Fetch one division page (fixtures + results + table). Never throws — empty on failure. */
+export async function fetchTeamData(
+  team: AwsTeam,
+  fetchImpl: typeof fetch = fetch
+): Promise<{ fixtures: Fixture[]; results: Result[]; table: LeagueTableRow[] }> {
+  try {
+    const res = await fetchImpl(divisionUrl(team.cid), {
+      next: { revalidate: 21600 },
+    } as RequestInit);
+    if (!res.ok) throw new Error(`allwalessport ${team.cid}: ${res.status}`);
+    const html = await res.text();
+    const { fixtures, results } = parseFixturesAndResults(html, team);
+    return { fixtures, results, table: parseLeagueTable(html) };
+  } catch (err) {
+    console.warn(`[allwalessport] ${team.key} (cid ${team.cid}) failed:`, err);
+    return { fixtures: [], results: [], table: [] };
+  }
+}
+
+/** Fetch every active team and merge. tables keyed by TeamKey. */
+export async function fetchAllTeams(
+  fetchImpl: typeof fetch = fetch
+): Promise<{ fixtures: Fixture[]; results: Result[]; tables: Record<string, LeagueTableRow[]> }> {
+  const teams = activeTeams();
+  const all = await Promise.all(teams.map(t => fetchTeamData(t, fetchImpl)));
+  const fixtures: Fixture[] = [];
+  const results: Result[] = [];
+  const tables: Record<string, LeagueTableRow[]> = {};
+  teams.forEach((t, i) => {
+    fixtures.push(...all[i].fixtures);
+    results.push(...all[i].results);
+    tables[t.key] = all[i].table;
+  });
+  return { fixtures, results, tables };
 }
