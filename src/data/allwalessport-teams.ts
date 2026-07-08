@@ -8,20 +8,23 @@
  * league that team plays in, and read the cid from the URL. Confirm the club's
  * exact spelling (clubName) as it appears in that division's table.
  */
+import { MENS_LEAGUE_NAME } from '@/lib/site';
+
 export type TeamKey = 'mens' | 'ladies' | 'reserves';
 
 export interface AwsTeam {
   key: TeamKey;
   label: string;    // heading shown on the team page
+  league: string;   // competition/league name shown on fixtures
   cid: number;      // allwalessport competition id; 0 = unresolved, skipped
   clubName: string; // exact club name as printed on allwalessport
 }
 
 export const AWS_TEAMS: AwsTeam[] = [
-  { key: 'mens', label: "Men's First Team", cid: 20149, clubName: 'Cwmbran Celtic' },
+  { key: 'mens', label: "Men's First Team", league: MENS_LEAGUE_NAME, cid: 20149, clubName: 'Cwmbran Celtic' },
   // Women's cid to be resolved (pre-season, division not yet published).
   // Likely the S Wales Womens & Girls League. Set cid + confirm clubName, then this activates.
-  { key: 'ladies', label: 'Ladies', cid: 0, clubName: 'Cwmbran Celtic' },
+  { key: 'ladies', label: 'Ladies', league: 'Genero Adran South', cid: 0, clubName: 'Cwmbran Celtic' },
 ];
 
 export function activeTeams(): AwsTeam[] {

@@ -9,7 +9,7 @@ const mensHtml = readFileSync(
 // Force only the mens team active for a deterministic test.
 vi.mock('@/data/allwalessport-teams', async (orig) => {
   const actual = await orig<typeof import('@/data/allwalessport-teams')>();
-  const mens = { key: 'mens', label: 'Ardal South East', cid: 20149, clubName: 'Cwmbran Celtic' };
+  const mens = { key: 'mens', label: 'Ardal South East', league: 'Ardal League South East', cid: 20149, clubName: 'Cwmbran Celtic' };
   return { ...actual, AWS_TEAMS: [mens], activeTeams: () => [mens] };
 });
 

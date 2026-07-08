@@ -7,7 +7,7 @@ import type { AwsTeam } from '@/data/allwalessport-teams';
 const html = readFileSync(
   path.join(__dirname, 'fixtures', 'aws-preseason-mens-20149.html'), 'utf8'
 );
-const mens: AwsTeam = { key: 'mens', label: 'Ardal South East', cid: 20149, clubName: 'Cwmbran Celtic' };
+const mens: AwsTeam = { key: 'mens', label: 'Ardal South East', league: 'Ardal League South East', cid: 20149, clubName: 'Cwmbran Celtic' };
 
 describe('divisionUrl', () => {
   it('builds the football.aspx url', () => {

@@ -44,13 +44,13 @@ export function parseFixturesAndResults(
         matchId: stableMatchId(date, home, away),
         date, homeTeam: home, awayTeam: away,
         homeScore: hs, awayScore: as,
-        competition: team.label, scorers: '', attendance: 0, team: team.key,
+        competition: team.league, scorers: '', attendance: 0, team: team.key,
       });
     } else {
       fixtures.push({
         matchId: stableMatchId(date, home, away),
         date, time: '', homeTeam: home, awayTeam: away,
-        competition: team.label, venue: '', homeAway, team: team.key,
+        competition: team.league, venue: '', homeAway, team: team.key,
       });
     }
   });

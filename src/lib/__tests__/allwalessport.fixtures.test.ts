@@ -7,7 +7,7 @@ import type { AwsTeam } from '@/data/allwalessport-teams';
 const read = (f: string) =>
   readFileSync(path.join(__dirname, 'fixtures', f), 'utf8');
 
-const mens: AwsTeam = { key: 'mens', label: 'Ardal South East', cid: 20149, clubName: 'Cwmbran Celtic' };
+const mens: AwsTeam = { key: 'mens', label: 'Ardal South East', league: 'Ardal League South East', cid: 20149, clubName: 'Cwmbran Celtic' };
 
 describe('parseFixturesAndResults — pre-season mens page (fixtures only)', () => {
   const { fixtures, results } = parseFixturesAndResults(read('aws-preseason-mens-20149.html'), mens);
@@ -20,7 +20,7 @@ describe('parseFixturesAndResults — pre-season mens page (fixtures only)', () 
   });
   it('tags fixtures with the team key and label', () => {
     expect(fixtures[0].team).toBe('mens');
-    expect(fixtures[0].competition).toBe('Ardal South East');
+    expect(fixtures[0].competition).toBe('Ardal League South East');
   });
   it('sets homeAway correctly', () => {
     const home = fixtures.find(f => f.homeTeam === 'Cwmbran Celtic');
@@ -35,7 +35,7 @@ describe('parseFixturesAndResults — pre-season mens page (fixtures only)', () 
 
 describe('parseFixturesAndResults — in-season page (results present)', () => {
   // Filter to a club known to appear in the archived women's fixture file.
-  const splott: AwsTeam = { key: 'ladies', label: 'S Wales Womens', cid: 10641, clubName: 'Splott Albion' };
+  const splott: AwsTeam = { key: 'ladies', label: 'S Wales Womens', league: 'S Wales Womens', cid: 10641, clubName: 'Splott Albion' };
   const { results } = parseFixturesAndResults(read('aws-inseason-womens-10641.html'), splott);
 
   it('extracts results with numeric scores for the club', () => {
