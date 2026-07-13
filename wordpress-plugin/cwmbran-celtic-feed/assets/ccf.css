@@ -1,0 +1,13 @@
+/* wordpress-plugin/cwmbran-celtic-feed/assets/ccf.css
+   Baseline layout only. Colours/spacing are tuned to match the redesign in sub-project B. */
+.ccf-list { list-style: none; margin: 0; padding: 0; }
+.ccf-row { display: grid; grid-template-columns: auto 1fr auto 1fr auto; align-items: center; gap: .5rem; padding: .6rem .4rem; border-bottom: 1px solid rgba(0,0,0,.08); }
+.ccf-team { display: inline-flex; align-items: center; gap: .4rem; }
+.ccf-crest { border-radius: 50%; object-fit: cover; display: inline-block; flex: none; }
+.ccf-monogram { display: inline-flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: .7rem; background: #556; }
+.ccf-score { font-weight: 700; }
+.ccf-table { width: 100%; border-collapse: collapse; }
+.ccf-table th, .ccf-table td { padding: .45rem .5rem; text-align: center; border-bottom: 1px solid rgba(0,0,0,.08); }
+.ccf-table .ccf-club { text-align: left; display: flex; align-items: center; gap: .4rem; }
+.ccf-table .ccf-own { background: rgba(0,120,60,.10); font-weight: 600; }
+@media (max-width: 600px) { .ccf-row { grid-template-columns: 1fr auto 1fr; } .ccf-date, .ccf-comp { grid-column: 1 / -1; opacity: .7; font-size: .8rem; } }
