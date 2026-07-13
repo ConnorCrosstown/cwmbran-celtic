@@ -37,6 +37,20 @@ class CCF_Client {
             update_option('ccf_last_error', 'Feed response was not valid JSON.');
             return false;
         }
+        // An entirely-empty payload usually means the upstream source was down.
+        // Don't overwrite last-good cache with nothing — keep serving previous data.
+        $has_fixtures = !empty($data['fixtures']);
+        $has_results  = !empty($data['results']);
+        $has_table    = false;
+        if (!empty($data['tables']) && is_array($data['tables'])) {
+            foreach ($data['tables'] as $rows) {
+                if (!empty($rows)) { $has_table = true; break; }
+            }
+        }
+        if (!$has_fixtures && !$has_results && !$has_table) {
+            update_option('ccf_last_error', 'Feed returned no data; kept previous cache.');
+            return false;
+        }
         // Store for 26h so a missed cron still serves last-good until the next run.
         set_transient(self::CACHE_KEY, $data, 26 * HOUR_IN_SECONDS);
         update_option('ccf_last_fetch', time());
