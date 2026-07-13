@@ -1,13 +1,10 @@
 import { fetchAllTeams } from '@/lib/allwalessport';
 import { buildFeed } from '@/lib/feed';
+import { SITE_URL } from '@/lib/site';
 
-// Revalidate the underlying fetch hourly; SWR keeps the last good copy warm.
-export const revalidate = 3600;
-
-export async function GET(request: Request): Promise<Response> {
-  const origin = new URL(request.url).origin;
+export async function GET(): Promise<Response> {
   const data = await fetchAllTeams(); // already degrades to empty arrays on error
-  const feed = buildFeed(data, origin, Date.now());
+  const feed = buildFeed(data, SITE_URL, Date.now());
   return new Response(JSON.stringify(feed), {
     status: 200,
     headers: {

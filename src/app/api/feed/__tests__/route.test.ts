@@ -14,7 +14,7 @@ describe('GET /api/feed', () => {
   beforeEach(() => vi.clearAllMocks());
 
   it('returns feed JSON with fixtures and cache headers', async () => {
-    const res = await GET(new Request('https://cwmbran-celtic.vercel.app/api/feed'));
+    const res = await GET();
     expect(res.status).toBe(200);
     expect(res.headers.get('cache-control')).toContain('s-maxage=3600');
     expect(res.headers.get('access-control-allow-origin')).toBe('*');
