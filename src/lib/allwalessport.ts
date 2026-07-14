@@ -97,9 +97,21 @@ export async function fetchTeamData(
   team: AwsTeam,
   fetchImpl: typeof fetch = fetch
 ): Promise<{ fixtures: Fixture[]; results: Result[]; table: LeagueTableRow[] }> {
+  // During `next build`, never hit the network: a slow/500ing allwalessport
+  // would otherwise time out static export and fail the whole deploy. Return
+  // empty (callers fall back to mock); ISR/runtime requests fetch the real data
+  // after deploy. This makes the build independent of the upstream's health.
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return { fixtures: [], results: [], table: [] };
+  }
+  // Bound the external fetch at runtime: a slow/hanging allwalessport must never
+  // stall a request. On timeout we abort and degrade to empty (ISR refills later).
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000);
   try {
     const res = await fetchImpl(divisionUrl(team.cid), {
       next: { revalidate: 21600 },
+      signal: controller.signal,
     } as RequestInit);
     if (!res.ok) throw new Error(`allwalessport ${team.cid}: ${res.status}`);
     const html = await res.text();
@@ -108,8 +120,11 @@ export async function fetchTeamData(
   } catch (err) {
     console.warn(`[allwalessport] ${team.key} (cid ${team.cid}) failed:`, err);
     return { fixtures: [], results: [], table: [] };
+  } finally {
+    clearTimeout(timeout);
   }
 }
+
 
 /** Fetch every active team and merge. tables keyed by TeamKey. */
 export async function fetchAllTeams(
