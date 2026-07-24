@@ -173,21 +173,11 @@ export default function ProgrammeGeneratorPage() {
     }
   }, []);
 
-  const loadSavedProgrammes = () => {
-    const programmes: SavedProgramme[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith('programme-')) {
-        try {
-          const data = JSON.parse(localStorage.getItem(key) || '');
-          programmes.push({ id: key, data });
-        } catch (e) {
-          // Skip invalid entries
-        }
-      }
-    }
-    programmes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-    setSavedProgrammes(programmes);
+  const loadSavedProgrammes = async () => {
+    const res = await fetch('/api/programme');
+    if (!res.ok) return;
+    const rows: Array<ProgrammeData & { id: string }> = await res.json();
+    setSavedProgrammes(rows.map((data) => ({ id: data.id, data })));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -304,21 +294,29 @@ export default function ProgrammeGeneratorPage() {
     setShowPreview(true);
   };
 
-  const saveProgramme = (status: 'draft' | 'published') => {
+  const saveProgramme = async (status: 'draft' | 'published') => {
     if (!formData.opponent || !formData.date) {
       alert('Please select an opponent and date');
       return;
     }
-    const programmeKey = `programme-${formData.date}-${formData.opponent}`;
+    const id = `programme-${formData.date}-${formData.opponent}`;
     const dataToSave = {
       ...formData,
       status,
-      updatedAt: new Date().toISOString(),
       createdAt: formData.createdAt || new Date().toISOString(),
     };
-    localStorage.setItem(programmeKey, JSON.stringify(dataToSave));
-    setFormData(dataToSave);
-    loadSavedProgrammes();
+    const res = await fetch('/api/programme', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ...dataToSave, id, slug: id }),
+    });
+    if (!res.ok) {
+      alert('Sorry — saving failed. Please try again.');
+      return;
+    }
+    const saved = await res.json();
+    setFormData(saved);
+    await loadSavedProgrammes();
 
     if (status === 'published') {
       alert('Programme published! The digital link is now active.');
@@ -346,10 +344,14 @@ export default function ProgrammeGeneratorPage() {
     alert('Programme duplicated! Update the date and opponent.');
   };
 
-  const deleteProgramme = (id: string) => {
+  const deleteProgramme = async (id: string) => {
     if (confirm('Are you sure you want to delete this programme?')) {
-      localStorage.removeItem(id);
-      loadSavedProgrammes();
+      const res = await fetch(`/api/programme/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (!res.ok) {
+        alert('Sorry — deleting failed. Please try again.');
+        return;
+      }
+      await loadSavedProgrammes();
     }
   };
 
