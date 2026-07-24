@@ -806,3 +806,17 @@ body.nav-open .nav-toggle span::after{top:0;transform:rotate(-45deg)}
 .support-band p{color:#c5d2ee;margin:.4rem 0 0;position:relative;z-index:2}
 .support-band .sb-cta{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:2}
 @media(max-width:700px){.support-band{grid-template-columns:1fr;text-align:center}.support-band .sb-cta{justify-content:center}}
+
+/* ---- Sponsorship page (template-sponsorship.php) ---- */
+.spx-lead{max-width:72ch;color:var(--muted);font-size:1.06rem;line-height:1.75;margin:14px 0 0}
+.spx-ways{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:20px;margin-top:6px}
+.spx-way{background:var(--surface);border:1px solid var(--hair);border-top:3px solid var(--gold);border-radius:10px;padding:24px 24px 26px;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s}
+.spx-way:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.spx-way h3{font-family:var(--display);font-weight:600;font-size:1.12rem;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);margin:0 0 9px}
+.spx-way p{color:var(--muted);font-size:.94rem;line-height:1.62;margin:0}
+.spx-pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:10px;overflow:hidden;margin-top:6px}
+.spx-pkg{background:var(--surface);padding:26px 24px}
+.spx-pkg h4{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:1.08rem;color:var(--blue-500);margin:0 0 9px}
+.spx-pkg p{color:var(--muted);font-size:.9rem;line-height:1.6;margin:0}
+.spx-note{color:var(--muted);font-size:.96rem;line-height:1.72;margin-top:18px;max-width:72ch}
+@media(max-width:640px){.spx-ways{grid-template-columns:1fr}}

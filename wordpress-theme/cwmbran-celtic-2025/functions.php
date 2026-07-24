@@ -47,12 +47,14 @@ add_filter('template_include', function ($template) {
     if (is_page()) {
         $slug = get_post_field('post_name', get_queried_object_id());
         $map = array(
-            'fixtures'    => 'template-fixtures.php',
-            'teams'       => 'template-squad.php',
-            'mens-team'   => 'template-squad.php',
-            'ladies-team' => 'template-squad.php',
-            'sponsors-2'  => 'template-sponsors.php',
-            'sponsors'    => 'template-sponsors.php',
+            'fixtures'                   => 'template-fixtures.php',
+            'teams'                      => 'template-squad.php',
+            'mens-team'                  => 'template-squad.php',
+            'ladies-team'                => 'template-squad.php',
+            'sponsors-2'                 => 'template-sponsors.php',
+            'sponsors'                   => 'template-sponsors.php',
+            'sponsorship-opportunities'  => 'template-sponsorship.php',
+            'sponsorship'                => 'template-sponsorship.php',
         );
         if (isset($map[$slug])) {
             $found = locate_template($map[$slug]);
@@ -100,6 +102,10 @@ function cc25_ext_url($key) {
  * ---------------------------------------------------------------------- */
 function cc25_signup_endpoint() { return ''; }  // e.g. https://script.google.com/macros/s/AKfyc.../exec
 function cc25_signup_secret()   { return ''; }  // the SIGNUP_SECRET shown by "Website signup info"
+
+/** Sponsorship page: commercial contact + optional brochure PDF (leave blank to hide the button). */
+function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
+function cc25_sponsorship_brochure() { return ''; }  // paste a 2026/27 brochure PDF URL to show the download button
 
 /** URL of a page — tries the real slug variants, else a fallback (never 404s). */
 function cc25_page_url($key, $fallback = '') {
