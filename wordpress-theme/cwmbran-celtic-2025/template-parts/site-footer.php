@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
     <div class="ft-grid">
       <div>
         <h3 style="display:flex;align-items:center;gap:11px"><?php echo cc25_own_crest(34); ?> Cwmbran Celtic AFC</h3>
-        <p class="about">Ardal League South East. Playing at Motazone Arena since 1925 — proudly representing the town of Cwmbran, home and away.</p>
+        <p class="about">Ardal League South East. Playing at Motazone Arena since 1924 — proudly representing the town of Cwmbran, home and away.</p>
       </div>
       <div><h3>Club</h3>
         <a href="<?php echo esc_url(cc25_page_url('news', home_url('/'))); ?>">News</a>

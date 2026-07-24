@@ -37,17 +37,19 @@ get_template_part('template-parts/site-header');
   <div class="wrap">
 
     <div class="panel on" id="fixtures">
-      <?php if ($upcoming): $lm = ''; foreach ($upcoming as $f): $fo = cc25_opponent($f);
+      <?php if ($upcoming): $lm = ''; foreach ($upcoming as $f): $fo = cc25_opponent($f); $isHome = $fo['home'];
+        // List the HOME team on the left, away on the right (standard listing).
+        $oppCrest = cc25_crest($feed, $fo['opponent'], 34);
         $mo = cc25_date($f['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; } ?>
         <div class="mrow reveal">
           <div class="mdate"><div class="d"><?php echo esc_html(cc25_date($f['date'] ?? 0, 'd')); ?></div><div class="m"><?php echo esc_html(cc25_date($f['date'] ?? 0, 'M')); ?></div><div class="day"><?php echo esc_html(cc25_date($f['date'] ?? 0, 'D')); ?></div></div>
           <div class="mteams">
-            <span class="mt"><?php echo cc25_own_crest(34); ?><span class="nm">Cwmbran Celtic</span></span>
+            <span class="mt<?php echo $isHome ? ' is-own' : ''; ?>"><?php echo $isHome ? cc25_own_crest(34) : $oppCrest; ?><span class="nm"><?php echo esc_html($isHome ? 'Cwmbran Celtic' : $fo['opponent']); ?></span></span>
             <span class="mvs">vs</span>
-            <span class="mt right"><?php echo cc25_crest($feed, $fo['opponent'], 34); ?><span class="nm"><?php echo esc_html($fo['opponent']); ?></span></span>
+            <span class="mt right<?php echo $isHome ? '' : ' is-own'; ?>"><?php echo $isHome ? $oppCrest : cc25_own_crest(34); ?><span class="nm"><?php echo esc_html($isHome ? $fo['opponent'] : 'Cwmbran Celtic'); ?></span></span>
           </div>
           <div class="mscore"><?php echo esc_html($f['time'] ?? 'TBC'); ?></div>
-          <div class="mmeta"><div class="comp"><?php echo esc_html($f['competition'] ?? ''); ?></div><span class="ha <?php echo $fo['home'] ? 'h' : 'a'; ?>"><?php echo $fo['home'] ? 'Home' : 'Away'; ?></span></div>
+          <div class="mmeta"><div class="comp"><?php echo esc_html($f['competition'] ?? ''); ?></div><span class="ha <?php echo $isHome ? 'h' : 'a'; ?>"><?php echo $isHome ? 'Home' : 'Away'; ?></span></div>
         </div>
       <?php endforeach; else: ?>
         <p style="color:var(--muted);padding:24px 2px">Fixtures will appear here once the season is released.</p>
@@ -61,12 +63,13 @@ get_template_part('template-parts/site-header');
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
         $mo = cc25_date($r['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; } ?>
+        <?php $oppCrest = cc25_crest($feed, $ro['opponent'], 34); // Home team + its score on the left. ?>
         <div class="mrow reveal">
           <div class="mdate"><div class="d"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'd')); ?></div><div class="m"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'M')); ?></div><div class="day"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'D')); ?></div></div>
           <div class="mteams">
-            <span class="mt"><?php echo cc25_own_crest(34); ?><span class="nm">Cwmbran Celtic</span></span>
-            <span class="mscore"><?php echo $cc . ' – ' . $op; ?></span>
-            <span class="mt right"><?php echo cc25_crest($feed, $ro['opponent'], 34); ?><span class="nm"><?php echo esc_html($ro['opponent']); ?></span></span>
+            <span class="mt<?php echo $home ? ' is-own' : ''; ?>"><?php echo $home ? cc25_own_crest(34) : $oppCrest; ?><span class="nm"><?php echo esc_html($home ? 'Cwmbran Celtic' : $ro['opponent']); ?></span></span>
+            <span class="mscore"><?php echo ($home ? $cc : $op) . ' – ' . ($home ? $op : $cc); ?></span>
+            <span class="mt right<?php echo $home ? '' : ' is-own'; ?>"><?php echo $home ? $oppCrest : cc25_own_crest(34); ?><span class="nm"><?php echo esc_html($home ? $ro['opponent'] : 'Cwmbran Celtic'); ?></span></span>
           </div>
           <div><span class="res-badge <?php echo $wdl; ?>"><?php echo strtoupper($wdl); ?></span></div>
           <div class="mmeta"><div class="comp"><?php echo esc_html($r['competition'] ?? ''); ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span></div>

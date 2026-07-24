@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) exit;
   <div class="wrap nav-in">
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
       <?php echo cc25_own_crest(42); ?>
-      <span class="bt">Cwmbran Celtic<small>Est. 1925 · The Celts</small></span>
+      <span class="bt">Cwmbran Celtic<small>Est. 1924 · The Celts</small></span>
     </a>
     <nav class="main" id="cc25-primary-nav">
       <?php wp_nav_menu(array(

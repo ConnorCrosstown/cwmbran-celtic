@@ -19,7 +19,7 @@ get_template_part('template-parts/site-header');
   <div class="hero-in">
     <span class="hero-eyebrow kick"><span class="ln"></span> Next Match · Ardal League South East</span>
     <h1>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
-    <p class="hero-sub">Blue and yellow, since 1925. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
+    <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
     <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo $next ? intval($next['date']) : ''; ?>">
       <div class="u"><div class="n" id="cd-d">00</div><div class="l">Days</div></div>
       <div class="sep">:</div>
@@ -230,9 +230,9 @@ get_template_part('template-parts/site-header');
 </section>
 
 <section class="heritage">
-  <div class="grain"></div><div class="ghost">1925</div>
+  <div class="grain"></div><div class="ghost">1924</div>
   <div class="heritage-in">
-    <div class="est"><div class="y">1925</div><div class="t">ESTABLISHED</div></div>
+    <div class="est"><div class="y">1924</div><div class="t">ESTABLISHED</div></div>
     <div class="reveal">
       <h2>A century of blue &amp; yellow in Cwmbran</h2>
       <p>From the valleys to the Ardal League, Cwmbran Celtic has been the heartbeat of local football for a hundred years — built on community, youth and the people of the town.</p>

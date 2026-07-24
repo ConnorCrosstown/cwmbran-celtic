@@ -47,7 +47,7 @@ $spx_pkgs = array(
     <p class="spx-lead reveal">Whatever the result on the pitch, Cwmbran Celtic Commercial delivers one of the finest matchday experiences in Welsh League football. Backing the Celts gives your business that &lsquo;feel-good factor&rsquo; of supporting your local community team — providing football and fun for more than 500 players of all ages and genders — while putting your brand in front of supporters home, away and online.</p>
 
     <div class="stats reveal d1">
-      <div class="stat"><div class="n">1925</div><div class="l">Established &mdash; a century of Celts</div></div>
+      <div class="stat"><div class="n">1924</div><div class="l">Established &mdash; a century of Celts</div></div>
       <div class="stat"><div class="n">500+</div><div class="l">Players, all ages &amp; genders</div></div>
       <div class="stat"><div class="n">2</div><div class="l">Senior teams &mdash; Men&rsquo;s &amp; Women&rsquo;s</div></div>
       <div class="stat"><div class="n">Champions</div><div class="l">Women&rsquo;s SWFA Cup holders</div></div>
