@@ -852,3 +852,29 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .mt.is-own .nm{color:var(--blue-500)}
 @media (prefers-color-scheme:dark){.mt.is-own .nm{color:var(--gold-soft)}}
 :root[data-theme="dark"] .mt.is-own .nm{color:var(--gold-soft)}
+
+/* ---- Next-home-game homepage takeover ---- */
+.splash{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
+.splash[hidden]{display:none}
+.splash-bg{position:absolute;inset:0;background:rgba(7,13,28,.74);backdrop-filter:blur(6px)}
+.splash-card{position:relative;z-index:2;width:min(560px,100%);background:linear-gradient(165deg,var(--navy-900),var(--navy-950));color:#eef2fb;border:1px solid rgba(245,197,24,.35);border-top:4px solid var(--gold);border-radius:16px;box-shadow:0 40px 90px -30px rgba(0,0,0,.7);padding:36px 30px 24px;text-align:center;animation:splashIn .28s ease}
+@media(prefers-reduced-motion:reduce){.splash-card{animation:none}}
+@keyframes splashIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.splash-x{position:absolute;top:11px;right:14px;background:none;border:0;color:#9fb0d6;font-size:1.9rem;line-height:1;cursor:pointer;padding:2px 8px}
+.splash-x:hover{color:#fff}
+.splash-eye{color:var(--gold);font-size:.72rem}
+.splash-match{display:flex;align-items:center;justify-content:center;gap:18px;margin:16px 0 2px;flex-wrap:wrap}
+.splash-team{display:flex;flex-direction:column;align-items:center;gap:9px;font-family:var(--display);text-transform:uppercase}
+.splash-team .nm{font-size:1.05rem;letter-spacing:.01em}
+.splash-vs{font-family:var(--display);color:var(--gold);font-size:1rem}
+.splash-meta{color:#a9bbdf;font-size:.9rem;margin-top:10px}
+.splash-count{display:flex;justify-content:center;gap:10px;margin:20px 0 18px}
+.splash-count .u{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 4px;min-width:60px}
+.splash-count b{display:block;font-family:var(--display);font-size:1.7rem;line-height:1;font-variant-numeric:tabular-nums}
+.splash-count span{display:block;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:#9fb0d6;margin-top:6px}
+.splash-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.splash-cta .btn-outline{border-color:rgba(255,255,255,.55);color:#fff}
+.splash-cta .btn-outline:hover{background:rgba(255,255,255,.12)}
+.splash-later{display:block;margin:15px auto 0;background:none;border:0;color:#8fa3ca;font-size:.82rem;cursor:pointer;text-decoration:underline}
+.splash-later:hover{color:#cdd9f0}
+@media(max-width:480px){.splash-card{padding:30px 18px 20px}.splash-count .u{min-width:52px}.splash-cta .btn{width:100%}}

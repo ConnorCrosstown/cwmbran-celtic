@@ -285,6 +285,14 @@ function cc25_next_fixture($feed, $team = 'mens') {
     return $up ? $up[0] : null;
 }
 
+/** The next upcoming HOME fixture (homeAway 'H'), or null. Powers the homepage takeover. */
+function cc25_next_home_fixture($feed, $team = 'mens') {
+    foreach (cc25_upcoming($feed, $team, 20) as $f) {
+        if (($f['homeAway'] ?? 'H') === 'H') return $f;
+    }
+    return null;
+}
+
 function cc25_latest_result($feed, $team = 'mens') {
     $rs = cc25_team_items($feed['results'] ?? array(), $team);
     if (!$rs) return null;

@@ -73,4 +73,41 @@
       });
     });
   }
+
+  // Next-home-game takeover: show once per home fixture per visitor.
+  var sp=document.getElementById('cc25-splash');
+  if(sp){
+    var key='cc25splash_'+(sp.getAttribute('data-key')||'x'),seen=false;
+    try{seen=localStorage.getItem(key)==='1';}catch(e){}
+    if(!seen){
+      var lastFocus,iv;
+      var pad=function(x){return String(x).padStart(2,'0');};
+      var openSplash=function(){
+        lastFocus=document.activeElement;
+        sp.hidden=false;document.body.style.overflow='hidden';
+        var x=sp.querySelector('.splash-x');if(x)x.focus();
+        var ko=parseInt(sp.querySelector('.splash-count').getAttribute('data-ko'),10);
+        if(ko&&ko>0){var tick=function(){var s=Math.floor(Math.max(0,ko-Date.now())/1000),e;
+          if(e=sp.querySelector('[data-d]'))e.textContent=pad(Math.floor(s/86400));
+          if(e=sp.querySelector('[data-h]'))e.textContent=pad(Math.floor(s%86400/3600));
+          if(e=sp.querySelector('[data-m]'))e.textContent=pad(Math.floor(s%3600/60));
+          if(e=sp.querySelector('[data-s]'))e.textContent=pad(s%60);};tick();iv=setInterval(tick,1000);}
+      };
+      var closeSplash=function(){
+        sp.hidden=true;document.body.style.overflow='';if(iv)clearInterval(iv);
+        try{localStorage.setItem(key,'1');}catch(e){}
+        if(lastFocus&&lastFocus.focus)lastFocus.focus();
+      };
+      sp.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',closeSplash);});
+      document.addEventListener('keydown',function(e){if(!sp.hidden&&e.key==='Escape')closeSplash();});
+      sp.addEventListener('keydown',function(e){
+        if(e.key!=='Tab'||sp.hidden)return;
+        var f=sp.querySelectorAll('a[href],button');if(!f.length)return;
+        var first=f[0],last=f[f.length-1];
+        if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+        else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+      });
+      setTimeout(openSplash,matchMedia('(prefers-reduced-motion:reduce)').matches?0:500);
+    }
+  }
 })();

@@ -13,6 +13,35 @@ $table    = cc25_table($feed, $team);
 get_template_part('template-parts/site-header');
 ?>
 
+<?php // Next-home-game takeover — shows once per home fixture (see premium.js).
+$cc25_hg = cc25_next_home_fixture($feed, $team);
+if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
+<div class="splash" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-key="hg-<?php echo intval($cc25_hg['date'] ?? 0); ?>" hidden>
+  <div class="splash-bg" data-close></div>
+  <div class="splash-card">
+    <button class="splash-x" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="splash-eye kick">Next home game &middot; Motazone Arena</div>
+    <div class="splash-match" id="splash-title">
+      <span class="splash-team"><?php echo cc25_own_crest(54); ?><span class="nm">Cwmbran Celtic</span></span>
+      <span class="splash-vs">vs</span>
+      <span class="splash-team"><?php echo cc25_crest($feed, $hgo['opponent'], 54); ?><span class="nm"><?php echo esc_html($hgo['opponent']); ?></span></span>
+    </div>
+    <div class="splash-meta"><?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'l j F')); ?> &middot; <?php echo esc_html($cc25_hg['time'] ?? 'TBC'); ?> &middot; Motazone Arena</div>
+    <div class="splash-count" data-ko="<?php echo intval($cc25_hg['date'] ?? 0); ?>" aria-label="Countdown to kick-off">
+      <div class="u"><b data-d>00</b><span>Days</span></div>
+      <div class="u"><b data-h>00</b><span>Hrs</span></div>
+      <div class="u"><b data-m>00</b><span>Mins</span></div>
+      <div class="u"><b data-s>00</b><span>Secs</span></div>
+    </div>
+    <div class="splash-cta">
+      <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
+      <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+    </div>
+    <button class="splash-later" type="button" data-close>Maybe later</button>
+  </div>
+</div>
+<?php endif; ?>
+
 <section class="hero">
   <div class="bgphoto has-photo" style="background-image:url('<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/img/hero.jpg'); ?>')"></div><div class="streak"></div><div class="grain"></div>
   <div class="ghost">CELTIC</div>
