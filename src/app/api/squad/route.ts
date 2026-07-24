@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { getStore } from '@/lib/store-singleton';
-import type { SquadPlayer } from '@/types/programme';
+import { buildPlayer } from '@/lib/squad-input';
 
 export const runtime = 'nodejs';
 
@@ -17,15 +17,8 @@ export async function POST(req: Request) {
   if (typeof body?.squadNo !== 'number') {
     return NextResponse.json({ error: 'squadNo is required' }, { status: 400 });
   }
-  const player: SquadPlayer = {
-    id: typeof body.id === 'string' && body.id ? body.id : crypto.randomUUID(),
-    squadNo: body.squadNo,
-    firstName: String(body.firstName ?? ''),
-    lastName: String(body.lastName ?? ''),
-    position: String(body.position ?? ''),
-    photoUrl: body.photoUrl ? String(body.photoUrl) : undefined,
-    penPicture: body.penPicture ? String(body.penPicture) : undefined,
-  };
+  const id = typeof body.id === 'string' && body.id ? body.id : crypto.randomUUID();
+  const player = buildPlayer(body, id);
   await getStore().savePlayer(player);
   return NextResponse.json(player);
 }

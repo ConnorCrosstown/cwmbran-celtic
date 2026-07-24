@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/admin-auth';
 import { getStore } from '@/lib/store-singleton';
+import { normalizeProgrammeFields } from '@/lib/programme-input';
+import type { Programme } from '@/types/programme';
 
 export const runtime = 'nodejs';
 
@@ -24,7 +26,8 @@ export async function PUT(req: Request, { params }: Ctx) {
   const existing = await getStore().getProgramme(id);
   if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   const body = await req.json().catch(() => ({}));
-  const updated = { ...existing, ...body, id, updatedAt: new Date().toISOString() };
+  const fields = normalizeProgrammeFields(body, existing);
+  const updated: Programme = { ...existing, ...body, ...fields, id, updatedAt: new Date().toISOString() };
   await getStore().saveProgramme(updated);
   return NextResponse.json(updated);
 }
