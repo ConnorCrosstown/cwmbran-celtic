@@ -10,6 +10,7 @@ if (!defined('ABSPATH')) exit;
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
+<a class="skip" href="#main">Skip to content</a>
 <header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="<?php echo esc_url(home_url('/')); ?>">
@@ -36,3 +37,4 @@ if (!defined('ABSPATH')) exit;
   <a class="tk-cta tk-cta-bond" href="<?php echo esc_url(cc25_page_url('celtic-bond', home_url('/'))); ?>">Join the Bond &#9733;</a>
 </div>
 <?php endif; ?>
+<main id="main">

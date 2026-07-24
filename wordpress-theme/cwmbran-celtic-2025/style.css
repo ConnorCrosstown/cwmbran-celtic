@@ -262,7 +262,7 @@ table.lt td.pts{font-family:var(--display);font-weight:600;font-size:1.08rem}
 footer.ft{background:var(--navy-950);color:#b9c6e3;padding:56px 0 30px;position:relative;overflow:hidden}
 footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);background-size:180px;opacity:.1;mix-blend-mode:overlay}
 .ft-grid{position:relative;z-index:2;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:34px}
-.ft h4{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:#fff;margin:0 0 14px}
+.ft h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:#fff;margin:0 0 14px}
 .ft a{display:block;color:#95a6c8;font-size:.88rem;padding:5px 0;transition:.15s}.ft a:hover{color:var(--gold);transform:translateX(3px)}
 .ft .about{max-width:34ch;color:#95a6c8;font-size:.9rem}
 .ft-bot{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.76rem;color:#6a7ba0}
@@ -643,7 +643,7 @@ nav.main a:hover{color:var(--text)}nav.main a:hover::after,nav.main a.active::af
 footer.ft{background:var(--navy-950);color:#b9c6e3;padding:44px 0 26px;position:relative;overflow:hidden;margin-top:8px}
 footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);background-size:180px;opacity:.1;mix-blend-mode:overlay}
 .ft-grid{position:relative;z-index:2;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;margin-bottom:30px}
-.ft h4{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:#fff;margin:0 0 13px}
+.ft h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:#fff;margin:0 0 13px}
 .ft a{display:block;color:#95a6c8;font-size:.88rem;padding:5px 0;transition:.15s}.ft a:hover{color:var(--gold);transform:translateX(3px)}
 .ft .about{max-width:34ch;color:#95a6c8;font-size:.9rem}
 .ft-bot{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.1);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.76rem;color:#6a7ba0}
@@ -658,7 +658,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
 .hero h1 .thin{color:transparent}
 .cta h2,.heritage h2,.phero h1,.phero h2{color:#fff}
 .sec-head h2{color:var(--text)}
-footer.ft h4{color:#fff}
+footer.ft h3{color:#fff}
 /* Next Up card: overlap the hero without being clipped */
 .mcard-wrap{position:relative;z-index:10;max-width:var(--maxw);margin:-64px auto 0;padding:0 var(--gutter);display:flex;justify-content:center}
 .mcard{position:static;transform:none;left:auto;bottom:auto;width:min(940px,100%)}
@@ -838,7 +838,12 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .spx-way p{color:var(--muted);font-size:.94rem;line-height:1.62;margin:0}
 .spx-pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:10px;overflow:hidden;margin-top:6px}
 .spx-pkg{background:var(--surface);padding:26px 24px}
-.spx-pkg h4{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:1.08rem;color:var(--blue-500);margin:0 0 9px}
+.spx-pkg h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:1.08rem;color:var(--blue-500);margin:0 0 9px}
 .spx-pkg p{color:var(--muted);font-size:.9rem;line-height:1.6;margin:0}
 .spx-note{color:var(--muted);font-size:.96rem;line-height:1.72;margin-top:18px;max-width:72ch}
 @media(max-width:640px){.spx-ways{grid-template-columns:1fr}}
+
+/* ---- Accessibility: skip link + screen-reader-only ---- */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:8px;top:-64px;z-index:200;background:var(--gold);color:var(--navy-900);font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;padding:11px 18px;border-radius:0 0 8px 8px;transition:top .16s ease}
+.skip:focus{top:0;outline:2px solid var(--navy-900);outline-offset:2px}
