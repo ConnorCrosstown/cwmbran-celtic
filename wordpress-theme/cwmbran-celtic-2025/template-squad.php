@@ -14,6 +14,14 @@ $cc25_players = get_posts(array(
     'order'       => 'ASC',
 ));
 
+// Show only this page's team (Men's vs Ladies). Falls back to all if unresolved.
+$cc25_team = cc25_squad_team_id();
+if ($cc25_team) {
+    $cc25_players = array_values(array_filter($cc25_players, function ($pl) use ($cc25_team) {
+        return in_array($cc25_team, cc25_player_team_ids($pl->ID), true);
+    }));
+}
+
 // Group by SportsPress position taxonomy, in football order.
 $cc25_order = array('Goalkeeper', 'Defender', 'Midfielder', 'Forward');
 $cc25_groups = array();

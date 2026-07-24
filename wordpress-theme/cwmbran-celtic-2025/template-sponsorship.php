@@ -75,7 +75,7 @@ $spx_pkgs = array(
     <div class="spx-pkgs reveal d1">
       <?php foreach ($spx_pkgs as $p): ?>
       <div class="spx-pkg">
-        <h4><?php echo esc_html($p[0]); ?></h4>
+        <h3><?php echo esc_html($p[0]); ?></h3>
         <p><?php echo $p[1]; ?></p>
       </div>
       <?php endforeach; ?>

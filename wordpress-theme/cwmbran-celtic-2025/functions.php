@@ -107,6 +107,47 @@ function cc25_signup_secret()   { return ''; }  // the SIGNUP_SECRET shown by "W
 function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
 function cc25_sponsorship_brochure() { return ''; }  // paste a 2026/27 brochure PDF URL to show the download button
 
+/** Current football season label, e.g. "2026/27" — derived from the date so it
+ * never goes stale (the season rolls over in July). */
+function cc25_season() {
+    $y = (int) date_i18n('Y');
+    $start = ((int) date_i18n('n') >= 7) ? $y : $y - 1;
+    return $start . '/' . substr((string) ($start + 1), -2);
+}
+
+/* -- Squad pages: resolve the SportsPress team for the CURRENT page so
+ * /mens-team/ and /ladies-team/ each show only their own players (they used to
+ * share one template and list everyone merged). Returns 0 — "show all" — when a
+ * team can't be matched, so it can never regress. NOTE: matches teams by name;
+ * if the club's SportsPress team titles are unusual, tune the keywords below. */
+function cc25_squad_team_id() {
+    if (!function_exists('get_queried_object_id')) return 0;
+    $slug = (string) get_post_field('post_name', get_queried_object_id());
+    if (!$slug) return 0;
+    // Check women first — "men" is a substring of "women".
+    if (preg_match('/ladies|women|girls/i', $slug))       $want = 'women';
+    elseif (preg_match('/men|mens|first|1st/i', $slug))    $want = 'men';
+    else return 0; // generic /teams/ page -> show everyone
+    foreach (get_posts(array('post_type' => 'sp_team', 'numberposts' => -1)) as $t) {
+        $isWomen = (bool) preg_match('/ladies|women|girls/i', $t->post_title);
+        if ($want === 'women' && $isWomen) return $t->ID;
+        if ($want === 'men' && !$isWomen && preg_match('/men|first|1st|senior|celtic/i', $t->post_title)) return $t->ID;
+    }
+    return 0;
+}
+
+/** Every SportsPress team ID a player belongs to (handles single/array/current-team meta). */
+function cc25_player_team_ids($pid) {
+    $ids = array();
+    foreach ((array) get_post_meta($pid, 'sp_team', false) as $v) {
+        if (is_array($v)) { foreach ($v as $x) $ids[] = (int) $x; }
+        else $ids[] = (int) $v;
+    }
+    $cur = get_post_meta($pid, 'sp_current_team', true);
+    if ($cur) $ids[] = (int) $cur;
+    return array_filter(array_unique($ids));
+}
+
 /** URL of a page — tries the real slug variants, else a fallback (never 404s). */
 function cc25_page_url($key, $fallback = '') {
     $cands = is_array($key) ? $key : cc25_slug_candidates($key);
@@ -300,7 +341,7 @@ function cc25_sponsor_url($file) {
 
 /** Wrap a sponsor logo <img> in a link when the sponsor has a website. */
 function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
-    $img = '<img src="' . esc_url(cc25_sponsor_url($file)) . '" alt="' . esc_attr($name) . '"' . $img_extra . '>';
+    $img = '<img src="' . esc_url(cc25_sponsor_url($file)) . '" alt="' . esc_attr($name) . '" width="1058" height="282"' . $img_extra . '>';
     if (!$url) return $img;
     return '<a href="' . esc_url($url) . '" target="_blank" rel="noopener sponsored" aria-label="'
         . esc_attr($name) . ' (opens in a new tab)">' . $img . '</a>';

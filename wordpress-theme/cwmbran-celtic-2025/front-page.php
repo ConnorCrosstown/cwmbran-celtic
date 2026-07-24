@@ -19,7 +19,7 @@ get_template_part('template-parts/site-header');
   <div class="hero-in">
     <span class="hero-eyebrow kick"><span class="ln"></span> Next Match · Ardal League South East</span>
     <h1>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
-    <p class="hero-sub">Blue and yellow, since 1925. Follow the Celts through the 2025/26 season — every fixture, every result, live.</p>
+    <p class="hero-sub">Blue and yellow, since 1925. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
     <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo $next ? intval($next['date']) : ''; ?>">
       <div class="u"><div class="n" id="cd-d">00</div><div class="l">Days</div></div>
       <div class="sep">:</div>
@@ -70,11 +70,12 @@ get_template_part('template-parts/site-header');
   </div>
 </div>
 
-<section class="sec" style="padding-top:48px">
+<section class="sec" style="padding-top:48px" aria-label="This season">
   <div class="wrap">
+    <h2 class="sr-only">This season at a glance</h2>
     <div class="grid-2">
       <div class="panel reveal">
-        <div class="panel-h"><h3>Latest Result</h3><span class="badge"><?php echo $result ? esc_html($result['competition'] ?? 'Full Time') : 'Season 2025/26'; ?></span></div>
+        <div class="panel-h"><h3>Latest Result</h3><span class="badge"><?php echo $result ? esc_html($result['competition'] ?? 'Full Time') : esc_html('Season ' . cc25_season()); ?></span></div>
         <div class="panel-b">
         <?php if ($result):
           $ro = cc25_opponent($result);
@@ -118,7 +119,7 @@ get_template_part('template-parts/site-header');
   <div class="wrap">
     <div class="tickets-band reveal">
       <div class="tk-card tk-season">
-        <div class="kick" style="color:var(--gold)">Season 2025/26</div>
+        <div class="kick" style="color:var(--gold)">Season <?php echo esc_html(cc25_season()); ?></div>
         <h3>Season Tickets</h3>
         <p>Every home league game at Motazone Arena — the best-value way to back the Celts all season long.</p>
         <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Get a Season Ticket</a>
