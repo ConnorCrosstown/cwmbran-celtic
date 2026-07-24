@@ -21,7 +21,14 @@ export default function AdminLoginPage() {
     });
     setBusy(false);
     if (res.ok) {
-      router.push(params.get('next') || '/admin');
+      // Only follow same-origin relative paths — never an absolute/protocol-relative
+      // URL from the `next` query param (open-redirect guard).
+      const next = params.get('next') || '/admin';
+      const safeNext =
+        next.startsWith('/') && !next.startsWith('//') && !next.startsWith('/\\')
+          ? next
+          : '/admin';
+      router.push(safeNext);
     } else {
       setError('Incorrect password');
     }
