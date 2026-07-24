@@ -110,7 +110,8 @@ const defaultFormData: ProgrammeData = {
 };
 
 export default function ProgrammeGeneratorPage() {
-  // Auth is now handled by NextAuth middleware - no need for internal auth
+  // The /api/* routes this page calls are gated server-side by a shared-password
+  // cookie (see lib/admin-auth). Page-level redirect-to-login is a follow-up.
   const [showPreview, setShowPreview] = useState(false);
   const [showSavedList, setShowSavedList] = useState(false);
   const [savedProgrammes, setSavedProgrammes] = useState<SavedProgramme[]>([]);
@@ -187,18 +188,21 @@ export default function ProgrammeGeneratorPage() {
     });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, imageType: 'coverImage' | 'actionImage') => {
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    imageType: 'coverImage' | 'actionImage',
+  ) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({
-          ...formData,
-          [imageType]: reader.result as string
-        });
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch('/api/upload', { method: 'POST', body: fd });
+    if (!res.ok) {
+      alert('Image upload failed. Please try again.');
+      return;
     }
+    const { url } = await res.json();
+    setFormData((f) => ({ ...f, [imageType]: url }));
   };
 
   const togglePlayerInStartingXI = (squadNo: number) => {
@@ -299,7 +303,7 @@ export default function ProgrammeGeneratorPage() {
       alert('Please select an opponent and date');
       return false;
     }
-    const id = `programme-${formData.date}-${formData.opponent}`;
+    const id = `programme-${formData.team}-${formData.date}-${formData.opponent}`;
     const dataToSave = {
       ...formData,
       status,
