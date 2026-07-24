@@ -26,6 +26,30 @@
   var els=document.querySelectorAll('.reveal');
   if(!('IntersectionObserver'in window)||matchMedia('(prefers-reduced-motion:reduce)').matches){els.forEach(function(e){e.classList.add('in');});}
   else{var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}});},{threshold:.12});els.forEach(function(e){io.observe(e);});}
+  // Mailing-list signup -> Apps Script web app (cwmbran-celtic-mailing-list).
+  // POSTs are fire-and-forget: an Apps Script web app can't send CORS headers,
+  // so we can't read the reply cross-origin. We show optimistic success; the
+  // row is still written server-side (honeypot + shared secret gate it there).
+  var sf=document.getElementById('cc25-signup');
+  if(sf){
+    sf.addEventListener('submit',function(ev){
+      ev.preventDefault();
+      var msg=sf.querySelector('.cc25-signup-msg');
+      var email=sf.querySelector('[name=email]');
+      if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value||'')){if(msg){msg.textContent='Please enter a valid email address.';}return;}
+      var url=sf.getAttribute('data-endpoint')||'';
+      var done=function(){sf.innerHTML='<div class="signup-done" role="status">🎉 Thanks — you\'re on the list! Watch your inbox for Celts news.</div>';};
+      if(url.indexOf('http')!==0){done();return;}  // endpoint not configured yet
+      var data=new URLSearchParams();
+      data.append('name',(sf.querySelector('[name=name]')||{}).value||'');
+      data.append('email',email.value);
+      data.append('website',(sf.querySelector('[name=website]')||{}).value||'');
+      data.append('secret',sf.getAttribute('data-secret')||'');
+      var btn=sf.querySelector('button[type=submit]');if(btn){btn.disabled=true;}
+      fetch(url,{method:'POST',mode:'no-cors',body:data}).then(done).catch(function(){if(msg){msg.textContent='Sorry — something went wrong. Please try again.';}if(btn){btn.disabled=false;}});
+    });
+  }
+
   // Mobile menu toggle
   var tgl=document.querySelector('.nav-toggle');
   if(tgl){

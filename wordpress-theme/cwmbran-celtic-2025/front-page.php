@@ -248,10 +248,16 @@ get_template_part('template-parts/site-header');
         <h2>Never miss a Celts matchday</h2>
         <p>Fixtures, results, ticket news and club updates — straight to your inbox, every week during the season.</p>
       </div>
-      <form class="signup" onsubmit="return false">
-        <label for="em">Join the mailing list</label>
-        <div class="row"><input id="em" type="email" placeholder="you@email.com" aria-label="Email"><button class="btn btn-gold" type="submit">Sign up</button></div>
-        <small>Free · unsubscribe any time · we never share your details.</small>
+      <form class="signup" id="cc25-signup" data-endpoint="<?php echo esc_url(cc25_signup_endpoint()); ?>" data-secret="<?php echo esc_attr(cc25_signup_secret()); ?>">
+        <label for="cc25-fn">Join the mailing list</label>
+        <div class="row">
+          <input id="cc25-fn" name="name" type="text" placeholder="First name" aria-label="First name" autocomplete="given-name">
+          <input id="cc25-em" name="email" type="email" required placeholder="you@email.com" aria-label="Email" autocomplete="email">
+          <button class="btn btn-gold" type="submit">Sign up</button>
+        </div>
+        <?php /* Honeypot: real people leave this empty; bots fill it and get silently ignored. */ ?>
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">
+        <small class="cc25-signup-msg" aria-live="polite">Free · unsubscribe any time · we never share your details.</small>
       </form>
     </div>
   </div>
@@ -265,12 +271,11 @@ get_template_part('template-parts/site-header');
     </div>
     <?php $cc25_main = cc25_sponsor_main(); ?>
     <div class="sponsor-main reveal">
-      <div class="lbl">Main Sponsor</div>
-      <img src="<?php echo esc_url(cc25_sponsor_url($cc25_main['file'])); ?>" alt="<?php echo esc_attr($cc25_main['name']); ?>">
+      <?php echo cc25_sponsor_logo($cc25_main['name'], $cc25_main['file'], isset($cc25_main['url']) ? $cc25_main['url'] : ''); ?>
     </div>
     <div class="sponsor-wall reveal d1">
     <?php foreach (cc25_sponsors() as $s): ?>
-      <div class="sponsor-card"><img src="<?php echo esc_url(cc25_sponsor_url($s[1])); ?>" alt="<?php echo esc_attr($s[0]); ?>" loading="lazy"></div>
+      <div class="sponsor-card"><?php echo cc25_sponsor_logo($s[0], $s[1], isset($s[2]) ? $s[2] : '', ' loading="lazy"'); ?></div>
     <?php endforeach; ?>
     </div>
   </div>

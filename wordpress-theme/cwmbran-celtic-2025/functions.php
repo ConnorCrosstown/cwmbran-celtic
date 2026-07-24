@@ -91,6 +91,16 @@ function cc25_ext_url($key) {
     return isset($map[$key]) ? $map[$key] : '#';
 }
 
+/* -------------------------------------------------------------------------
+ * Mailing-list signup. The homepage form POSTs to the club's Apps Script
+ * mailing-list web app (cwmbran-celtic-mailing-list). After deploying that
+ * script as a Web app, run its "Website signup info" menu item and paste the
+ * two values below. Until then the form shows a friendly success without
+ * sending anywhere.
+ * ---------------------------------------------------------------------- */
+function cc25_signup_endpoint() { return ''; }  // e.g. https://script.google.com/macros/s/AKfyc.../exec
+function cc25_signup_secret()   { return ''; }  // the SIGNUP_SECRET shown by "Website signup info"
+
 /** URL of a page — tries the real slug variants, else a fallback (never 404s). */
 function cc25_page_url($key, $fallback = '') {
     $cands = is_array($key) ? $key : cc25_slug_candidates($key);
@@ -105,15 +115,12 @@ function cc25_page_url($key, $fallback = '') {
 function cc25_nav_fallback() {
     $home = home_url('/');
     $items = array(
-        array('Celtic Bond', cc25_page_url('celtic-bond', $home), false),
-        array('Celtic Bond Results', cc25_page_url('bond-results', $home), false),
-        array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false),
         array('All Teams', cc25_page_url('teams', $home), false),
+        array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false),
         array('Sponsors', cc25_page_url('sponsors', $home), false),
+        array('Celtic Bond', cc25_page_url('celtic-bond', $home), false),
         array('Club', cc25_page_url('club', $home), false),
-        array('Walking Football', cc25_page_url('walking-football', $home), false),
         array('Club Shop', cc25_ext_url('shop'), true),
-        array('Tickets', cc25_ext_url('tickets'), true),
         array('Contact', cc25_page_url('contact', $home), false),
     );
     echo '<ul class="cc25-nav">';
@@ -213,32 +220,42 @@ function cc25_date($ms, $fmt = 'D j M') {
     return date_i18n($fmt, (int) round(((int) $ms) / 1000));
 }
 
-/* ---- Sponsors (current list — mirrors cwmbran-celtic-mailing-list/lib/Sponsors.js) ---- */
-function cc25_sponsor_main() { return array('name' => 'Motazone', 'file' => '_main-motazone.jpg'); }
+/* ---- Sponsors (current list — mirrors cwmbran-celtic-mailing-list/lib/Sponsors.js) ----
+ * Each row: array(Name, banner file, website URL). A blank URL renders the logo
+ * un-linked (used where a sponsor has no confirmed website). */
+function cc25_sponsor_main() { return array('name' => 'Motazone', 'file' => '_main-motazone.jpg', 'url' => 'https://motazone.net/'); }
 function cc25_sponsors() {
     return array(
-        array('Gigantic', 'gigantic.jpg'),
-        array('Crosstown Concerts', 'crosstown-concerts.jpg'),
-        array("Dudley's Aluminium", 'dudleys.jpg'),
-        array('Coaltown', 'coaltown.jpg'),
-        array('SERi', 'seri.jpg'),
-        array('Diverse Vinyl', 'diverse-vinyl.jpg'),
-        array('Country Connect', 'country-connect.jpg'),
-        array('Hornbeam', 'hornbeam.jpg'),
-        array('Hydro Group', 'hydro-group.jpg'),
-        array('CRE', 'cre.jpg'),
-        array('TOR Sports', 'tor.jpg'),
-        array('Avondale Vehicle Hire', 'avondale-vehicle-hire.png'),
-        array('Coffiology', 'coffiology.png'),
-        array('Coleg Gwent', 'coleg-gwent.png'),
-        array('JW Stockwell', 'jw-stockwell.png'),
-        array('Peter Villars', 'peter-villars.png'),
-        array('Blitz Media', 'blitz-media.jpg'),
-        array('Le Pub', 'le-pub.jpg'),
+        array('Gigantic', 'gigantic.jpg', 'https://www.gigantic.com/'),
+        array('Crosstown Concerts', 'crosstown-concerts.jpg', 'https://www.crosstownconcerts.com/'),
+        array("Dudley's Aluminium", 'dudleys.jpg', 'https://www.dudleys.uk.com/'),
+        array('Coaltown', 'coaltown.jpg', 'https://www.coaltowncoffee.co.uk/'),
+        array('SERi', 'seri.jpg', ''),
+        array('Diverse Vinyl', 'diverse-vinyl.jpg', 'https://www.diversevinyl.com/'),
+        array('Country Connect', 'country-connect.jpg', 'https://www.country-connect.co.uk/'),
+        array('Hornbeam', 'hornbeam.jpg', ''),
+        array('Hydro Group', 'hydro-group.jpg', ''),
+        array('CRE', 'cre.jpg', ''),
+        array('TOR Sports', 'tor.jpg', 'https://www.tor-sports.co.uk/'),
+        array('Avondale Vehicle Hire', 'avondale-vehicle-hire.png', 'https://www.avondalehire.co.uk/'),
+        array('Coffiology', 'coffiology.png', 'https://coffiology.com/'),
+        array('Coleg Gwent', 'coleg-gwent.png', 'https://www.coleggwent.ac.uk/'),
+        array('JW Stockwell', 'jw-stockwell.png', ''),
+        array('Peter Villars', 'peter-villars.png', 'https://www.facebook.com/p/Peter-Villars-Sportsground-Maintenance-100063177401237/'),
+        array('Blitz Media', 'blitz-media.jpg', 'https://www.blitzmedia.co.uk/'),
+        array('Le Pub', 'le-pub.jpg', 'https://www.lepublicspace.co.uk/'),
     );
 }
 function cc25_sponsor_url($file) {
     return get_stylesheet_directory_uri() . '/assets/img/sponsor-banners/' . $file;
+}
+
+/** Wrap a sponsor logo <img> in a link when the sponsor has a website. */
+function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
+    $img = '<img src="' . esc_url(cc25_sponsor_url($file)) . '" alt="' . esc_attr($name) . '"' . $img_extra . '>';
+    if (!$url) return $img;
+    return '<a href="' . esc_url($url) . '" target="_blank" rel="noopener sponsored" aria-label="'
+        . esc_attr($name) . ' (opens in a new tab)">' . $img . '</a>';
 }
 
 /** Match-ticker items: recent results + upcoming fixtures (both teams) with M/W badges. */

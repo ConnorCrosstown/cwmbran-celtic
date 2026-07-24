@@ -20,14 +20,13 @@ get_template_part('template-parts/site-header');
   <div class="wrap">
     <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ix">01</span><span class="ln"></span> Leading the way</div><h2>Main Sponsor</h2></div></div>
     <div class="sponsor-main sponsor-main-lg reveal">
-      <div class="lbl">Main Sponsor</div>
-      <img src="<?php echo esc_url(cc25_sponsor_url($main['file'])); ?>" alt="<?php echo esc_attr($main['name']); ?>">
+      <?php echo cc25_sponsor_logo($main['name'], $main['file'], isset($main['url']) ? $main['url'] : ''); ?>
     </div>
 
     <div class="sec-head reveal" style="margin-top:56px"><div><div class="sec-eye kick"><span class="ix">02</span><span class="ln"></span> Backing the Celts</div><h2>Sponsors &amp; Partners</h2></div></div>
     <div class="sponsor-wall reveal d1">
     <?php foreach (cc25_sponsors() as $s): ?>
-      <div class="sponsor-card"><img src="<?php echo esc_url(cc25_sponsor_url($s[1])); ?>" alt="<?php echo esc_attr($s[0]); ?>" loading="lazy"></div>
+      <div class="sponsor-card"><?php echo cc25_sponsor_logo($s[0], $s[1], isset($s[2]) ? $s[2] : '', ' loading="lazy"'); ?></div>
     <?php endforeach; ?>
     </div>
 
