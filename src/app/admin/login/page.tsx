@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { safeNextPath } from '@/lib/safe-next';
 
-export default function AdminLoginPage() {
+function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const [password, setPassword] = useState('');
@@ -21,14 +22,7 @@ export default function AdminLoginPage() {
     });
     setBusy(false);
     if (res.ok) {
-      // Only follow same-origin relative paths — never an absolute/protocol-relative
-      // URL from the `next` query param (open-redirect guard).
-      const next = params.get('next') || '/admin';
-      const safeNext =
-        next.startsWith('/') && !next.startsWith('//') && !next.startsWith('/\\')
-          ? next
-          : '/admin';
-      router.push(safeNext);
+      router.push(safeNextPath(params.get('next'), window.location.origin));
     } else {
       setError('Incorrect password');
     }
@@ -56,5 +50,13 @@ export default function AdminLoginPage() {
         </button>
       </form>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
