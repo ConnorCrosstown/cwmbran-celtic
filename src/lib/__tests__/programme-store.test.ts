@@ -9,8 +9,12 @@ const player = (over: Partial<SquadPlayer> = {}): SquadPlayer => ({
 const programme = (over: Partial<Programme> = {}): Programme => ({
   id: 'm1', slug: 'cwmbran-town-2026-07-28', status: 'draft', opponent: 'Cwmbran Town',
   date: '2026-07-28', kickoff: '19:00', competition: 'Ardal League South East',
-  matchdayNumber: '1', startingXI: [], substitutes: [], captain: null,
-  referee: '', assistantRef1: '', assistantRef2: '', managersNotes: '', teamNews: '',
+  matchdayNumber: '1', venue: 'home', team: 'mens',
+  startingXI: [], substitutes: [], captain: null,
+  referee: '', assistantRef1: '', assistantRef2: '', fourthOfficial: '',
+  matchSponsor: '', mascotSponsor: '', matchballSponsor: '', programmePrice: '',
+  managersNotes: '', teamNews: '', specialNotes: '', playerToWatch: null,
+  coverImage: '', actionImage: '', createdAt: '2026-07-24T00:00:00.000Z',
   updatedAt: '2026-07-24T00:00:00.000Z', ...over,
 });
 
