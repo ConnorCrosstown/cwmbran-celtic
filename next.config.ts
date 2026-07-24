@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'comet.faw.cymru',
         pathname: '/resources/images/**',
       },
+      {
+        // Vercel Blob public URLs for programme/squad images uploaded via /api/upload
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
+      },
     ],
     // Enable modern image formats
     formats: ['image/webp', 'image/avif'],

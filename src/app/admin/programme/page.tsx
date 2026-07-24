@@ -110,7 +110,8 @@ const defaultFormData: ProgrammeData = {
 };
 
 export default function ProgrammeGeneratorPage() {
-  // Auth is now handled by NextAuth middleware - no need for internal auth
+  // The /api/* routes this page calls are gated server-side by a shared-password
+  // cookie (see lib/admin-auth). Page-level redirect-to-login is a follow-up.
   const [showPreview, setShowPreview] = useState(false);
   const [showSavedList, setShowSavedList] = useState(false);
   const [savedProgrammes, setSavedProgrammes] = useState<SavedProgramme[]>([]);
@@ -173,21 +174,11 @@ export default function ProgrammeGeneratorPage() {
     }
   }, []);
 
-  const loadSavedProgrammes = () => {
-    const programmes: SavedProgramme[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith('programme-')) {
-        try {
-          const data = JSON.parse(localStorage.getItem(key) || '');
-          programmes.push({ id: key, data });
-        } catch (e) {
-          // Skip invalid entries
-        }
-      }
-    }
-    programmes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-    setSavedProgrammes(programmes);
+  const loadSavedProgrammes = async () => {
+    const res = await fetch('/api/programme');
+    if (!res.ok) return;
+    const rows: Array<ProgrammeData & { id: string }> = await res.json();
+    setSavedProgrammes(rows.map((data) => ({ id: data.id, data })));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -197,18 +188,21 @@ export default function ProgrammeGeneratorPage() {
     });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, imageType: 'coverImage' | 'actionImage') => {
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    imageType: 'coverImage' | 'actionImage',
+  ) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({
-          ...formData,
-          [imageType]: reader.result as string
-        });
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch('/api/upload', { method: 'POST', body: fd });
+    if (!res.ok) {
+      alert('Image upload failed. Please try again.');
+      return;
     }
+    const { url } = await res.json();
+    setFormData((f) => ({ ...f, [imageType]: url }));
   };
 
   const togglePlayerInStartingXI = (squadNo: number) => {
@@ -295,36 +289,45 @@ export default function ProgrammeGeneratorPage() {
     });
   };
 
-  const handlePreview = () => {
+  const handlePreview = async () => {
     if (!formData.opponent || !formData.date) {
       alert('Please select an opponent and date');
       return;
     }
-    saveProgramme('draft');
-    setShowPreview(true);
+    const ok = await saveProgramme('draft');
+    if (ok) setShowPreview(true);
   };
 
-  const saveProgramme = (status: 'draft' | 'published') => {
+  const saveProgramme = async (status: 'draft' | 'published'): Promise<boolean> => {
     if (!formData.opponent || !formData.date) {
       alert('Please select an opponent and date');
-      return;
+      return false;
     }
-    const programmeKey = `programme-${formData.date}-${formData.opponent}`;
+    const id = `programme-${formData.team}-${formData.date}-${formData.opponent}`;
     const dataToSave = {
       ...formData,
       status,
-      updatedAt: new Date().toISOString(),
       createdAt: formData.createdAt || new Date().toISOString(),
     };
-    localStorage.setItem(programmeKey, JSON.stringify(dataToSave));
-    setFormData(dataToSave);
-    loadSavedProgrammes();
+    const res = await fetch('/api/programme', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ...dataToSave, id, slug: id }),
+    });
+    if (!res.ok) {
+      alert('Sorry — saving failed. Please try again.');
+      return false;
+    }
+    const saved = await res.json();
+    setFormData(saved);
+    await loadSavedProgrammes();
 
     if (status === 'published') {
       alert('Programme published! The digital link is now active.');
     } else {
       alert('Draft saved!');
     }
+    return true;
   };
 
   const loadProgramme = (programme: SavedProgramme) => {
@@ -346,10 +349,14 @@ export default function ProgrammeGeneratorPage() {
     alert('Programme duplicated! Update the date and opponent.');
   };
 
-  const deleteProgramme = (id: string) => {
+  const deleteProgramme = async (id: string) => {
     if (confirm('Are you sure you want to delete this programme?')) {
-      localStorage.removeItem(id);
-      loadSavedProgrammes();
+      const res = await fetch(`/api/programme/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      if (!res.ok) {
+        alert('Sorry — deleting failed. Please try again.');
+        return;
+      }
+      await loadSavedProgrammes();
     }
   };
 
@@ -1158,13 +1165,13 @@ export default function ProgrammeGeneratorPage() {
               👁 Preview
             </button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 if (!formData.opponent || !formData.date) {
                   alert('Please select an opponent and date first');
                   return;
                 }
-                saveProgramme('draft');
-                window.open(`/programme/${formData.date}-${formData.opponent}/print`, '_blank');
+                const ok = await saveProgramme('draft');
+                if (ok) window.open(`/programme/${formData.date}-${formData.opponent}/print`, '_blank');
               }}
               className="bg-celtic-blue text-white py-2.5 px-3 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors flex items-center justify-center gap-1 text-sm"
             >
