@@ -285,19 +285,19 @@ export default function ProgrammeGeneratorPage() {
     });
   };
 
-  const handlePreview = () => {
+  const handlePreview = async () => {
     if (!formData.opponent || !formData.date) {
       alert('Please select an opponent and date');
       return;
     }
-    saveProgramme('draft');
-    setShowPreview(true);
+    const ok = await saveProgramme('draft');
+    if (ok) setShowPreview(true);
   };
 
-  const saveProgramme = async (status: 'draft' | 'published') => {
+  const saveProgramme = async (status: 'draft' | 'published'): Promise<boolean> => {
     if (!formData.opponent || !formData.date) {
       alert('Please select an opponent and date');
-      return;
+      return false;
     }
     const id = `programme-${formData.date}-${formData.opponent}`;
     const dataToSave = {
@@ -312,7 +312,7 @@ export default function ProgrammeGeneratorPage() {
     });
     if (!res.ok) {
       alert('Sorry — saving failed. Please try again.');
-      return;
+      return false;
     }
     const saved = await res.json();
     setFormData(saved);
@@ -323,6 +323,7 @@ export default function ProgrammeGeneratorPage() {
     } else {
       alert('Draft saved!');
     }
+    return true;
   };
 
   const loadProgramme = (programme: SavedProgramme) => {
@@ -1160,13 +1161,13 @@ export default function ProgrammeGeneratorPage() {
               👁 Preview
             </button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 if (!formData.opponent || !formData.date) {
                   alert('Please select an opponent and date first');
                   return;
                 }
-                saveProgramme('draft');
-                window.open(`/programme/${formData.date}-${formData.opponent}/print`, '_blank');
+                const ok = await saveProgramme('draft');
+                if (ok) window.open(`/programme/${formData.date}-${formData.opponent}/print`, '_blank');
               }}
               className="bg-celtic-blue text-white py-2.5 px-3 rounded-lg font-semibold hover:bg-celtic-blue-dark transition-colors flex items-center justify-center gap-1 text-sm"
             >
