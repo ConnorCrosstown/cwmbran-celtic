@@ -19,27 +19,22 @@ export async function POST(req: Request) {
   }
   const body = await req.json().catch(() => ({}));
   const id = typeof body.id === 'string' && body.id ? body.id : crypto.randomUUID();
+  const now = new Date().toISOString();
   const fields = normalizeProgrammeFields(body, {
     status: 'draft',
-    startingXI: [],
-    substitutes: [],
-    captain: null,
+    opponent: '', date: '', kickoff: '', competition: '', matchdayNumber: '',
+    venue: 'home', team: 'mens',
+    startingXI: [], substitutes: [], captain: null,
+    referee: '', assistantRef1: '', assistantRef2: '', fourthOfficial: '',
+    matchSponsor: '', mascotSponsor: '', matchballSponsor: '', programmePrice: '',
+    managersNotes: '', teamNews: '', specialNotes: '', playerToWatch: null,
+    coverImage: '', actionImage: '', createdAt: now,
   });
   const programme: Programme = {
     id,
     slug: String(body.slug ?? id),
     ...fields,
-    opponent: String(body.opponent ?? ''),
-    date: String(body.date ?? ''),
-    kickoff: String(body.kickoff ?? ''),
-    competition: String(body.competition ?? ''),
-    matchdayNumber: String(body.matchdayNumber ?? ''),
-    referee: String(body.referee ?? ''),
-    assistantRef1: String(body.assistantRef1 ?? ''),
-    assistantRef2: String(body.assistantRef2 ?? ''),
-    managersNotes: String(body.managersNotes ?? ''),
-    teamNews: String(body.teamNews ?? ''),
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
   };
   await getStore().saveProgramme(programme);
   return NextResponse.json(programme);

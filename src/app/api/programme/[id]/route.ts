@@ -27,7 +27,7 @@ export async function PUT(req: Request, { params }: Ctx) {
   if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   const body = await req.json().catch(() => ({}));
   const fields = normalizeProgrammeFields(body, existing);
-  const updated: Programme = { ...existing, ...body, ...fields, id, updatedAt: new Date().toISOString() };
+  const updated: Programme = { ...existing, ...fields, id, updatedAt: new Date().toISOString() };
   await getStore().saveProgramme(updated);
   return NextResponse.json(updated);
 }

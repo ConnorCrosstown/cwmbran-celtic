@@ -77,6 +77,55 @@ describe('/api/programme/[id] PUT', () => {
     expect(updated.opponent).toBe('Afan Lido FC');
   });
 
+  it('POST persists all builder fields and coerces enums/numbers', async () => {
+    const res = await POST(new Request('http://x/api/programme', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        id: 'm-full', opponent: 'Cwmbran Town', date: '2026-07-28',
+        venue: 'away', team: 'womens', fourthOfficial: 'A. Ref',
+        matchSponsor: 'Avondale', mascotSponsor: 'M', matchballSponsor: 'B',
+        programmePrice: '£2', specialNotes: 'note', playerToWatch: 7,
+        coverImage: 'data:cover', actionImage: 'data:action',
+      }),
+    }));
+    const saved = await res.json();
+    expect(saved).toMatchObject({
+      venue: 'away', team: 'womens', fourthOfficial: 'A. Ref',
+      matchSponsor: 'Avondale', mascotSponsor: 'M', matchballSponsor: 'B',
+      programmePrice: '£2', specialNotes: 'note', playerToWatch: 7,
+      coverImage: 'data:cover', actionImage: 'data:action',
+    });
+    expect(typeof saved.createdAt).toBe('string');
+  });
+
+  it('POST coerces invalid venue/team/playerToWatch to safe defaults', async () => {
+    const res = await POST(new Request('http://x/api/programme', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id: 'm-bad', venue: 'sideways', team: 'aliens', playerToWatch: 'x' }),
+    }));
+    const saved = await res.json();
+    expect(saved.venue).toBe('home');
+    expect(saved.team).toBe('mens');
+    expect(saved.playerToWatch).toBeNull();
+  });
+
+  it('PUT preserves omitted builder fields and coerces provided ones', async () => {
+    await POST(new Request('http://x/api/programme', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id: 'm-put', matchSponsor: 'Original', venue: 'home' }),
+    }));
+    const res = await PUT(
+      new Request('http://x/api/programme/m-put', {
+        method: 'PUT', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ venue: 'away' }), // matchSponsor omitted
+      }),
+      { params: Promise.resolve({ id: 'm-put' }) },
+    );
+    const updated = await res.json();
+    expect(updated.venue).toBe('away');        // coerced/updated
+    expect(updated.matchSponsor).toBe('Original'); // omitted -> retained
+  });
+
   it('forces id to the route id and refreshes updatedAt', async () => {
     const create = new Request('http://x/api/programme', {
       method: 'POST',
