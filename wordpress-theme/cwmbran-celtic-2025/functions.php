@@ -117,22 +117,64 @@ function cc25_page_url($key, $fallback = '') {
     return $fallback;
 }
 
-/** Nav fallback: the club's real menu with real destinations (until a WP menu is assigned). */
-function cc25_nav_fallback() {
+/**
+ * Nav fallback: the club's real menu (with dropdowns) until a WP menu is
+ * assigned to the "Primary Navigation (Cwmbran 2025)" location. Mirrors the
+ * live site's submenus. Each item: array(label, url, external, children[]);
+ * each child: array(label, url, external). Markup matches WordPress's default
+ * menu classes (menu-item-has-children / sub-menu) so the same dropdown CSS
+ * styles both this fallback and a real assigned menu.
+ */
+function cc25_nav_items() {
     $home = home_url('/');
-    $items = array(
-        array('All Teams', cc25_page_url('teams', $home), false),
-        array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false),
-        array('Sponsors', cc25_page_url('sponsors', $home), false),
-        array('Celtic Bond', cc25_page_url('celtic-bond', $home), false),
-        array('Club', cc25_page_url('club', $home), false),
-        array('Club Shop', cc25_ext_url('shop'), true),
-        array('Contact', cc25_page_url('contact', $home), false),
+    return array(
+        array('All Teams', cc25_page_url('teams', $home), false, array(
+            array("Men's 1st Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
+            array('Ladies 1st Team', cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
+        )),
+        array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
+            array('Current Season', cc25_page_url('fixtures', $home), false),
+            array('2024-25 Archive', cc25_page_url(array('2024-25-archive'), $home), false),
+            array('2023-24 Archive', cc25_page_url(array('2023-24-archive'), $home), false),
+            array('2022-23 Archive', cc25_page_url(array('2022-23-archive'), $home), false),
+        )),
+        array('Sponsors', cc25_page_url('sponsors', $home), false, array(
+            array('Our Sponsors', cc25_page_url(array('sponsors-2', 'sponsors'), $home), false),
+            array('Sponsorship Opportunities', cc25_page_url(array('sponsorship-opportunities', 'sponsorship'), $home), false),
+        )),
+        array('Celtic Bond', cc25_page_url('celtic-bond', $home), false, array(
+            array('Celtic Bond Results', cc25_page_url('bond-results', $home), false),
+        )),
+        array('Club', cc25_page_url(array('club-history', 'club', 'the-club', 'about'), $home), false, array(
+            array('Club History', cc25_page_url(array('club-history'), $home), false),
+            array('News', cc25_page_url('news', $home), false),
+            array('Galleries', cc25_page_url(array('galleries'), $home), false),
+            array('Club Documents', cc25_page_url(array('club-documents'), $home), false),
+            array('Matchday Programme', cc25_page_url(array('cwmbran-celtic-fc-match-day-programme-digital'), $home), false),
+            array('Coleg Gwent', cc25_page_url(array('coleg-gwent-4', 'coleg-gwent'), $home), false),
+        )),
+        array('Club Shop', cc25_ext_url('shop'), true, array()),
+        array('Contact', cc25_page_url('contact', $home), false, array()),
     );
+}
+
+function cc25_nav_fallback() {
     echo '<ul class="cc25-nav">';
-    foreach ($items as $it) {
+    foreach (cc25_nav_items() as $it) {
+        $children = isset($it[3]) ? $it[3] : array();
+        $has = !empty($children);
         $ext = $it[2] ? ' target="_blank" rel="noopener"' : '';
-        echo '<li><a href="' . esc_url($it[1]) . '"' . $ext . '>' . $it[0] . '</a></li>';
+        echo '<li class="menu-item' . ($has ? ' menu-item-has-children' : '') . '">';
+        echo '<a href="' . esc_url($it[1]) . '"' . $ext . '>' . $it[0] . '</a>';
+        if ($has) {
+            echo '<ul class="sub-menu">';
+            foreach ($children as $c) {
+                $cext = $c[2] ? ' target="_blank" rel="noopener"' : '';
+                echo '<li class="menu-item"><a href="' . esc_url($c[1]) . '"' . $cext . '>' . $c[0] . '</a></li>';
+            }
+            echo '</ul>';
+        }
+        echo '</li>';
     }
     echo '</ul>';
 }

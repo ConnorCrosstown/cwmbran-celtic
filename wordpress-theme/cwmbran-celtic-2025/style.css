@@ -704,7 +704,7 @@ nav.main .current-menu-item>a::after,nav.main .current_page_item>a::after{transf
 body.nav-open .nav-toggle span{background:transparent}
 body.nav-open .nav-toggle span::before{top:0;transform:rotate(45deg)}
 body.nav-open .nav-toggle span::after{top:0;transform:rotate(-45deg)}
-@media(max-width:860px){
+@media(max-width:900px){
   .nav-toggle{display:inline-flex}
   header.nav nav.main{display:none;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--hair);box-shadow:var(--shadow);padding:6px 0;max-height:calc(100vh - 70px);overflow-y:auto}
   body.nav-open header.nav nav.main{display:block}
@@ -712,6 +712,28 @@ body.nav-open .nav-toggle span::after{top:0;transform:rotate(-45deg)}
   header.nav nav.main ul.cc25-nav li{width:100%}
   header.nav nav.main a{display:block;width:100%;padding:13px var(--gutter);border-bottom:1px solid var(--hair)}
   header.nav nav.main a::after{display:none}
+}
+
+/* ---- Nav dropdowns (submenus) — styles both the fallback + a real WP menu ---- */
+nav.main .cc25-nav .menu-item-has-children{position:relative}
+nav.main .cc25-nav .menu-item-has-children>a{padding-right:24px}
+nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:.58rem;opacity:.55;transition:transform .2s}
+@media(min-width:901px){
+  /* Desktop: hover/focus card */
+  nav.main .cc25-nav .sub-menu{display:block;position:absolute;top:calc(100% - 2px);left:0;min-width:234px;background:var(--surface);border:1px solid var(--hair);border-top:2px solid var(--gold);border-radius:0 0 9px 9px;box-shadow:var(--shadow);padding:6px;z-index:70;opacity:0;visibility:hidden;transform:translateY(7px);transition:opacity .16s ease,transform .16s ease}
+  nav.main .cc25-nav .menu-item-has-children:hover>.sub-menu,
+  nav.main .cc25-nav .menu-item-has-children:focus-within>.sub-menu{opacity:1;visibility:visible;transform:translateY(0)}
+  nav.main .cc25-nav .sub-menu li{width:auto}
+  nav.main .cc25-nav .sub-menu a{display:block;white-space:nowrap;font-size:.78rem;letter-spacing:.04em;padding:9px 13px;border-radius:6px;color:var(--muted)}
+  nav.main .cc25-nav .sub-menu a::after{display:none}
+  nav.main .cc25-nav .sub-menu a:hover,nav.main .cc25-nav .sub-menu a:focus{background:var(--surface-2);color:var(--text)}
+}
+@media(max-width:900px){
+  /* Mobile: inline accordion, tap the parent to expand */
+  header.nav nav.main .sub-menu{display:none;background:var(--surface-2)}
+  header.nav nav.main .menu-item-has-children.open>.sub-menu{display:block}
+  header.nav nav.main .menu-item-has-children.open>a::before{transform:translateY(-50%) rotate(180deg)}
+  header.nav nav.main .sub-menu a{padding-left:calc(var(--gutter) + 18px) !important;font-size:.82rem;color:var(--muted)}
 }
 
 /* --- Squad grid (SportsPress players) --- */

@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) exit;
         'theme_location' => 'cc25_primary',
         'container'      => false,
         'menu_class'     => 'cc25-nav',
-        'depth'          => 1,
+        'depth'          => 2,
         'fallback_cb'    => 'cc25_nav_fallback',
       )); ?>
     </nav>

@@ -50,16 +50,27 @@
     });
   }
 
-  // Mobile menu toggle
+  // Mobile menu toggle + dropdown accordion
   var tgl=document.querySelector('.nav-toggle');
   if(tgl){
+    var mob=window.matchMedia('(max-width:900px)');
     tgl.addEventListener('click',function(){
       var open=document.body.classList.toggle('nav-open');
       tgl.setAttribute('aria-expanded',open?'true':'false');
       tgl.setAttribute('aria-label',open?'Close menu':'Open menu');
     });
+    // On mobile, tapping a parent item expands its submenu instead of navigating.
+    document.querySelectorAll('header.nav nav.main li.menu-item-has-children>a').forEach(function(a){
+      a.addEventListener('click',function(ev){
+        if(mob.matches){ev.preventDefault();a.parentNode.classList.toggle('open');}
+      });
+    });
+    // Following any real link closes the menu (but a parent tap on mobile only toggles).
     document.querySelectorAll('header.nav nav.main a').forEach(function(a){
-      a.addEventListener('click',function(){document.body.classList.remove('nav-open');tgl.setAttribute('aria-expanded','false');});
+      a.addEventListener('click',function(){
+        if(mob.matches&&a.parentNode.classList.contains('menu-item-has-children'))return;
+        document.body.classList.remove('nav-open');tgl.setAttribute('aria-expanded','false');
+      });
     });
   }
 })();
