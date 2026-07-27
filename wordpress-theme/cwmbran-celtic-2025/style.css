@@ -890,3 +890,17 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
   .page-wide .et_pb_section .et_pb_column,.page-wide .et_pb_column_inner{width:100%!important;max-width:100%!important;float:none!important;flex:0 0 100%!important;display:block!important;margin:0 0 22px!important;padding:0!important;box-sizing:border-box!important}
   .page-wide .et_pb_text h1,.page-wide .et_pb_text h2{font-size:clamp(1.6rem,7vw,2.4rem)!important;line-height:1.14!important;overflow-wrap:break-word}
 }
+
+/* ---- Men's player cards (template-player-cards.php) ---- */
+.pc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px;margin:2px 0 40px}
+.pc-card{padding:0;border:0;background:none;cursor:pointer;border-radius:10px;overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .18s ease,box-shadow .18s ease;display:block;line-height:0}
+.pc-card img{width:100%;height:auto;display:block;aspect-ratio:4/5;object-fit:cover}
+.pc-card:hover,.pc-card:focus-visible{transform:translateY(-4px);box-shadow:var(--shadow);outline:none}
+.pc-card:focus-visible{box-shadow:0 0 0 3px var(--gold),var(--shadow)}
+@media(max-width:520px){.pc-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}}
+/* Lightbox */
+.pc-lightbox{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(7,13,28,.86);backdrop-filter:blur(4px)}
+.pc-lightbox[hidden]{display:none}
+.pc-lightbox img{max-width:min(460px,92vw);max-height:90vh;width:auto;height:auto;border-radius:12px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
+.pc-lb-close{position:absolute;top:16px;right:20px;background:none;border:0;color:#fff;font-size:2.4rem;line-height:1;cursor:pointer;padding:4px 10px}
+.pc-lb-close:hover{color:var(--gold)}

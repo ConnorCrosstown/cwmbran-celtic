@@ -49,7 +49,8 @@ add_filter('template_include', function ($template) {
         $map = array(
             'fixtures'                   => 'template-fixtures.php',
             'teams'                      => 'template-squad.php',
-            'mens-team'                  => 'template-squad.php',
+            'mens-team'                  => 'template-player-cards.php',
+            'mens-1st-team'              => 'template-player-cards.php',
             'ladies-team'                => 'template-squad.php',
             'sponsors-2'                 => 'template-sponsors.php',
             'sponsors'                   => 'template-sponsors.php',

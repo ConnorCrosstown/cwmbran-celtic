@@ -110,4 +110,17 @@
       setTimeout(openSplash,matchMedia('(prefers-reduced-motion:reduce)').matches?0:500);
     }
   }
+
+  // Player-card lightbox (Men's team page): click a card to enlarge.
+  var lb=document.getElementById('pc-lightbox');
+  if(lb){
+    var lbImg=document.getElementById('pc-lb-img'), lbLast;
+    var openLb=function(src,alt){lbLast=document.activeElement;lbImg.src=src;lbImg.alt=alt||'';lb.hidden=false;document.body.style.overflow='hidden';lb.querySelector('.pc-lb-close').focus();};
+    var closeLb=function(){lb.hidden=true;lbImg.src='';document.body.style.overflow='';if(lbLast&&lbLast.focus)lbLast.focus();};
+    document.querySelectorAll('.pc-card').forEach(function(b){
+      b.addEventListener('click',function(){var img=b.querySelector('img');openLb(b.getAttribute('data-full'),img?img.getAttribute('alt'):'');});
+    });
+    lb.addEventListener('click',function(e){if(e.target===lb||e.target.classList.contains('pc-lb-close'))closeLb();});
+    document.addEventListener('keydown',function(e){if(!lb.hidden&&e.key==='Escape')closeLb();});
+  }
 })();
