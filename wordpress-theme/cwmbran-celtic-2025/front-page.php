@@ -26,8 +26,8 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
       <span class="splash-vs">vs</span>
       <span class="splash-team"><?php echo cc25_crest($feed, $hgo['opponent'], 54); ?><span class="nm"><?php echo esc_html($hgo['opponent']); ?></span></span>
     </div>
-    <div class="splash-meta"><?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'l j F')); ?> &middot; <?php echo esc_html($cc25_hg['time'] ?? 'TBC'); ?> &middot; Motazone Arena</div>
-    <div class="splash-count" data-ko="<?php echo intval($cc25_hg['date'] ?? 0); ?>" aria-label="Countdown to kick-off">
+    <div class="splash-meta"><?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'l j F')); ?> &middot; <?php echo esc_html(cc25_kickoff_label($cc25_hg)); ?> &middot; Motazone Arena</div>
+    <div class="splash-count" data-ko="<?php echo intval(cc25_kickoff_ms($cc25_hg)); ?>" aria-label="Countdown to kick-off">
       <div class="u"><b data-d>00</b><span>Days</span></div>
       <div class="u"><b data-h>00</b><span>Hrs</span></div>
       <div class="u"><b data-m>00</b><span>Mins</span></div>
@@ -49,7 +49,7 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
     <span class="hero-eyebrow kick"><span class="ln"></span> Next Match · Ardal League South East</span>
     <h1>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
     <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
-    <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo $next ? intval($next['date']) : ''; ?>">
+    <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo $next ? intval(cc25_kickoff_ms($next)) : ''; ?>">
       <div class="u"><div class="n" id="cd-d">00</div><div class="l">Days</div></div>
       <div class="sep">:</div>
       <div class="u"><div class="n" id="cd-h">00</div><div class="l">Hrs</div></div>
@@ -77,7 +77,7 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
         <?php echo cc25_own_crest(60); ?>
         <div><div class="nm">Cwmbran Celtic</div><div class="rec"><?php echo $o['home'] ? 'At home' : 'On the road'; ?></div></div>
       </div>
-      <div class="mko"><div class="t"><?php echo esc_html($next['time'] ?? 'TBC'); ?></div><div class="d"><?php echo esc_html(cc25_date($next['date'] ?? 0, 'D j M')); ?></div></div>
+      <div class="mko"><div class="t"><?php echo esc_html(cc25_kickoff_label($next)); ?></div><div class="d"><?php echo esc_html(cc25_date($next['date'] ?? 0, 'D j M')); ?></div></div>
       <div class="mteam away">
         <?php echo cc25_crest($feed, $o['opponent'], 60); ?>
         <div><div class="nm"><?php echo esc_html($o['opponent']); ?></div><div class="rec"><?php echo $o['home'] ? 'Visitors' : 'Hosts'; ?></div></div>

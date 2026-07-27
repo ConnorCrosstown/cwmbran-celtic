@@ -48,7 +48,7 @@ get_template_part('template-parts/site-header');
             <span class="mvs">vs</span>
             <span class="mt right<?php echo $isHome ? '' : ' is-own'; ?>"><?php echo $isHome ? $oppCrest : cc25_own_crest(34); ?><span class="nm"><?php echo esc_html($isHome ? $fo['opponent'] : 'Cwmbran Celtic'); ?></span></span>
           </div>
-          <div class="mscore"><?php echo esc_html($f['time'] ?? 'TBC'); ?></div>
+          <div class="mscore"><?php echo esc_html(cc25_kickoff_label($f)); ?></div>
           <div class="mmeta"><div class="comp"><?php echo esc_html($f['competition'] ?? ''); ?></div><span class="ha <?php echo $isHome ? 'h' : 'a'; ?>"><?php echo $isHome ? 'Home' : 'Away'; ?></span></div>
         </div>
       <?php endforeach; else: ?>

@@ -293,6 +293,45 @@ function cc25_next_home_fixture($feed, $team = 'mens') {
     return null;
 }
 
+/* -------------------------------------------------------------------------
+ * Kick-off times. allwalessport does NOT publish kick-off times, so feed dates
+ * default to midday — which made the countdown wrong. Resolve a real kick-off:
+ * a per-date override the club has set, else a sensible default by day of week.
+ * All times are UK local (Europe/London).
+ *
+ * >>> To set a kick-off, add a line to the map below: 'YYYY-MM-DD' => 'HH:MM'.
+ * ---------------------------------------------------------------------- */
+function cc25_kickoff_overrides() {
+    return array(
+        '2026-07-28' => '19:00',  // Cwmbran Town derby (Tue) — 7pm KO
+    );
+}
+/** Default kick-off by ISO day-of-week (1=Mon .. 7=Sun). */
+function cc25_kickoff_default($dow) {
+    if ($dow == 6) return '14:30';  // Saturday
+    if ($dow == 7) return '14:00';  // Sunday
+    return '19:30';                 // midweek
+}
+/** Resolved kick-off timestamp (ms) — keeps the match date, sets the real time. */
+function cc25_kickoff_ms($f) {
+    $ms = intval(is_array($f) ? ($f['date'] ?? 0) : 0);
+    if (!$ms) return 0;
+    $tz = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone('Europe/London');
+    $day = (new DateTime('@' . intval($ms / 1000)))->setTimezone($tz);
+    $ymd = $day->format('Y-m-d');
+    $ov = cc25_kickoff_overrides();
+    $ko = isset($ov[$ymd]) ? $ov[$ymd] : cc25_kickoff_default((int) $day->format('N'));
+    $dt = DateTime::createFromFormat('Y-m-d H:i', $ymd . ' ' . $ko, $tz);
+    return $dt ? $dt->getTimestamp() * 1000 : $ms;
+}
+/** Kick-off label in UK time, e.g. "7:00pm". */
+function cc25_kickoff_label($f) {
+    $ms = cc25_kickoff_ms($f);
+    if (!$ms) return 'TBC';
+    $tz = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone('Europe/London');
+    return (new DateTime('@' . intval($ms / 1000)))->setTimezone($tz)->format('g:ia');
+}
+
 function cc25_latest_result($feed, $team = 'mens') {
     $rs = cc25_team_items($feed['results'] ?? array(), $team);
     if (!$rs) return null;
