@@ -44,6 +44,64 @@ $cc25_reserves = array(
     array('2027-02-13', 'Cwmbran Town', false, 'League'),
     array('2027-02-20', 'Abertillery Excelsiors', false, 'League'),
 );
+
+// Women's — Genero Adran South. Also maintained by hand (not in the feed).
+$cc25_womens_league = 'Genero Adran South';
+$cc25_womens = array(
+    array('2026-09-27', 'Llanrumney United', false, 'League'),
+    array('2026-10-11', 'Pontypridd United', true, 'League'),
+    array('2026-11-01', 'Carmarthen Town', true, 'League'),
+    array('2026-11-22', 'Cascade YC', false, 'League'),
+    array('2026-11-29', 'Penybont', false, 'League'),
+    array('2026-12-06', 'Pure Swansea', true, 'League'),
+    array('2027-01-17', "Taffs Well", false, 'League'),
+    array('2027-01-31', 'Llanrumney United', true, 'League'),
+    array('2027-02-07', 'Cascade YC', true, 'League'),
+    array('2027-02-14', 'Carmarthen Town', false, 'League'),
+    array('2027-02-21', 'Pontypridd United', false, 'League'),
+    array('2027-03-14', "Taffs Well", true, 'League'),
+    array('2027-03-21', 'Pure Swansea', false, 'League'),
+    array('2027-04-04', 'Penybont', true, 'League'),   // venue assumed Home (reverse of 29-Nov) — confirm
+);
+
+// Men's First Team — Ardal South East 26/27. The allwalessport feed only
+// publishes a short window at a time, so the FULL schedule is listed here; the
+// Results + League Table tabs still come live from the feed. Dates may change —
+// update the array (or switch this tab back to the feed once aws has the season).
+$cc25_mens_fixtures = array(
+    array('2026-07-28', 'Cwmbran Town', true, 'League'),
+    array('2026-08-01', 'Tredegar Town', false, 'League'),
+    array('2026-08-08', 'New Inn', true, 'League'),
+    array('2026-08-15', 'Abergavenny Town', false, 'League'),
+    array('2026-08-22', 'Risca United', true, 'League'),
+    array('2026-08-29', 'Cardiff Corries', true, 'League Cup R1'),
+    array('2026-09-05', 'Goytre', true, 'League'),
+    array('2026-09-12', 'Chepstow Town', false, 'League'),
+    array('2026-09-19', 'Newport Corinthians', true, 'League'),
+    array('2026-09-26', 'Abercarn United', false, 'League'),
+    array('2026-10-03', 'Caldicot Town', true, 'League'),
+    array('2026-10-10', 'Brecon Corries', false, 'League'),
+    array('2026-10-17', 'Lliswerry', true, 'League'),
+    array('2026-10-24', 'TBC', true, 'League Cup R2'),
+    array('2026-10-31', 'Croesyceiliog', false, 'League'),
+    array('2026-11-06', 'Blaenavon Blues', true, 'League'),
+    array('2026-11-14', 'Undy FC', false, 'League'),
+    array('2026-11-21', 'Cwmbran Town', false, 'League'),
+    array('2026-11-27', 'Tredegar Town', true, 'League'),
+    array('2026-12-05', 'New Inn', false, 'League'),
+    array('2026-12-11', 'Abergavenny Town', true, 'League'),
+    array('2026-12-19', 'Risca United', false, 'League'),
+    array('2027-01-02', 'Goytre', false, 'League'),
+    array('2027-01-08', 'Chepstow Town', true, 'League'),
+    array('2027-01-16', 'Newport Corinthians', false, 'League'),
+    array('2027-01-22', 'Abercarn United', true, 'League'),
+    array('2027-01-30', 'Caldicot Town', false, 'League'),
+    array('2027-02-05', 'Brecon Corries', true, 'League'),
+    array('2027-02-13', 'Lliswerry', false, 'League'),
+    array('2027-02-19', 'Croesyceiliog', true, 'League'),
+    array('2027-02-27', 'Blaenavon Blues', false, 'League'),
+    array('2027-03-05', 'Undy FC', true, 'League'),
+);
 get_template_part('template-parts/site-header');
 ?>
 <div class="phero">
@@ -55,7 +113,7 @@ get_template_part('template-parts/site-header');
     <div class="teamsel">
       <button class="on" data-team="mens">Men's First Team</button>
       <button data-team="reserves">Men's Reserves</button>
-      <button disabled>Ladies <small>coming soon</small></button>
+      <button data-team="womens">Women's</button>
     </div>
   </div>
 </div>
@@ -73,23 +131,7 @@ get_template_part('template-parts/site-header');
   <div class="wrap">
 
     <div class="panel on" id="fixtures">
-      <?php if ($upcoming): $lm = ''; foreach ($upcoming as $f): $fo = cc25_opponent($f); $isHome = $fo['home'];
-        // List the HOME team on the left, away on the right (standard listing).
-        $oppCrest = cc25_crest($feed, $fo['opponent'], 34);
-        $mo = cc25_date($f['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; } ?>
-        <div class="mrow reveal">
-          <div class="mdate"><div class="d"><?php echo esc_html(cc25_date($f['date'] ?? 0, 'd')); ?></div><div class="m"><?php echo esc_html(cc25_date($f['date'] ?? 0, 'M')); ?></div><div class="day"><?php echo esc_html(cc25_date($f['date'] ?? 0, 'D')); ?></div></div>
-          <div class="mteams">
-            <span class="mt<?php echo $isHome ? ' is-own' : ''; ?>"><?php echo $isHome ? cc25_own_crest(34) : $oppCrest; ?><span class="nm"><?php echo esc_html($isHome ? 'Cwmbran Celtic' : $fo['opponent']); ?></span></span>
-            <span class="mvs">vs</span>
-            <span class="mt right<?php echo $isHome ? '' : ' is-own'; ?>"><?php echo $isHome ? $oppCrest : cc25_own_crest(34); ?><span class="nm"><?php echo esc_html($isHome ? $fo['opponent'] : 'Cwmbran Celtic'); ?></span></span>
-          </div>
-          <div class="mscore"><?php echo esc_html(cc25_kickoff_label($f)); ?></div>
-          <div class="mmeta"><div class="comp"><?php echo esc_html($f['competition'] ?? ''); ?></div><span class="ha <?php echo $isHome ? 'h' : 'a'; ?>"><?php echo $isHome ? 'Home' : 'Away'; ?></span></div>
-        </div>
-      <?php endforeach; else: ?>
-        <p style="color:var(--muted);padding:24px 2px">Fixtures will appear here once the season is released.</p>
-      <?php endif; ?>
+      <?php cc25_render_static_fixtures($cc25_mens_fixtures); ?>
     </div>
 
     <div class="panel" id="results">
@@ -152,23 +194,17 @@ get_template_part('template-parts/site-header');
   <section class="band">
     <div class="wrap">
       <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_res_league); ?></div><h2>Men's Reserves &mdash; Fixtures</h2></div></div>
-      <div class="panel on">
-        <?php $lm = ''; foreach ($cc25_reserves as $rf):
-          $rd = strtotime($rf[0]); $home = $rf[2]; $opp = $rf[1]; $comp = $rf[3];
-          $mo = date('F Y', $rd); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
-          $oppCrest = cc25_res_crest($opp, 34); ?>
-        <div class="mrow mrow-res reveal">
-          <div class="mdate"><div class="d"><?php echo date('d', $rd); ?></div><div class="m"><?php echo date('M', $rd); ?></div><div class="day"><?php echo date('D', $rd); ?></div></div>
-          <div class="mteams">
-            <span class="mt<?php echo $home ? ' is-own' : ''; ?>"><?php echo $home ? cc25_own_crest(34) : $oppCrest; ?><span class="nm"><?php echo esc_html($home ? 'Cwmbran Celtic' : $opp); ?></span></span>
-            <span class="mvs">vs</span>
-            <span class="mt right<?php echo $home ? '' : ' is-own'; ?>"><?php echo $home ? $oppCrest : cc25_own_crest(34); ?><span class="nm"><?php echo esc_html($home ? $opp : 'Cwmbran Celtic'); ?></span></span>
-          </div>
-          <div class="mmeta"><div class="comp"><?php echo esc_html($comp); ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span></div>
-        </div>
-        <?php endforeach; ?>
-      </div>
+      <div class="panel on"><?php cc25_render_static_fixtures($cc25_reserves); ?></div>
     </div>
   </section>
 </div><!-- /#team-reserves -->
+
+<div class="teamwrap" id="team-womens" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_womens_league); ?></div><h2>Women's &mdash; Fixtures</h2></div></div>
+      <div class="panel on"><?php cc25_render_static_fixtures($cc25_womens); ?></div>
+    </div>
+  </section>
+</div><!-- /#team-womens -->
 <?php get_template_part('template-parts/site-footer'); ?>

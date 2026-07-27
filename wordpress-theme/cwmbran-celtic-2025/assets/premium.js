@@ -111,16 +111,21 @@
     }
   }
 
-  // Fixtures page: switch team (Men's First Team / Reserves).
+  // Fixtures page: switch team (Men's First Team / Reserves / Women's).
+  var switchTeam=function(t){
+    var btn=document.querySelector('.teamsel button[data-team="'+t+'"]'), wrap=document.getElementById('team-'+t);
+    if(!btn||!wrap)return;
+    document.querySelectorAll('.teamsel button[data-team]').forEach(function(x){x.classList.toggle('on',x===btn);});
+    document.querySelectorAll('.teamwrap').forEach(function(w){w.hidden=(w.id!=='team-'+t);});
+    wrap.querySelectorAll('.reveal').forEach(function(r){r.classList.add('in');});
+  };
   document.querySelectorAll('.teamsel button[data-team]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var t=b.getAttribute('data-team');
-      document.querySelectorAll('.teamsel button[data-team]').forEach(function(x){x.classList.toggle('on',x===b);});
-      document.querySelectorAll('.teamwrap').forEach(function(w){w.hidden=(w.id!=='team-'+t);});
-      var wrap=document.getElementById('team-'+t);
-      if(wrap)wrap.querySelectorAll('.reveal').forEach(function(r){r.classList.add('in');});
-    });
+    b.addEventListener('click',function(){switchTeam(b.getAttribute('data-team'));});
   });
+  if(document.querySelector('.teamsel button[data-team]')){
+    var _h=(location.hash||'').replace('#','');
+    if(_h)switchTeam(_h);   // deep-link e.g. /fixtures/#womens
+  }
 
   // Player-card lightbox (Men's team page): click a card to enlarge.
   var lb=document.getElementById('pc-lightbox');

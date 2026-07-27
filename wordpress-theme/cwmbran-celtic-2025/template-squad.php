@@ -44,6 +44,7 @@ uksort($cc25_groups, function ($a, $b) use ($cc25_order) {
     <div class="crumbs"><a href="<?php echo esc_url(home_url('/')); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('teams', home_url('/'))); ?>" style="color:var(--on-navy-dim)">Teams</a> / <span style="color:#fff">Squad</span></div>
     <h1><?php echo esc_html(get_the_title()); ?></h1>
     <p>The players representing Cwmbran Celtic this season.</p>
+    <div class="teamsel"><a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/')) . '#womens'); ?>">View Women's fixtures &rarr;</a></div>
   </div>
 </div>
 

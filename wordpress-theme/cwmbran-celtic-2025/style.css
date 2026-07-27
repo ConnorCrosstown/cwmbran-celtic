@@ -909,3 +909,7 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .teamwrap[hidden]{display:none}
 .mrow-res{grid-template-columns:66px 1fr auto}
 @media(max-width:640px){.mrow-res{grid-template-columns:52px 1fr auto}}
+
+/* ---- Teams hub cards ---- */
+.team-sub{color:var(--muted);font-size:.82rem;letter-spacing:.02em;margin-top:-2px}
+.team-links{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;justify-content:center}

@@ -48,9 +48,10 @@ add_filter('template_include', function ($template) {
         $slug = get_post_field('post_name', get_queried_object_id());
         $map = array(
             'fixtures'                   => 'template-fixtures.php',
-            'teams'                      => 'template-squad.php',
+            'teams'                      => 'template-teams.php',
             'mens-team'                  => 'template-player-cards.php',
             'mens-1st-team'              => 'template-player-cards.php',
+            'mens-reserves'              => 'template-reserves.php',
             'ladies-team'                => 'template-squad.php',
             'sponsors-2'                 => 'template-sponsors.php',
             'sponsors'                   => 'template-sponsors.php',
@@ -278,6 +279,16 @@ function cc25_opp_crest_file($name) {
         'Newport Corinthians' => 'newport-corinthians.png',
         'Lliswerry' => 'lliswerry.png',
         'Blaenavon Blues' => 'blaenavon-blues.png',
+        // Women's — Genero Adran South opponents.
+        'Pontypridd United' => 'pontypridd-united.png',
+        'Carmarthen Town' => 'carmarthen-town.png',
+        'Taffs Well' => 'taffs-well.png',
+        // Men's First Team opponents (also cover Reserves).
+        'Abergavenny Town' => 'abergavenny-town.png',
+        'Risca United' => 'risca-united.png',
+        'Goytre' => 'goytre.png',
+        'Caldicot Town' => 'caldicot-town.jpg',
+        'Brecon Corries' => 'brecon-corries.png',
     );
     return isset($map[$name]) ? $map[$name] : '';
 }
@@ -300,6 +311,29 @@ function cc25_res_crest($name, $px) {
     $bg = 'radial-gradient(120% 120% at 30% 20%,var(--blue-500),var(--navy-800))';
     return '<span class="crest" style="' . esc_attr($style . ';background:' . $bg) . '">'
         . esc_html(mb_strtoupper($ini)) . '</span>';
+}
+
+/** Render a hand-maintained fixture list (Reserves / Ladies) — rows grouped by
+ * month, home-left/away-right, Cwmbran highlighted, competition + H/A tag.
+ * $list rows: [date 'Y-m-d', opponent, isHome(bool), competition(optional)]. */
+function cc25_render_static_fixtures($list) {
+    $lm = '';
+    foreach ($list as $rf) {
+        $rd = strtotime($rf[0]); $home = !empty($rf[2]); $opp = $rf[1];
+        $comp = isset($rf[3]) && $rf[3] !== '' ? $rf[3] : 'League';
+        $mo = date('F Y', $rd);
+        if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
+        $oc = cc25_res_crest($opp, 34);
+        echo '<div class="mrow mrow-res reveal">'
+            . '<div class="mdate"><div class="d">' . date('d', $rd) . '</div><div class="m">' . date('M', $rd) . '</div><div class="day">' . date('D', $rd) . '</div></div>'
+            . '<div class="mteams">'
+            . '<span class="mt' . ($home ? ' is-own' : '') . '">' . ($home ? cc25_own_crest(34) : $oc) . '<span class="nm">' . esc_html($home ? 'Cwmbran Celtic' : $opp) . '</span></span>'
+            . '<span class="mvs">vs</span>'
+            . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
+            . '</div>'
+            . '<div class="mmeta"><div class="comp">' . esc_html($comp) . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span></div>'
+            . '</div>';
+    }
 }
 
 function cc25_team_items($list, $team) {

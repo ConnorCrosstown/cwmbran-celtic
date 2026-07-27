@@ -37,6 +37,7 @@ $cc25_pc_groups = array(
     <div class="crumbs"><a href="<?php echo esc_url(home_url('/')); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('teams', home_url('/'))); ?>" style="color:var(--on-navy-dim)">Teams</a> / <span style="color:#fff">Men's 1st Team</span></div>
     <h1>Men's 1st Team</h1>
     <p>The players and management representing Cwmbran Celtic in the Ardal League South East.</p>
+    <div class="teamsel"><a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/')) . '#mens'); ?>">View First-Team fixtures &rarr;</a></div>
   </div>
 </div>
 
