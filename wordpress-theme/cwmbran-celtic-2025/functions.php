@@ -262,6 +262,46 @@ function cc25_crest($feed, $name, $px) {
         . esc_html(mb_strtoupper(mb_substr((string) $name, 0, 2))) . '</span>';
 }
 
+/** Reserve-fixture opponent crest from the theme's bundled set, else a monogram.
+ * (The live feed only carries crests for clubs in the Ardal SE fixtures, so the
+ * Combination-league opponents need their own resolver.) To add a crest: drop
+ * the image in assets/img/opponents/ and add a line to the map. */
+function cc25_opp_crest_file($name) {
+    $map = array(
+        'Croesyceiliog' => 'croesyceiliog.png',
+        'Abercarn United' => 'abercarn-united.png',
+        'Tredegar Town' => 'tredegar-town.png',
+        'Chepstow Town' => 'chepstow-town.png',
+        'Cwmbran Town' => 'cwmbran-town.jpg',
+        'New Inn' => 'new-inn.png',
+        'Undy' => 'undy.png',
+        'Newport Corinthians' => 'newport-corinthians.png',
+        'Lliswerry' => 'lliswerry.png',
+        'Blaenavon Blues' => 'blaenavon-blues.png',
+    );
+    return isset($map[$name]) ? $map[$name] : '';
+}
+function cc25_res_crest($name, $px) {
+    if (strpos((string) $name, 'Cwmbran Celtic') !== false) return cc25_own_crest($px);
+    $style = 'width:' . intval($px) . 'px;height:' . intval($px) . 'px';
+    $file = cc25_opp_crest_file($name);
+    if ($file) {
+        return '<img class="crest" style="' . esc_attr($style) . '" src="'
+            . esc_url(get_stylesheet_directory_uri() . '/assets/img/opponents/' . $file)
+            . '" alt="' . esc_attr($name) . '" loading="lazy">';
+    }
+    // Monogram badge (word initials) for opponents we don't have a crest for yet.
+    $ini = '';
+    foreach (preg_split('/\s+/', trim((string) $name)) as $w) {
+        if ($w !== '') $ini .= mb_substr($w, 0, 1);
+        if (mb_strlen($ini) >= 2) break;
+    }
+    if (mb_strlen($ini) < 2) $ini = mb_substr((string) $name, 0, 2);
+    $bg = 'radial-gradient(120% 120% at 30% 20%,var(--blue-500),var(--navy-800))';
+    return '<span class="crest" style="' . esc_attr($style . ';background:' . $bg) . '">'
+        . esc_html(mb_strtoupper($ini)) . '</span>';
+}
+
 function cc25_team_items($list, $team) {
     if (!is_array($list)) return array();
     return array_values(array_filter($list, function ($x) use ($team) {

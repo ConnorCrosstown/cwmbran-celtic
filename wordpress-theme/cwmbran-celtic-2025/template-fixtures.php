@@ -156,7 +156,7 @@ get_template_part('template-parts/site-header');
         <?php $lm = ''; foreach ($cc25_reserves as $rf):
           $rd = strtotime($rf[0]); $home = $rf[2]; $opp = $rf[1]; $comp = $rf[3];
           $mo = date('F Y', $rd); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
-          $oppCrest = cc25_crest($feed, $opp, 34); ?>
+          $oppCrest = cc25_res_crest($opp, 34); ?>
         <div class="mrow mrow-res reveal">
           <div class="mdate"><div class="d"><?php echo date('d', $rd); ?></div><div class="m"><?php echo date('M', $rd); ?></div><div class="day"><?php echo date('D', $rd); ?></div></div>
           <div class="mteams">
