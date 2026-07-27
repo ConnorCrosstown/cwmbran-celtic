@@ -904,3 +904,8 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .pc-lightbox img{max-width:min(460px,92vw);max-height:90vh;width:auto;height:auto;border-radius:12px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
 .pc-lb-close{position:absolute;top:16px;right:20px;background:none;border:0;color:#fff;font-size:2.4rem;line-height:1;cursor:pointer;padding:4px 10px}
 .pc-lb-close:hover{color:var(--gold)}
+
+/* ---- Fixtures: team switch + Reserves (score-less) rows ---- */
+.teamwrap[hidden]{display:none}
+.mrow-res{grid-template-columns:66px 1fr auto}
+@media(max-width:640px){.mrow-res{grid-template-columns:52px 1fr auto}}
