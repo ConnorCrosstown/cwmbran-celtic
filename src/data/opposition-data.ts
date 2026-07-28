@@ -228,7 +228,7 @@ export const oppositionTeams: OppositionTeam[] = [
   { id: 'caldicot-town', name: 'Caldicot Town', ground: 'Jubilee Way', colours: 'Yellow and Black', badge: '/images/opponents/caldicot-town.jpg' },
   { id: 'chepstow-town', name: 'Chepstow Town', ground: 'Larkfield Park', colours: 'Red and Black', badge: '/images/opponents/chepstow-town.png' },
   { id: 'croesyceiliog', name: 'Croesyceiliog', ground: 'Woodland Road', colours: 'Blue and White', badge: '/images/opponents/croesyceiliog.png' },
-  { id: 'cwmbran-town', name: 'Cwmbran Town', ground: 'Cwmbran Stadium', colours: 'Green and White', badge: '/images/opponents/cwmbran-town.jpg' },
+  { id: 'cwmbran-town', name: 'Cwmbran Town', ground: 'Cwmbran Stadium', colours: 'Green and White', badge: '/images/opponents/cwmbran-town.png' },
   { id: 'goytre', name: 'Goytre', ground: 'Plough Road', colours: 'Blue and White', badge: '/images/opponents/goytre.png' },
   { id: 'lliswerry', name: 'Lliswerry', ground: 'Lliswerry Rec', colours: 'Red', badge: '/images/opponents/lliswerry.png' },
   { id: 'new-inn', name: 'New Inn', ground: 'Hazell Drive', colours: 'Red and Black', badge: '/images/opponents/new-inn.png' },
