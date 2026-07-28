@@ -12,8 +12,11 @@ $cc25_venue   = 'The Motazone Arena';
 $cc25_venue2  = 'Celtic Park';
 $cc25_addr    = 'Henllys Way, Cwmbran, Torfaen, NP44 3FS';
 $cc25_pc      = 'NP44 3FS';
-$cc25_mapq    = rawurlencode($cc25_venue . ', Henllys Way, Cwmbran ' . $cc25_pc);
-$cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode('The Motazone Arena Cwmbran ' . $cc25_pc);
+// Map by the ground's real name — "Motazone Arena" is a sponsor name Google
+// resolves to the company, not the pitch. Celtic Park is on Henllys Way.
+$cc25_mapname = 'Cwmbran Celtic AFC, Henllys Way, Cwmbran, ' . $cc25_pc;
+$cc25_mapq    = rawurlencode($cc25_mapname);
+$cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . $cc25_mapq;
 ?>
 <div class="phero">
   <div class="bg"></div><div class="grain"></div><div class="ghost">GROUND</div>
@@ -60,8 +63,8 @@ $cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlen
       </div>
       <div class="tg-info">
         <div class="kick" style="color:var(--blue-500)">Parking</div>
-        <h3>At the ground</h3>
-        <p>Parking is available at the ground and on the surrounding streets. Please park considerately and leave residents' driveways and junctions clear.</p>
+        <h3>Free at Cwmbran Stadium</h3>
+        <p>There's <strong>free parking</strong> at the neighbouring Cwmbran Stadium, right next to the ground. Please park considerately and keep junctions and driveways clear.</p>
       </div>
       <div class="tg-info">
         <div class="kick" style="color:var(--blue-500)">By train</div>
@@ -92,8 +95,8 @@ $cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlen
       </div>
       <div class="tg-info">
         <div class="kick" style="color:var(--gold)">At the ground</div>
-        <h3>Clubhouse &amp; bar</h3>
-        <p>The clubhouse is open on matchdays for hot and cold drinks, snacks and a pint before, during and after the game. Come and make a day of it.</p>
+        <h3>Snack hatch</h3>
+        <p>Grab hot and cold drinks, snacks and matchday refreshments from the snack hatch at the ground &mdash; before, during and after the game.</p>
       </div>
       <div class="tg-info">
         <div class="kick" style="color:var(--gold)">Accessibility</div>
@@ -108,7 +111,7 @@ $cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlen
       <div>
         <div class="kick" style="color:var(--gold);position:relative;z-index:2">Visiting supporters</div>
         <h2>You're very welcome</h2>
-        <p>Cwmbran Celtic is a friendly, family club. Away fans are welcome right across the ground &mdash; come and enjoy the game, and the clubhouse afterwards. Travelling with a team? We'll send your club a matchday info sheet ahead of the visit.</p>
+        <p>Cwmbran Celtic is a friendly, family club. Away fans are welcome right across the ground &mdash; come and enjoy the game and grab something from the snack hatch. Travelling with a team? We'll send your club a matchday info sheet ahead of the visit.</p>
       </div>
       <div class="signup" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
         <a class="btn btn-gold btn-block" href="<?php echo esc_url($cc25_dir_url); ?>" target="_blank" rel="noopener">Get directions &rarr;</a>
