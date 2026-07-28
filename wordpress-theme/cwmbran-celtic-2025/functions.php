@@ -670,8 +670,12 @@ function cc25_team_items($list, $team) {
 function cc25_upcoming($feed, $team = 'mens', $n = 5) {
     $fx = cc25_team_items($feed['fixtures'] ?? array(), $team);
     $now = round(microtime(true) * 1000);
+    // A fixture stays "upcoming" until ~2h after its real KICK-OFF (i.e. through
+    // the match), not its stored noon date — so today's game remains the "next
+    // game" right up to and during kick-off instead of flipping at midday.
     $future = array_values(array_filter($fx, function ($f) use ($now) {
-        return isset($f['date']) && $f['date'] >= $now;
+        $ko = cc25_kickoff_ms($f);
+        return $ko && ($ko + 2 * 60 * 60 * 1000) >= $now;
     }));
     $use = $future ? $future : $fx;
     usort($use, function ($a, $b) { return ($a['date'] ?? 0) <=> ($b['date'] ?? 0); });
