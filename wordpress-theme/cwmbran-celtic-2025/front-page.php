@@ -15,18 +15,25 @@ get_template_part('template-parts/site-header');
 
 <?php // Next-home-game takeover — shows once per home fixture (see premium.js).
 $cc25_hg = cc25_next_home_fixture($feed, $team);
-if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
-<div class="splash" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-key="hg-<?php echo intval($cc25_hg['date'] ?? 0); ?>" hidden>
+if ($cc25_hg): $hgo = cc25_opponent($cc25_hg);
+  // Is this home game TODAY? Flip the takeover into a bold "It's Matchday" state.
+  $cc25_md = (cc25_date($cc25_hg['date'] ?? 0, 'Y-m-d') === date_i18n('Y-m-d')); ?>
+<div class="splash<?php echo $cc25_md ? ' is-matchday' : ''; ?>" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-key="hg-<?php echo intval($cc25_hg['date'] ?? 0); ?><?php echo $cc25_md ? '-md' : ''; ?>" hidden>
   <div class="splash-bg" data-close></div>
   <div class="splash-card">
     <button class="splash-x" type="button" aria-label="Close" data-close>&times;</button>
-    <div class="splash-eye kick">Next home game &middot; Motazone Arena</div>
+    <?php if ($cc25_md): ?>
+      <div class="splash-today"><span class="dot"></span> It's Matchday!</div>
+    <?php else: ?>
+      <div class="splash-eye kick">Next home game &middot; Motazone Arena</div>
+    <?php endif; ?>
     <div class="splash-match" id="splash-title">
       <span class="splash-team"><?php echo cc25_own_crest(54); ?><span class="nm">Cwmbran Celtic</span></span>
       <span class="splash-vs">vs</span>
       <span class="splash-team"><?php echo cc25_crest($feed, $hgo['opponent'], 54); ?><span class="nm"><?php echo esc_html($hgo['opponent']); ?></span></span>
     </div>
-    <div class="splash-meta"><?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'l j F')); ?> &middot; <?php echo esc_html(cc25_kickoff_label($cc25_hg)); ?> &middot; Motazone Arena</div>
+    <div class="splash-meta"><?php echo $cc25_md ? 'Today' : esc_html(cc25_date($cc25_hg['date'] ?? 0, 'l j F')); ?> &middot; Kick-off <?php echo esc_html(cc25_kickoff_label($cc25_hg)); ?> &middot; Motazone Arena</div>
+    <?php if ($cc25_md): ?><div class="splash-kolab kick">Kick-off in</div><?php endif; ?>
     <div class="splash-count" data-ko="<?php echo intval(cc25_kickoff_ms($cc25_hg)); ?>" aria-label="Countdown to kick-off">
       <div class="u"><b data-d>00</b><span>Days</span></div>
       <div class="u"><b data-h>00</b><span>Hrs</span></div>
@@ -35,7 +42,11 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
     </div>
     <div class="splash-cta">
       <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
-      <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+      <?php if ($cc25_md): ?>
+        <a class="btn btn-outline" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
+      <?php else: ?>
+        <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+      <?php endif; ?>
     </div>
     <button class="splash-later" type="button" data-close>Maybe later</button>
   </div>
@@ -86,7 +97,7 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
     <div class="mcard-foot">
       <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/'))); ?>">Fixtures</a>
       <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
-      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('contact', home_url('/'))); ?>">Travel &amp; Ground</a>
+      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
     </div>
   </div>
 </div>

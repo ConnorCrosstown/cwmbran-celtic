@@ -57,6 +57,9 @@ add_filter('template_include', function ($template) {
             'sponsors'                   => 'template-sponsors.php',
             'sponsorship-opportunities'  => 'template-sponsorship.php',
             'sponsorship'                => 'template-sponsorship.php',
+            'travel-and-ground'          => 'template-travel.php',
+            'travel-ground'              => 'template-travel.php',
+            'getting-here'               => 'template-travel.php',
         );
         if (isset($map[$slug])) {
             $found = locate_template($map[$slug]);
@@ -82,6 +85,7 @@ function cc25_slug_candidates($key) {
         'walking-football' => array('cwmbran-walking-football-2', 'walking-football', 'walking'),
         'hospitality'      => array('hospitality', 'matchday-hospitality'),
         'sponsorship'      => array('sponsorship-opportunities', 'sponsorship', 'sponsors-2'),
+        'travel'           => array('travel-and-ground', 'travel-ground', 'getting-here', 'travel', 'matchday'),
     );
     return isset($map[$key]) ? $map[$key] : array($key);
 }
