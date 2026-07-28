@@ -764,7 +764,7 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .tk-cta:hover{background:var(--red-dark)}
 .tk-cta-bond{background:var(--gold);color:#1a1400}.tk-cta-bond:hover{background:var(--gold-soft)}
 .tk-viewport{flex:1;overflow:hidden;position:relative;min-width:0}
-.tk-track{display:inline-flex;white-space:nowrap;animation:tkscroll 48s linear infinite;width:max-content}
+.tk-track{display:inline-flex;white-space:nowrap;animation:tkscroll 80s linear infinite;width:max-content}
 .match-ticker:hover .tk-track{animation-play-state:paused}
 @keyframes tkscroll{to{transform:translateX(-50%)}}
 .tk-item{display:inline-flex;align-items:center;gap:8px;padding:9px 22px;border-right:1px solid rgba(255,255,255,.08)}
