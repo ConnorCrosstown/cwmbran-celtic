@@ -86,7 +86,7 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
     <div class="mcard-foot">
       <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/'))); ?>">Fixtures</a>
       <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
-      <a class="btn btn-outline btn-sm" href="<?php echo esc_url(cc25_page_url('contact', home_url('/'))); ?>">Travel &amp; Ground</a>
+      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('contact', home_url('/'))); ?>">Travel &amp; Ground</a>
     </div>
   </div>
 </div>
@@ -157,7 +157,7 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg); ?>
         <div class="kick" style="color:var(--blue-500)">Matchday</div>
         <h3>Matchday Tickets</h3>
         <p>Adults &pound;6 &middot; Concessions &pound;4 &middot; Under-16s free. Turn up and roar the Celts on.</p>
-        <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Matchday Info</a>
+        <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy a Matchday Ticket</a>
       </div>
       <div class="tk-card tk-bond">
         <div class="kick">The Celtic Bond &#9733;</div>

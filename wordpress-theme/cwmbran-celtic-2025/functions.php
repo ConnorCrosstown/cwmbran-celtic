@@ -172,8 +172,9 @@ function cc25_nav_items() {
     $home = home_url('/');
     return array(
         array('All Teams', cc25_page_url('teams', $home), false, array(
-            array("Men's 1st Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
-            array('Ladies 1st Team', cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
+            array("Men's First Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
+            array("Men's Reserves", cc25_page_url('mens-reserves', $home), false),
+            array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
         )),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),
@@ -316,7 +317,7 @@ function cc25_res_crest($name, $px) {
 /** Render a hand-maintained fixture list (Reserves / Ladies) — rows grouped by
  * month, home-left/away-right, Cwmbran highlighted, competition + H/A tag.
  * $list rows: [date 'Y-m-d', opponent, isHome(bool), competition(optional)]. */
-function cc25_render_static_fixtures($list) {
+function cc25_render_static_fixtures($list, $tickets_url = '') {
     $lm = '';
     foreach ($list as $rf) {
         $rd = strtotime($rf[0]); $home = !empty($rf[2]); $opp = $rf[1];
@@ -324,6 +325,10 @@ function cc25_render_static_fixtures($list) {
         $mo = date('F Y', $rd);
         if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
         $oc = cc25_res_crest($opp, 34);
+        // Ticket link only makes sense for HOME games (we host, we sell).
+        $tix = ($home && $tickets_url)
+            ? '<a class="mtix btn btn-gold" href="' . esc_url($tickets_url) . '" target="_blank" rel="noopener">Buy Tickets</a>'
+            : '';
         echo '<div class="mrow mrow-res reveal">'
             . '<div class="mdate"><div class="d">' . date('d', $rd) . '</div><div class="m">' . date('M', $rd) . '</div><div class="day">' . date('D', $rd) . '</div></div>'
             . '<div class="mteams">'
@@ -331,7 +336,7 @@ function cc25_render_static_fixtures($list) {
             . '<span class="mvs">vs</span>'
             . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
             . '</div>'
-            . '<div class="mmeta"><div class="comp">' . esc_html($comp) . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span></div>'
+            . '<div class="mmeta"><div class="comp">' . esc_html($comp) . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>' . $tix . '</div>'
             . '</div>';
     }
 }

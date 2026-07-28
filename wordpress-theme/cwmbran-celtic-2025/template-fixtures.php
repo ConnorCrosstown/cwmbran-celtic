@@ -113,7 +113,7 @@ get_template_part('template-parts/site-header');
     <div class="teamsel">
       <button class="on" data-team="mens">Men's First Team</button>
       <button data-team="reserves">Men's Reserves</button>
-      <button data-team="womens">Women's</button>
+      <button data-team="womens">Women's First Team</button>
     </div>
   </div>
 </div>
@@ -130,8 +130,13 @@ get_template_part('template-parts/site-header');
 <section class="band">
   <div class="wrap">
 
+    <div class="team-links reveal">
+      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url(array('mens-team', 'mens-1st-team'), home_url('/'))); ?>">Men's First Team squad &rarr;</a>
+      <a class="btn btn-outline btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy tickets</a>
+    </div>
+
     <div class="panel on" id="fixtures">
-      <?php cc25_render_static_fixtures($cc25_mens_fixtures); ?>
+      <?php cc25_render_static_fixtures($cc25_mens_fixtures, cc25_ext_url('tickets')); ?>
     </div>
 
     <div class="panel" id="results">
@@ -194,6 +199,9 @@ get_template_part('template-parts/site-header');
   <section class="band">
     <div class="wrap">
       <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_res_league); ?></div><h2>Men's Reserves &mdash; Fixtures</h2></div></div>
+      <div class="team-links reveal">
+        <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('mens-reserves', home_url('/'))); ?>">Men's Reserves page &rarr;</a>
+      </div>
       <div class="panel on"><?php cc25_render_static_fixtures($cc25_reserves); ?></div>
     </div>
   </section>
@@ -202,7 +210,10 @@ get_template_part('template-parts/site-header');
 <div class="teamwrap" id="team-womens" hidden>
   <section class="band">
     <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_womens_league); ?></div><h2>Women's &mdash; Fixtures</h2></div></div>
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_womens_league); ?></div><h2>Women's First Team &mdash; Fixtures</h2></div></div>
+      <div class="team-links reveal">
+        <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url(array('ladies-team', 'ladies-1st-team'), home_url('/'))); ?>">Women's First Team squad &rarr;</a>
+      </div>
       <div class="panel on"><?php cc25_render_static_fixtures($cc25_womens); ?></div>
     </div>
   </section>

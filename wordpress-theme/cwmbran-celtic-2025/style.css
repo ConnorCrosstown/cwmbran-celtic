@@ -775,7 +775,8 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 @media(prefers-reduced-motion:reduce){.tk-track{animation:none}}
 /* --- Tickets band --- */
 .tickets-band{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.tk-card{background:var(--surface);border:1px solid var(--hair);border-radius:8px;padding:32px;box-shadow:var(--shadow-sm)}
+.tk-card{background:var(--surface);border:1px solid var(--hair);border-radius:8px;padding:32px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.tk-card .btn{margin-top:auto;align-self:flex-start}
 .tk-card h3{font-size:1.6rem;margin:6px 0 10px;text-transform:uppercase}
 .tk-card p{color:var(--muted);margin:0 0 18px;max-width:44ch}
 .tk-season{background:linear-gradient(150deg,var(--navy-800),var(--navy-950));color:#fff;border-color:transparent}
@@ -908,6 +909,8 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 /* ---- Fixtures: team switch + Reserves (score-less) rows ---- */
 .teamwrap[hidden]{display:none}
 .mrow-res{grid-template-columns:66px 1fr auto}
+.team-links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 24px}
+.mrow-res .mtix{display:block;width:-moz-fit-content;width:fit-content;margin:8px 0 0 auto;padding:6px 14px;font-size:.72rem}
 @media(max-width:640px){.mrow-res{grid-template-columns:52px 1fr auto}}
 
 /* ---- Teams hub cards ---- */
