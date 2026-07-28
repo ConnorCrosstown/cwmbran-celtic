@@ -317,6 +317,112 @@ function cc25_res_crest($name, $px) {
 /** Render a hand-maintained fixture list (Reserves / Ladies) — rows grouped by
  * month, home-left/away-right, Cwmbran highlighted, competition + H/A tag.
  * $list rows: [date 'Y-m-d', opponent, isHome(bool), competition(optional)]. */
+/**
+ * Hand-maintained fixture lists for every team, shared by the Fixtures & Results
+ * page and the home-page match ticker. The allwalessport feed only carries the
+ * Men's First Team, so Reserves and Women's are kept here. Each row is
+ * [date Y-m-d, opponent, isHome(bool), competition]. 'badge' => [short label,
+ * css class] is shown in the ticker so you can see which team a fixture is for.
+ */
+function cc25_static_fixtures() {
+    return array(
+        'mens' => array(
+            'league' => 'Ardal League South East',
+            'title'  => "Men's First Team",
+            'badge'  => array('1st', 'tk-team-m'),
+            'list'   => array(
+                array('2026-07-28', 'Cwmbran Town', true, 'League'),
+                array('2026-08-01', 'Tredegar Town', false, 'League'),
+                array('2026-08-08', 'New Inn', true, 'League'),
+                array('2026-08-15', 'Abergavenny Town', false, 'League'),
+                array('2026-08-22', 'Risca United', true, 'League'),
+                array('2026-08-29', 'Cardiff Corries', true, 'League Cup R1'),
+                array('2026-09-05', 'Goytre', true, 'League'),
+                array('2026-09-12', 'Chepstow Town', false, 'League'),
+                array('2026-09-19', 'Newport Corinthians', true, 'League'),
+                array('2026-09-26', 'Abercarn United', false, 'League'),
+                array('2026-10-03', 'Caldicot Town', true, 'League'),
+                array('2026-10-10', 'Brecon Corries', false, 'League'),
+                array('2026-10-17', 'Lliswerry', true, 'League'),
+                array('2026-10-24', 'TBC', true, 'League Cup R2'),
+                array('2026-10-31', 'Croesyceiliog', false, 'League'),
+                array('2026-11-06', 'Blaenavon Blues', true, 'League'),
+                array('2026-11-14', 'Undy FC', false, 'League'),
+                array('2026-11-21', 'Cwmbran Town', false, 'League'),
+                array('2026-11-27', 'Tredegar Town', true, 'League'),
+                array('2026-12-05', 'New Inn', false, 'League'),
+                array('2026-12-11', 'Abergavenny Town', true, 'League'),
+                array('2026-12-19', 'Risca United', false, 'League'),
+                array('2027-01-02', 'Goytre', false, 'League'),
+                array('2027-01-08', 'Chepstow Town', true, 'League'),
+                array('2027-01-16', 'Newport Corinthians', false, 'League'),
+                array('2027-01-22', 'Abercarn United', true, 'League'),
+                array('2027-01-30', 'Caldicot Town', false, 'League'),
+                array('2027-02-05', 'Brecon Corries', true, 'League'),
+                array('2027-02-13', 'Lliswerry', false, 'League'),
+                array('2027-02-19', 'Croesyceiliog', true, 'League'),
+                array('2027-02-27', 'Blaenavon Blues', false, 'League'),
+                array('2027-03-05', 'Undy FC', true, 'League'),
+            ),
+        ),
+        'reserves' => array(
+            'league' => 'Autocentre Gwent Premier Combination League',
+            'title'  => "Men's Reserves",
+            'badge'  => array('Res', 'tk-team-r'),
+            'list'   => array(
+                array('2026-08-08', 'Rogerstone', false, 'League Cup R1'),
+                array('2026-08-15', 'Croesyceiliog', false, 'League'),
+                array('2026-08-22', 'Rogerstone', true, 'League'),
+                array('2026-08-29', 'Abercarn United', false, 'League'),
+                array('2026-09-05', 'Tredegar Town', true, 'League'),
+                array('2026-09-12', 'Chepstow Town', false, 'League'),
+                array('2026-09-19', 'Cwmbran Town', true, 'League'),
+                array('2026-09-26', 'Abertillery Excelsiors', true, 'League'),
+                array('2026-10-03', 'New Inn', false, 'League'),
+                array('2026-10-10', 'Undy', true, 'League'),
+                array('2026-10-17', 'Newport Corinthians', false, 'League'),
+                array('2026-10-24', 'Lliswerry', true, 'League'),
+                array('2026-10-31', 'Abertillery Bluebirds', false, 'League'),
+                array('2026-11-07', 'Blaenavon Blues', true, 'League'),
+                array('2026-11-14', 'Blaenavon Blues', false, 'League'),
+                array('2026-11-21', 'Croesyceiliog', true, 'League'),
+                array('2026-11-28', 'Rogerstone', false, 'League'),
+                array('2026-12-05', 'Abercarn United', true, 'League'),
+                array('2026-12-12', 'Tredegar Town', false, 'League'),
+                array('2026-12-19', 'Chepstow Town', true, 'League'),
+                array('2027-01-09', 'New Inn', true, 'League'),
+                array('2027-01-16', 'Undy', false, 'League'),
+                array('2027-01-23', 'Newport Corinthians', true, 'League'),
+                array('2027-01-30', 'Lliswerry', false, 'League'),
+                array('2027-02-06', 'Abertillery Bluebirds', true, 'League'),
+                array('2027-02-13', 'Cwmbran Town', false, 'League'),
+                array('2027-02-20', 'Abertillery Excelsiors', false, 'League'),
+            ),
+        ),
+        'womens' => array(
+            'league' => 'Genero Adran South',
+            'title'  => "Women's First Team",
+            'badge'  => array('W', 'tk-team-w'),
+            'list'   => array(
+                array('2026-09-27', 'Llanrumney United', false, 'League'),
+                array('2026-10-11', 'Pontypridd United', true, 'League'),
+                array('2026-11-01', 'Carmarthen Town', true, 'League'),
+                array('2026-11-22', 'Cascade YC', false, 'League'),
+                array('2026-11-29', 'Penybont', false, 'League'),
+                array('2026-12-06', 'Pure Swansea', true, 'League'),
+                array('2027-01-17', 'Taffs Well', false, 'League'),
+                array('2027-01-31', 'Llanrumney United', true, 'League'),
+                array('2027-02-07', 'Cascade YC', true, 'League'),
+                array('2027-02-14', 'Carmarthen Town', false, 'League'),
+                array('2027-02-21', 'Pontypridd United', false, 'League'),
+                array('2027-03-14', 'Taffs Well', true, 'League'),
+                array('2027-03-21', 'Pure Swansea', false, 'League'),
+                array('2027-04-04', 'Penybont', true, 'League'),   // venue assumed Home (reverse of 29-Nov) — confirm
+            ),
+        ),
+    );
+}
+
 function cc25_render_static_fixtures($list, $tickets_url = '') {
     $lm = '';
     foreach ($list as $rf) {
@@ -478,30 +584,35 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
 function cc25_ticker_items() {
     $feed = cc25_feed();
     $out = '';
-    // Recent results (both teams).
+    // Recent Men's First Team results (the only team the live feed carries).
     $rs = (isset($feed['results']) && is_array($feed['results'])) ? $feed['results'] : array();
     usort($rs, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
     foreach (array_slice($rs, 0, 4) as $r) {
-        $badge = (($r['team'] ?? 'mens') === 'ladies') ? array('W', 'tk-team-w') : array('M', 'tk-team-m');
         $ro = cc25_opponent($r);
         $home = ($r['homeAway'] ?? 'H') === 'H';
         $cc = intval($home ? ($r['homeScore'] ?? 0) : ($r['awayScore'] ?? 0));
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
-        $out .= '<span class="tk-item"><em class="tk-team ' . $badge[1] . '" title="' . ($badge[0] === 'W' ? "Women's" : "Men's") . '">' . $badge[0] . '</em><b class="tk-' . $wdl . '">FT</b> Cwmbran Celtic ' . $cc . '&ndash;' . $op . ' ' . esc_html($ro['opponent']) . '</span>';
+        $out .= '<span class="tk-item"><em class="tk-team tk-team-m" title="Men&#39;s First Team">1st</em><b class="tk-' . $wdl . '">FT</b> Cwmbran Celtic ' . $cc . '&ndash;' . $op . ' ' . esc_html($ro['opponent']) . '</span>';
     }
-    // Upcoming fixtures (both teams).
-    $fx = (isset($feed['fixtures']) && is_array($feed['fixtures'])) ? $feed['fixtures'] : array();
+    // Upcoming fixtures across ALL teams (Men's First, Reserves, Women's),
+    // merged and sorted by date, each tagged with its team badge.
     $now = round(microtime(true) * 1000);
-    $up = array_values(array_filter($fx, function ($f) use ($now) { return isset($f['date']) && $f['date'] >= $now; }));
-    usort($up, function ($a, $b) { return ($a['date'] ?? 0) <=> ($b['date'] ?? 0); });
-    foreach (array_slice($up, 0, 8) as $f) {
-        $badge = (($f['team'] ?? 'mens') === 'ladies') ? array('W', 'tk-team-w') : array('M', 'tk-team-m');
-        $fo = cc25_opponent($f);
-        $match = $fo['home']
-            ? 'Cwmbran Celtic v ' . esc_html($fo['opponent'])
-            : esc_html($fo['opponent']) . ' v Cwmbran Celtic';
-        $out .= '<span class="tk-item"><em class="tk-team ' . $badge[1] . '" title="' . ($badge[0] === 'W' ? "Women's" : "Men's") . '">' . $badge[0] . '</em><b class="tk-date">' . esc_html(cc25_date($f['date'] ?? 0, 'D j M')) . '</b> ' . $match . ' <em class="tk-ha">' . ($fo['home'] ? 'H' : 'A') . '</em></span>';
+    $up = array();
+    foreach (cc25_static_fixtures() as $team) {
+        foreach ($team['list'] as $rf) {
+            $ms = strtotime($rf[0] . ' 23:59:59') * 1000; // count a game as "upcoming" all match-day
+            if ($ms < $now) continue;
+            $up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
+                'badge' => $team['badge'], 'title' => $team['title']);
+        }
+    }
+    usort($up, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
+    foreach (array_slice($up, 0, 10) as $f) {
+        $match = $f['home']
+            ? 'Cwmbran Celtic v ' . esc_html($f['opp'])
+            : esc_html($f['opp']) . ' v Cwmbran Celtic';
+        $out .= '<span class="tk-item"><em class="tk-team ' . $f['badge'][1] . '" title="' . esc_attr($f['title']) . '">' . esc_html($f['badge'][0]) . '</em><b class="tk-date">' . esc_html(cc25_date($f['ms'], 'D j M')) . '</b> ' . $match . ' <em class="tk-ha">' . ($f['home'] ? 'H' : 'A') . '</em></span>';
     }
     return $out;
 }

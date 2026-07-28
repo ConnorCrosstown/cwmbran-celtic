@@ -11,97 +11,15 @@ $results  = cc25_team_items($feed['results'] ?? array(), $team);
 usort($results, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
 $table    = cc25_table($feed, $team);
 
-// Men's Reserves — Autocentre Gwent Premier Combination League. Their league is
-// NOT in the allwalessport feed, so this fixture list is maintained here by hand.
-// Each: [date Y-m-d, opponent, isHome(bool), competition].
-$cc25_res_league = 'Autocentre Gwent Premier Combination League';
-$cc25_reserves = array(
-    array('2026-08-08', 'Rogerstone', false, 'League Cup R1'),
-    array('2026-08-15', 'Croesyceiliog', false, 'League'),
-    array('2026-08-22', 'Rogerstone', true, 'League'),
-    array('2026-08-29', 'Abercarn United', false, 'League'),
-    array('2026-09-05', 'Tredegar Town', true, 'League'),
-    array('2026-09-12', 'Chepstow Town', false, 'League'),
-    array('2026-09-19', 'Cwmbran Town', true, 'League'),
-    array('2026-09-26', 'Abertillery Excelsiors', true, 'League'),
-    array('2026-10-03', 'New Inn', false, 'League'),
-    array('2026-10-10', 'Undy', true, 'League'),
-    array('2026-10-17', 'Newport Corinthians', false, 'League'),
-    array('2026-10-24', 'Lliswerry', true, 'League'),
-    array('2026-10-31', 'Abertillery Bluebirds', false, 'League'),
-    array('2026-11-07', 'Blaenavon Blues', true, 'League'),
-    array('2026-11-14', 'Blaenavon Blues', false, 'League'),
-    array('2026-11-21', 'Croesyceiliog', true, 'League'),
-    array('2026-11-28', 'Rogerstone', false, 'League'),
-    array('2026-12-05', 'Abercarn United', true, 'League'),
-    array('2026-12-12', 'Tredegar Town', false, 'League'),
-    array('2026-12-19', 'Chepstow Town', true, 'League'),
-    array('2027-01-09', 'New Inn', true, 'League'),
-    array('2027-01-16', 'Undy', false, 'League'),
-    array('2027-01-23', 'Newport Corinthians', true, 'League'),
-    array('2027-01-30', 'Lliswerry', false, 'League'),
-    array('2027-02-06', 'Abertillery Bluebirds', true, 'League'),
-    array('2027-02-13', 'Cwmbran Town', false, 'League'),
-    array('2027-02-20', 'Abertillery Excelsiors', false, 'League'),
-);
-
-// Women's — Genero Adran South. Also maintained by hand (not in the feed).
-$cc25_womens_league = 'Genero Adran South';
-$cc25_womens = array(
-    array('2026-09-27', 'Llanrumney United', false, 'League'),
-    array('2026-10-11', 'Pontypridd United', true, 'League'),
-    array('2026-11-01', 'Carmarthen Town', true, 'League'),
-    array('2026-11-22', 'Cascade YC', false, 'League'),
-    array('2026-11-29', 'Penybont', false, 'League'),
-    array('2026-12-06', 'Pure Swansea', true, 'League'),
-    array('2027-01-17', "Taffs Well", false, 'League'),
-    array('2027-01-31', 'Llanrumney United', true, 'League'),
-    array('2027-02-07', 'Cascade YC', true, 'League'),
-    array('2027-02-14', 'Carmarthen Town', false, 'League'),
-    array('2027-02-21', 'Pontypridd United', false, 'League'),
-    array('2027-03-14', "Taffs Well", true, 'League'),
-    array('2027-03-21', 'Pure Swansea', false, 'League'),
-    array('2027-04-04', 'Penybont', true, 'League'),   // venue assumed Home (reverse of 29-Nov) — confirm
-);
-
-// Men's First Team — Ardal South East 26/27. The allwalessport feed only
-// publishes a short window at a time, so the FULL schedule is listed here; the
-// Results + League Table tabs still come live from the feed. Dates may change —
-// update the array (or switch this tab back to the feed once aws has the season).
-$cc25_mens_fixtures = array(
-    array('2026-07-28', 'Cwmbran Town', true, 'League'),
-    array('2026-08-01', 'Tredegar Town', false, 'League'),
-    array('2026-08-08', 'New Inn', true, 'League'),
-    array('2026-08-15', 'Abergavenny Town', false, 'League'),
-    array('2026-08-22', 'Risca United', true, 'League'),
-    array('2026-08-29', 'Cardiff Corries', true, 'League Cup R1'),
-    array('2026-09-05', 'Goytre', true, 'League'),
-    array('2026-09-12', 'Chepstow Town', false, 'League'),
-    array('2026-09-19', 'Newport Corinthians', true, 'League'),
-    array('2026-09-26', 'Abercarn United', false, 'League'),
-    array('2026-10-03', 'Caldicot Town', true, 'League'),
-    array('2026-10-10', 'Brecon Corries', false, 'League'),
-    array('2026-10-17', 'Lliswerry', true, 'League'),
-    array('2026-10-24', 'TBC', true, 'League Cup R2'),
-    array('2026-10-31', 'Croesyceiliog', false, 'League'),
-    array('2026-11-06', 'Blaenavon Blues', true, 'League'),
-    array('2026-11-14', 'Undy FC', false, 'League'),
-    array('2026-11-21', 'Cwmbran Town', false, 'League'),
-    array('2026-11-27', 'Tredegar Town', true, 'League'),
-    array('2026-12-05', 'New Inn', false, 'League'),
-    array('2026-12-11', 'Abergavenny Town', true, 'League'),
-    array('2026-12-19', 'Risca United', false, 'League'),
-    array('2027-01-02', 'Goytre', false, 'League'),
-    array('2027-01-08', 'Chepstow Town', true, 'League'),
-    array('2027-01-16', 'Newport Corinthians', false, 'League'),
-    array('2027-01-22', 'Abercarn United', true, 'League'),
-    array('2027-01-30', 'Caldicot Town', false, 'League'),
-    array('2027-02-05', 'Brecon Corries', true, 'League'),
-    array('2027-02-13', 'Lliswerry', false, 'League'),
-    array('2027-02-19', 'Croesyceiliog', true, 'League'),
-    array('2027-02-27', 'Blaenavon Blues', false, 'League'),
-    array('2027-03-05', 'Undy FC', true, 'League'),
-);
+// Fixture lists live in cc25_static_fixtures() (functions.php) so the home-page
+// match ticker and this page stay in sync. Men's Reserves + Women's are NOT in
+// the allwalessport feed, so those lists are hand-maintained there.
+$cc25_sf            = cc25_static_fixtures();
+$cc25_mens_fixtures = $cc25_sf['mens']['list'];
+$cc25_res_league    = $cc25_sf['reserves']['league'];
+$cc25_reserves      = $cc25_sf['reserves']['list'];
+$cc25_womens_league = $cc25_sf['womens']['league'];
+$cc25_womens        = $cc25_sf['womens']['list'];
 get_template_part('template-parts/site-header');
 ?>
 <div class="phero">

@@ -798,6 +798,7 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .tk-item .tk-team{font-style:normal;font-family:var(--display);font-size:.66rem;min-width:18px;height:18px;padding:0 4px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;color:#fff;flex:none}
 .tk-item .tk-team-m{background:var(--blue-500)}
 .tk-item .tk-team-w{background:#d6409f}
+.tk-team-r{background:#0e7c86}
 
 /* ===== Iteration: tighter gaps, aligned news, league strip, bond, wide pages ===== */
 /* reduce vertical gaps between sections */
