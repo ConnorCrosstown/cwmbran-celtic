@@ -153,6 +153,26 @@ function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
 function cc25_bond_amount()  { return '£10'; }           // monthly Celtic Bond subscription
 function cc25_bond_join_url() { return ''; }             // paste the direct-debit sign-up link; blank => Contact page
 function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
+
+/** Homepage "Latest Gallery" feature. Post a gallery as a normal Post in the
+ * "gallery" category with a Featured Image, and the newest one shows on the
+ * home page automatically. Returns the WP_Post or null. */
+function cc25_gallery_category() { return 'gallery'; }
+function cc25_latest_gallery() {
+    if (!class_exists('WP_Query')) return null;
+    $q = new WP_Query(array(
+        'post_type'           => 'post',
+        'post_status'         => 'publish',
+        'posts_per_page'      => 1,
+        'category_name'       => cc25_gallery_category(),
+        'meta_query'          => array(array('key' => '_thumbnail_id', 'compare' => 'EXISTS')),
+        'no_found_rows'       => true,
+        'ignore_sticky_posts' => true,
+    ));
+    $post = $q->have_posts() ? $q->posts[0] : null;
+    wp_reset_postdata();
+    return $post;
+}
 function cc25_sponsorship_brochure() { return ''; }  // paste a 2026/27 brochure PDF URL to show the download button
 
 /** Current football season label, e.g. "2026/27" — derived from the date so it

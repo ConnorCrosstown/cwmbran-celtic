@@ -304,6 +304,25 @@ if ($cc25_hg): $hgo = cc25_opponent($cc25_hg);
   </div>
 </section>
 
+<?php $cc25_gal = cc25_latest_gallery(); if ($cc25_gal): ?>
+<section class="sec galfeat" aria-label="Latest gallery">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><div class="sec-eye kick"><span class="ln"></span> From the club</div><h2>Latest Gallery</h2></div>
+      <a class="viewall" href="<?php echo esc_url(cc25_page_url('galleries', home_url('/'))); ?>">All galleries &rarr;</a>
+    </div>
+    <a class="galcard reveal" href="<?php echo esc_url(get_permalink($cc25_gal->ID)); ?>">
+      <div class="galcard-img"><?php echo get_the_post_thumbnail($cc25_gal->ID, 'large', array('loading' => 'lazy', 'alt' => esc_attr(get_the_title($cc25_gal->ID)))); ?></div>
+      <div class="galcard-body">
+        <div class="kick" style="color:var(--gold)">Gallery &middot; <?php echo esc_html(get_the_date('j M Y', $cc25_gal->ID)); ?></div>
+        <h3><?php echo esc_html(get_the_title($cc25_gal->ID)); ?></h3>
+        <span class="btn btn-gold">View the gallery &rarr;</span>
+      </div>
+    </a>
+  </div>
+</section>
+<?php endif; ?>
+
 <section class="sec" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head reveal">
