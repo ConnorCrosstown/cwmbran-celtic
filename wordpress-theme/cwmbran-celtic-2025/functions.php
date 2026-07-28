@@ -181,6 +181,20 @@ function cc25_handle_bond_join() {
     wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit;
 }
 
+/** Keep programme + gallery posts out of the News/blog listing and RSS feeds
+ * (they have their own homes), so importing programmes doesn't flood News. */
+add_action('pre_get_posts', function ($q) {
+    if (is_admin() || !$q->is_main_query()) return;
+    if ($q->is_home() || $q->is_feed()) {
+        $ex = array();
+        foreach (array('programme', 'gallery') as $slug) {
+            $t = get_category_by_slug($slug);
+            if ($t) $ex[] = (int) $t->term_id;
+        }
+        if ($ex) $q->set('category__not_in', array_values(array_unique(array_merge((array) $q->get('category__not_in'), $ex))));
+    }
+});
+
 /* ---- Match Day Programmes ---------------------------------------------------
  * Post each programme as a normal Post in the "programme" category, set a
  * Featured Image (the cover), set the post date to the match date, and paste the
