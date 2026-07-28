@@ -37,6 +37,11 @@ get_template_part('template-parts/site-header');
 </div>
 
 <div class="teamwrap" id="team-mens">
+<section class="band" style="padding:38px 0 18px">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:0"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_sf['mens']['league']); ?></div><h2>Men's First Team &mdash; Fixtures</h2></div></div>
+  </div>
+</section>
 <div class="tabs">
   <div class="tabs-in">
     <button class="tab on" data-t="fixtures">Fixtures</button>
