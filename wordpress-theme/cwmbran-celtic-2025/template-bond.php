@@ -20,7 +20,7 @@ $cc25_results  = cc25_page_url('bond-results', '');
     <h1>The Celtic Bond</h1>
     <p>The club's 100&nbsp;Club &mdash; back the Celts every month for just <?php echo esc_html($cc25_amt); ?>, and you could land a cash prize while funding the future of the club.</p>
     <div class="teamsel">
-      <a class="btn btn-gold btn-sm" href="<?php echo esc_url($cc25_join_url); ?>"<?php echo $cc25_join ? ' target="_blank" rel="noopener"' : ''; ?>>Join the Bond &rarr;</a>
+      <a class="btn btn-gold btn-sm" href="#join">Join the Bond &rarr;</a>
       <?php if ($cc25_results): ?><a class="btn btn-outline btn-sm" href="<?php echo esc_url($cc25_results); ?>">Latest winners</a><?php endif; ?>
     </div>
   </div>
@@ -62,16 +62,33 @@ $cc25_results  = cc25_page_url('bond-results', '');
       <div class="tg-info"><div class="kick" style="color:var(--gold)">Step 3</div><h3>Get your number</h3><p>Once we've verified your membership, your Celtic Bond number is emailed straight to you.</p></div>
     </div>
 
-    <div class="cta reveal" style="margin-top:36px">
-      <div class="grain"></div>
-      <div>
-        <div class="kick" style="color:var(--gold);position:relative;z-index:2">Ready to back the Celts?</div>
+    <div id="join" class="bond-join reveal">
+      <div class="bond-join-copy">
+        <div class="kick" style="color:var(--gold)">Ready to back the Celts?</div>
         <h2>Join the Celtic Bond</h2>
-        <p>It's <?php echo esc_html($cc25_amt); ?> a month, you could win every month, and you'll be helping fund football for the whole town. Questions? Email <a href="mailto:<?php echo esc_attr(cc25_bond_email()); ?>" style="color:#fff;text-decoration:underline"><?php echo esc_html(cc25_bond_email()); ?></a>.</p>
+        <p>Fill in your details and we'll be in touch to set up your <?php echo esc_html($cc25_amt); ?>-a-month direct debit and give you your Bond number. Questions? Email <a href="mailto:<?php echo esc_attr(cc25_bond_email()); ?>"><?php echo esc_html(cc25_bond_email()); ?></a>.</p>
       </div>
-      <div class="signup" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
-        <a class="btn btn-gold btn-block" href="<?php echo esc_url($cc25_join_url); ?>"<?php echo $cc25_join ? ' target="_blank" rel="noopener"' : ''; ?>>Join the Bond &rarr;</a>
-        <a class="btn btn-navy btn-block" href="<?php echo esc_url(cc25_page_url('contact', $cc25_home)); ?>">Contact the club</a>
+      <div class="bond-form-card">
+        <?php $cc25_bond_state = isset($_GET['bond']) ? sanitize_key($_GET['bond']) : ''; ?>
+        <?php if ($cc25_bond_state === 'sent'): ?>
+          <div class="bond-note ok"><strong>Thanks &mdash; you're on the list!</strong><br>We'll be in touch soon to set up your direct debit and give you your Celtic Bond number.</div>
+        <?php else: ?>
+          <?php if ($cc25_bond_state === 'err'): ?><div class="bond-note err">Please add your name and a valid email address, then try again.</div><?php endif; ?>
+          <form class="bond-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+            <input type="hidden" name="action" value="cc25_bond_join">
+            <div class="bf-row">
+              <label>Your name<input type="text" name="cc_name" required></label>
+              <label>Email<input type="email" name="cc_email" required></label>
+            </div>
+            <div class="bf-row">
+              <label>Phone<input type="tel" name="cc_phone"></label>
+              <label>Connection to the club<input type="text" name="cc_conn" placeholder="supporter, player's parent&hellip;"></label>
+            </div>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="bf-hp">
+            <button type="submit" class="btn btn-gold btn-block">Join the Celtic Bond &rarr;</button>
+            <small>We'll only use these details to set up your Bond membership.</small>
+          </form>
+        <?php endif; ?>
       </div>
     </div>
 

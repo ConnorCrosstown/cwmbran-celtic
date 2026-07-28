@@ -154,6 +154,30 @@ function cc25_bond_amount()  { return '£10'; }           // monthly Celtic Bond
 function cc25_bond_join_url() { return ''; }             // paste the direct-debit sign-up link; blank => Contact page
 function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
 
+/** Celtic Bond sign-up form handler — emails the club the applicant's details,
+ * then redirects back to the Bond page with a thank-you (or error) state. */
+add_action('admin_post_nopriv_cc25_bond_join', 'cc25_handle_bond_join');
+add_action('admin_post_cc25_bond_join', 'cc25_handle_bond_join');
+function cc25_handle_bond_join() {
+    $back = wp_get_referer();
+    if (!$back) $back = cc25_page_url('celtic-bond', home_url('/'));
+    // Honeypot: silently accept (looks successful to bots) without emailing.
+    if (!empty($_POST['website'])) { wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit; }
+    $name  = sanitize_text_field(wp_unslash($_POST['cc_name'] ?? ''));
+    $email = sanitize_email(wp_unslash($_POST['cc_email'] ?? ''));
+    $phone = sanitize_text_field(wp_unslash($_POST['cc_phone'] ?? ''));
+    $conn  = sanitize_text_field(wp_unslash($_POST['cc_conn'] ?? ''));
+    if ($name === '' || !is_email($email)) {
+        wp_safe_redirect(add_query_arg('bond', 'err', $back) . '#join'); exit;
+    }
+    $body = "New Celtic Bond sign-up:\n\n"
+        . "Name: {$name}\nEmail: {$email}\nPhone: {$phone}\nConnection to the club: {$conn}\n\n"
+        . "Next step: follow up to set up their " . cc25_bond_amount() . "/month direct debit and allocate a Bond number.";
+    $headers = array('Reply-To: ' . $name . ' <' . $email . '>');
+    wp_mail(cc25_bond_email(), 'Celtic Bond sign-up: ' . $name, $body, $headers);
+    wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit;
+}
+
 /** Homepage "Latest Gallery" feature. Post a gallery as a normal Post in the
  * "gallery" category with a Featured Image, and the newest one shows on the
  * home page automatically. Returns the WP_Post or null. */
