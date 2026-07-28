@@ -63,6 +63,9 @@ add_filter('template_include', function ($template) {
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
+            'cwmbran-celtic-fc-match-day-programme-digital' => 'template-programmes.php',
+            'match-day-programme'        => 'template-programmes.php',
+            'programmes'                 => 'template-programmes.php',
         );
         if (isset($map[$slug])) {
             $found = locate_template($map[$slug]);
@@ -177,6 +180,70 @@ function cc25_handle_bond_join() {
     wp_mail(cc25_bond_email(), 'Celtic Bond sign-up: ' . $name, $body, $headers);
     wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit;
 }
+
+/* ---- Match Day Programmes ---------------------------------------------------
+ * Post each programme as a normal Post in the "programme" category, set a
+ * Featured Image (the cover), set the post date to the match date, and paste the
+ * PDF / Issuu link in the "Match Day Programme" box. The archive page groups them
+ * by season automatically and the newest shows on the home page. */
+function cc25_programme_category() { return 'programme'; }
+
+/** UK football season label (Aug–May) from a timestamp, e.g. "2026/27". */
+function cc25_season_label_from_ts($ts) {
+    $y = (int) date('Y', $ts); $m = (int) date('n', $ts);
+    $start = ($m >= 7) ? $y : $y - 1;
+    return $start . '/' . substr((string) ($start + 1), -2);
+}
+function cc25_programme_season($id) {
+    $s = trim((string) get_post_meta($id, '_cc25_prog_season', true));
+    return $s !== '' ? $s : cc25_season_label_from_ts((int) get_post_time('U', true, $id));
+}
+function cc25_programme_url($id) {
+    $u = trim((string) get_post_meta($id, '_cc25_prog_url', true));
+    return $u !== '' ? $u : get_permalink($id);
+}
+/** All programme posts grouped by season, newest season first. */
+function cc25_programmes_by_season() {
+    $posts = get_posts(array(
+        'post_type'   => 'post',
+        'post_status' => 'publish',
+        'numberposts' => -1,
+        'category_name' => cc25_programme_category(),
+        'orderby'     => 'date',
+        'order'       => 'DESC',
+    ));
+    $by = array();
+    foreach ($posts as $p) { $by[cc25_programme_season($p->ID)][] = $p; }
+    uksort($by, function ($a, $b) { return intval($b) <=> intval($a); });
+    return $by;
+}
+function cc25_latest_programme() {
+    $p = get_posts(array('post_type' => 'post', 'post_status' => 'publish', 'numberposts' => 1,
+        'category_name' => cc25_programme_category(), 'orderby' => 'date', 'order' => 'DESC'));
+    return $p ? $p[0] : null;
+}
+
+/** Editor box for the programme link + optional season override (shown on Posts). */
+add_action('add_meta_boxes', function () {
+    add_meta_box('cc25_prog', 'Match Day Programme', 'cc25_prog_metabox', 'post', 'side', 'high');
+});
+function cc25_prog_metabox($post) {
+    wp_nonce_field('cc25_prog_save', 'cc25_prog_nonce');
+    $url = get_post_meta($post->ID, '_cc25_prog_url', true);
+    $season = get_post_meta($post->ID, '_cc25_prog_season', true);
+    echo '<p><label><strong>Programme link (PDF or Issuu)</strong><br>'
+        . '<input type="url" name="cc25_prog_url" value="' . esc_attr($url) . '" style="width:100%" placeholder="https://…"></label></p>';
+    echo '<p><label><strong>Season</strong> (optional)<br>'
+        . '<input type="text" name="cc25_prog_season" value="' . esc_attr($season) . '" style="width:100%" placeholder="auto from post date, e.g. 2026/27"></label></p>';
+    echo '<p style="color:#666;font-size:11px;margin:0">To publish a programme: set the category to <b>Programme</b>, add a <b>Featured Image</b> (the cover), and set the <b>post date</b> to the match date.</p>';
+}
+add_action('save_post', function ($id) {
+    if (!isset($_POST['cc25_prog_nonce']) || !wp_verify_nonce($_POST['cc25_prog_nonce'], 'cc25_prog_save')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $id)) return;
+    update_post_meta($id, '_cc25_prog_url', esc_url_raw(wp_unslash($_POST['cc25_prog_url'] ?? '')));
+    update_post_meta($id, '_cc25_prog_season', sanitize_text_field(wp_unslash($_POST['cc25_prog_season'] ?? '')));
+});
 
 /** Homepage "Latest Gallery" feature. Post a gallery as a normal Post in the
  * "gallery" category with a Featured Image, and the newest one shows on the
