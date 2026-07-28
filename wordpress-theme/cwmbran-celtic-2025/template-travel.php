@@ -12,10 +12,11 @@ $cc25_venue   = 'The Motazone Arena';
 $cc25_venue2  = 'Celtic Park';
 $cc25_addr    = 'Henllys Way, Cwmbran, Torfaen, NP44 3FS';
 $cc25_pc      = 'NP44 3FS';
-// Map by the ground's real name — "Motazone Arena" is a sponsor name Google
-// resolves to the company, not the pitch. Celtic Park is on Henllys Way.
-$cc25_mapname = 'Cwmbran Celtic AFC, Henllys Way, Cwmbran, ' . $cc25_pc;
-$cc25_mapq    = rawurlencode($cc25_mapname);
+// Pin by exact coordinates of Celtic Park on Henllys Way (Wikipedia; verified
+// on Henllys Way by reverse geocode). Text names like "Motazone Arena" resolve
+// to the sponsor company, so coordinates are the reliable way to pin the ground.
+$cc25_geo     = '51.643722,-3.018111';
+$cc25_mapq    = rawurlencode($cc25_geo);
 $cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . $cc25_mapq;
 ?>
 <div class="phero">
