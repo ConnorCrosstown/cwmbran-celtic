@@ -11,7 +11,7 @@ $cc25_home = home_url('/');
 $cc25_fx   = cc25_page_url('fixtures', $cc25_home);
 $cc25_hub = array(
     array('name' => "Men's First Team",   'sub' => 'Ardal League South East',    'page' => cc25_page_url('mens', $cc25_home),   'fx' => $cc25_fx . '#mens'),
-    array('name' => "Men's Reserves",      'sub' => 'Gwent Premier Combination',  'page' => $cc25_home . 'mens-reserves/',       'fx' => $cc25_fx . '#reserves'),
+    array('name' => "Men's Reserves",      'sub' => 'Gwent Premier Combination',  'page' => cc25_reserves_url(),                 'fx' => $cc25_fx . '#reserves'),
     array('name' => "Women's First Team",  'sub' => 'Genero Adran South',         'page' => cc25_page_url('ladies', $cc25_home), 'fx' => $cc25_fx . '#womens'),
 );
 ?>

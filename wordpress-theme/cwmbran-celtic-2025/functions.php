@@ -69,6 +69,42 @@ add_filter('template_include', function ($template) {
     return $template;
 }, 9999);
 
+/**
+ * Auto-create the WordPress pages our custom templates need, so Connor never has
+ * to add them by hand in wp-admin. The template_include map (above) applies the
+ * right template by slug automatically, so an empty published page is enough.
+ * Runs on theme activation and once after each theme upload (version-guarded).
+ */
+function cc25_ensure_pages() {
+    $pages = array(
+        'travel-and-ground' => 'Travel & Ground',
+        'mens-reserves'     => "Men's Reserves",
+    );
+    foreach ($pages as $slug => $title) {
+        if (get_page_by_path($slug)) continue;
+        wp_insert_post(array(
+            'post_title'  => $title,
+            'post_name'   => $slug,
+            'post_status' => 'publish',
+            'post_type'   => 'page',
+            'post_content' => '',
+        ));
+    }
+}
+add_action('after_switch_theme', 'cc25_ensure_pages');
+add_action('admin_init', function () {
+    if (get_option('cc25_pages_provisioned') === '1') return;
+    cc25_ensure_pages();
+    update_option('cc25_pages_provisioned', '1');
+});
+
+/** Reserves destination: the dedicated /mens-reserves/ page if it exists, else
+ * straight to the Reserves fixtures tab (works with no WP page needed). */
+function cc25_reserves_url() {
+    $p = cc25_page_url('mens-reserves', '');
+    return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#reserves');
+}
+
 /** Real slug variants (confirmed from the live site) so links resolve to the club's pages. */
 function cc25_slug_candidates($key) {
     $map = array(
@@ -177,7 +213,7 @@ function cc25_nav_items() {
     return array(
         array('All Teams', cc25_page_url('teams', $home), false, array(
             array("Men's First Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
-            array("Men's Reserves", cc25_page_url('mens-reserves', $home), false),
+            array("Men's Reserves", cc25_reserves_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
         )),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
@@ -572,6 +608,29 @@ function cc25_sponsors() {
         array('Le Pub', 'le-pub.jpg', 'https://www.lepublicspace.co.uk/'),
     );
 }
+/** A random sponsor for the rotating "Featured Sponsor" spots — picked fresh on
+ * each page load so every sponsor gets extra exposure over time. */
+function cc25_featured_sponsor() {
+    $all = cc25_sponsors();
+    if (!$all) return null;
+    return $all[mt_rand(0, count($all) - 1)];
+}
+
+/** Render a Featured Sponsor block. $variant: 'card' (homepage) or 'strip' (footer). */
+function cc25_featured_sponsor_html($variant = 'card') {
+    $s = cc25_featured_sponsor();
+    if (!$s) return '';
+    $logo = cc25_sponsor_logo($s[0], $s[1], isset($s[2]) ? $s[2] : '', ' loading="lazy"');
+    if ($variant === 'strip') {
+        return '<div class="ft-sponsor"><span class="ft-sponsor-eye kick">&#9733; Featured Sponsor</span>'
+            . '<span class="ft-sponsor-logo">' . $logo . '</span></div>';
+    }
+    return '<div class="feat-sponsor reveal"><div class="feat-eye kick">&#9733; Featured Sponsor</div>'
+        . '<div class="feat-logo">' . $logo . '</div>'
+        . '<div class="feat-txt"><strong>' . esc_html($s[0]) . '</strong> is proud to support Cwmbran Celtic.'
+        . '<a href="' . esc_url(cc25_page_url('sponsorship', home_url('/'))) . '">Become a sponsor &rarr;</a></div></div>';
+}
+
 function cc25_sponsor_url($file) {
     return get_stylesheet_directory_uri() . '/assets/img/sponsor-banners/' . $file;
 }
@@ -599,20 +658,24 @@ function cc25_ticker_items() {
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
         $out .= '<span class="tk-item"><em class="tk-team tk-team-m" title="Men&#39;s First Team">1st</em><b class="tk-' . $wdl . '">FT</b> Cwmbran Celtic ' . $cc . '&ndash;' . $op . ' ' . esc_html($ro['opponent']) . '</span>';
     }
-    // Upcoming fixtures across ALL teams (Men's First, Reserves, Women's),
-    // merged and sorted by date, each tagged with its team badge.
+    // Upcoming fixtures across ALL teams (Men's First, Reserves, Women's).
+    // Take each team's next few games so EVERY team features in the banner even
+    // when their season starts later (e.g. Women's kick off in late Sept), then
+    // merge and sort by date.
     $now = round(microtime(true) * 1000);
     $up = array();
     foreach (cc25_static_fixtures() as $team) {
+        $team_up = array();
         foreach ($team['list'] as $rf) {
             $ms = strtotime($rf[0] . ' 23:59:59') * 1000; // count a game as "upcoming" all match-day
             if ($ms < $now) continue;
-            $up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
+            $team_up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
                 'badge' => $team['badge'], 'title' => $team['title']);
         }
+        $up = array_merge($up, array_slice($team_up, 0, 5)); // guarantee each team appears
     }
     usort($up, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
-    foreach (array_slice($up, 0, 10) as $f) {
+    foreach (array_slice($up, 0, 15) as $f) {
         $match = $f['home']
             ? 'Cwmbran Celtic v ' . esc_html($f['opp'])
             : esc_html($f['opp']) . ' v Cwmbran Celtic';

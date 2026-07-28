@@ -118,7 +118,7 @@ get_template_part('template-parts/site-header');
     <div class="wrap">
       <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_res_league); ?></div><h2>Men's Reserves &mdash; Fixtures</h2></div></div>
       <div class="team-links reveal">
-        <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('mens-reserves', home_url('/'))); ?>">Men's Reserves page &rarr;</a>
+        <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_reserves_url()); ?>">Men's Reserves &rarr;</a>
       </div>
       <div class="panel on"><?php cc25_render_static_fixtures($cc25_reserves); ?></div>
     </div>

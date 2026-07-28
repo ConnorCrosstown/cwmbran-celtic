@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) exit;
       </div>
       <div><h3>Matchday</h3>
         <a href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Tickets</a>
-        <a href="<?php echo esc_url(cc25_page_url('contact', home_url('/'))); ?>">Motazone Arena</a>
+        <a href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Motazone Arena</a>
         <a href="<?php echo esc_url(cc25_page_url('hospitality', home_url('/'))); ?>">Hospitality</a>
         <a href="<?php echo esc_url(cc25_ext_url('shop')); ?>" target="_blank" rel="noopener">Club Shop</a>
       </div>
@@ -30,6 +30,7 @@ if (!defined('ABSPATH')) exit;
         <a href="https://twitter.com/CwmbranCelticFC" target="_blank" rel="noopener">X / Twitter</a>
       </div>
     </div>
+    <?php echo cc25_featured_sponsor_html('strip'); ?>
     <div class="ft-bot">
       <span>© <?php echo esc_html(date_i18n('Y')); ?> Cwmbran Celtic AFC</span>
       <span>Fixtures &amp; table update automatically from allwalessport</span>

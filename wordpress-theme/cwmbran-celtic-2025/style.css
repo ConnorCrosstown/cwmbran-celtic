@@ -938,6 +938,17 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .splash.is-matchday .splash-count b{color:var(--gold)}
 @keyframes cc-md-pulse{0%{box-shadow:0 0 0 0 rgba(225,29,72,.6)}70%{box-shadow:0 0 0 12px rgba(225,29,72,0)}100%{box-shadow:0 0 0 0 rgba(225,29,72,0)}}
 @media(prefers-reduced-motion:reduce){.splash-today .dot{animation:none}}
+/* Featured (rotating) sponsor — homepage card + footer strip */
+.feat-sponsor{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;text-align:center;background:var(--surface);border:1px solid var(--hair);border-radius:10px;padding:18px 26px;margin:16px 0 10px;box-shadow:var(--shadow-sm)}
+.feat-eye{color:var(--gold);letter-spacing:.12em;font-size:.72rem;flex:none}
+.feat-logo{flex:none;max-width:240px}
+.feat-logo img{max-width:100%;height:auto;display:block}
+.feat-txt{color:var(--muted);font-size:.95rem;max-width:360px}
+.feat-txt strong{color:var(--text)}
+.feat-txt a{color:var(--blue-500);font-weight:600;white-space:nowrap;margin-left:8px}
+.ft-sponsor{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;padding:18px 0 4px;margin-top:6px;border-top:1px solid rgba(255,255,255,.12)}
+.ft-sponsor-eye{color:var(--gold);letter-spacing:.12em;font-size:.68rem}
+.ft-sponsor-logo img{max-width:170px;height:auto;display:block;background:#fff;border-radius:6px;padding:7px 12px}
 @media(max-width:640px){.mrow-res{grid-template-columns:52px 1fr auto}}
 
 /* ---- Teams hub cards ---- */
