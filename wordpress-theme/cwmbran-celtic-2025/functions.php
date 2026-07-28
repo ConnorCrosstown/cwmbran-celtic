@@ -357,6 +357,44 @@ function cc25_res_crest($name, $px) {
 /** Render a hand-maintained fixture list (Reserves / Ladies) — rows grouped by
  * month, home-left/away-right, Cwmbran highlighted, competition + H/A tag.
  * $list rows: [date 'Y-m-d', opponent, isHome(bool), competition(optional)]. */
+/** Normalise a team name for matching feed <-> static (drops FC/AFC, case, spacing). */
+function cc25_norm_team($n) {
+    $n = strtolower(trim((string) $n));
+    $n = preg_replace('/\b(a?fc)\b/', '', $n);
+    return trim(preg_replace('/\s+/', ' ', $n));
+}
+
+/**
+ * Overlay live allwalessport dates + home/away onto a hand-maintained fixture
+ * list (used for the Men's First Team). The feed only carries a short rolling
+ * window but is authoritative, so where it has a fixture we correct the static
+ * row (matched by opponent, nearest date) to the feed's date/venue.
+ */
+function cc25_overlay_feed_dates($list) {
+    $feed = cc25_feed();
+    $fx = (isset($feed['fixtures']) && is_array($feed['fixtures'])) ? $feed['fixtures'] : array();
+    foreach ($fx as $f) {
+        if (($f['team'] ?? 'mens') !== 'mens') continue;
+        $home = strpos((string) ($f['homeTeam'] ?? ''), 'Cwmbran Celtic') !== false;
+        $opp  = cc25_norm_team($home ? ($f['awayTeam'] ?? '') : ($f['homeTeam'] ?? ''));
+        $fms  = intval($f['date'] ?? 0);
+        if ($opp === '' || !$fms) continue;
+        $fdate = date('Y-m-d', intval($fms / 1000));
+        $bi = -1; $best = null;
+        foreach ($list as $i => $rf) {
+            if (cc25_norm_team($rf[1]) !== $opp) continue;
+            $diff = abs(strtotime($rf[0]) - strtotime($fdate));
+            if ($best === null || $diff < $best) { $best = $diff; $bi = $i; }
+        }
+        if ($bi >= 0 && $best !== null && $best <= 14 * 86400) {
+            $list[$bi][0] = $fdate;   // correct date from allwalessport
+            $list[$bi][2] = $home;    // correct home/away
+        }
+    }
+    usort($list, function ($a, $b) { return strtotime($a[0]) <=> strtotime($b[0]); });
+    return $list;
+}
+
 /**
  * Hand-maintained fixture lists for every team, shared by the Fixtures & Results
  * page and the home-page match ticker. The allwalessport feed only carries the
@@ -365,7 +403,7 @@ function cc25_res_crest($name, $px) {
  * css class] is shown in the ticker so you can see which team a fixture is for.
  */
 function cc25_static_fixtures() {
-    return array(
+    $data = array(
         'mens' => array(
             'league' => 'Ardal League South East',
             'title'  => "Men's First Team",
@@ -461,6 +499,9 @@ function cc25_static_fixtures() {
             ),
         ),
     );
+    // Men's First Team dates/venues are corrected live from allwalessport.
+    $data['mens']['list'] = cc25_overlay_feed_dates($data['mens']['list']);
+    return $data;
 }
 
 function cc25_render_static_fixtures($list, $tickets_url = '') {
