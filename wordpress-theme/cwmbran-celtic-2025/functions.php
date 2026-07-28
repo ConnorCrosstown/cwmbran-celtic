@@ -60,6 +60,9 @@ add_filter('template_include', function ($template) {
             'travel-and-ground'          => 'template-travel.php',
             'travel-ground'              => 'template-travel.php',
             'getting-here'               => 'template-travel.php',
+            'the-celtic-bond'            => 'template-bond.php',
+            'celtic-bond'                => 'template-bond.php',
+            'bond'                       => 'template-bond.php',
         );
         if (isset($map[$slug])) {
             $found = locate_template($map[$slug]);
@@ -147,6 +150,9 @@ function cc25_signup_secret()   { return ''; }  // the SIGNUP_SECRET shown by "W
 
 /** Sponsorship page: commercial contact + optional brochure PDF (leave blank to hide the button). */
 function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
+function cc25_bond_amount()  { return '£10'; }           // monthly Celtic Bond subscription
+function cc25_bond_join_url() { return ''; }             // paste the direct-debit sign-up link; blank => Contact page
+function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
 function cc25_sponsorship_brochure() { return ''; }  // paste a 2026/27 brochure PDF URL to show the download button
 
 /** Current football season label, e.g. "2026/27" — derived from the date so it

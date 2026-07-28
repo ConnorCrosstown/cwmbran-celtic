@@ -55,7 +55,7 @@ get_template_part('template-parts/site-header');
 
     <div class="team-links reveal">
       <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url(array('mens-team', 'mens-1st-team'), home_url('/'))); ?>">Men's First Team squad &rarr;</a>
-      <a class="btn btn-outline btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy tickets</a>
+      <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
     </div>
 
     <div class="panel on" id="fixtures">
