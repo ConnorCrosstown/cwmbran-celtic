@@ -911,6 +911,9 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .teamwrap[hidden]{display:none}
 .mrow-res{grid-template-columns:66px 1fr auto}
 .team-links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:0 0 24px}
+/* Fixture-tab panels are just tab wrappers — don't give them the white card
+   background (it hides the fixture tiles). The homepage .panel cards keep it. */
+.teamwrap .panel{background:none;border:0;border-radius:0;box-shadow:none;overflow:visible}
 .mrow-res .mtix{display:block;width:-moz-fit-content;width:fit-content;margin:8px 0 0 auto;padding:6px 14px;font-size:.72rem}
 /* Travel & Ground page */
 .tg-top{display:grid;grid-template-columns:1fr 1.15fr;gap:26px;align-items:stretch;margin:8px 0 44px}

@@ -314,7 +314,7 @@ function cc25_opp_crest_file($name) {
         'Abercarn United' => 'abercarn-united.png',
         'Tredegar Town' => 'tredegar-town.png',
         'Chepstow Town' => 'chepstow-town.png',
-        'Cwmbran Town' => 'cwmbran-town.jpg',
+        'Cwmbran Town' => 'cwmbran-town.png',
         'New Inn' => 'new-inn.png',
         'Undy' => 'undy.png',
         'Newport Corinthians' => 'newport-corinthians.png',
