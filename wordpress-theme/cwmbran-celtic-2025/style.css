@@ -189,8 +189,8 @@ table.lt{width:100%;border-collapse:collapse;min-width:560px}
 table.lt th,table.lt td{padding:13px 11px;text-align:center;font-size:.9rem;border-bottom:1px solid var(--hair)}
 table.lt thead th{background:var(--navy-900);color:var(--on-navy);font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.68rem;font-weight:500}
 table.lt td.club,table.lt th.club{text-align:left;padding-left:16px}
-table.lt td.club{display:flex;align-items:center;gap:11px;font-weight:600}
-table.lt td.club .crest{width:26px;height:26px;font-size:.6rem}
+table.lt td.club{text-align:left;padding-left:16px;font-weight:600;white-space:nowrap}
+table.lt td.club .crest{width:26px;height:26px;font-size:.6rem;vertical-align:middle;margin-right:10px}
 table.lt td.pos{font-family:var(--display);color:var(--faint);width:44px}
 table.lt tbody tr{transition:background .15s}
 table.lt tbody tr:hover{background:var(--surface-2)}
@@ -376,7 +376,7 @@ table.lt{width:100%;border-collapse:collapse;min-width:660px}
 table.lt th,table.lt td{padding:13px 10px;text-align:center;font-size:.9rem;border-bottom:1px solid var(--hair)}
 table.lt thead th{background:var(--navy-900);color:var(--on-navy);font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.68rem;font-weight:500;position:sticky;top:0}
 table.lt td.club,table.lt th.club{text-align:left;padding-left:16px}
-table.lt td.club{display:flex;align-items:center;gap:11px;font-weight:600}table.lt td.club .crest{width:26px;height:26px;font-size:.6rem}
+table.lt td.club{text-align:left;padding-left:16px;font-weight:600;white-space:nowrap}table.lt td.club .crest{width:26px;height:26px;font-size:.6rem;vertical-align:middle;margin-right:10px}
 table.lt td.pos{font-family:var(--display);color:var(--faint);width:46px;position:relative}
 table.lt tbody tr{transition:background .15s}table.lt tbody tr:hover{background:var(--surface-2)}
 table.lt tr.promo td.pos::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;background:var(--win)}
