@@ -1010,3 +1010,50 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 /* ---- Teams hub cards ---- */
 .team-sub{color:var(--muted);font-size:.82rem;letter-spacing:.02em;margin-top:-2px}
 .team-links{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+
+/* =========================================================================
+   FINAL HARDENING — must stay LAST so it wins over the duplicate rules that
+   were merged in from the original mock-up stylesheets.
+   ========================================================================= */
+
+/* 1) Force the intended LIGHT theme even on dark-mode phones. The dark variant
+   was never fully finished (invisible headings, low-contrast text), so pin the
+   light palette; sections that are meant to be dark set their own colours. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="dark"]){
+    --bg:#eaeef5;--surface:#ffffff;--surface-2:#f3f6fb;--raise:#ffffff;
+    --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+    --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
+    --shadow:0 2px 6px rgba(10,20,40,.07),0 18px 40px -18px rgba(10,20,40,.28);
+    --shadow-lg:0 40px 90px -36px rgba(10,20,40,.5);
+  }
+  :root:not([data-theme="dark"]) .mt.is-own .nm{color:var(--blue-600)}
+}
+html{color-scheme:light}
+
+/* 2) Next-match card: stack the three columns on phones (they overlapped). */
+@media(max-width:600px){
+  .mcard-body{grid-template-columns:1fr!important;gap:16px!important;text-align:center}
+  .mteam,.mteam.away{flex-direction:column!important;text-align:center!important;gap:8px}
+  .mteam .rec{margin-top:2px}
+  .mko{padding:6px 0}
+  .mcard-top{flex-wrap:wrap}
+  .mc-tag,.mc-comp,.mc-venue{padding:8px 14px!important;font-size:.62rem!important}
+  .mc-tag{border-right:0!important}
+  .mc-venue{margin-left:0!important;width:100%;border-top:1px solid rgba(255,255,255,.08)}
+}
+
+/* 3) Newsletter signup: stack text over the form, and the inputs+button in a
+   column (the row was running off the right edge). */
+@media(max-width:600px){
+  .cta{grid-template-columns:1fr!important;padding:26px 20px!important}
+  .signup .row{flex-direction:column!important;gap:10px!important}
+  .signup .row .btn{width:100%}
+}
+
+/* 4) Result/fixture rows: keep names readable and contained on small phones. */
+@media(max-width:520px){
+  .mt .nm{font-size:.82rem}
+  .mteams{flex-wrap:wrap}
+  .mscore{font-size:1.5rem}
+}
