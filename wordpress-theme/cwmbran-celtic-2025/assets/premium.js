@@ -167,3 +167,35 @@
     document.addEventListener('keydown',function(e){if(!lb.hidden&&e.key==='Escape')closeLb();});
   }
 })();
+
+/* Match report: click a Cwmbran Celtic player's name -> season stats popup. */
+(function () {
+  var pop = document.getElementById('mr-statpop');
+  if (!pop) return;
+  var card = pop.querySelector('.mr-statcard');
+  var season = pop.getAttribute('data-season') || 'This season';
+  function stat(v, l) { return '<div class="mr-st"><b>' + (parseInt(v, 10) || 0) + '</b><span>' + l + '</span></div>'; }
+  function open(btn) {
+    var d = btn.dataset;
+    var img = d.card ? '<div class="mr-stimgwrap"><img class="mr-stimg" src="' + d.card + '" alt="' + d.name + '"></div>' : '';
+    card.innerHTML =
+      '<button class="mr-stclose" type="button" aria-label="Close">&times;</button>' + img +
+      '<div class="mr-stbody">' +
+        '<div class="mr-stname">' + d.name + '</div>' +
+        '<div class="mr-stseason">' + season + ' &middot; Ardal League South East</div>' +
+        '<div class="mr-stgrid">' +
+          stat(d.apps, 'Apps') + stat(d.goals, 'Goals') + stat(d.assists, 'Assists') +
+          stat(d.yellows, 'Yellow') + stat(d.reds, 'Red') +
+        '</div>' +
+      '</div>';
+    pop.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function close() { pop.hidden = true; document.body.style.overflow = ''; }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.plname');
+    if (b) { open(b); return; }
+    if (e.target === pop || e.target.closest('.mr-stclose')) close();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) close(); });
+})();

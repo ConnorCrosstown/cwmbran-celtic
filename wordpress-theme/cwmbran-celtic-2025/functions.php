@@ -1272,6 +1272,41 @@ function cc25_season_matches() {
         ),
     );
 }
+/** The Men's 1st Team squad, grouped by role, as [name, card-image slug].
+ * Single source for the squad page and match-report player links. */
+function cc25_squad_players() {
+    return array(
+        'Management' => array(
+            array('Stephen Muir', 'stephen-muir'), array('Sam Lewis', 'sam-lewis'),
+            array('Martin Ingram', 'martin-ingram'), array('Ryan Thomas', 'ryan-thomas'), array('Conor James', 'conor-james'),
+        ),
+        'Goalkeeper' => array(
+            array('Lewis Watkins', 'lewis-watkins'),
+        ),
+        'Defenders' => array(
+            array('Zach Fry', 'zach-fry'), array('Arthur Furness', 'arthur-furness'), array('Oliver Berry', 'oliver-berry'),
+            array('Charlie Donovan', 'charlie-donovan'), array('Kian Saunders', 'kian-saunders'),
+            array('Elliott Hewings', 'elliott-hewings'), array('Terry Obeng', 'terry-obeng'),
+        ),
+        'Midfielders' => array(
+            array('Lewis Cochrane', 'lewis-cochrane'), array('Tommy Challenger', 'tommy-challenger'), array('Jack Prosser', 'jack-prosser'),
+            array('Cameron Jenkins', 'cameron-jenkins'), array('Efan Fletcher', 'efan-fletcher'), array('Finlay Wood', 'finlay-wood'),
+        ),
+        'Forwards' => array(
+            array('Gabriel Howells', 'gabriel-howells'), array('Evan Maidment', 'evan-maidment'), array('Rudi Griffiths', 'rudi-griffiths'),
+            array('Daniel Camaj', 'daniel-camaj'), array('Munya Mabwe', 'munya-mabwe'),
+        ),
+    );
+}
+/** Card-image slug for a player name, or '' if they have no squad card. */
+function cc25_player_card_slug($name) {
+    $k = strtolower(trim($name));
+    foreach (cc25_squad_players() as $group) {
+        foreach ($group as $p) { if (strtolower($p[0]) === $k) return $p[1]; }
+    }
+    return '';
+}
+
 /** Aggregate player stats for the season, keyed by lower-cased name. */
 function cc25_player_stats() {
     $s = array();

@@ -8,28 +8,7 @@ if (!defined('ABSPATH')) exit;
 get_template_part('template-parts/site-header');
 
 $cc25_pc_base = get_stylesheet_directory_uri() . '/assets/img/player-cards/';
-$cc25_pc_groups = array(
-    'Management' => array(
-        array("Stephen Muir", 'stephen-muir'), array("Sam Lewis", 'sam-lewis'),
-        array("Martin Ingram", 'martin-ingram'), array("Ryan Thomas", 'ryan-thomas'), array("Conor James", 'conor-james'),
-    ),
-    'Goalkeeper' => array(
-        array("Lewis Watkins", 'lewis-watkins'),
-    ),
-    'Defenders' => array(
-        array("Zach Fry", 'zach-fry'), array("Arthur Furness", 'arthur-furness'), array("Oliver Berry", 'oliver-berry'),
-        array("Charlie Donovan", 'charlie-donovan'), array("Kian Saunders", 'kian-saunders'),
-        array("Elliott Hewings", 'elliott-hewings'), array("Terry Obeng", 'terry-obeng'),
-    ),
-    'Midfielders' => array(
-        array("Lewis Cochrane", 'lewis-cochrane'), array("Tommy Challenger", 'tommy-challenger'), array("Jack Prosser", 'jack-prosser'),
-        array("Cameron Jenkins", 'cameron-jenkins'), array("Efan Fletcher", 'efan-fletcher'), array("Finlay Wood", 'finlay-wood'),
-    ),
-    'Forwards' => array(
-        array("Gabriel Howells", 'gabriel-howells'), array("Evan Maidment", 'evan-maidment'), array("Rudi Griffiths", 'rudi-griffiths'),
-        array("Daniel Camaj", 'daniel-camaj'), array("Munya Mabwe", 'munya-mabwe'),
-    ),
-);
+$cc25_pc_groups = cc25_squad_players();
 ?>
 <div class="phero">
   <div class="bg"></div><div class="grain"></div><div class="ghost">SQUAD</div>

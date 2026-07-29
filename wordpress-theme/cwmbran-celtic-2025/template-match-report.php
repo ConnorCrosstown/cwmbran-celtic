@@ -50,15 +50,33 @@ $m = cc25_get_match($cc25_g);
       return $out;
   };
 
+  // Our players' season stats (keyed by lower-cased name) power the click-for-stats popup.
+  $cc25_stats = cc25_player_stats();
+  $cc25_cardbase = get_stylesheet_directory_uri() . '/assets/img/player-cards/';
+  // A player's name: a stats button for our players who have season stats,
+  // a plain span for opponents or players with no stats yet.
+  $cc25_pname = function ($nm, $is_own) use ($cc25_stats, $cc25_cardbase) {
+      $safe = esc_html($nm);
+      $k = strtolower(trim($nm));
+      if (!$is_own || empty($cc25_stats[$k])) return '<span class="pn">' . $safe . '</span>';
+      $st = $cc25_stats[$k];
+      $slug = cc25_player_card_slug($nm);
+      $card = $slug ? $cc25_cardbase . $slug . '.jpg' : '';
+      return '<button type="button" class="pn plname" data-name="' . esc_attr($nm) . '"'
+           . ' data-apps="' . intval($st['apps']) . '" data-goals="' . intval($st['goals']) . '" data-assists="' . intval($st['assists']) . '"'
+           . ' data-yellows="' . intval($st['yellows']) . '" data-reds="' . intval($st['reds']) . '"'
+           . ($card ? ' data-card="' . esc_url($card) . '"' : '') . '>' . $safe . '</button>';
+  };
+
   // One team column: numbered XI with chips, then the bench (who came on / unused).
-  $cc25_team = function ($starters, $subs, $captain, $teamname, $crest, $ev, $onmap) use ($cc25_chips) {
+  $cc25_team = function ($starters, $subs, $captain, $teamname, $crest, $ev, $onmap, $is_own) use ($cc25_chips, $cc25_pname) {
       echo '<div class="mr-lineup"><div class="mr-lt">' . $crest . '<span>' . esc_html($teamname) . '</span></div>';
       echo '<ul class="mr-xi">';
       foreach ($starters as $p) {
           $no = intval($p[0]); $nm = $p[1]; $pos = isset($p[2]) ? $p[2] : '';
-          echo '<li><span class="no">' . $no . '</span><span class="pn">' . esc_html($nm)
+          echo '<li><span class="no">' . $no . '</span>' . $cc25_pname($nm, $is_own)
              . ($nm === $captain ? ' <span class="cap" title="Captain">C</span>' : '')
-             . ($pos === 'GK' ? ' <span class="pos">GK</span>' : '') . '</span>'
+             . ($pos === 'GK' ? ' <span class="pos">GK</span>' : '')
              . '<span class="evs">' . $cc25_chips($nm, $ev) . '</span></li>';
       }
       echo '</ul>';
@@ -67,7 +85,7 @@ $m = cc25_get_match($cc25_g);
           foreach ($subs as $p) {
               $no = intval($p[0]); $nm = $p[1];
               $on = isset($onmap[$nm]) ? $onmap[$nm] : null;
-              echo '<li' . ($on ? '' : ' class="unused"') . '><span class="no">' . $no . '</span><span class="pn">' . esc_html($nm) . '</span>'
+              echo '<li' . ($on ? '' : ' class="unused"') . '><span class="no">' . $no . '</span>' . $cc25_pname($nm, $is_own)
                  . '<span class="evs">' . ($on
                      ? '<span class="chip on" title="Came on">&uarr; ' . intval($on['min']) . "&rsquo;</span>"
                      : '<span class="chip none">Unused</span>') . '</span></li>';
@@ -160,10 +178,11 @@ $m = cc25_get_match($cc25_g);
       <div class="mr-block reveal">
         <h2 class="mr-h">Line-ups</h2>
         <?php
-        $cc25_team($m['starters'], $m['subs'] ?? array(), $m['captain'] ?? '', 'Cwmbran Celtic', cc25_own_crest(26), $ev_us, $on_us);
-        if (!empty($m['opp_starters'])) $cc25_team($m['opp_starters'], $m['opp_subs'] ?? array(), $m['opp_captain'] ?? '', $opp, cc25_res_crest($opp, 26), $ev_opp, $on_opp);
+        $cc25_team($m['starters'], $m['subs'] ?? array(), $m['captain'] ?? '', 'Cwmbran Celtic', cc25_own_crest(26), $ev_us, $on_us, true);
+        if (!empty($m['opp_starters'])) $cc25_team($m['opp_starters'], $m['opp_subs'] ?? array(), $m['opp_captain'] ?? '', $opp, cc25_res_crest($opp, 26), $ev_opp, $on_opp, false);
         ?>
         <div class="mr-key"><span><span class="chip goal">&#9917;</span> Goal</span><span><span class="chip yc">&nbsp;</span> Booked</span><span><span class="chip off">&darr;</span> Off</span><span><span class="chip on">&uarr;</span> On</span></div>
+        <p class="mr-hint">&#9432; Tap any <b>Cwmbran Celtic</b> player for their season stats.</p>
       </div>
 
       <?php if (!empty($m['ref'])): ?>
@@ -195,5 +214,9 @@ $m = cc25_get_match($cc25_g);
     </aside>
   </div>
 </section>
+
+<div class="mr-statpop" id="mr-statpop" data-season="<?php echo esc_attr(cc25_season()); ?>" role="dialog" aria-modal="true" aria-label="Player season stats" hidden>
+  <div class="mr-statcard"></div>
+</div>
 <?php endif; ?>
 <?php get_template_part('template-parts/site-footer'); ?>
