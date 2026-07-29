@@ -39,7 +39,7 @@ if ($cc25_cel): ?>
     <?php endif; ?>
     <div class="splash-cta">
       <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
-      <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+      <?php if (cc25_season_tickets_on()): ?><a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a><?php endif; ?>
     </div>
     <button class="splash-later" type="button" data-close>Maybe later</button>
   </div>
@@ -73,8 +73,10 @@ if ($cc25_cel): ?>
       <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
       <?php if ($cc25_md): ?>
         <a class="btn btn-outline" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
-      <?php else: ?>
+      <?php elseif (cc25_season_tickets_on()): ?>
         <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+      <?php else: ?>
+        <a class="btn btn-outline" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
       <?php endif; ?>
     </div>
     <button class="splash-later" type="button" data-close>Maybe later</button>
@@ -125,7 +127,9 @@ if ($cc25_cel): ?>
     </div>
     <div class="mcard-foot">
       <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/'))); ?>">Fixtures</a>
+      <?php if ($o['home']): // tickets only for home games — no tickets sold for away ?>
       <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
+      <?php endif; ?>
       <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
     </div>
   </div>
@@ -186,13 +190,15 @@ if ($cc25_cel): ?>
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
-    <div class="tickets-band reveal">
+    <div class="tickets-band reveal<?php echo cc25_season_tickets_on() ? '' : ' tickets-band-2'; ?>">
+      <?php if (cc25_season_tickets_on()): ?>
       <div class="tk-card tk-season">
         <div class="kick" style="color:var(--gold)">Season <?php echo esc_html(cc25_season()); ?></div>
         <h3>Season Tickets</h3>
         <p>Every home league game at Motazone Arena — the best-value way to back the Celts all season long.</p>
         <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Get a Season Ticket</a>
       </div>
+      <?php endif; ?>
       <div class="tk-card tk-match">
         <div class="kick" style="color:var(--blue-500)">Matchday</div>
         <h3>Matchday Tickets</h3>
@@ -251,7 +257,7 @@ if ($cc25_cel): ?>
       <a class="viewall" href="<?php echo esc_url(cc25_page_url('news', home_url('/'))); ?>">All news &rarr;</a>
     </div>
     <?php
-    $cc25_news = new WP_Query(array('post_type' => 'post', 'posts_per_page' => 4, 'ignore_sticky_posts' => true));
+    $cc25_news = new WP_Query(array('post_type' => 'post', 'posts_per_page' => 4, 'ignore_sticky_posts' => true, 'category__not_in' => cc25_hidden_cat_ids()));
     if ($cc25_news->have_posts()) : $cc25_n = 0;
       while ($cc25_news->have_posts()) : $cc25_news->the_post(); $cc25_n++; $cc25_c = get_the_category();
         if ($cc25_n === 1) : ?>

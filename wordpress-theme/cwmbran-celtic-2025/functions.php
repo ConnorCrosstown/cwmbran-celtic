@@ -151,6 +151,10 @@ function cc25_result_celebration() {
     // return null;  // <- uncomment this (and delete the line above) to switch the celebration off
 }
 
+/** Season-ticket sales window. false once the season is under way (hides all
+ * "Season Ticket" buttons); flip to true pre-season to bring them back. */
+function cc25_season_tickets_on() { return false; }
+
 /* -------------------------------------------------------------------------
  * Mailing-list signup. The homepage form POSTs to the club's Apps Script
  * mailing-list web app (cwmbran-celtic-mailing-list). After deploying that
