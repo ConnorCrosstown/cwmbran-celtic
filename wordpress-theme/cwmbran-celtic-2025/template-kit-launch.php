@@ -74,6 +74,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
           <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
           <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
           <span class="kl-origin"><?php echo esc_html($s['origin']); ?></span>
+          <a class="btn btn-gold btn-sm kl-shirt-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order &rarr;</a>
         </figcaption>
       </figure>
       <?php endforeach; ?>
@@ -153,6 +154,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
   <figure class="shirt-lb-fig">
     <img id="shirt-lb-img" src="" alt="">
     <figcaption id="shirt-lb-cap"></figcaption>
+    <a class="btn btn-gold shirt-lb-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order this shirt &rarr;</a>
   </figure>
 </div>
 <?php get_template_part('template-parts/site-footer'); ?>

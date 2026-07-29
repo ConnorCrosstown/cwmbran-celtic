@@ -559,6 +559,7 @@ function cc25_nav_items() {
             array("Men's Reserves", cc25_reserves_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
         )),
+        array('Music Shirts', cc25_page_url('music-shirts', $home), false, array()),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),
             array('Away Days', cc25_page_url('away-days', $home), false),

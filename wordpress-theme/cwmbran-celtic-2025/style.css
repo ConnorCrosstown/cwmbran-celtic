@@ -1378,6 +1378,10 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .kl-mvt-logowrap img{width:100%;max-width:220px;height:auto;filter:drop-shadow(0 6px 22px rgba(245,197,24,.2))}
 @media(max-width:820px){.kl-mvt.has-logo{grid-template-columns:1fr}.kl-mvt-logowrap{margin-top:4px}.kl-mvt-logowrap img{max-width:170px}}
 
+/* ---- Music Shirts v6: per-shirt pre-order buttons ---- */
+.kl-shirt-buy{margin-top:14px;align-self:flex-start}
+.shirt-lb-buy{margin-top:18px;display:inline-block}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js
