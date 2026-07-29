@@ -68,9 +68,10 @@ get_template_part('template-parts/site-header');
         $cc = intval($home ? ($r['homeScore'] ?? 0) : ($r['awayScore'] ?? 0));
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
-        $mo = cc25_date($r['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; } ?>
+        $mo = cc25_date($r['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
+        $rurl = cc25_match_report_url(cc25_date($r['date'] ?? 0, 'Y-m-d')); $rtag = $rurl ? 'a' : 'div'; ?>
         <?php $oppCrest = cc25_crest($feed, $ro['opponent'], 34); // Home team + its score on the left. ?>
-        <div class="mrow reveal">
+        <<?php echo $rtag; ?> class="mrow reveal"<?php echo $rurl ? ' href="' . esc_url($rurl) . '"' : ''; ?>>
           <div class="mdate"><div class="d"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'd')); ?></div><div class="m"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'M')); ?></div><div class="day"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'D')); ?></div></div>
           <div class="mteams">
             <span class="mt<?php echo $home ? ' is-own' : ''; ?>"><?php echo $home ? cc25_own_crest(34) : $oppCrest; ?><span class="nm"><?php echo esc_html($home ? 'Cwmbran Celtic' : $ro['opponent']); ?></span></span>

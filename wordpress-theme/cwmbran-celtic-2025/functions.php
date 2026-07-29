@@ -64,6 +64,7 @@ add_filter('template_include', function ($template) {
             'away-days'                  => 'template-away-days.php',
             '2025-26-archive'            => 'template-results-archive.php',
             '2025-26-results'            => 'template-results-archive.php',
+            'match-report'               => 'template-match-report.php',
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
@@ -91,6 +92,7 @@ function cc25_ensure_pages() {
         'mens-reserves'     => "Men's Reserves",
         'away-days'         => 'Away Days',
         '2025-26-archive'   => '2025-26 Season',
+        'match-report'      => 'Match Report',
     );
     foreach ($pages as $slug => $title) {
         if (get_page_by_path($slug)) continue;
@@ -105,9 +107,12 @@ function cc25_ensure_pages() {
 }
 add_action('after_switch_theme', 'cc25_ensure_pages');
 add_action('admin_init', function () {
-    if (get_option('cc25_pages_provisioned') === '1') return;
+    // Version-stamped so a new page in cc25_ensure_pages() gets created on the
+    // next admin load of an already-installed theme. Bump when adding a page.
+    $ver = '2026-07-29';
+    if (get_option('cc25_pages_provisioned') === $ver) return;
     cc25_ensure_pages();
-    update_option('cc25_pages_provisioned', '1');
+    update_option('cc25_pages_provisioned', $ver);
 });
 
 /** Reserves destination: the dedicated /mens-reserves/ page if it exists, else
@@ -1196,15 +1201,21 @@ function cc25_results_2526() {
 function cc25_season_matches() {
     return array(
         array(
-            'date' => '2026-07-28', 'opp' => 'Cwmbran Town', 'home' => true, 'cc' => 3, 'oc' => 0,
+            'date' => '2026-07-28', 'time' => '19:00', 'opp' => 'Cwmbran Town', 'home' => true, 'cc' => 3, 'oc' => 0,
+            'comp' => 'Ardal League South East', 'venue' => 'The Motazone Arena', 'att' => 410, 'ref' => 'Joshua Lewis Howells',
+            'captain' => 'Terry Obeng', 'opp_captain' => 'Aysa Al-Doori',
             'starters' => array('Lewis Watkins', 'Arthur Furness', 'Kian Saunders', 'Oliver Berry', 'Terry Obeng', 'Lewis Cochrane', 'Evan Maidment', 'Cameron Jenkins', 'Rudi Griffiths', 'Finlay Wood', 'Munya Mabwe'),
             'subs'     => array('Gabriel Howells', 'Cameron Dean', 'Elliott Hewings', 'Jack Prosser'),
+            'opp_starters' => array('Adam Cueto', 'Kai Wint', 'Harry Grinham', 'Joseph Cashman', 'Luke Upham', 'Clement Junior Ebongole', 'Jason Gardiner', 'Daniel Prichard', "Christian O'Donnell", 'Lee Trundle', 'Aysa Al-Doori'),
+            'opp_subs' => array('Callum David Nowell', 'Rio Evelyn', 'Harvey Redding', 'Kristian Sean Wharton', 'Lyes Mihoubi'),
             'goals'    => array(
                 array('scorer' => 'Finlay Wood', 'assist' => 'Rudi Griffiths', 'min' => 50),
                 array('scorer' => 'Oliver Berry', 'assist' => '', 'min' => 55, 'pen' => true),
                 array('scorer' => 'Rudi Griffiths', 'assist' => 'Oliver Berry', 'min' => 61),
             ),
-            'cards'    => array(),
+            'cards'     => array(),
+            'opp_cards' => array(array('player' => 'Kai Wint', 'type' => 'y', 'min' => 20)),
+            'report'    => "Cwmbran Celtic kicked off the new Ardal South East campaign in perfect style, blowing local rivals Cwmbran Town away with a devastating second-half spell to win 3-0 in front of a bumper derby-night crowd of 410 at the Motazone Arena.\n\nOn a warm summer evening the first half was a tight, cagey affair between two well-matched rivals, and it stayed goalless at the break. But the Celts blew the game wide open in a stunning 11-minute spell after the restart.\n\nThe breakthrough came on 50 minutes, Finlay Wood finishing off a fine move laid on by Rudi Griffiths. Five minutes later the Celts had daylight, Oliver Berry stepping up to convert a penalty for 2-0. And there was still time for the pick of the lot on 61 minutes, Berry turning provider as Griffiths got the goal his display deserved.\n\nThree goals in eleven minutes killed the game as a contest, and with Lewis Watkins and the back line seeing out a well-earned clean sheet, there was nothing the visitors could do about it. A near-perfect opening night, and three points to build the season on.",
         ),
     );
 }
@@ -1246,4 +1257,20 @@ function cc25_player_stats_sorted() {
         return strcmp($a['name'], $b['name']);
     });
     return $s;
+}
+
+/** A match by date (Y-m-d), or the most recent match if the date is empty/not found. */
+function cc25_get_match($date = '') {
+    $ms = cc25_season_matches();
+    if (!$ms) return null;
+    foreach ($ms as $m) { if ($m['date'] === $date) return $m; }
+    usort($ms, function ($a, $b) { return strcmp($b['date'], $a['date']); });
+    return $ms[0];
+}
+/** Match-report URL for a game date, or '' if no report exists for it. */
+function cc25_match_report_url($date) {
+    foreach (cc25_season_matches() as $m) {
+        if ($m['date'] === $date) return add_query_arg('g', $date, cc25_page_url('match-report', home_url('/')));
+    }
+    return '';
 }

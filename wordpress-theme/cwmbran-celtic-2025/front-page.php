@@ -163,6 +163,9 @@ if ($cc25_cel): ?>
             <div><?php echo cc25_crest($feed, $ro['opponent'], 58); ?><div class="cn"><?php echo esc_html($ro['opponent']); ?></div></div>
           </div>
           <div class="result-foot"><span class="wdl <?php echo $wdl; ?>"><?php echo strtoupper($wdl); ?></span> <?php echo esc_html(cc25_date($result['date'] ?? 0)); ?><?php echo !empty($result['scorers']) ? ' · ' . esc_html($result['scorers']) : ''; ?></div>
+          <?php $cc25_rrl = cc25_match_report_url(cc25_date($result['date'] ?? 0, 'Y-m-d')); if ($cc25_rrl): ?>
+          <a class="panel-more" href="<?php echo esc_url($cc25_rrl); ?>">Full match report &amp; stats &rarr;</a>
+          <?php endif; ?>
         <?php else: ?>
           <p style="color:var(--muted);text-align:center;padding:22px 0;margin:0">No results yet — the new season is just around the corner.<br>Check back after the first whistle.</p>
         <?php endif; ?>
