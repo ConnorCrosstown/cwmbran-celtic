@@ -1017,3 +1017,133 @@ function cc25_ticker_items() {
     }
     return $out;
 }
+
+/* ============================ SEO / AEO ===================================== */
+
+/** Context-aware meta description. */
+function cc25_seo_desc() {
+    if (is_front_page()) {
+        return 'Official website of Cwmbran Celtic AFC — fixtures, results, the live league table, news, tickets and away-day info for the Celts in the Ardal League South East.';
+    }
+    if (is_singular('post') || is_page()) {
+        $e = get_the_excerpt();
+        if ($e) return wp_strip_all_tags($e);
+    }
+    $t = get_bloginfo('description');
+    return $t ? $t : 'Cwmbran Celtic AFC — blue and yellow, since 1924.';
+}
+
+/** Current canonical URL. */
+function cc25_seo_url() {
+    if (is_singular() || is_page()) { $u = get_permalink(); if ($u) return $u; }
+    if (is_front_page() || is_home()) return home_url('/');
+    global $wp; return home_url(isset($wp->request) ? $wp->request : '');
+}
+
+/** The club as a schema.org SportsTeam (reused across the JSON-LD). */
+function cc25_seo_org() {
+    return array(
+        '@type' => 'SportsTeam',
+        '@id'   => home_url('/#club'),
+        'name'  => 'Cwmbran Celtic AFC',
+        'alternateName' => 'The Celts',
+        'sport' => 'Association Football',
+        'url'   => home_url('/'),
+        'logo'  => cc25_club_logo(),
+        'foundingDate' => '1924',
+        'memberOf' => array('@type' => 'SportsOrganization', 'name' => 'Ardal League South East'),
+        'location' => array(
+            '@type' => 'Place',
+            'name'  => 'The Motazone Arena (Celtic Park)',
+            'address' => array('@type' => 'PostalAddress', 'streetAddress' => 'Henllys Way', 'addressLocality' => 'Cwmbran', 'addressRegion' => 'Torfaen', 'postalCode' => 'NP44 3FS', 'addressCountry' => 'GB'),
+            'geo' => array('@type' => 'GeoCoordinates', 'latitude' => 51.643722, 'longitude' => -3.018111),
+        ),
+        'sameAs' => array('https://www.facebook.com/CwmbranCelticFC', 'https://twitter.com/CwmbranCelticFC'),
+    );
+}
+
+function cc25_jsonld($data) {
+    echo '<script type="application/ld+json">' . wp_json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
+}
+
+/** Upcoming Men's First Team fixtures as SportsEvent schema. */
+function cc25_seo_events() {
+    $sf = cc25_static_fixtures();
+    if (empty($sf['mens']['list'])) return;
+    $now = round(microtime(true) * 1000); $n = 0;
+    foreach ($sf['mens']['list'] as $rf) {
+        if ($n >= 12) break;
+        $ms = cc25_row_kickoff_ms($rf[0]);
+        if ($ms + 2 * 3600 * 1000 < $now) continue;
+        $home = !empty($rf[2]); $opp = $rf[1];
+        if ($home) {
+            $loc = array('@type' => 'Place', 'name' => 'The Motazone Arena', 'address' => 'Henllys Way, Cwmbran, NP44 3FS');
+        } else {
+            $g = cc25_ground_of($opp);
+            $loc = $g ? array('@type' => 'Place', 'name' => $g['ground'], 'address' => $g['addr']) : array('@type' => 'Place', 'name' => $opp);
+        }
+        cc25_jsonld(array(
+            '@context' => 'https://schema.org', '@type' => 'SportsEvent',
+            'name' => $home ? ('Cwmbran Celtic v ' . $opp) : ($opp . ' v Cwmbran Celtic'),
+            'sport' => 'Association Football',
+            'startDate' => wp_date('c', intval($ms / 1000)),
+            'eventStatus' => 'https://schema.org/EventScheduled',
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'location' => $loc,
+            'homeTeam' => array('@type' => 'SportsTeam', 'name' => $home ? 'Cwmbran Celtic' : $opp),
+            'awayTeam' => array('@type' => 'SportsTeam', 'name' => $home ? $opp : 'Cwmbran Celtic'),
+            'organizer' => array('@type' => 'SportsOrganization', 'name' => 'Ardal League South East'),
+        ));
+        $n++;
+    }
+}
+
+/** Output SEO meta + Open Graph + Twitter + JSON-LD into <head>. */
+add_action('wp_head', 'cc25_seo_head', 4);
+function cc25_seo_head() {
+    if (is_admin() || is_feed()) return;
+    $desc = trim(wp_trim_words(cc25_seo_desc(), 32, ''));
+    $url  = cc25_seo_url();
+    $title = wp_get_document_title();
+    $img  = get_stylesheet_directory_uri() . '/assets/img/hero.jpg';
+    $type = 'website';
+    if (is_singular('post')) {
+        $type = 'article';
+        if (has_post_thumbnail()) { $t = get_the_post_thumbnail_url(null, 'large'); if ($t) $img = $t; }
+    }
+    echo "\n<!-- Cwmbran Celtic SEO -->\n";
+    echo '<meta name="description" content="' . esc_attr($desc) . "\">\n";
+    echo '<link rel="canonical" href="' . esc_url($url) . "\">\n";
+    echo '<meta property="og:site_name" content="Cwmbran Celtic AFC">' . "\n";
+    echo '<meta property="og:type" content="' . esc_attr($type) . "\">\n";
+    echo '<meta property="og:title" content="' . esc_attr($title) . "\">\n";
+    echo '<meta property="og:description" content="' . esc_attr($desc) . "\">\n";
+    echo '<meta property="og:url" content="' . esc_url($url) . "\">\n";
+    echo '<meta property="og:image" content="' . esc_url($img) . "\">\n";
+    echo '<meta property="og:locale" content="en_GB">' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($title) . "\">\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($desc) . "\">\n";
+    echo '<meta name="twitter:image" content="' . esc_url($img) . "\">\n";
+
+    cc25_jsonld(array_merge(array('@context' => 'https://schema.org'), cc25_seo_org()));
+
+    if (is_singular('post')) {
+        $art = array(
+            '@context' => 'https://schema.org', '@type' => 'NewsArticle',
+            'headline' => wp_strip_all_tags(get_the_title()),
+            'datePublished' => get_the_date('c'),
+            'dateModified' => get_the_modified_date('c'),
+            'author' => array('@type' => 'Person', 'name' => cc25_byline()),
+            'publisher' => array('@type' => 'Organization', 'name' => 'Cwmbran Celtic AFC', 'logo' => array('@type' => 'ImageObject', 'url' => cc25_club_logo())),
+            'mainEntityOfPage' => $url,
+            'description' => $desc,
+        );
+        if (has_post_thumbnail()) $art['image'] = array(get_the_post_thumbnail_url(null, 'large'));
+        cc25_jsonld($art);
+    }
+
+    if (is_front_page() || (is_page() && in_array(get_post_field('post_name', get_queried_object_id()), array('fixtures', 'fixtures-results', 'fixtures-and-results'), true))) {
+        cc25_seo_events();
+    }
+}
