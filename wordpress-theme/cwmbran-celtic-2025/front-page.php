@@ -166,6 +166,7 @@ if ($cc25_cel): ?>
         <?php else: ?>
           <p style="color:var(--muted);text-align:center;padding:22px 0;margin:0">No results yet — the new season is just around the corner.<br>Check back after the first whistle.</p>
         <?php endif; ?>
+        <a class="panel-more" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/')) . '#results'); ?>">Results &amp; league table &rarr;</a>
         </div>
       </div>
       <div class="panel reveal d1">
@@ -182,6 +183,7 @@ if ($cc25_cel): ?>
             <p style="color:var(--muted);padding:16px 2px;margin:0">Fixtures will appear here once the season is released.</p>
           <?php endif; ?>
           </div>
+          <a class="panel-more" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/'))); ?>">All fixtures &rarr;</a>
         </div>
       </div>
     </div>
@@ -261,21 +263,21 @@ if ($cc25_cel): ?>
     if ($cc25_news->have_posts()) : $cc25_n = 0;
       while ($cc25_news->have_posts()) : $cc25_news->the_post(); $cc25_n++; $cc25_c = get_the_category();
         if ($cc25_n === 1) : ?>
-    <a class="news-lead reveal d1" href="<?php the_permalink(); ?>" style="color:inherit">
-      <div class="photo"><?php if (has_post_thumbnail()) the_post_thumbnail('large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?><?php if ($cc25_c) echo '<span class="tag">' . esc_html($cc25_c[0]->name) . '</span>'; ?></div>
+    <div class="news-lead reveal d1">
+      <div class="photo"><?php if (has_post_thumbnail()) the_post_thumbnail('large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?><?php if ($cc25_c) echo '<a class="tag" href="' . esc_url(get_category_link($cc25_c[0]->term_id)) . '">' . esc_html($cc25_c[0]->name) . '</a>'; ?></div>
       <div class="lb">
         <time><?php echo esc_html(get_the_date()); ?></time>
-        <h3><?php the_title(); ?></h3>
+        <h3><a class="cardlink" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
         <p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 26)); ?></p>
         <span class="viewall" style="margin-top:4px">Read more &rarr;</span>
       </div>
-    </a>
+    </div>
     <div class="news-grid">
         <?php else : ?>
-      <a class="ncard reveal" href="<?php the_permalink(); ?>" style="color:inherit">
-        <div class="photo"><?php if (has_post_thumbnail()) the_post_thumbnail('medium_large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?><?php if ($cc25_c) echo '<span class="tag">' . esc_html($cc25_c[0]->name) . '</span>'; ?></div>
-        <div class="ncb"><time><?php echo esc_html(get_the_date()); ?></time><h3><?php the_title(); ?></h3><p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 16)); ?></p></div>
-      </a>
+      <div class="ncard reveal">
+        <div class="photo"><?php if (has_post_thumbnail()) the_post_thumbnail('medium_large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?><?php if ($cc25_c) echo '<a class="tag" href="' . esc_url(get_category_link($cc25_c[0]->term_id)) . '">' . esc_html($cc25_c[0]->name) . '</a>'; ?></div>
+        <div class="ncb"><time><?php echo esc_html(get_the_date()); ?></time><h3><a class="cardlink" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3><p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 16)); ?></p></div>
+      </div>
         <?php endif;
       endwhile;
       if ($cc25_n > 1) echo '</div>';
