@@ -199,9 +199,9 @@ function cc25_dir_url($query) {
  * to our Travel page if we don't have that ground on file).
  */
 function cc25_travel_url($opponent, $home) {
-    if ($home) return cc25_page_url('travel', home_url('/'));
-    $g = cc25_ground_of($opponent);
-    return $g ? cc25_dir_url($g['addr']) : cc25_page_url('travel', home_url('/'));
+    // Home games -> our Travel & Ground page; away games -> the Away Days hub
+    // (grounds, addresses + directions for every away trip).
+    return $home ? cc25_page_url('travel', home_url('/')) : cc25_page_url('away-days', home_url('/'));
 }
 /** League grounds for the on-page list — deduped + alphabetised. */
 function cc25_league_grounds() {
@@ -769,10 +769,15 @@ function cc25_render_static_fixtures($list, $tickets_url = '') {
         $mo = date('F Y', $rd);
         if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
         $oc = cc25_res_crest($opp, 34);
-        // Ticket link only makes sense for HOME games (we host, we sell).
-        $tix = ($home && $tickets_url)
-            ? '<a class="mtix btn btn-gold" href="' . esc_url($tickets_url) . '" target="_blank" rel="noopener">Buy Tickets</a>'
-            : '';
+        // Home games: a ticket link (we host, we sell). Away games: Travel &
+        // Ground -> the Away Days hub (ground + directions for the trip).
+        if ($home && $tickets_url) {
+            $tix = '<a class="mtix btn btn-gold" href="' . esc_url($tickets_url) . '" target="_blank" rel="noopener">Buy Tickets</a>';
+        } elseif (!$home) {
+            $tix = '<a class="mtix btn btn-navy" href="' . esc_url(cc25_page_url('away-days', home_url('/'))) . '">Travel &amp; Ground</a>';
+        } else {
+            $tix = '';
+        }
         echo '<div class="mrow mrow-res reveal">'
             . '<div class="mdate"><div class="d">' . date('d', $rd) . '</div><div class="m">' . date('M', $rd) . '</div><div class="day">' . date('D', $rd) . '</div></div>'
             . '<div class="mteams">'
