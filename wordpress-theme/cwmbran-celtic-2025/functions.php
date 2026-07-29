@@ -341,6 +341,33 @@ function cc25_latest_programme() {
     return $p ? $p[0] : null;
 }
 
+/**
+ * "Written by" byline override — lets one publisher credit the real author of a
+ * post without that person needing a WordPress login. Shown on Posts.
+ */
+add_action('add_meta_boxes', function () {
+    add_meta_box('cc25_byline', 'Written by', 'cc25_byline_metabox', 'post', 'side');
+});
+function cc25_byline_metabox($post) {
+    wp_nonce_field('cc25_byline_save', 'cc25_byline_nonce');
+    $name = get_post_meta($post->ID, '_cc25_byline', true);
+    echo '<p><label><strong>Author name (byline)</strong><br>'
+        . '<input type="text" name="cc25_byline" value="' . esc_attr($name) . '" style="width:100%" placeholder="e.g. Tony Strange"></label></p>';
+    echo '<p style="color:#666;font-size:11px;margin:0">Leave blank to use the logged-in publisher. Fill it in to credit whoever wrote the piece &mdash; they don\'t need a login.</p>';
+}
+add_action('save_post', function ($id) {
+    if (!isset($_POST['cc25_byline_nonce']) || !wp_verify_nonce($_POST['cc25_byline_nonce'], 'cc25_byline_save')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $id)) return;
+    update_post_meta($id, '_cc25_byline', sanitize_text_field(wp_unslash($_POST['cc25_byline'] ?? '')));
+});
+/** Display byline for a post: the "Written by" override if set, else the author. */
+function cc25_byline($id = null) {
+    $id = $id ?: get_the_ID();
+    $o = trim((string) get_post_meta($id, '_cc25_byline', true));
+    return $o !== '' ? $o : get_the_author();
+}
+
 /** Editor box for the programme link + optional season override (shown on Posts). */
 add_action('add_meta_boxes', function () {
     add_meta_box('cc25_prog', 'Match Day Programme', 'cc25_prog_metabox', 'post', 'side', 'high');

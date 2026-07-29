@@ -16,7 +16,7 @@ get_template_part('template-parts/site-header');
     <article class="article">
       <?php if ($cats): ?><span class="art-cat"><?php echo esc_html($cats[0]->name); ?></span><?php endif; ?>
       <h1 class="art-h1"><?php the_title(); ?></h1>
-      <div class="byline"><span class="av">CC</span><div>By <b><?php the_author(); ?></b> · <?php echo esc_html(get_the_date()); ?></div></div>
+      <div class="byline"><span class="av">CC</span><div>By <b><?php echo esc_html(cc25_byline()); ?></b> · <?php echo esc_html(get_the_date()); ?></div></div>
       <?php if (has_post_thumbnail()): ?>
         <div class="art-hero"><?php the_post_thumbnail('large', array('style' => 'width:100%;height:100%;object-fit:cover')); ?></div>
       <?php else: ?>
