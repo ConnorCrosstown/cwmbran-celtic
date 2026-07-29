@@ -60,6 +60,7 @@ add_filter('template_include', function ($template) {
             'travel-and-ground'          => 'template-travel.php',
             'travel-ground'              => 'template-travel.php',
             'getting-here'               => 'template-travel.php',
+            'away-days'                  => 'template-away-days.php',
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
@@ -85,6 +86,7 @@ function cc25_ensure_pages() {
     $pages = array(
         'travel-and-ground' => 'Travel & Ground',
         'mens-reserves'     => "Men's Reserves",
+        'away-days'         => 'Away Days',
     );
     foreach ($pages as $slug => $title) {
         if (get_page_by_path($slug)) continue;
@@ -207,6 +209,28 @@ function cc25_league_grounds() {
     unset($g['Undy']); // duplicate alias of 'Undy FC'
     ksort($g);
     return $g;
+}
+/** Upcoming AWAY fixtures for a team key (mens/reserves/womens). */
+function cc25_away_fixtures($team_key) {
+    $sf = cc25_static_fixtures();
+    if (!isset($sf[$team_key])) return array();
+    $now = round(microtime(true) * 1000);
+    $out = array();
+    foreach ($sf[$team_key]['list'] as $rf) {
+        if (!empty($rf[2])) continue;                                    // home — skip
+        if (cc25_row_kickoff_ms($rf[0]) + 2 * 3600 * 1000 < $now) continue; // finished — skip
+        $out[] = $rf;
+    }
+    return $out;
+}
+/** Ground + directions for an away opponent. Uses the Ardal SE address list
+ * where we have it; otherwise a Google Maps search for the club (still useful
+ * for Reserves/Women's opponents we don't have on file). */
+function cc25_away_ground_link($opponent) {
+    $g = cc25_ground_of($opponent);
+    if ($g) return array('ground' => $g['ground'], 'addr' => $g['addr'], 'url' => cc25_dir_url($g['addr']), 'known' => true);
+    return array('ground' => '', 'addr' => '',
+        'url' => 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode($opponent . ' football club'), 'known' => false);
 }
 
 /* -------------------------------------------------------------------------
@@ -429,6 +453,7 @@ function cc25_nav_items() {
         )),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),
+            array('Away Days', cc25_page_url('away-days', $home), false),
             array('2024-25 Archive', cc25_page_url(array('2024-25-archive'), $home), false),
             array('2023-24 Archive', cc25_page_url(array('2023-24-archive'), $home), false),
             array('2022-23 Archive', cc25_page_url(array('2022-23-archive'), $home), false),

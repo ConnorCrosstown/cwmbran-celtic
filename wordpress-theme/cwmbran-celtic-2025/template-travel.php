@@ -123,21 +123,19 @@ $cc25_dir_url = 'https://www.google.com/maps/dir/?api=1&destination=' . $cc25_ma
   </div>
 </section>
 
-<!-- Away grounds — Ardal League South East -->
+<!-- Away games -> Away Days -->
 <section class="band" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> On the road</div><h2>Away grounds</h2></div></div>
-    <p class="reveal" style="color:var(--muted);max-width:660px;margin:-12px 0 26px">Heading to an away game? Here are the grounds for every side in the Ardal League South East, with directions.</p>
-    <div class="tg-grounds reveal">
-      <?php foreach (cc25_league_grounds() as $cc25_club => $cc25_g): ?>
-        <div class="tg-ground">
-          <div>
-            <div class="tg-ground-club"><?php echo esc_html($cc25_club); ?></div>
-            <div class="tg-ground-addr"><?php echo esc_html($cc25_g['addr']); ?></div>
-          </div>
-          <a class="btn btn-outline btn-sm" href="<?php echo esc_url(cc25_dir_url($cc25_g['addr'])); ?>" target="_blank" rel="noopener">Directions &rarr;</a>
-        </div>
-      <?php endforeach; ?>
+    <div class="cta reveal">
+      <div class="grain"></div>
+      <div>
+        <div class="kick" style="color:var(--gold);position:relative;z-index:2">On the road</div>
+        <h2>Heading to an away game?</h2>
+        <p>Every upcoming away trip &mdash; grounds, addresses, kick-off times and directions, for all three teams &mdash; is on the Away Days page.</p>
+      </div>
+      <div class="signup" style="display:flex;align-items:center;justify-content:center">
+        <a class="btn btn-gold btn-block" href="<?php echo esc_url(cc25_page_url('away-days', $cc25_home)); ?>">View Away Days &rarr;</a>
+      </div>
     </div>
   </div>
 </section>
