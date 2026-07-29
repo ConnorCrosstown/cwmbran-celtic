@@ -62,6 +62,8 @@ add_filter('template_include', function ($template) {
             'travel-ground'              => 'template-travel.php',
             'getting-here'               => 'template-travel.php',
             'away-days'                  => 'template-away-days.php',
+            '2025-26-archive'            => 'template-results-archive.php',
+            '2025-26-results'            => 'template-results-archive.php',
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
@@ -88,6 +90,7 @@ function cc25_ensure_pages() {
         'travel-and-ground' => 'Travel & Ground',
         'mens-reserves'     => "Men's Reserves",
         'away-days'         => 'Away Days',
+        '2025-26-archive'   => '2025-26 Season',
     );
     foreach ($pages as $slug => $title) {
         if (get_page_by_path($slug)) continue;
@@ -482,6 +485,7 @@ function cc25_nav_items() {
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),
             array('Away Days', cc25_page_url('away-days', $home), false),
+            array('2025-26 Season', cc25_page_url('2025-26-archive', $home), false),
             array('2024-25 Archive', cc25_page_url(array('2024-25-archive'), $home), false),
             array('2023-24 Archive', cc25_page_url(array('2023-24-archive'), $home), false),
             array('2022-23 Archive', cc25_page_url(array('2022-23-archive'), $home), false),
@@ -1147,4 +1151,41 @@ function cc25_seo_head() {
     if (is_front_page() || (is_page() && in_array(get_post_field('post_name', get_queried_object_id()), array('fixtures', 'fixtures-results', 'fixtures-and-results'), true))) {
         cc25_seo_events();
     }
+}
+
+/** 2025-26 season results (Cymru South) — scraped from the club's match pages.
+ * Each row: [date Y-m-d, isHome, opponent, Cwmbran goals, opponent goals].
+ * NB the site was missing results for a few late-season home games (Trefelin,
+ * Caerau, Ammanford); add them here when confirmed. */
+function cc25_results_2526() {
+    return array(
+        array('2025-08-08', false, 'Cambrian United', 0, 4, 'https://www.cwmbranceltic.com/match/cambrian-united-vs-cwmbran-celtic-2/'),
+        array('2025-08-15', true, 'Afan Lido', 1, 4, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-afan-lido-4/'),
+        array('2025-08-22', false, 'Trefelin', 0, 4, 'https://www.cwmbranceltic.com/match/trefelin-vs-cwmbran-celtic-3/'),
+        array('2025-08-25', true, 'Newport City', 1, 1, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-newport-city-3/'),
+        array('2025-08-30', true, 'Carmarthen Town', 0, 0, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-carmarthen-town-7/'),
+        array('2025-09-06', false, 'Treowen Stars', 2, 2, 'https://www.cwmbranceltic.com/match/treowen-stars-vs-cwmbran-celtic/'),
+        array('2025-09-13', false, 'Aberystwyth Town', 0, 2, 'https://www.cwmbranceltic.com/match/aberystwyth-town-vs-cwmbran-celtic/'),
+        array('2025-09-20', false, 'Cardiff Draconians', 2, 4, 'https://www.cwmbranceltic.com/match/cardiff-draconians-vs-cwmbran-celtic-2/'),
+        array('2025-09-26', true, 'Trethomas Bluebirds', 2, 2, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-trethomas-bluebirds-3/'),
+        array('2025-10-04', false, 'Cardiff Draconians', 1, 2, 'https://www.cwmbranceltic.com/match/cardiff-draconians-vs-cwmbran-celtic/'),
+        array('2025-10-24', false, 'Ammanford', 1, 2, 'https://www.cwmbranceltic.com/match/ammanford-vs-cwmbran-celtic-4/'),
+        array('2025-10-31', true, 'Baglan Dragons', 0, 1, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-baglan-dragons-fc-3/'),
+        array('2025-11-07', false, 'Pontypridd United', 0, 7, 'https://www.cwmbranceltic.com/match/pontypridd-united-vs-cwmbran-celtic-3/'),
+        array('2025-11-29', false, 'Ynyshir Albions', 0, 1, 'https://www.cwmbranceltic.com/match/ynyshir-albions-vs-cwmbran-celtic-2/'),
+        array('2025-12-27', false, 'Newport City', 2, 2, 'https://www.cwmbranceltic.com/match/newport-city-vs-cwmbran-celtic-2/'),
+        array('2026-01-02', true, 'Treowen Stars', 1, 2, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-treowen-stars/'),
+        array('2026-01-10', false, 'Carmarthen Town', 2, 2, 'https://www.cwmbranceltic.com/match/carmarthen-town-vs-cwmbran-celtic-3/'),
+        array('2026-01-16', true, 'Cardiff Draconians', 0, 1, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-cardiff-draconians/'),
+        array('2026-01-30', false, 'Trethomas Bluebirds', 0, 2, 'https://www.cwmbranceltic.com/match/trethomas-bluebirds-vs-cwmbran-celtic-2/'),
+        array('2026-02-14', false, 'Llantwit Major', 1, 3, 'https://www.cwmbranceltic.com/match/llantwit-major-vs-cwmbran-celtic-4/'),
+        array('2026-03-06', true, 'Ynyshir Albions', 1, 3, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-ynyshir-albions-2/'),
+        array('2026-03-10', true, 'Llantwit Major', 1, 3, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-llantwit-major-5/'),
+        array('2026-03-17', true, 'Pontypridd United', 2, 5, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-pontypridd-united-2/'),
+        array('2026-03-21', false, 'Caerau (Ely)', 0, 0, 'https://www.cwmbranceltic.com/match/caerau-ely-fc-vs-cwmbran-celtic-3/'),
+        array('2026-03-24', false, 'Baglan Dragons', 0, 0, 'https://www.cwmbranceltic.com/match/baglan-dragons-fc-vs-cwmbran-celtic-3/'),
+        array('2026-03-27', true, 'Cambrian United', 1, 2, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-cambrian-united-2/'),
+        array('2026-04-03', false, 'Afan Lido', 1, 4, 'https://www.cwmbranceltic.com/match/afan-lido-vs-cwmbran-celtic-5/'),
+        array('2026-04-11', true, 'Aberystwyth Town', 3, 1, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-aberystwyth-town/'),
+    );
 }
