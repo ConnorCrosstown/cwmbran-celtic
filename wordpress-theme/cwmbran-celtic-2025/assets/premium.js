@@ -150,11 +150,18 @@
   // Player-card lightbox (Men's team page): click a card to enlarge.
   var lb=document.getElementById('pc-lightbox');
   if(lb){
-    var lbImg=document.getElementById('pc-lb-img'), lbLast;
-    var openLb=function(src,alt){lbLast=document.activeElement;lbImg.src=src;lbImg.alt=alt||'';lb.hidden=false;document.body.style.overflow='hidden';lb.querySelector('.pc-lb-close').focus();};
-    var closeLb=function(){lb.hidden=true;lbImg.src='';document.body.style.overflow='';if(lbLast&&lbLast.focus)lbLast.focus();};
+    var lbImg=document.getElementById('pc-lb-img'), lbMeta=document.getElementById('pc-lb-meta'), lbLast;
+    var openLb=function(b){lbLast=document.activeElement;var img=b.querySelector('img');
+      lbImg.src=b.getAttribute('data-full');lbImg.alt=img?img.getAttribute('alt'):'';
+      if(lbMeta){var name=b.getAttribute('data-name')||'',m='';
+        if(name)m='<strong>'+name+'</strong>';
+        if(b.hasAttribute('data-apps')){var pl=function(n,w){return n+' '+w+(n==='1'?'':'s');};m+='<span>'+pl(b.getAttribute('data-apps'),'app')+' &middot; '+pl(b.getAttribute('data-goals'),'goal')+' &middot; '+pl(b.getAttribute('data-assists'),'assist')+'</span>';}
+        else if(name)m+='<span>No appearances yet this season</span>';
+        lbMeta.innerHTML=m;}
+      lb.hidden=false;document.body.style.overflow='hidden';lb.querySelector('.pc-lb-close').focus();};
+    var closeLb=function(){lb.hidden=true;lbImg.src='';if(lbMeta)lbMeta.innerHTML='';document.body.style.overflow='';if(lbLast&&lbLast.focus)lbLast.focus();};
     document.querySelectorAll('.pc-card').forEach(function(b){
-      b.addEventListener('click',function(){var img=b.querySelector('img');openLb(b.getAttribute('data-full'),img?img.getAttribute('alt'):'');});
+      b.addEventListener('click',function(){openLb(b);});
     });
     lb.addEventListener('click',function(e){if(e.target===lb||e.target.classList.contains('pc-lb-close'))closeLb();});
     document.addEventListener('keydown',function(e){if(!lb.hidden&&e.key==='Escape')closeLb();});

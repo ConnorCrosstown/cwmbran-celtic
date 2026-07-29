@@ -1189,3 +1189,61 @@ function cc25_results_2526() {
         array('2026-04-11', true, 'Aberystwyth Town', 3, 1, 'https://www.cwmbranceltic.com/match/cwmbran-celtic-vs-aberystwyth-town/'),
     );
 }
+
+/* ===================== Player stats (from Comet match reports) ==============
+ * Add one entry per game from the FAW Comet report. Names must match the player
+ * card names. Stats (appearances, goals, assists, cards) are computed from this. */
+function cc25_season_matches() {
+    return array(
+        array(
+            'date' => '2026-07-28', 'opp' => 'Cwmbran Town', 'home' => true, 'cc' => 3, 'oc' => 0,
+            'starters' => array('Lewis Watkins', 'Arthur Furness', 'Kian Saunders', 'Oliver Berry', 'Terry Obeng', 'Lewis Cochrane', 'Evan Maidment', 'Cameron Jenkins', 'Rudi Griffiths', 'Finlay Wood', 'Munya Mabwe'),
+            'subs'     => array('Gabriel Howells', 'Cameron Dean', 'Elliott Hewings', 'Jack Prosser'),
+            'goals'    => array(
+                array('scorer' => 'Finlay Wood', 'assist' => 'Rudi Griffiths', 'min' => 50),
+                array('scorer' => 'Oliver Berry', 'assist' => '', 'min' => 55, 'pen' => true),
+                array('scorer' => 'Rudi Griffiths', 'assist' => 'Oliver Berry', 'min' => 61),
+            ),
+            'cards'    => array(),
+        ),
+    );
+}
+/** Aggregate player stats for the season, keyed by lower-cased name. */
+function cc25_player_stats() {
+    $s = array();
+    $touch = function (&$s, $n) {
+        $k = strtolower(trim($n));
+        if ($k === '') return '';
+        if (!isset($s[$k])) $s[$k] = array('name' => trim($n), 'apps' => 0, 'goals' => 0, 'assists' => 0, 'yellows' => 0, 'reds' => 0);
+        return $k;
+    };
+    foreach (cc25_season_matches() as $m) {
+        foreach (array_merge($m['starters'], $m['subs']) as $n) { $k = $touch($s, $n); if ($k) $s[$k]['apps']++; }
+        foreach ($m['goals'] as $g) {
+            $k = $touch($s, $g['scorer']); if ($k) $s[$k]['goals']++;
+            if (!empty($g['assist'])) { $k = $touch($s, $g['assist']); if ($k) $s[$k]['assists']++; }
+        }
+        foreach ($m['cards'] as $c) {
+            $k = $touch($s, $c['player']); if (!$k) continue;
+            if (($c['type'] ?? 'y') === 'r') $s[$k]['reds']++; else $s[$k]['yellows']++;
+        }
+    }
+    return $s;
+}
+/** Stats for one player by name, or null. */
+function cc25_player_stat($name) {
+    $s = cc25_player_stats();
+    $k = strtolower(trim($name));
+    return isset($s[$k]) ? $s[$k] : null;
+}
+/** Season stats sorted: goals, then assists, then apps, then name. */
+function cc25_player_stats_sorted() {
+    $s = array_values(cc25_player_stats());
+    usort($s, function ($a, $b) {
+        if ($a['goals'] !== $b['goals']) return $b['goals'] - $a['goals'];
+        if ($a['assists'] !== $b['assists']) return $b['assists'] - $a['assists'];
+        if ($a['apps'] !== $b['apps']) return $b['apps'] - $a['apps'];
+        return strcmp($a['name'], $b['name']);
+    });
+    return $s;
+}
