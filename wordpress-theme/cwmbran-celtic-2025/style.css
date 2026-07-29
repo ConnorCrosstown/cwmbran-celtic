@@ -1343,6 +1343,27 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .splash-dots button{width:8px;height:8px;border-radius:50%;border:0;background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.35);cursor:pointer;padding:0;transition:width .2s}
 .splash-dots button.on{background:#fff;width:20px;border-radius:4px}
 
+/* ---- Music Shirts v3: clickable shirts, lightbox, band meta, MVT logo ---- */
+.kl-bandmeta{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.66rem;color:var(--gold-deep);margin:-2px 0 10px}
+/* Clickable (zoomable) shirt images */
+.kl-featshirt-img,.kl-shirt-img{position:relative;display:block;width:100%;border:0;cursor:zoom-in;font:inherit;text-align:left}
+button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:none}
+.zoom-hint{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(9,17,32,.72);color:#fff;font-size:1rem;line-height:30px;text-align:center;opacity:0;transition:opacity .18s;pointer-events:none}
+.kl-featshirt-img:hover .zoom-hint,.kl-shirt-img:hover .zoom-hint,.kl-featshirt-img:focus-visible .zoom-hint,.kl-shirt-img:focus-visible .zoom-hint{opacity:1}
+.kl-shirt-img:hover img,.kl-featshirt-img:hover img{transform:scale(1.015);transition:transform .3s}
+/* Shirt lightbox */
+.shirt-lb{position:fixed;inset:0;z-index:1300;background:rgba(6,12,24,.9);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px}
+.shirt-lb[hidden]{display:none}
+.shirt-lb-fig{margin:0;max-width:1100px;width:100%;text-align:center}
+.shirt-lb-fig img{max-width:100%;max-height:82vh;background:#fff;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.shirt-lb-fig figcaption{color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:.9rem;margin-top:16px}
+.shirt-lb-x{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.9);border:0;width:40px;height:40px;border-radius:50%;font-size:1.7rem;line-height:1;cursor:pointer;color:var(--navy-900,#0a1f3c)}
+/* MVT logo placements */
+.kl-mvt-logo{max-width:200px;height:auto;margin-bottom:14px;display:block}
+.kl-final-mvt{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.kl-final-mvt span{color:var(--on-navy-dim);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+.kl-final-mvt img{max-width:180px;height:auto}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

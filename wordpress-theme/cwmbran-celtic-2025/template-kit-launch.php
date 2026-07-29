@@ -9,6 +9,10 @@ get_template_part('template-parts/site-header');
 $k = cc25_kit_launch();
 $kbase = get_stylesheet_directory_uri() . '/assets/img/kit/';
 $home  = home_url('/');
+// Music Venue Trust logo appears wherever it fits, once the asset is dropped in
+// at assets/img/mvt-logo.png (transparent PNG). Hidden until then.
+$mvt_logo_uri = get_stylesheet_directory_uri() . '/assets/img/mvt-logo.png';
+$mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.png');
 ?>
 <div class="phero kl-hero">
   <div class="bg" style="background-image:linear-gradient(175deg,rgba(9,17,32,.78),rgba(9,17,32,.94) 78%),url('<?php echo esc_url($kbase . 'sfa-hero.jpg'); ?>');background-size:cover;background-position:center 22%"></div><div class="grain"></div><div class="ghost">MUSIC&nbsp;SHIRTS</div>
@@ -44,7 +48,7 @@ $home  = home_url('/');
 
     <?php $feat = $k['shirts'][0]; ?>
     <div class="kl-featshirt reveal">
-      <div class="kl-featshirt-img"><img src="<?php echo esc_url($kbase . $feat['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($feat['label'] . ' shirt — ' . $feat['band']); ?>" loading="lazy"></div>
+      <button type="button" class="kl-featshirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $feat['img']); ?>" data-cap="<?php echo esc_attr($feat['band'] . ' · ' . $feat['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($feat['band']); ?> shirt"><img src="<?php echo esc_url($kbase . $feat['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($feat['label'] . ' shirt — ' . $feat['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
       <div class="kl-featshirt-body">
         <span class="kl-tag gold"><?php echo esc_html($feat['label']); ?></span>
         <h3><?php echo esc_html($feat['band']); ?></h3>
@@ -65,7 +69,7 @@ $home  = home_url('/');
     <div class="kl-shirts">
       <?php foreach (array_slice($k['shirts'], 1) as $i => $s): ?>
       <figure class="kl-shirt reveal<?php echo $i === 1 ? ' d1' : ($i === 2 ? ' d2' : ''); ?>">
-        <div class="kl-shirt-img"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($s['label'] . ' shirt — ' . $s['band']); ?>" loading="lazy"></div>
+        <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>" data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($s['label'] . ' shirt — ' . $s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
         <figcaption>
           <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
           <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
@@ -95,7 +99,7 @@ $home  = home_url('/');
     <div class="kl-mvt reveal">
       <div class="kl-mvt-badge">10%</div>
       <div class="kl-mvt-body">
-        <div class="kick" style="color:var(--gold)">Backing grassroots music</div>
+        <?php if ($mvt_has_logo): ?><a href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener"><img class="kl-mvt-logo" src="<?php echo esc_url($mvt_logo_uri); ?>" alt="Music Venue Trust"></a><?php else: ?><div class="kick" style="color:var(--gold)">Backing grassroots music</div><?php endif; ?>
         <h2>10% of every shirt goes to Music Venue Trust</h2>
         <p>Music Venue Trust is a UK charity established in 2014 to protect, secure and improve grassroots music venues &mdash; the small rooms where emerging artists cut their teeth and where so much of the country's musical talent first performs. Every shirt you buy helps keep those doors open.</p>
         <a class="btn btn-ghost" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener">About Music Venue Trust &rarr;</a>
@@ -111,6 +115,7 @@ $home  = home_url('/');
       <?php foreach ($k['bands'] as $b): ?>
       <div class="kl-bandcard reveal">
         <h3><?php echo esc_html($b['n']); ?></h3>
+        <?php if (!empty($b['meta'])): ?><div class="kl-bandmeta"><?php echo esc_html($b['meta']); ?></div><?php endif; ?>
         <p><?php echo esc_html($b['d']); ?></p>
       </div>
       <?php endforeach; ?>
@@ -127,7 +132,18 @@ $home  = home_url('/');
         <a class="btn btn-gold" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order your shirt &rarr;</a>
         <a class="btn btn-navy" href="<?php echo esc_url($k['tickets_url']); ?>" target="_blank" rel="noopener">Get a season ticket</a>
       </div>
+      <?php if ($mvt_has_logo): ?>
+      <div class="kl-final-mvt"><span>Proudly supporting</span><a href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url($mvt_logo_uri); ?>" alt="Music Venue Trust"></a></div>
+      <?php endif; ?>
     </div>
   </div>
 </section>
+
+<div class="shirt-lb" id="shirt-lb" role="dialog" aria-modal="true" aria-label="Shirt image" hidden>
+  <button class="shirt-lb-x" type="button" aria-label="Close">&times;</button>
+  <figure class="shirt-lb-fig">
+    <img id="shirt-lb-img" src="" alt="">
+    <figcaption id="shirt-lb-cap"></figcaption>
+  </figure>
+</div>
 <?php get_template_part('template-parts/site-footer'); ?>

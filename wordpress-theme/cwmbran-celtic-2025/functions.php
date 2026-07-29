@@ -201,10 +201,14 @@ function cc25_kit_launch() {
         // Matchday photos of the SFA shirt in action (files in assets/img/kit/).
         'action'      => array('sfa-hero.jpg', 'sfa-home.jpg', 'sfa-run.jpg'),
         'bands' => array(
-            array('n' => 'Super Furry Animals', 'd' => "One of Wales' most celebrated and inventive bands, formed in Cardiff in the 1990s — and no strangers to a football shirt, having graced an iconic Cardiff City kit in 1999."),
-            array('n' => 'Mogwai',              'd' => 'The influential Glasgow post-rock band, known for their expansive, instrumental sound — and lifelong Celtic fans who jumped at our green-and-white hooped shirt.'),
-            array('n' => 'Panic Shack',         'd' => 'A Cardiff punk band and a vital part of the new wave of Welsh guitar music.'),
-            array('n' => 'Loose Articles',      'd' => "A Manchester punk band bringing wit and energy to the UK's independent scene — and their drummer's mum lives in Cwmbran!"),
+            array('n' => 'Super Furry Animals', 'meta' => 'Cardiff · formed 1993',
+                  'd' => "Genre-hopping Welsh icons and one of the most inventive bands Britain has ever produced. Across landmark records like Fuzzy Logic, Radiator and Guerrilla — and the all-Welsh Mwng — they fused psychedelia, pop and electronica with fearless imagination. No strangers to football, either, having famously appeared on a Cardiff City shirt back in 1999."),
+            array('n' => 'Mogwai', 'meta' => 'Glasgow · formed 1995',
+                  'd' => "Scotland's post-rock giants have spent three decades turning quiet-loud dynamics into something monumental — sweeping, largely instrumental music that scores films and fills halls. In 2021 they landed their first UK #1 album with As the Love Continues. Lifelong Celtic supporters, they leapt at the chance to wear our green-and-white hoops."),
+            array('n' => 'Panic Shack', 'meta' => 'Cardiff · punk',
+                  'd' => "One of the sharpest and funniest new voices in Welsh guitar music. Panic Shack's whip-smart, riotous live shows have made them festival favourites and a driving force in the new wave of bands flying the flag for the Welsh scene."),
+            array('n' => 'Loose Articles', 'meta' => 'Manchester · punk',
+                  'd' => "Wit, attitude and pure energy — Loose Articles make punk with a grin and choruses you'll be chanting for days. Proper football fans too: their drummer's mum lives in Cwmbran, making them an unlikely but perfect fit for the Celts."),
         ),
         'quotes' => array(
             array(

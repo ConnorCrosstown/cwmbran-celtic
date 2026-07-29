@@ -224,3 +224,25 @@
   car.addEventListener('touchstart', stop, { passive: true });
   start();
 })();
+
+/* Kit-launch: click a shirt to enlarge it in a lightbox. */
+(function () {
+  var lb = document.getElementById('shirt-lb');
+  if (!lb) return;
+  var img = document.getElementById('shirt-lb-img');
+  var cap = document.getElementById('shirt-lb-cap');
+  function open(btn) {
+    img.src = btn.getAttribute('data-full') || '';
+    img.alt = btn.getAttribute('data-cap') || '';
+    cap.textContent = btn.getAttribute('data-cap') || '';
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function close() { lb.hidden = true; img.src = ''; document.body.style.overflow = ''; }
+  document.addEventListener('click', function (e) {
+    var z = e.target.closest('.shirt-zoom');
+    if (z) { e.preventDefault(); open(z); return; }
+    if (e.target === lb || e.target.closest('.shirt-lb-x')) close();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
+})();
