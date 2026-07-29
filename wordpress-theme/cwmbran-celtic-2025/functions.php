@@ -190,12 +190,16 @@ function cc25_kit_launch() {
         'shop_url'    => cc25_ext_url('shop'),
         'tickets_url' => cc25_ext_url('tickets'),
         'mvt_url'     => 'https://www.musicvenuetrust.com',
-        // Shirts we have mock-ups for. img = file in assets/img/kit/.
+        // The four shirts, SFA first (the focus). img = file in assets/img/kit/.
         'shirts'      => array(
-            array('band' => 'Panic Shack',    'img' => 'kit-home.jpg',  'label' => 'Home',  'origin' => 'Cardiff punk',        'back' => 'CRE Underwater Connectivity'),
-            array('band' => 'Mogwai',         'img' => 'kit-away.jpg',   'label' => 'Away',  'origin' => 'Glasgow post-rock',   'back' => 'Country Connect'),
-            array('band' => 'Loose Articles', 'img' => 'kit-third.jpg',  'label' => 'Third', 'origin' => 'Manchester punk',     'back' => 'Hydro Group'),
+            array('band' => 'Super Furry Animals', 'img' => 'kit-sfa.jpg',   'label' => "Men's Home",   'origin' => 'Cardiff · Welsh legends',
+                  'blurb' => "One of Wales' most celebrated and inventive bands lead the line on our men's home shirt — no strangers to a football kit, having graced an iconic Cardiff City shirt back in 1999."),
+            array('band' => 'Mogwai',              'img' => 'kit-away.jpg',   'label' => "Men's Away",   'origin' => 'Glasgow post-rock'),
+            array('band' => 'Panic Shack',         'img' => 'kit-home.jpg',   'label' => "Women's Home", 'origin' => 'Cardiff punk'),
+            array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk'),
         ),
+        // Matchday photos of the SFA shirt in action (files in assets/img/kit/).
+        'action'      => array('sfa-hero.jpg', 'sfa-home.jpg', 'sfa-run.jpg'),
         'bands' => array(
             array('n' => 'Super Furry Animals', 'd' => "One of Wales' most celebrated and inventive bands, formed in Cardiff in the 1990s — and no strangers to a football shirt, having graced an iconic Cardiff City kit in 1999."),
             array('n' => 'Mogwai',              'd' => 'The influential Glasgow post-rock band, known for their expansive, instrumental sound — and lifelong Celtic fans who jumped at our green-and-white hooped shirt.'),

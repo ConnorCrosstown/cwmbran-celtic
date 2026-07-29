@@ -11,7 +11,7 @@ $kbase = get_stylesheet_directory_uri() . '/assets/img/kit/';
 $home  = home_url('/');
 ?>
 <div class="phero kl-hero">
-  <div class="bg"></div><div class="grain"></div><div class="ghost">MUSIC&nbsp;SHIRTS</div>
+  <div class="bg" style="background-image:linear-gradient(175deg,rgba(9,17,32,.78),rgba(9,17,32,.94) 78%),url('<?php echo esc_url($kbase . 'sfa-hero.jpg'); ?>');background-size:cover;background-position:center 22%"></div><div class="grain"></div><div class="ghost">MUSIC&nbsp;SHIRTS</div>
   <div class="phero-in">
     <div class="crumbs"><a href="<?php echo esc_url($home); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('news', $home)); ?>" style="color:var(--on-navy-dim)">News</a> / <span style="color:#fff">Music Shirts</span></div>
     <div class="kl-eye kick"><?php echo esc_html($k['eyebrow']); ?></div>
@@ -41,10 +41,31 @@ $home  = home_url('/');
 <section class="band kl-shirts-band">
   <div class="wrap">
     <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> The 2026/27 Range</div><h2>The Shirts</h2></div></div>
+
+    <?php $feat = $k['shirts'][0]; ?>
+    <div class="kl-featshirt reveal">
+      <div class="kl-featshirt-img"><img src="<?php echo esc_url($kbase . $feat['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($feat['label'] . ' shirt — ' . $feat['band']); ?>" loading="lazy"></div>
+      <div class="kl-featshirt-body">
+        <span class="kl-tag gold"><?php echo esc_html($feat['label']); ?></span>
+        <h3><?php echo esc_html($feat['band']); ?></h3>
+        <div class="kl-origin"><?php echo esc_html($feat['origin']); ?></div>
+        <p><?php echo esc_html($feat['blurb']); ?></p>
+        <a class="btn btn-gold btn-sm" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order the home shirt &rarr;</a>
+      </div>
+    </div>
+
+    <?php if (!empty($k['action'])): ?>
+    <div class="kl-action reveal" aria-label="The home shirt in action">
+      <?php foreach ($k['action'] as $a): ?>
+      <div class="kl-action-img"><img src="<?php echo esc_url($kbase . $a); ?>" alt="Cwmbran Celtic in the Super Furry Animals home shirt" loading="lazy"></div>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
     <div class="kl-shirts">
-      <?php foreach ($k['shirts'] as $i => $s): ?>
+      <?php foreach (array_slice($k['shirts'], 1) as $i => $s): ?>
       <figure class="kl-shirt reveal<?php echo $i === 1 ? ' d1' : ($i === 2 ? ' d2' : ''); ?>">
-        <div class="kl-shirt-img"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($s['label']); ?> shirt &mdash; <?php echo esc_attr($s['band']); ?>" loading="lazy"></div>
+        <div class="kl-shirt-img"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($s['label'] . ' shirt — ' . $s['band']); ?>" loading="lazy"></div>
         <figcaption>
           <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
           <span class="kl-band"><?php echo esc_html($s['band']); ?></span>

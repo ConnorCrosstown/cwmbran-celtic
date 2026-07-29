@@ -27,12 +27,24 @@ if ($cc25_kllive): ?>
   <div class="splash-bg" data-close></div>
   <div class="splash-card splash-launch">
     <button class="splash-x" type="button" aria-label="Close" data-close>&times;</button>
-    <div class="splash-launch-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-home.jpg'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts"></div>
+    <div class="splash-carousel" data-carousel>
+      <div class="splash-track">
+        <?php foreach ($cc25_kl['shirts'] as $s): ?>
+        <div class="splash-slide">
+          <img src="<?php echo esc_url($cc25_kbase . $s['img']); ?>" alt="<?php echo esc_attr($s['band'] . ' — ' . $s['label']); ?> shirt" loading="lazy">
+          <span class="splash-slide-cap"><b><?php echo esc_html($s['band']); ?></b> &middot; <?php echo esc_html($s['label']); ?></span>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      <button class="splash-arw prev" type="button" aria-label="Previous shirt">&lsaquo;</button>
+      <button class="splash-arw next" type="button" aria-label="Next shirt">&rsaquo;</button>
+      <div class="splash-dots"><?php foreach ($cc25_kl['shirts'] as $i => $s): ?><button type="button" class="<?php echo $i === 0 ? 'on' : ''; ?>" data-i="<?php echo $i; ?>" aria-label="Show shirt <?php echo $i + 1; ?>"></button><?php endforeach; ?></div>
+    </div>
     <div class="splash-launch-body">
       <div class="splash-eye kick">Just launched &middot; 2026/27</div>
       <div class="splash-launch-title" id="splash-title">Music Shirts</div>
       <div class="splash-launch-bands">Super Furry Animals &middot; Mogwai &middot; Panic Shack &middot; Loose Articles</div>
-      <div class="splash-launch-mvt">&#9733; 10% of every shirt supports <b>Music Venue Trust</b></div>
+      <div class="splash-launch-mvt">&#9733; 10% of every shirt supports <a href="<?php echo esc_url($cc25_kl['mvt_url']); ?>" target="_blank" rel="noopener"><b>Music Venue Trust</b></a></div>
       <div class="splash-cta">
         <a class="btn btn-gold" href="<?php echo esc_url($cc25_klurl); ?>">See the shirts</a>
         <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('shop')); ?>" target="_blank" rel="noopener">Pre-order</a>
@@ -126,22 +138,6 @@ if ($cc25_kllive): ?>
   </div>
 </section>
 
-<?php if ($cc25_kllive): ?>
-<section class="sec" style="padding-top:34px;padding-bottom:0" aria-label="Music Shirts launch">
-  <div class="wrap">
-    <a class="kl-banner reveal" href="<?php echo esc_url($cc25_klurl); ?>">
-      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-home.jpg'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"></div>
-      <div class="kl-banner-body">
-        <div class="kl-banner-eye kick">New for 2026/27 &middot; Just launched</div>
-        <h2>The Music Shirts are here</h2>
-        <p>Super Furry Animals, Mogwai, Panic Shack &amp; Loose Articles &mdash; on the shirt. 10% of every sale to Music Venue Trust.</p>
-        <span class="kl-banner-cta">Read the story &amp; see all the shirts &rarr;</span>
-      </div>
-    </a>
-  </div>
-</section>
-<?php endif; ?>
-
 <?php if ($next):
   $o = cc25_opponent($next);
   $venue = $o['home'] ? '⚑ Motazone Arena' : '⚑ Away · ' . ($next['homeTeam'] ?? '');
@@ -181,6 +177,22 @@ if ($cc25_kllive): ?>
     <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/img/league-logos.jpg'); ?>" alt="Ardal League South East &amp; Genero Adran South" loading="lazy">
   </div>
 </div>
+
+<?php if ($cc25_kllive): ?>
+<section class="sec" style="padding-top:40px;padding-bottom:0" aria-label="Music Shirts launch">
+  <div class="wrap">
+    <div class="kl-banner reveal">
+      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-sfa.jpg'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"></div>
+      <div class="kl-banner-body">
+        <div class="kl-banner-eye kick">New for 2026/27 &middot; Just launched</div>
+        <h2>The Music Shirts are here</h2>
+        <p>Super Furry Animals, Mogwai, Panic Shack &amp; Loose Articles &mdash; on the shirt. 10% of every sale to <a class="kl-inlink" href="<?php echo esc_url($cc25_kl['mvt_url']); ?>" target="_blank" rel="noopener">Music Venue Trust</a>.</p>
+        <a class="kl-banner-cta" href="<?php echo esc_url($cc25_klurl); ?>">Read the story &amp; see all the shirts &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <section class="sec" style="padding-top:48px" aria-label="This season">
   <div class="wrap">

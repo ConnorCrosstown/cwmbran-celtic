@@ -1310,6 +1310,39 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .splash-launch-mvt b{color:var(--gold)}
 .splash-launch .splash-cta{justify-content:center;margin-bottom:8px}
 
+/* ---- Music Shirts v2: featured SFA, action strip, splash carousel ---- */
+.kl-featshirt{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--hair);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:16px}
+.kl-featshirt-img{background:linear-gradient(180deg,#fff,#eef1f6);padding:14px}
+.kl-featshirt-img img{width:100%;height:auto;display:block}
+.kl-featshirt-body{padding:20px 32px 24px 4px}
+.kl-featshirt-body h3{font-family:var(--display);font-size:clamp(1.6rem,4vw,2.3rem);color:var(--navy-900,#0a1f3c);margin:8px 0 2px;line-height:1.02}
+.kl-featshirt-body .kl-origin{margin-bottom:12px}
+.kl-featshirt-body p{color:var(--muted);line-height:1.6;margin:0 0 18px}
+.kl-tag.gold{background:var(--gold);color:var(--navy-900,#0a1f3c)}
+.kl-action{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.kl-action-img{border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);aspect-ratio:4/3;background:var(--navy-900,#0a1f3c)}
+.kl-action-img img{width:100%;height:100%;object-fit:cover;object-position:center 28%;display:block}
+@media(max-width:760px){.kl-featshirt{grid-template-columns:1fr}.kl-featshirt-body{padding:0 24px 24px}.kl-action{grid-template-columns:1fr 1fr}.kl-action-img:first-child{grid-column:1/-1}}
+/* Home banner: stretched-link + inline MVT link */
+.kl-banner-cta{display:inline-block;cursor:pointer}
+.kl-banner-cta::after{content:"";position:absolute;inset:0;z-index:1}
+.kl-inlink{position:relative;z-index:2;color:var(--gold-soft,#fcd34d);text-decoration:underline;text-underline-offset:2px}
+.kl-inlink:hover{color:#fff}
+/* Splash shirt carousel */
+.splash-carousel{position:relative;background:linear-gradient(180deg,#fff,#eef1f6)}
+.splash-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.splash-track::-webkit-scrollbar{display:none}
+.splash-slide{position:relative;flex:0 0 100%;scroll-snap-align:center}
+.splash-slide img{width:100%;height:auto;display:block}
+.splash-slide-cap{position:absolute;top:8px;left:8px;background:rgba(9,17,32,.82);color:#fff;font-size:.66rem;padding:4px 10px;border-radius:20px}
+.splash-slide-cap b{font-family:var(--display);text-transform:uppercase;letter-spacing:.02em}
+.splash-arw{position:absolute;top:calc(50% - 8px);transform:translateY(-50%);z-index:3;width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--navy-900,#0a1f3c);font-size:1.3rem;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}
+.splash-arw.prev{left:8px}.splash-arw.next{right:8px}
+.splash-arw:hover{background:#fff}
+.splash-dots{position:absolute;left:0;right:0;bottom:9px;z-index:3;display:flex;gap:6px;justify-content:center}
+.splash-dots button{width:8px;height:8px;border-radius:50%;border:0;background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(0,0,0,.35);cursor:pointer;padding:0;transition:width .2s}
+.splash-dots button.on{background:#fff;width:20px;border-radius:4px}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

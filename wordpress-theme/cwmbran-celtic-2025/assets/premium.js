@@ -199,3 +199,28 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) close(); });
 })();
+
+/* Splash shirt carousel — scroll-snap track with dots, arrows and autoplay. */
+(function () {
+  var car = document.querySelector('[data-carousel]');
+  if (!car) return;
+  var track = car.querySelector('.splash-track');
+  var slides = car.querySelectorAll('.splash-slide');
+  var dots = car.querySelectorAll('.splash-dots button');
+  var nextB = car.querySelector('.splash-arw.next');
+  var prevB = car.querySelector('.splash-arw.prev');
+  if (!track || slides.length < 2) return;
+  var idx = 0, n = slides.length, timer = null, st = null;
+  function setDots() { for (var j = 0; j < dots.length; j++) dots[j].classList.toggle('on', j === idx); }
+  function go(i) { idx = (i + n) % n; track.scrollTo({ left: track.clientWidth * idx, behavior: 'smooth' }); setDots(); }
+  function sync() { var w = track.clientWidth || 1, i = Math.round(track.scrollLeft / w); if (i >= 0 && i < n && i !== idx) { idx = i; setDots(); } }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function start() { stop(); timer = setInterval(function () { go(idx + 1); }, 3200); }
+  if (nextB) nextB.addEventListener('click', function (e) { e.preventDefault(); stop(); go(idx + 1); });
+  if (prevB) prevB.addEventListener('click', function (e) { e.preventDefault(); stop(); go(idx - 1); });
+  for (var d = 0; d < dots.length; d++) (function (b) { b.addEventListener('click', function () { stop(); go(parseInt(b.getAttribute('data-i'), 10) || 0); }); })(dots[d]);
+  track.addEventListener('scroll', function () { clearTimeout(st); st = setTimeout(sync, 90); });
+  car.addEventListener('mouseenter', stop);
+  car.addEventListener('touchstart', stop, { passive: true });
+  start();
+})();
