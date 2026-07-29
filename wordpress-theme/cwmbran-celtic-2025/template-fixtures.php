@@ -80,7 +80,7 @@ get_template_part('template-parts/site-header');
           </div>
           <div><span class="res-badge <?php echo $wdl; ?>"><?php echo strtoupper($wdl); ?></span></div>
           <div class="mmeta"><div class="comp"><?php echo esc_html($r['competition'] ?? ''); ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span></div>
-        </div>
+        </<?php echo $rtag; ?>>
       <?php endforeach; else: ?>
         <p style="color:var(--muted);padding:24px 2px">No results yet — the season is about to kick off.</p>
       <?php endif; ?>
