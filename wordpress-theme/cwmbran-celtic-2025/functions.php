@@ -155,6 +155,60 @@ function cc25_result_celebration() {
  * "Season Ticket" buttons); flip to true pre-season to bring them back. */
 function cc25_season_tickets_on() { return false; }
 
+/**
+ * Opponent grounds in the Ardal League South East (for away-game travel info).
+ * Keyed by the opponent name as it appears in the fixture lists.
+ * Each: ['ground' => name, 'addr' => full address, 'pc' => postcode].
+ */
+function cc25_away_grounds() {
+    return array(
+        'Abercarn United'     => array('ground' => 'Abercarn Welfare',       'addr' => 'Abercarn Welfare, Abercarn, NP11 5AR', 'pc' => 'NP11 5AR'),
+        'Abergavenny Town'    => array('ground' => 'Penypound Stadium',      'addr' => 'Penypound Stadium, Penypound, Abergavenny, NP7 7RN', 'pc' => 'NP7 7RN'),
+        'Blaenavon Blues'     => array('ground' => 'The Memorial Ground',    'addr' => 'The Memorial Ground, Stable Row, Abergavenny Road, Blaenavon, NP4 9RQ', 'pc' => 'NP4 9RQ'),
+        'Brecon Corries'      => array('ground' => 'The Risc Field',         'addr' => 'The Risc Field, Canal Road, Brecon, LD3 7HL', 'pc' => 'LD3 7HL'),
+        'Caldicot Town'       => array('ground' => 'Jubilee Way',            'addr' => 'Jubilee Way, Caldicot, NP26 4NA', 'pc' => 'NP26 4NA'),
+        'Chepstow Town'       => array('ground' => 'Larkfield Park',         'addr' => 'Larkfield Park, Chepstow, NP16 5PR', 'pc' => 'NP16 5PR'),
+        'Croesyceiliog'       => array('ground' => 'Woodland Road',          'addr' => 'Woodland Road, Croesyceiliog, Cwmbran, NP44 2DZ', 'pc' => 'NP44 2DZ'),
+        'Cwmbran Town'        => array('ground' => 'Cwmbran Stadium',        'addr' => 'Cwmbran Stadium, Henllys Way, Cwmbran, NP44 3YS', 'pc' => 'NP44 3YS'),
+        'Goytre'              => array('ground' => 'Plough Road',            'addr' => 'Plough Road, Penperlleni, Pontypool, NP4 0AL', 'pc' => 'NP4 0AL'),
+        'Lliswerry'           => array('ground' => 'Velodrome Way',          'addr' => 'Velodrome Way, Spytty, Newport, NP19 4RB', 'pc' => 'NP19 4RB'),
+        'New Inn'             => array('ground' => 'Plough Road',            'addr' => 'Plough Road, Penperlleni, Pontypool, NP4 0AL', 'pc' => 'NP4 0AL'),
+        'Newport Corinthians' => array('ground' => 'Coronation Park',        'addr' => 'Coronation Park, Stephenson Street, Newport, NP19 0RB', 'pc' => 'NP19 0RB'),
+        'Risca United'        => array('ground' => 'Isaf Road',              'addr' => 'Isaf Road, Risca, NP11 6EG', 'pc' => 'NP11 6EG'),
+        'Tredegar Town'       => array('ground' => 'Tredegar Sports Complex', 'addr' => 'Tredegar Sports Complex, Stable Lane, Tredegar, NP22 4BH', 'pc' => 'NP22 4BH'),
+        'Undy FC'             => array('ground' => 'The Causeway Stadium',   'addr' => 'The Causeway Stadium, The Causeway, Undy, Caldicot, NP26 3EW', 'pc' => 'NP26 3EW'),
+        'Undy'                => array('ground' => 'The Causeway Stadium',   'addr' => 'The Causeway Stadium, The Causeway, Undy, Caldicot, NP26 3EW', 'pc' => 'NP26 3EW'),
+    );
+}
+/** Ground info for an opponent, or null if we don't have it. */
+function cc25_ground_of($opponent) {
+    $g = cc25_away_grounds();
+    if (isset($g[$opponent])) return $g[$opponent];
+    foreach ($g as $name => $info) { if (cc25_norm_team($name) === cc25_norm_team($opponent)) return $info; }
+    return null;
+}
+/** Google Maps directions URL to an address string. */
+function cc25_dir_url($query) {
+    return 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode($query);
+}
+/**
+ * Where the "Travel & Ground" link should go for a fixture: our own Travel page
+ * for home games; directions to the opponent's ground for away games (falls back
+ * to our Travel page if we don't have that ground on file).
+ */
+function cc25_travel_url($opponent, $home) {
+    if ($home) return cc25_page_url('travel', home_url('/'));
+    $g = cc25_ground_of($opponent);
+    return $g ? cc25_dir_url($g['addr']) : cc25_page_url('travel', home_url('/'));
+}
+/** League grounds for the on-page list — deduped + alphabetised. */
+function cc25_league_grounds() {
+    $g = cc25_away_grounds();
+    unset($g['Undy']); // duplicate alias of 'Undy FC'
+    ksort($g);
+    return $g;
+}
+
 /* -------------------------------------------------------------------------
  * Mailing-list signup. The homepage form POSTs to the club's Apps Script
  * mailing-list web app (cwmbran-celtic-mailing-list). After deploying that

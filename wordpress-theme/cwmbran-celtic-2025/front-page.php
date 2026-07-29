@@ -130,7 +130,7 @@ if ($cc25_cel): ?>
       <?php if ($o['home']): // tickets only for home games — no tickets sold for away ?>
       <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
       <?php endif; ?>
-      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
+      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_travel_url($o['opponent'], $o['home'])); ?>"<?php echo $o['home'] ? '' : ' target="_blank" rel="noopener"'; ?>>Travel &amp; Ground</a>
     </div>
   </div>
 </div>
