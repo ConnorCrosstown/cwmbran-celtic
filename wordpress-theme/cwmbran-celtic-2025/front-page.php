@@ -13,12 +13,35 @@ $table    = cc25_table($feed, $team);
 get_template_part('template-parts/site-header');
 ?>
 
-<?php // Home-page takeover: a RESULT celebration (fireworks, every visit) when one
-// is set, otherwise the next-home-game takeover (once per home fixture).
+<?php // Home-page takeover. Priority: MUSIC SHIRTS launch (from its embargo time),
+// then a RESULT celebration (fireworks, every visit), then the next-home-game.
+$cc25_kllive = cc25_kit_launch_live();
+$cc25_kl     = cc25_kit_launch();
+$cc25_klurl  = cc25_page_url('music-shirts', home_url('/'));
+$cc25_kbase  = get_stylesheet_directory_uri() . '/assets/img/kit/';
 $cc25_cel = cc25_result_celebration();
 $cc25_hg  = cc25_next_home_fixture($feed, $team);
 $cc25_hgo = $cc25_hg ? cc25_opponent($cc25_hg) : null;
-if ($cc25_cel): ?>
+if ($cc25_kllive): ?>
+<div class="splash is-launch" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="music-shirts-2627" hidden>
+  <div class="splash-bg" data-close></div>
+  <div class="splash-card splash-launch">
+    <button class="splash-x" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="splash-launch-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-home.jpg'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts"></div>
+    <div class="splash-launch-body">
+      <div class="splash-eye kick">Just launched &middot; 2026/27</div>
+      <div class="splash-launch-title" id="splash-title">Music Shirts</div>
+      <div class="splash-launch-bands">Super Furry Animals &middot; Mogwai &middot; Panic Shack &middot; Loose Articles</div>
+      <div class="splash-launch-mvt">&#9733; 10% of every shirt supports <b>Music Venue Trust</b></div>
+      <div class="splash-cta">
+        <a class="btn btn-gold" href="<?php echo esc_url($cc25_klurl); ?>">See the shirts</a>
+        <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('shop')); ?>" target="_blank" rel="noopener">Pre-order</a>
+      </div>
+      <button class="splash-later" type="button" data-close>Maybe later</button>
+    </div>
+  </div>
+</div>
+<?php elseif ($cc25_cel): ?>
 <div class="splash is-result" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="result-<?php echo esc_attr($cc25_cel['opponent'] . '-' . intval($cc25_cel['us']) . '-' . intval($cc25_cel['them'])); ?>" hidden>
   <canvas class="splash-fw" aria-hidden="true"></canvas>
   <div class="splash-bg" data-close></div>
@@ -102,6 +125,22 @@ if ($cc25_cel): ?>
     </div>
   </div>
 </section>
+
+<?php if ($cc25_kllive): ?>
+<section class="sec" style="padding-top:34px;padding-bottom:0" aria-label="Music Shirts launch">
+  <div class="wrap">
+    <a class="kl-banner reveal" href="<?php echo esc_url($cc25_klurl); ?>">
+      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-home.jpg'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"></div>
+      <div class="kl-banner-body">
+        <div class="kl-banner-eye kick">New for 2026/27 &middot; Just launched</div>
+        <h2>The Music Shirts are here</h2>
+        <p>Super Furry Animals, Mogwai, Panic Shack &amp; Loose Articles &mdash; on the shirt. 10% of every sale to Music Venue Trust.</p>
+        <span class="kl-banner-cta">Read the story &amp; see all the shirts &rarr;</span>
+      </div>
+    </a>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php if ($next):
   $o = cc25_opponent($next);

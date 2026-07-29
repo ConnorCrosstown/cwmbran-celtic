@@ -1236,6 +1236,81 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 @media(max-width:720px){.mrfeat{grid-template-columns:1fr}.mrfeat-teams .sc{font-size:2rem}}
 
 /* ============================================================
+   MUSIC SHIRTS launch — article, home banner, launch splash
+   ============================================================ */
+.kl-hero .phero-in,.kl-hero{}
+.kl-eye{color:var(--gold);letter-spacing:.12em;font-size:.72rem;margin-bottom:14px}
+.kl-hero h1{font-size:clamp(2.2rem,6vw,3.9rem);line-height:1.02;max-width:16ch}
+.kl-dek{color:var(--on-navy);font-size:clamp(1rem,2.4vw,1.22rem);line-height:1.55;max-width:60ch;margin:16px 0 22px}
+.kl-cta{display:flex;flex-wrap:wrap;gap:12px}
+.kl-date{margin-top:20px;color:var(--on-navy-dim);font-size:.8rem;letter-spacing:.04em;text-transform:uppercase}
+.kl-wrap{max-width:820px}
+.kl-lede p{font-size:clamp(1.15rem,2.6vw,1.4rem);line-height:1.5;color:var(--text);font-weight:500;margin:0 0 8px}
+.kl-body p{color:var(--text);line-height:1.75;margin:0 0 18px;font-size:1.02rem}
+.kl-body a{color:var(--blue-500);text-decoration:underline;text-underline-offset:2px}
+/* Shirts showcase */
+.kl-shirts-band{background:var(--surface-2)}
+.kl-shirts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.kl-shirt{margin:0;background:var(--surface);border:1px solid var(--hair);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.kl-shirt:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(10,31,60,.16)}
+.kl-shirt-img{background:linear-gradient(180deg,#fff,#eef1f6);padding:8px}
+.kl-shirt-img img{width:100%;height:auto;display:block;border-radius:8px}
+.kl-shirt figcaption{padding:16px 18px 20px;display:flex;flex-direction:column;gap:4px}
+.kl-tag{align-self:flex-start;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.62rem;background:var(--navy-800,#12203c);color:#fff;padding:3px 9px;border-radius:5px;margin-bottom:4px}
+.kl-band{font-family:var(--display);font-size:1.4rem;color:var(--navy-900,#0a1f3c);line-height:1}
+.kl-origin{color:var(--muted);font-size:.85rem}
+.kl-shirtnote{text-align:center;color:var(--muted);margin:24px auto 0;max-width:60ch;font-size:.94rem}
+.kl-shirtcta{text-align:center;margin-top:16px}
+/* Quotes */
+.kl-quote{position:relative;margin:0 0 26px;padding:6px 0 6px 28px;border-left:4px solid var(--gold)}
+.kl-quote:last-child{margin-bottom:0}
+.kl-quote p{font-size:clamp(1.1rem,2.6vw,1.4rem);line-height:1.5;color:var(--text);font-weight:500;margin:0 0 14px}
+.kl-quote cite{font-style:normal;display:flex;flex-direction:column}
+.kl-quote .qn{font-family:var(--display);font-size:1rem;color:var(--navy-900,#0a1f3c)}
+.kl-quote .qr{color:var(--muted);font-size:.85rem}
+/* Music Venue Trust band */
+.kl-mvt-band{background:linear-gradient(150deg,var(--navy-800,#12203c),var(--navy-900,#0a1f3c))}
+.kl-mvt{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+.kl-mvt-badge{font-family:var(--display);font-weight:800;font-size:clamp(3rem,10vw,5.4rem);line-height:1;color:var(--gold);text-shadow:0 4px 24px rgba(245,197,24,.3)}
+.kl-mvt-body h2{color:#fff;font-size:clamp(1.5rem,4vw,2.2rem);margin:6px 0 12px;max-width:18ch}
+.kl-mvt-body p{color:var(--on-navy);line-height:1.65;max-width:60ch;margin:0 0 18px}
+/* Bands grid */
+.kl-bands{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.kl-bandcard{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:22px 24px;box-shadow:var(--shadow-sm);border-top:3px solid var(--gold)}
+.kl-bandcard h3{font-size:1.25rem;margin:0 0 8px;color:var(--navy-900,#0a1f3c)}
+.kl-bandcard p{color:var(--muted);line-height:1.6;margin:0;font-size:.95rem}
+/* Final CTA */
+.kl-final{background:var(--surface-2)}
+.kl-finalcard{background:linear-gradient(150deg,var(--navy-800,#12203c),var(--navy-900,#0a1f3c));border-radius:18px;padding:clamp(32px,6vw,56px);text-align:center}
+.kl-finalcard h2{color:#fff;font-size:clamp(1.6rem,4.5vw,2.6rem);margin:0 auto 12px;max-width:20ch}
+.kl-finalcard p{color:var(--on-navy);max-width:52ch;margin:0 auto 24px;line-height:1.6}
+.kl-finalcard .kl-cta{justify-content:center}
+@media(max-width:820px){.kl-shirts{grid-template-columns:1fr;max-width:420px;margin:0 auto}.kl-bands{grid-template-columns:1fr}.kl-mvt{grid-template-columns:1fr;gap:10px;text-align:center}.kl-mvt-body h2,.kl-mvt-body p{max-width:none}}
+/* Home-page launch banner */
+.kl-banner{display:grid;grid-template-columns:minmax(0,300px) 1fr;align-items:center;gap:26px;background:linear-gradient(150deg,var(--navy-800,#12203c),var(--navy-900,#0a1f3c));border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s;position:relative}
+.kl-banner:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(10,31,60,.28)}
+.kl-banner-img{align-self:stretch;background:linear-gradient(180deg,#fff,#eef1f6);display:flex;align-items:center;padding:10px}
+.kl-banner-img img{width:100%;height:auto;display:block}
+.kl-banner-body{padding:24px 30px 24px 4px}
+.kl-banner-eye{color:var(--gold);letter-spacing:.1em;font-size:.68rem;margin-bottom:8px}
+.kl-banner-body h2{color:#fff;font-size:clamp(1.4rem,3.5vw,2rem);margin:0 0 8px}
+.kl-banner-body p{color:var(--on-navy);line-height:1.55;margin:0 0 12px;max-width:56ch}
+.kl-banner-cta{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.76rem;color:var(--gold-soft,#fcd34d)}
+.kl-banner:hover .kl-banner-cta{color:#fff}
+@media(max-width:680px){.kl-banner{grid-template-columns:1fr}.kl-banner-body{padding:4px 24px 24px}}
+/* Launch splash */
+.splash.is-launch .splash-card.splash-launch{max-width:460px;padding:0;overflow:hidden;text-align:center}
+.splash-launch-img{background:linear-gradient(180deg,#fff,#eef1f6)}
+.splash-launch-img img{width:100%;height:auto;display:block}
+.splash-launch-body{padding:22px 26px 26px}
+.splash-launch .splash-eye{color:var(--gold);margin-bottom:6px}
+.splash-launch-title{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(2rem,7vw,2.8rem);line-height:1;color:#fff;margin-bottom:8px}
+.splash-launch-bands{font-weight:600;color:var(--on-navy,#eaf0fb);font-size:.92rem;margin-bottom:12px}
+.splash-launch-mvt{font-size:.82rem;color:var(--on-navy-dim,#9fb0d6);margin-bottom:18px}
+.splash-launch-mvt b{color:var(--gold)}
+.splash-launch .splash-cta{justify-content:center;margin-bottom:8px}
+
+/* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js
    is stale/absent, and the table must never collapse or clip.

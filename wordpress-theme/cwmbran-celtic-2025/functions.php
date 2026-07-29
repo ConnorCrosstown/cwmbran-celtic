@@ -15,7 +15,8 @@ add_action('wp_enqueue_scripts', function () {
     // stylesheet on them to stop it fighting. Regular pages (which may hold
     // Divi-built content) keep Divi's styles.
     $bespoke = is_front_page() || is_singular('post') || is_home() || is_archive()
-        || is_search() || is_page_template('template-fixtures.php');
+        || is_search() || is_page_template('template-fixtures.php')
+        || is_page_template('template-kit-launch.php') || is_page_template('template-match-report.php');
     if ($bespoke) {
         wp_dequeue_style('divi-style');
     }
@@ -65,6 +66,8 @@ add_filter('template_include', function ($template) {
             '2025-26-archive'            => 'template-results-archive.php',
             '2025-26-results'            => 'template-results-archive.php',
             'match-report'               => 'template-match-report.php',
+            'music-shirts'               => 'template-kit-launch.php',
+            'kit'                        => 'template-kit-launch.php',
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
@@ -93,6 +96,7 @@ function cc25_ensure_pages() {
         'away-days'         => 'Away Days',
         '2025-26-archive'   => '2025-26 Season',
         'match-report'      => 'Match Report',
+        'music-shirts'      => 'Music Shirts',
     );
     foreach ($pages as $slug => $title) {
         if (get_page_by_path($slug)) continue;
@@ -109,7 +113,7 @@ add_action('after_switch_theme', 'cc25_ensure_pages');
 add_action('admin_init', function () {
     // Version-stamped so a new page in cc25_ensure_pages() gets created on the
     // next admin load of an already-installed theme. Bump when adding a page.
-    $ver = '2026-07-29';
+    $ver = '2026-07-30-music-shirts';
     if (get_option('cc25_pages_provisioned') === $ver) return;
     cc25_ensure_pages();
     update_option('cc25_pages_provisioned', $ver);
@@ -165,6 +169,62 @@ function cc25_result_celebration() {
 /** Season-ticket sales window. false once the season is under way (hides all
  * "Season Ticket" buttons); flip to true pre-season to bring them back. */
 function cc25_season_tickets_on() { return false; }
+
+/**
+ * MUSIC SHIRTS launch (2026/27 kit reveal). Drives the launch splash, the
+ * news article at /music-shirts/, and the home-page feature banner.
+ *   'enabled'   — master on/off. Set false to retire the whole campaign.
+ *   'live_from' — embargo: the splash + home banner appear only from this UK
+ *                 time (article page can exist unlinked before then). Blank =
+ *                 show immediately.
+ */
+function cc25_kit_launch() {
+    return array(
+        'enabled'     => true,
+        'live_from'   => '',
+        'slug'        => 'music-shirts',
+        'eyebrow'     => 'Music Shirts · 2026/27',
+        'headline'    => 'Four bands. One club. A shirt like no other.',
+        'dek'         => "Super Furry Animals, Mogwai, Panic Shack and Loose Articles become shirt sponsors for the Celts — with 10% of every shirt going to Music Venue Trust.",
+        'date'        => '2026-07-30',
+        'shop_url'    => cc25_ext_url('shop'),
+        'tickets_url' => cc25_ext_url('tickets'),
+        'mvt_url'     => 'https://www.musicvenuetrust.com',
+        // Shirts we have mock-ups for. img = file in assets/img/kit/.
+        'shirts'      => array(
+            array('band' => 'Panic Shack',    'img' => 'kit-home.jpg',  'label' => 'Home',  'origin' => 'Cardiff punk',        'back' => 'CRE Underwater Connectivity'),
+            array('band' => 'Mogwai',         'img' => 'kit-away.jpg',   'label' => 'Away',  'origin' => 'Glasgow post-rock',   'back' => 'Country Connect'),
+            array('band' => 'Loose Articles', 'img' => 'kit-third.jpg',  'label' => 'Third', 'origin' => 'Manchester punk',     'back' => 'Hydro Group'),
+        ),
+        'bands' => array(
+            array('n' => 'Super Furry Animals', 'd' => "One of Wales' most celebrated and inventive bands, formed in Cardiff in the 1990s — and no strangers to a football shirt, having graced an iconic Cardiff City kit in 1999."),
+            array('n' => 'Mogwai',              'd' => 'The influential Glasgow post-rock band, known for their expansive, instrumental sound — and lifelong Celtic fans who jumped at our green-and-white hooped shirt.'),
+            array('n' => 'Panic Shack',         'd' => 'A Cardiff punk band and a vital part of the new wave of Welsh guitar music.'),
+            array('n' => 'Loose Articles',      'd' => "A Manchester punk band bringing wit and energy to the UK's independent scene — and their drummer's mum lives in Cwmbran!"),
+        ),
+        'quotes' => array(
+            array(
+                'by'   => 'Matt Jarrett',
+                'role' => 'Joint Commercial Manager, Cwmbran Celtic FC',
+                'text' => "Myself and fellow Commercial Manager Connor Cupples both come from music backgrounds. I co-own a record shop in Newport and Connor promotes shows across the country. Both of us have put on numerous gigs in grassroots venues, and it was obvious there were massive similarities across the two worlds. It seemed a no-brainer to link the two — and luckily, the bands all embraced the idea and gave it their blessing!",
+            ),
+            array(
+                'by'   => 'Connor Cupples',
+                'role' => 'Joint Commercial Manager, Cwmbran Celtic FC',
+                'text' => "Grassroots football and grassroots music venues are fighting the same fight. They're where it all starts, they run on passion and tight budgets, and when one disappears a community loses something it can't easily get back. To have four bands of this calibre on our shirts — and to send a share of every sale to Music Venue Trust — means this kit stands for far more than a season of football. It's two grassroots worlds looking out for each other.",
+            ),
+        ),
+    );
+}
+
+/** True when the Music Shirts splash + home banner should be shown (enabled
+ * and past the embargo time, in UK time). */
+function cc25_kit_launch_live() {
+    $k = cc25_kit_launch();
+    if (empty($k['enabled'])) return false;
+    if (empty($k['live_from'])) return true;
+    return time() >= strtotime($k['live_from'] . ' Europe/London');
+}
 
 /**
  * Opponent grounds in the Ardal League South East (for away-game travel info).
@@ -1423,6 +1483,11 @@ function cc25_share_meta() {
             return array('desc' => "Cwmbran Celtic's 2025-26 season results in full — every scoreline, with clickable match breakdowns.");
         case 'the-celtic-bond': case 'celtic-bond': case 'bond':
             return array('desc' => 'Join the Celtic Bond and help fund Cwmbran Celtic AFC — the club lottery with cash prizes every draw. Sign up and back the Celts.');
+        case 'music-shirts': case 'kit':
+            return array(
+                'title' => 'Music Shirts 2026/27 | Cwmbran Celtic',
+                'desc'  => 'Super Furry Animals, Mogwai, Panic Shack and Loose Articles become shirt sponsors for Cwmbran Celtic — with 10% of every shirt going to Music Venue Trust. Pre-order the 2026/27 kit now.',
+            );
     }
     return null;
 }
