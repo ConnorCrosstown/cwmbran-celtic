@@ -181,7 +181,7 @@ function cc25_season_tickets_on() { return false; }
 function cc25_kit_launch() {
     return array(
         'enabled'     => true,
-        'live_from'   => '',
+        'live_from'   => '2026-07-30 10:00',
         'slug'        => 'music-shirts',
         'eyebrow'     => 'Music Shirts · 2026/27',
         'headline'    => 'Four bands. One club. Grassroots music and sport together.',
