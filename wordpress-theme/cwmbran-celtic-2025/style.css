@@ -1089,3 +1089,10 @@ html{color-scheme:light}
 .tag:hover{background:var(--gold-deep);color:#fff}
 .panel-more{display:inline-flex;align-items:center;gap:5px;margin-top:14px;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;color:var(--blue-500);text-decoration:none;transition:.15s}
 .panel-more:hover{gap:9px;color:var(--blue-600)}
+/* Women's placeholder squad cards */
+.wpc-card{position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;box-shadow:var(--shadow-sm);background:linear-gradient(160deg,var(--navy-800),var(--navy-950));border:1px solid var(--navy-700);display:flex;flex-direction:column;justify-content:flex-end;transition:transform .18s ease,box-shadow .18s ease}
+.wpc-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.wpc-crest{position:absolute;top:11%;left:50%;transform:translateX(-50%);width:56%;opacity:.16;filter:saturate(1.1)}
+.wpc-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(7,13,28,.92) 8%,rgba(7,13,28,.2) 46%,transparent 70%)}
+.wpc-name{position:relative;z-index:2;padding:16px 14px 15px;color:#fff;font-family:var(--display);text-transform:uppercase;font-size:1rem;line-height:1.12;letter-spacing:.01em}
+.wpc-name small{display:block;font-family:var(--body);text-transform:none;letter-spacing:.03em;font-size:.64rem;color:var(--on-navy-dim);margin-top:5px}
