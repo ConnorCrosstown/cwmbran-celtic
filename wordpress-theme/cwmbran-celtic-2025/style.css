@@ -1202,6 +1202,39 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .mr-st span{display:block;font-size:.56rem;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);margin-top:3px}
 .mr-stclose{position:absolute;top:9px;right:10px;background:rgba(255,255,255,.92);border:0;width:32px;height:32px;border-radius:50%;font-size:1.4rem;line-height:1;cursor:pointer;color:var(--navy-900,#0a1f3c);z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 
+/* Homepage: Match Report feature */
+.sec-more{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;color:var(--blue-500);align-self:center;white-space:nowrap;text-decoration:none}
+.sec-more:hover{color:var(--gold-deep)}
+.mrfeat{display:grid;grid-template-columns:minmax(280px,360px) 1fr;background:var(--surface);border:1px solid var(--hair);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);color:inherit;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.mrfeat:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(10,31,60,.16)}
+.mrfeat-score{position:relative;background:linear-gradient(160deg,var(--navy-800,#12203c),var(--navy-900,#0a1f3c));color:#fff;padding:28px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.mrfeat-rb{font-family:var(--display);font-size:.6rem;letter-spacing:.08em;padding:3px 8px;border-radius:4px;color:#fff}
+.mrfeat-score .mrfeat-rb{position:absolute;top:14px;left:14px}
+.mrfeat-rb.w{background:var(--win,#16a34a)}.mrfeat-rb.l{background:var(--loss,#dc2626)}.mrfeat-rb.d{background:#64748b}
+.mrfeat-teams{display:flex;align-items:center;gap:14px}
+.mrfeat-teams .t{display:flex;flex-direction:column;align-items:center;gap:7px;width:92px;text-align:center}
+.mrfeat-teams .t .crest{width:46px;height:46px}
+.mrfeat-teams .t b{font-family:var(--display);font-weight:500;text-transform:uppercase;font-size:.7rem;line-height:1.1;color:#fff}
+.mrfeat-teams .sc{font-family:var(--display);font-weight:800;font-size:2.3rem;line-height:1;color:#fff}
+.mrfeat-teams .sc i{color:var(--on-navy-dim);font-style:normal;margin:0 4px}
+.mrfeat-comp{font-size:.7rem;letter-spacing:.03em;color:var(--on-navy-dim);text-align:center}
+.mrfeat-body{padding:24px 26px;display:flex;flex-direction:column;justify-content:center}
+.mrfeat-body h3{font-size:1.35rem;margin:5px 0 8px;letter-spacing:-.01em}
+.mrfeat-scorers{font-size:.82rem;color:var(--gold-deep);font-weight:600;margin-bottom:10px}
+.mrfeat-body p{color:var(--muted);line-height:1.6;margin:0 0 12px;font-size:.94rem}
+.mrfeat-by{font-size:.76rem;color:var(--faint);font-style:italic;margin-bottom:12px}
+.mrfeat-cta{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.76rem;color:var(--blue-500)}
+.mrfeat:hover .mrfeat-cta{color:var(--gold-deep)}
+.mrfeat-more{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.mrfeat-card{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--hair);border-radius:11px;padding:13px 16px;text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);transition:transform .15s}
+.mrfeat-card:hover{transform:translateY(-2px)}
+.mrfeat-card .cx{display:inline-flex;flex:none}
+.mrfeat-card .cx .crest{width:26px;height:26px}.mrfeat-card .cx .crest:last-child{margin-left:-8px}
+.mrfeat-card .mx{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.mrfeat-card .mx b{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrfeat-card .mx em{font-style:normal;color:var(--muted);font-size:.74rem}
+@media(max-width:720px){.mrfeat{grid-template-columns:1fr}.mrfeat-teams .sc{font-size:2rem}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

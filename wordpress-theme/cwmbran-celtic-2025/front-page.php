@@ -193,6 +193,63 @@ if ($cc25_cel): ?>
   </div>
 </section>
 
+<?php
+// Latest match report(s) — highlighted from the games that have a written report.
+$cc25_reports = cc25_match_reports(3);
+if ($cc25_reports):
+    $rf   = $cc25_reports[0];
+    $rfh  = !empty($rf['home']); $rfopp = $rf['opp'];
+    $rfcc = intval($rf['cc']); $rfoc = intval($rf['oc']);
+    $rfwd = $rfcc > $rfoc ? 'w' : ($rfcc < $rfoc ? 'l' : 'd');
+    $rfurl = cc25_match_report_url($rf['date']);
+    $rfex  = wp_trim_words(wp_strip_all_tags($rf['report']), 40, ' …');
+    $rfsc  = array();
+    foreach (($rf['goals'] ?? array()) as $g) { $rfsc[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . " " . intval($g['min']) . "'"; }
+?>
+<section class="sec" style="padding-top:0" aria-label="Latest match report">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><div class="sec-eye kick"><span class="ln"></span> Match Centre</div><h2>Match Reports</h2></div>
+      <a class="sec-more" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/')) . '#results'); ?>">All results &rarr;</a>
+    </div>
+
+    <a class="mrfeat reveal" href="<?php echo esc_url($rfurl); ?>">
+      <div class="mrfeat-score">
+        <span class="mrfeat-rb <?php echo $rfwd; ?>"><?php echo $rfwd === 'w' ? 'WIN' : ($rfwd === 'l' ? 'LOSS' : 'DRAW'); ?></span>
+        <div class="mrfeat-teams">
+          <span class="t"><?php echo $rfh ? cc25_own_crest(46) : cc25_res_crest($rfopp, 46); ?><b><?php echo esc_html($rfh ? 'Cwmbran Celtic' : $rfopp); ?></b></span>
+          <span class="sc"><?php echo ($rfh ? $rfcc : $rfoc) . '<i>&ndash;</i>' . ($rfh ? $rfoc : $rfcc); ?></span>
+          <span class="t"><?php echo $rfh ? cc25_res_crest($rfopp, 46) : cc25_own_crest(46); ?><b><?php echo esc_html($rfh ? $rfopp : 'Cwmbran Celtic'); ?></b></span>
+        </div>
+        <div class="mrfeat-comp"><?php echo esc_html($rf['comp']); ?> &middot; <?php echo esc_html(date('D j M Y', strtotime($rf['date']))); ?></div>
+      </div>
+      <div class="mrfeat-body">
+        <div class="kick" style="color:var(--gold-deep)">Match Report</div>
+        <h3><?php echo esc_html($rfh ? "Cwmbran Celtic {$rfcc}–{$rfoc} $rfopp" : "$rfopp {$rfoc}–{$rfcc} Cwmbran Celtic"); ?></h3>
+        <?php if ($rfsc): ?><div class="mrfeat-scorers">&#9917; <?php echo esc_html(implode(' · ', $rfsc)); ?></div><?php endif; ?>
+        <p><?php echo esc_html($rfex); ?></p>
+        <?php if (!empty($rf['report_by'])): ?><div class="mrfeat-by">Words by <?php echo esc_html($rf['report_by']); ?></div><?php endif; ?>
+        <span class="mrfeat-cta">Read the full report, stats &amp; line-ups &rarr;</span>
+      </div>
+    </a>
+
+    <?php if (count($cc25_reports) > 1): ?>
+    <div class="mrfeat-more">
+      <?php foreach (array_slice($cc25_reports, 1) as $rm):
+        $mh = !empty($rm['home']); $mo = $rm['opp']; $mcc = intval($rm['cc']); $moc = intval($rm['oc']);
+        $mwd = $mcc > $moc ? 'w' : ($mcc < $moc ? 'l' : 'd'); $murl = cc25_match_report_url($rm['date']); ?>
+      <a class="mrfeat-card" href="<?php echo esc_url($murl); ?>">
+        <span class="mrfeat-rb <?php echo $mwd; ?>"><?php echo strtoupper($mwd); ?></span>
+        <span class="cx"><?php echo $mh ? cc25_own_crest(26) : cc25_res_crest($mo, 26); ?><?php echo cc25_res_crest($mh ? $mo : 'Cwmbran Celtic', 26); ?></span>
+        <span class="mx"><b><?php echo esc_html($mh ? "Cwmbran Celtic {$mcc}–{$moc} $mo" : "$mo {$moc}–{$mcc} Cwmbran Celtic"); ?></b><em><?php echo esc_html(date('j M Y', strtotime($rm['date']))); ?></em></span>
+      </a>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+  </div>
+</section>
+<?php endif; ?>
+
 <section class="sec" style="padding-top:0">
   <div class="wrap">
     <div class="tickets-band reveal<?php echo cc25_season_tickets_on() ? '' : ' tickets-band-2'; ?>">

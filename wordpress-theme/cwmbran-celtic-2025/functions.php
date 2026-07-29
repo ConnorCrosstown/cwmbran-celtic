@@ -1351,6 +1351,14 @@ function cc25_player_stats_sorted() {
     return $s;
 }
 
+/** Season matches that have a written report, most recent first. */
+function cc25_match_reports($limit = 3) {
+    $out = array();
+    foreach (cc25_season_matches() as $m) { if (!empty($m['report'])) $out[] = $m; }
+    usort($out, function ($a, $b) { return strcmp($b['date'], $a['date']); });
+    return $limit ? array_slice($out, 0, $limit) : $out;
+}
+
 /** A match by date (Y-m-d), or the most recent match if the date is empty/not found. */
 function cc25_get_match($date = '') {
     $ms = cc25_season_matches();
