@@ -1372,6 +1372,12 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .kl-blink.spotify:hover{background:#1db954;border-color:#1db954;color:#fff}
 .kl-blink.insta:hover{background:#c13584;border-color:#c13584;color:#fff}
 
+/* ---- Music Shirts v5: MVT logo on the right of the 10% band ---- */
+.kl-mvt.has-logo{grid-template-columns:auto 1fr minmax(150px,230px)}
+.kl-mvt-logowrap{display:flex;align-items:center;justify-content:center}
+.kl-mvt-logowrap img{width:100%;max-width:220px;height:auto;filter:drop-shadow(0 6px 22px rgba(245,197,24,.2))}
+@media(max-width:820px){.kl-mvt.has-logo{grid-template-columns:1fr}.kl-mvt-logowrap{margin-top:4px}.kl-mvt-logowrap img{max-width:170px}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

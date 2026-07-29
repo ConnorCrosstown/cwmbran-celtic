@@ -96,14 +96,17 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
 
 <section class="band kl-mvt-band">
   <div class="wrap">
-    <div class="kl-mvt reveal">
+    <div class="kl-mvt reveal<?php echo $mvt_has_logo ? ' has-logo' : ''; ?>">
       <div class="kl-mvt-badge">10%</div>
       <div class="kl-mvt-body">
-        <?php if ($mvt_has_logo): ?><a href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener"><img class="kl-mvt-logo" src="<?php echo esc_url($mvt_logo_uri); ?>" alt="Music Venue Trust"></a><?php else: ?><div class="kick" style="color:var(--gold)">Backing grassroots music</div><?php endif; ?>
+        <div class="kick" style="color:var(--gold)">Backing grassroots music</div>
         <h2>10% of every shirt goes to Music Venue Trust</h2>
         <p>Music Venue Trust is a UK charity established in 2014 to protect, secure and improve grassroots music venues &mdash; the small rooms where emerging artists cut their teeth and where so much of the country's musical talent first performs. Every shirt you buy helps keep those doors open.</p>
         <a class="btn btn-ghost" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener">About Music Venue Trust &rarr;</a>
       </div>
+      <?php if ($mvt_has_logo): ?>
+      <a class="kl-mvt-logowrap" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener" aria-label="Music Venue Trust"><img src="<?php echo esc_url($mvt_logo_uri); ?>" alt="Music Venue Trust"></a>
+      <?php endif; ?>
     </div>
   </div>
 </section>

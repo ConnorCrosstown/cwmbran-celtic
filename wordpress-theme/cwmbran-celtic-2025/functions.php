@@ -184,7 +184,7 @@ function cc25_kit_launch() {
         'live_from'   => '',
         'slug'        => 'music-shirts',
         'eyebrow'     => 'Music Shirts · 2026/27',
-        'headline'    => 'Four bands. One club. A shirt like no other.',
+        'headline'    => 'Four bands. One club. Grassroots music and sport together.',
         'dek'         => "Super Furry Animals, Mogwai, Panic Shack and Loose Articles become shirt sponsors for the Celts — with 10% of every shirt going to Music Venue Trust.",
         'date'        => '2026-07-30',
         'shop_url'    => cc25_ext_url('shop'),
