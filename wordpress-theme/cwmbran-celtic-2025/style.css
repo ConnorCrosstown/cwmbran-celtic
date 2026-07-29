@@ -1135,11 +1135,46 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .mr-cardbox.r{background:var(--loss)}
 .mr-lineup{margin-bottom:22px}
 .mr-lineup:last-child{margin-bottom:0}
-.mr-lt{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;color:var(--blue-500);font-size:.85rem;margin-bottom:10px}
+.mr-lt{display:flex;align-items:center;gap:9px;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--navy-800);font-size:.9rem;margin-bottom:8px}
+.mr-lt .crest{width:26px;height:26px;flex:none}
 .mr-xi{list-style:none;margin:0 0 12px;padding:0}
-.mr-xi li{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--hair);font-size:.92rem;color:var(--text)}
-.mr-xi .no{font-family:var(--display);color:var(--faint);min-width:22px;text-align:center}
-.mr-xi .cap{margin-left:auto;font-family:var(--display);font-size:.6rem;background:var(--navy-800);color:#fff;padding:2px 6px;border-radius:3px}
-.mr-subs-lbl{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.68rem;color:var(--muted);margin:4px 0 5px}
-.mr-subs{color:var(--muted);font-size:.85rem;line-height:1.5}
+.mr-xi li{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--hair);font-size:.9rem;color:var(--text)}
+.mr-xi li:last-child{border-bottom:0}
+.mr-xi .no{font-family:var(--display);color:#fff;background:var(--navy-800);min-width:22px;height:22px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;flex:none}
+.mr-xi .pn{font-weight:600}
+.mr-xi .pos{font-size:.58rem;color:var(--muted);border:1px solid var(--hair);border-radius:3px;padding:1px 4px;margin-left:5px;vertical-align:middle}
+.mr-xi .cap{font-family:var(--display);font-size:.56rem;background:var(--gold);color:var(--navy-900,#0a1f3c);padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle}
+.mr-xi .evs{margin-left:auto;display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.mr-xi.bench .no{background:var(--navy-500,#4a6fa5)}
+.mr-xi.bench li.unused{opacity:.5}
+.chip{font-family:var(--display);font-size:.66rem;line-height:1;padding:3px 6px;border-radius:4px;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.chip.goal{background:rgba(21,128,61,.12);color:#15803d}
+.chip.goal em{font-style:normal;font-weight:700}
+.chip.yc{background:var(--gold);color:var(--navy-900,#0a1f3c);min-width:9px}
+.chip.rc{background:var(--loss);color:#fff}
+.chip.off{background:rgba(190,18,60,.1);color:var(--loss)}
+.chip.on{background:rgba(21,128,61,.1);color:#15803d}
+.chip.none{background:transparent;color:var(--faint);border:1px dashed var(--hair)}
+.mr-subs-lbl{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.66rem;color:var(--muted);margin:10px 0 4px}
+.mr-key{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid var(--hair);font-size:.72rem;color:var(--muted)}
+.mr-key>span{display:inline-flex;align-items:center;gap:5px}
+.mr-key .chip{padding:2px 5px}
+.mr-subgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.mr-subcol .mr-subteam,.mr-staff .mr-stafft{display:flex;align-items:center;gap:8px;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:.82rem;color:var(--navy-800);margin-bottom:8px}
+.mr-subteam .crest{width:26px;height:26px;flex:none}
+.mr-swaps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.mr-swaps li{font-size:.86rem;line-height:1.45;color:var(--text)}
+.mr-swaps .on{color:#15803d;font-weight:600}
+.mr-swaps .off{color:var(--loss)}
+.mr-swaps .offlbl{color:var(--muted);font-size:.78rem;margin:0 2px}
+.mr-offs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.mr-offs li{display:flex;justify-content:space-between;gap:12px;font-size:.88rem;border-bottom:1px solid var(--hair);padding-bottom:6px}
+.mr-offs li:last-child{border-bottom:0;padding-bottom:0}
+.mr-offs .ol{color:var(--muted)}
+.mr-offs .on{color:var(--text);font-weight:600;text-align:right}
+.mr-staff{margin-bottom:16px}
+.mr-staff:last-child{margin-bottom:0}
+.mr-gball{color:#15803d}
+.mr-creason{color:var(--faint);font-size:.82rem}
 @media(max-width:860px){.mr-wrap{grid-template-columns:1fr}}
+@media(max-width:560px){.mr-subgrid{grid-template-columns:1fr}}

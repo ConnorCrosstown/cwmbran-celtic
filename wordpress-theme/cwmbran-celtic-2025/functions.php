@@ -1202,20 +1202,63 @@ function cc25_season_matches() {
     return array(
         array(
             'date' => '2026-07-28', 'time' => '19:00', 'opp' => 'Cwmbran Town', 'home' => true, 'cc' => 3, 'oc' => 0,
-            'comp' => 'Ardal League South East', 'venue' => 'The Motazone Arena', 'att' => 410, 'ref' => 'Joshua Lewis Howells',
+            'comp' => 'Ardal League South East', 'round' => 'Round 1', 'venue' => 'The Motazone Arena, Cwmbran', 'att' => 410,
+            'ref' => 'Joshua Lewis Howells', 'ar1' => 'Gavin Harris', 'ar2' => 'Joseph Williams',
             'captain' => 'Terry Obeng', 'opp_captain' => 'Aysa Al-Doori',
-            'starters' => array('Lewis Watkins', 'Arthur Furness', 'Kian Saunders', 'Oliver Berry', 'Terry Obeng', 'Lewis Cochrane', 'Evan Maidment', 'Cameron Jenkins', 'Rudi Griffiths', 'Finlay Wood', 'Munya Mabwe'),
-            'subs'     => array('Gabriel Howells', 'Cameron Dean', 'Elliott Hewings', 'Jack Prosser'),
-            'opp_starters' => array('Adam Cueto', 'Kai Wint', 'Harry Grinham', 'Joseph Cashman', 'Luke Upham', 'Clement Junior Ebongole', 'Jason Gardiner', 'Daniel Prichard', "Christian O'Donnell", 'Lee Trundle', 'Aysa Al-Doori'),
-            'opp_subs' => array('Callum David Nowell', 'Rio Evelyn', 'Harvey Redding', 'Kristian Sean Wharton', 'Lyes Mihoubi'),
-            'goals'    => array(
+            // Starting XI as [shirt no, name, position?]. Events (goals/cards/subs) are
+            // cross-referenced by name in the template, so names must match exactly.
+            'starters' => array(
+                array(1, 'Lewis Watkins', 'GK'), array(2, 'Arthur Furness'), array(3, 'Kian Saunders'),
+                array(4, 'Oliver Berry'), array(5, 'Terry Obeng'), array(6, 'Lewis Cochrane'),
+                array(7, 'Evan Maidment'), array(8, 'Cameron Jenkins'), array(9, 'Rudi Griffiths'),
+                array(10, 'Finlay Wood'), array(11, 'Munya Mabwe'),
+            ),
+            'subs' => array(
+                array(12, 'Elliott Hewings'), array(14, 'Charlie Donovan'), array(15, 'Tommy Challenger'),
+                array(16, 'Joe Barber'), array(17, 'Jack Prosser'), array(18, 'Cameron Dean'), array(19, 'Gabriel Howells'),
+            ),
+            'opp_starters' => array(
+                array(1, 'Adam Cueto', 'GK'), array(2, 'Kai Wint'), array(3, 'Harry Grinham'),
+                array(4, 'Joseph Cashman'), array(5, 'Luke Upham'), array(6, 'Clement Junior Ebongole'),
+                array(7, 'Jason Gardiner'), array(8, 'Daniel Prichard'), array(9, "Christian O'Donnell"),
+                array(10, 'Lee Trundle'), array(11, 'Aysa Al-Doori'),
+            ),
+            'opp_subs' => array(
+                array(12, 'Kristian Sean Wharton'), array(14, 'Kyle Jones'), array(15, 'Rio Evelyn'),
+                array(16, 'Alex Long'), array(17, 'Lyes Mihoubi'), array(18, 'Harvey Redding'), array(19, 'Callum David Nowell'),
+            ),
+            'subs_made' => array(
+                array('min' => 70, 'off' => 'Evan Maidment', 'on' => 'Gabriel Howells'),
+                array('min' => 77, 'off' => 'Rudi Griffiths', 'on' => 'Cameron Dean'),
+                array('min' => 89, 'off' => 'Kian Saunders', 'on' => 'Elliott Hewings'),
+                array('min' => 89, 'off' => 'Munya Mabwe', 'on' => 'Jack Prosser'),
+            ),
+            'opp_subs_made' => array(
+                array('min' => 46, 'off' => 'Kai Wint', 'on' => 'Callum David Nowell'),
+                array('min' => 60, 'off' => 'Daniel Prichard', 'on' => 'Rio Evelyn'),
+                array('min' => 60, 'off' => "Christian O'Donnell", 'on' => 'Harvey Redding'),
+                array('min' => 60, 'off' => 'Harry Grinham', 'on' => 'Kristian Sean Wharton'),
+                array('min' => 66, 'off' => 'Jason Gardiner', 'on' => 'Lyes Mihoubi'),
+            ),
+            'goals' => array(
                 array('scorer' => 'Finlay Wood', 'assist' => 'Rudi Griffiths', 'min' => 50),
                 array('scorer' => 'Oliver Berry', 'assist' => '', 'min' => 55, 'pen' => true),
                 array('scorer' => 'Rudi Griffiths', 'assist' => 'Oliver Berry', 'min' => 61),
             ),
             'cards'     => array(),
-            'opp_cards' => array(array('player' => 'Kai Wint', 'type' => 'y', 'min' => 20)),
-            'report'    => "Cwmbran Celtic kicked off the new Ardal South East campaign in perfect style, blowing local rivals Cwmbran Town away with a devastating second-half spell to win 3-0 in front of a bumper derby-night crowd of 410 at the Motazone Arena.\n\nOn a warm summer evening the first half was a tight, cagey affair between two well-matched rivals, and it stayed goalless at the break. But the Celts blew the game wide open in a stunning 11-minute spell after the restart.\n\nThe breakthrough came on 50 minutes, Finlay Wood finishing off a fine move laid on by Rudi Griffiths. Five minutes later the Celts had daylight, Oliver Berry stepping up to convert a penalty for 2-0. And there was still time for the pick of the lot on 61 minutes, Berry turning provider as Griffiths got the goal his display deserved.\n\nThree goals in eleven minutes killed the game as a contest, and with Lewis Watkins and the back line seeing out a well-earned clean sheet, there was nothing the visitors could do about it. A near-perfect opening night, and three points to build the season on.",
+            'opp_cards' => array(array('player' => 'Kai Wint', 'type' => 'y', 'min' => 20, 'reason' => 'Unsporting behaviour')),
+            'staff' => array(
+                array('role' => 'First Team Manager', 'name' => 'Samuel Lewis'),
+                array('role' => 'First Team Manager', 'name' => 'Stephen Muir'),
+                array('role' => 'Assistant Manager', 'name' => 'Conor James'),
+                array('role' => 'First Aider', 'name' => 'Martin Ingram'),
+            ),
+            'opp_staff' => array(
+                array('role' => 'First Team Manager', 'name' => 'Brandon Simpson'),
+                array('role' => 'Assistant Manager', 'name' => 'Kristian Lee Hanbury'),
+                array('role' => 'Coach', 'name' => 'Wayne Jepson'),
+            ),
+            'report'    => "Cwmbran Celtic kicked off the new Ardal South East campaign in perfect style, blowing local rivals Cwmbran Town away with a devastating second-half spell to win 3-0 in front of a bumper derby-night crowd of 410 at the Motazone Arena.\n\nOn a warm summer evening the first half was a tight, cagey affair between two well-matched rivals, and it stayed goalless at the break. The visitors' Kai Wint was booked on 20 minutes for unsporting behaviour, but there was little to separate the sides and the Town went in level at the interval — a scoreline that flattered neither.\n\nWhatever was said in the home dressing room worked, because the Celts blew the game wide open in a stunning 11-minute spell after the restart. The breakthrough came on 50 minutes, Finlay Wood finishing off a fine move laid on by Rudi Griffiths.\n\nFive minutes later the Celts had daylight, Oliver Berry stepping up to convert a penalty for 2-0. And there was still time for the pick of the lot on 61 minutes, Berry turning provider as Griffiths got the goal his display deserved.\n\nThree goals in eleven minutes killed the game as a contest. Stephen Muir and Samuel Lewis were able to empty the bench through the closing half hour — Gabriel Howells, Cameron Dean, Elliott Hewings and Jack Prosser all getting minutes — and with Lewis Watkins and the back line seeing out a well-earned clean sheet, there was nothing the visitors could do about it. A near-perfect opening night, and three points to build the season on.",
         ),
     );
 }
@@ -1229,7 +1272,11 @@ function cc25_player_stats() {
         return $k;
     };
     foreach (cc25_season_matches() as $m) {
-        foreach (array_merge($m['starters'], $m['subs']) as $n) { $k = $touch($s, $n); if ($k) $s[$k]['apps']++; }
+        // A player counts an appearance if they started or actually came on (not an unused sub).
+        $cc25_on = array();
+        foreach (($m['subs_made'] ?? array()) as $sm) { $cc25_on[strtolower(trim($sm['on']))] = true; }
+        foreach ($m['starters'] as $p) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; }
+        foreach ($m['subs'] as $p) { if (isset($cc25_on[strtolower(trim($p[1]))])) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; } }
         foreach ($m['goals'] as $g) {
             $k = $touch($s, $g['scorer']); if ($k) $s[$k]['goals']++;
             if (!empty($g['assist'])) { $k = $touch($s, $g['assist']); if ($k) $s[$k]['assists']++; }
