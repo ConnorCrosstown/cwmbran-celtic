@@ -202,12 +202,16 @@ function cc25_kit_launch() {
         'action'      => array('sfa-hero.jpg', 'sfa-home.jpg', 'sfa-run.jpg'),
         'bands' => array(
             array('n' => 'Super Furry Animals', 'meta' => 'Cardiff · formed 1993',
+                  'spotify' => 'https://open.spotify.com/artist/0FOcXqJgJ1oq9XfzYTDZmZ', 'insta' => 'https://www.instagram.com/superfurryanimals/',
                   'd' => "Genre-hopping Welsh icons and one of the most inventive bands Britain has ever produced. Across landmark records like Fuzzy Logic, Radiator and Guerrilla — and the all-Welsh Mwng — they fused psychedelia, pop and electronica with fearless imagination. No strangers to football, either, having famously appeared on a Cardiff City shirt back in 1999."),
             array('n' => 'Mogwai', 'meta' => 'Glasgow · formed 1995',
+                  'spotify' => 'https://open.spotify.com/artist/34UhPkLbtFKRq3nmfFgejG', 'insta' => 'https://www.instagram.com/mogwaiband/',
                   'd' => "Scotland's post-rock giants have spent three decades turning quiet-loud dynamics into something monumental — sweeping, largely instrumental music that scores films and fills halls. In 2021 they landed their first UK #1 album with As the Love Continues. Lifelong Celtic supporters, they leapt at the chance to wear our green-and-white hoops."),
-            array('n' => 'Panic Shack', 'meta' => 'Cardiff · punk',
+            array('n' => 'Panic Shack', 'meta' => 'Cardiff · formed 2018',
+                  'spotify' => 'https://open.spotify.com/artist/26HCuM5PamldoaHII5Ifxc', 'insta' => 'https://www.instagram.com/panicshack/',
                   'd' => "One of the sharpest and funniest new voices in Welsh guitar music. Panic Shack's whip-smart, riotous live shows have made them festival favourites and a driving force in the new wave of bands flying the flag for the Welsh scene."),
-            array('n' => 'Loose Articles', 'meta' => 'Manchester · punk',
+            array('n' => 'Loose Articles', 'meta' => 'Manchester · formed 2019',
+                  'spotify' => 'https://open.spotify.com/artist/07NWIkIKcZnWWmebfHcOxT', 'insta' => 'https://www.instagram.com/loosearticles/',
                   'd' => "Wit, attitude and pure energy — Loose Articles make punk with a grin and choruses you'll be chanting for days. Proper football fans too: their drummer's mum lives in Cwmbran, making them an unlikely but perfect fit for the Celts."),
         ),
         'quotes' => array(

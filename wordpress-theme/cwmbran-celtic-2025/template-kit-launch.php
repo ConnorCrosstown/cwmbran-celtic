@@ -117,6 +117,12 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
         <h3><?php echo esc_html($b['n']); ?></h3>
         <?php if (!empty($b['meta'])): ?><div class="kl-bandmeta"><?php echo esc_html($b['meta']); ?></div><?php endif; ?>
         <p><?php echo esc_html($b['d']); ?></p>
+        <?php if (!empty($b['spotify']) || !empty($b['insta'])): ?>
+        <div class="kl-bandlinks">
+          <?php if (!empty($b['spotify'])): ?><a class="kl-blink spotify" href="<?php echo esc_url($b['spotify']); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr($b['n']); ?> on Spotify"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.62.62 0 01-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 11-.28-1.21c3.8-.87 7.07-.5 9.72 1.1.29.18.38.57.21.86zm1.23-2.74a.78.78 0 01-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 11-.45-1.49c3.63-1.1 8.15-.56 11.24 1.33.37.22.49.7.25 1.07zm.11-2.85C14.72 8.05 9.5 7.86 6.53 8.76a.94.94 0 11-.54-1.8c3.41-1.03 9.18-.83 12.8 1.32a.94.94 0 01-.96 1.61z"/></svg><span>Spotify</span></a><?php endif; ?>
+          <?php if (!empty($b['insta'])): ?><a class="kl-blink insta" href="<?php echo esc_url($b['insta']); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr($b['n']); ?> on Instagram"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 2.76a7.08 7.08 0 100 14.16 7.08 7.08 0 000-14.16zm0 11.68a4.6 4.6 0 110-9.2 4.6 4.6 0 010 9.2zm7.24-11.9a1.65 1.65 0 11-3.3 0 1.65 1.65 0 013.3 0z"/></svg><span>Instagram</span></a><?php endif; ?>
+        </div>
+        <?php endif; ?>
       </div>
       <?php endforeach; ?>
     </div>
