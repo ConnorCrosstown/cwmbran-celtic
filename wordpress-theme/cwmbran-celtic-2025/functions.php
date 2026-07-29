@@ -141,6 +141,16 @@ function cc25_ext_url($key) {
     return isset($map[$key]) ? $map[$key] : '#';
 }
 
+/**
+ * Celebrate a recent result with a fireworks takeover on the home page, shown on
+ * EVERY visit until cleared. 'us' = Cwmbran Celtic's goals, 'them' = opponent's.
+ * TO TURN IT OFF (a few days after the game): switch to `return null;` below.
+ */
+function cc25_result_celebration() {
+    return array('opponent' => 'Cwmbran Town', 'us' => 3, 'them' => 0);
+    // return null;  // <- uncomment this (and delete the line above) to switch the celebration off
+}
+
 /* -------------------------------------------------------------------------
  * Mailing-list signup. The homepage form POSTs to the club's Apps Script
  * mailing-list web app (cwmbran-celtic-mailing-list). After deploying that
@@ -181,18 +191,30 @@ function cc25_handle_bond_join() {
     wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit;
 }
 
-/** Keep programme + gallery posts out of the News/blog listing and RSS feeds
- * (they have their own homes), so importing programmes doesn't flood News. */
+/** IDs of the categories whose posts should stay out of general listings. */
+function cc25_hidden_cat_ids() {
+    $ex = array();
+    foreach (array('programme', 'gallery') as $slug) {
+        $t = get_category_by_slug($slug);
+        if ($t) $ex[] = (int) $t->term_id;
+    }
+    return $ex;
+}
+/** Keep programme + gallery posts out of the home page, News/blog, archives,
+ * search, feeds and Recent-Posts widgets — they each have their own page. The
+ * dedicated archive templates use their own get_posts()/WP_Query, so they're
+ * unaffected. */
 add_action('pre_get_posts', function ($q) {
     if (is_admin() || !$q->is_main_query()) return;
-    if ($q->is_home() || $q->is_feed()) {
-        $ex = array();
-        foreach (array('programme', 'gallery') as $slug) {
-            $t = get_category_by_slug($slug);
-            if ($t) $ex[] = (int) $t->term_id;
-        }
+    if ($q->is_home() || $q->is_front_page() || $q->is_feed() || $q->is_search() || ($q->is_archive() && !$q->is_post_type_archive())) {
+        $ex = cc25_hidden_cat_ids();
         if ($ex) $q->set('category__not_in', array_values(array_unique(array_merge((array) $q->get('category__not_in'), $ex))));
     }
+});
+add_filter('widget_posts_args', function ($args) {
+    $ex = cc25_hidden_cat_ids();
+    if ($ex) $args['category__not_in'] = array_values(array_unique(array_merge((array) (isset($args['category__not_in']) ? $args['category__not_in'] : array()), $ex)));
+    return $args;
 });
 
 /* ---- Match Day Programmes ---------------------------------------------------
@@ -635,7 +657,28 @@ function cc25_static_fixtures() {
     return $data;
 }
 
+/** Kick-off timestamp (ms) for a hand-maintained fixture row's 'Y-m-d' date. */
+function cc25_row_kickoff_ms($ymd) {
+    $tz = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone('Europe/London');
+    $d = DateTime::createFromFormat('Y-m-d', $ymd, $tz);
+    if (!$d) return strtotime($ymd . ' 23:59:59') * 1000;
+    $ov = cc25_kickoff_overrides();
+    $ko = isset($ov[$ymd]) ? $ov[$ymd] : cc25_kickoff_default((int) $d->format('N'));
+    $dt = DateTime::createFromFormat('Y-m-d H:i', $ymd . ' ' . $ko, $tz);
+    return ($dt ? $dt->getTimestamp() : $d->getTimestamp()) * 1000;
+}
+
 function cc25_render_static_fixtures($list, $tickets_url = '') {
+    // Drop games that have finished (kick-off + 2h in the past) so the fixtures
+    // list only ever shows what's still to come.
+    $now = round(microtime(true) * 1000);
+    $list = array_values(array_filter($list, function ($rf) use ($now) {
+        return cc25_row_kickoff_ms($rf[0]) + 2 * 60 * 60 * 1000 >= $now;
+    }));
+    if (!$list) {
+        echo '<p style="color:var(--muted);padding:24px 2px;margin:0">No upcoming fixtures right now &mdash; check back soon.</p>';
+        return;
+    }
     $lm = '';
     foreach ($list as $rf) {
         $rd = strtotime($rf[0]); $home = !empty($rf[2]); $opp = $rf[1];

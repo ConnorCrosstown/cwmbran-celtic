@@ -13,9 +13,38 @@ $table    = cc25_table($feed, $team);
 get_template_part('template-parts/site-header');
 ?>
 
-<?php // Next-home-game takeover — shows once per home fixture (see premium.js).
-$cc25_hg = cc25_next_home_fixture($feed, $team);
-if ($cc25_hg): $hgo = cc25_opponent($cc25_hg);
+<?php // Home-page takeover: a RESULT celebration (fireworks, every visit) when one
+// is set, otherwise the next-home-game takeover (once per home fixture).
+$cc25_cel = cc25_result_celebration();
+$cc25_hg  = cc25_next_home_fixture($feed, $team);
+$cc25_hgo = $cc25_hg ? cc25_opponent($cc25_hg) : null;
+if ($cc25_cel): ?>
+<div class="splash is-result" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="result-<?php echo esc_attr($cc25_cel['opponent'] . '-' . intval($cc25_cel['us']) . '-' . intval($cc25_cel['them'])); ?>" hidden>
+  <canvas class="splash-fw" aria-hidden="true"></canvas>
+  <div class="splash-bg" data-close></div>
+  <div class="splash-card">
+    <button class="splash-x" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="splash-today"><span class="dot"></span> Full&nbsp;Time</div>
+    <div class="splash-match splash-result" id="splash-title">
+      <span class="splash-team"><?php echo cc25_own_crest(56); ?><span class="nm">Cwmbran Celtic</span></span>
+      <span class="splash-score"><?php echo intval($cc25_cel['us']); ?><i>&ndash;</i><?php echo intval($cc25_cel['them']); ?></span>
+      <span class="splash-team"><?php echo cc25_crest($feed, $cc25_cel['opponent'], 56); ?><span class="nm"><?php echo esc_html($cc25_cel['opponent']); ?></span></span>
+    </div>
+    <div class="splash-winline">What a result &mdash; get in, Celts!</div>
+    <?php if ($cc25_hg): ?>
+    <div class="splash-next">
+      <div class="splash-next-eye kick">Next home game &middot; <?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'D j M')); ?> &middot; <?php echo esc_html(cc25_kickoff_label($cc25_hg)); ?></div>
+      <div class="splash-next-match"><?php echo cc25_own_crest(28); ?> <span>Cwmbran Celtic</span> <em>vs</em> <?php echo cc25_crest($feed, $cc25_hgo['opponent'], 28); ?> <span><?php echo esc_html($cc25_hgo['opponent']); ?></span></div>
+    </div>
+    <?php endif; ?>
+    <div class="splash-cta">
+      <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
+      <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+    </div>
+    <button class="splash-later" type="button" data-close>Maybe later</button>
+  </div>
+</div>
+<?php elseif ($cc25_hg): $hgo = $cc25_hgo;
   // Is this home game TODAY? Flip the takeover into a bold "It's Matchday" state.
   $cc25_md = (cc25_date($cc25_hg['date'] ?? 0, 'Y-m-d') === date_i18n('Y-m-d')); ?>
 <div class="splash<?php echo $cc25_md ? ' is-matchday' : ''; ?>" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-key="hg-<?php echo intval($cc25_hg['date'] ?? 0); ?><?php echo $cc25_md ? '-md' : ''; ?>" hidden>
