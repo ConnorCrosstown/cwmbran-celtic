@@ -1035,9 +1035,15 @@ function cc25_seo_desc() {
     if (is_front_page()) {
         return 'Official website of Cwmbran Celtic AFC — fixtures, results, the live league table, news, tickets and away-day info for the Celts in the Ardal League South East.';
     }
+    $ov = cc25_share_meta();
+    if ($ov && !empty($ov['desc'])) return $ov['desc'];
     if (is_singular('post') || is_page()) {
         $e = get_the_excerpt();
         if ($e) return wp_strip_all_tags($e);
+    }
+    if (is_page()) {
+        $tt = wp_strip_all_tags(get_the_title());
+        if ($tt) return $tt . ' — Cwmbran Celtic AFC, Ardal League South East. Fixtures, results, news and tickets for the Celts.';
     }
     $t = get_bloginfo('description');
     return $t ? $t : 'Cwmbran Celtic AFC — blue and yellow, since 1924.';
@@ -1112,11 +1118,14 @@ function cc25_seo_events() {
 add_action('wp_head', 'cc25_seo_head', 4);
 function cc25_seo_head() {
     if (is_admin() || is_feed()) return;
-    $desc = trim(wp_trim_words(cc25_seo_desc(), 32, ''));
+    $desc = trim(wp_trim_words(cc25_seo_desc(), 40, ''));
     $url  = cc25_seo_url();
     $title = wp_get_document_title();
     $img  = get_stylesheet_directory_uri() . '/assets/img/hero.jpg';
     $type = 'website';
+    // Page-specific share title (e.g. the match scoreline) where we have one.
+    $ov = cc25_share_meta();
+    if ($ov && !empty($ov['title'])) $title = $ov['title'];
     if (is_singular('post')) {
         $type = 'article';
         if (has_post_thumbnail()) { $t = get_the_post_thumbnail_url(null, 'large'); if ($t) $img = $t; }
@@ -1258,7 +1267,8 @@ function cc25_season_matches() {
                 array('role' => 'Assistant Manager', 'name' => 'Kristian Lee Hanbury'),
                 array('role' => 'Coach', 'name' => 'Wayne Jepson'),
             ),
-            'report'    => "Cwmbran Celtic kicked off the new Ardal South East campaign in perfect style, blowing local rivals Cwmbran Town away with a devastating second-half spell to win 3-0 in front of a bumper derby-night crowd of 410 at the Motazone Arena.\n\nOn a warm summer evening the first half was a tight, cagey affair between two well-matched rivals, and it stayed goalless at the break. The visitors' Kai Wint was booked on 20 minutes for unsporting behaviour, but there was little to separate the sides and the Town went in level at the interval — a scoreline that flattered neither.\n\nWhatever was said in the home dressing room worked, because the Celts blew the game wide open in a stunning 11-minute spell after the restart. The breakthrough came on 50 minutes, Finlay Wood finishing off a fine move laid on by Rudi Griffiths.\n\nFive minutes later the Celts had daylight, Oliver Berry stepping up to convert a penalty for 2-0. And there was still time for the pick of the lot on 61 minutes, Berry turning provider as Griffiths got the goal his display deserved.\n\nThree goals in eleven minutes killed the game as a contest. Stephen Muir and Samuel Lewis were able to empty the bench through the closing half hour — Gabriel Howells, Cameron Dean, Elliott Hewings and Jack Prosser all getting minutes — and with Lewis Watkins and the back line seeing out a well-earned clean sheet, there was nothing the visitors could do about it. A near-perfect opening night, and three points to build the season on.",
+            'report_by' => 'John Stockwell',
+            'report'    => "This local derby match at the newly sponsored Motazone Arena at Celtic Park attracted unprecedented pre-match publicity. Leading the way was the website Cwmbran Life who featured a number of articles and were first on the mark with the post-match analysis. They remarked that this was most likely the closest derby match in the world, the grounds being 40 metres apart. Two other websites, Focus On: Ardal South East and Y Clwb Pel-droed also devoted many column inches to this reunion of two clubs who last played each other in the same FAW tier 3 in 2010, then named Welsh League Division 2.\n\nBoth clubs were under new management, Celtic under Sam Lewis and Stephen Muir. Town managed by Brandon Simpson. The attendance of 410 smashed Celtic's ground record. The pitch was completely devoid of grass as a consequence of weeks and weeks of tropical weather. Town fielded ex-Swansea City striker Lee Trundle, who is two months shy of his 50th birthday. Celtic had lost 24 of last season's squad and their starting line-up contained only 3 players who played in the final game of last season. They had 9 new signings in their 18-man squad. Town started with only 2 of last season's side that lost the play-off for the final Cymru South place. For the record, no less than 12 ex-Celtic and Town players featured in Goytre FC's squad this past week.\n\nTown dominated the first half. Trundle ran down the centre channel and clipped the ball just over the intersection of the bar and post. Al-Doori brought a save from Watkins. O'Donnell's shot was cleared by Obeng for a corner and Town hit 4 shots over the bar.\n\nIn the 2nd half, on 50 minutes, Rudi Griffiths latched onto a mistake by Ebongole, sprinted down the right flank and put in a superb cross to the far post which Finlay Wood stroked home against his former club. Al-Doori cut in and shot straight at Watkins. In the 55th minute Munya Mabwe strode forward on the left, was tripped in the box and Oliver Berry made no mistake with the spot kick. Trundle shot over the bar from Gardiner's cross. In the 61st minute Berry pumped a free kick into the Town penalty area. Keeper Cueto made a terrible mess of the catch, the ball fell to Griffiths who gleefully hit the net. Trundle brought a brilliant save from Watkins who pushed the ball away for a corner. A Cameron Jenkins lob was plucked out at the far post by Cueto. Mabwe shot just over the bar. Celtic's final chance fell to Jenkins who ran through the middle but hit his shot wide of the goal.\n\nThis win was a tremendous fillip for the Celtic boys. After the trials and tribulations of last season's relegation from the Cymru South and the resultant wholesale exodus of players, Celtic have had to spread the net far and wide to recruit experienced replacements who, on this showing, have shown their calibre. Of equal importance is the development of the young talent on Celtic's books. Fourteen players in the new squad are aged 22 years or younger. They have everything to play for.",
         ),
     );
 }
@@ -1320,4 +1330,56 @@ function cc25_match_report_url($date) {
         if ($m['date'] === $date) return add_query_arg('g', $date, cc25_page_url('match-report', home_url('/')));
     }
     return '';
+}
+/** One-line, factual summary of a match — used for share/meta descriptions. */
+function cc25_match_summary($m) {
+    $home = !empty($m['home']); $opp = $m['opp'];
+    $line = $home
+        ? 'Cwmbran Celtic ' . intval($m['cc']) . '-' . intval($m['oc']) . ' ' . $opp
+        : $opp . ' ' . intval($m['oc']) . '-' . intval($m['cc']) . ' Cwmbran Celtic';
+    $s = $line . ' — ' . $m['comp'] . (!empty($m['venue']) && $home ? ' at ' . $m['venue'] : '') . '.';
+    $scorers = array();
+    foreach (($m['goals'] ?? array()) as $g) {
+        $scorers[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . ' ' . intval($g['min']) . "'";
+    }
+    if ($scorers) {
+        if (count($scorers) > 1) { $last = array_pop($scorers); $join = implode(', ', $scorers) . ' and ' . $last; }
+        else { $join = $scorers[0]; }
+        $s .= ' Cwmbran Celtic: ' . $join . '.';
+    }
+    if (!empty($m['att'])) $s .= ' Att ' . intval($m['att']) . '.';
+    return $s;
+}
+/**
+ * Per-page share/meta overrides for our custom-template pages (keyed by slug),
+ * so link previews describe the actual page instead of the generic site tagline.
+ * Returns array('title'?=>..., 'desc'=>...) or null when there's no override.
+ */
+function cc25_share_meta() {
+    if (!is_page()) return null;
+    $slug = get_post_field('post_name', get_queried_object_id());
+    switch ($slug) {
+        case 'match-report':
+            $g = isset($_GET['g']) ? preg_replace('/[^0-9-]/', '', $_GET['g']) : '';
+            $m = cc25_get_match($g);
+            if ($m) {
+                $home = !empty($m['home']); $opp = $m['opp'];
+                $line = $home
+                    ? 'Cwmbran Celtic ' . intval($m['cc']) . '-' . intval($m['oc']) . ' ' . $opp
+                    : $opp . ' ' . intval($m['oc']) . '-' . intval($m['cc']) . ' Cwmbran Celtic';
+                return array('title' => $line . ' | Match Report', 'desc' => cc25_match_summary($m));
+            }
+            return array('title' => 'Match Report | Cwmbran Celtic', 'desc' => 'Full match report, goals, stats and line-ups from the latest Cwmbran Celtic game.');
+        case 'fixtures': case 'fixtures-results': case 'fixtures-and-results':
+            return array('desc' => "Every Cwmbran Celtic fixture and result, plus the live Ardal League South East table — First Team, Reserves and Women's, with tickets for home games.");
+        case 'travel-and-ground':
+            return array('desc' => 'Getting to the Motazone Arena (Celtic Park), Cwmbran — directions, free parking and matchday info for home and visiting supporters.');
+        case 'away-days':
+            return array('desc' => 'Travel guides to every Ardal League South East away ground — addresses, postcodes and directions for following the Celts on the road.');
+        case '2025-26-archive':
+            return array('desc' => "Cwmbran Celtic's 2025-26 season results in full — every scoreline, with clickable match breakdowns.");
+        case 'the-celtic-bond': case 'celtic-bond': case 'bond':
+            return array('desc' => 'Join the Celtic Bond and help fund Cwmbran Celtic AFC — the club lottery with cash prizes every draw. Sign up and back the Celts.');
+    }
+    return null;
 }
