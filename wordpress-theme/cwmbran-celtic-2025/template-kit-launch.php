@@ -176,7 +176,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
       <?php foreach ($k['sponsors'] as $sp): ?>
       <a class="kl-sponsor reveal" href="<?php echo esc_url($sp['url']); ?>" target="_blank" rel="noopener">
         <div class="kl-sponsor-tile"><img src="<?php echo esc_url($sponbase . $sp['img']); ?>" alt="<?php echo esc_attr($sp['name']); ?>" loading="lazy"></div>
-        <div class="kl-sponsor-meta"><span class="nm"><?php echo esc_html($sp['name']); ?></span><span class="ds"><?php echo esc_html($sp['desc']); ?></span></div>
+        <div class="kl-sponsor-meta"><span class="ds"><?php echo esc_html($sp['desc']); ?></span></div>
       </a>
       <?php endforeach; ?>
     </div>
