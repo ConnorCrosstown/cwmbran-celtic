@@ -1399,8 +1399,8 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .kl-sponsors{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:760px;margin:0 auto}
 .kl-sponsor{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--hair);border-radius:14px;padding:26px 22px;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s}
 .kl-sponsor:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(10,31,60,.14)}
-.kl-sponsor-tile{display:flex;align-items:center;justify-content:center;width:100%}
-.kl-sponsor-tile img{width:100%;max-width:300px;height:auto;border-radius:8px}
+.kl-sponsor-tile{display:flex;align-items:center;justify-content:center;width:100%;height:100px}
+.kl-sponsor-tile img{width:100%;max-width:300px;max-height:92px;height:auto;border-radius:8px}
 .kl-sponsor-meta{display:flex;flex-direction:column;gap:2px}
 .kl-sponsor-meta .nm{font-family:var(--display);font-size:1.15rem;color:var(--navy-900,#0a1f3c)}
 .kl-sponsor-meta .ds{color:var(--muted);font-size:.84rem}

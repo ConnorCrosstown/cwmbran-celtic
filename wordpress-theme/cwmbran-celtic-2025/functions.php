@@ -180,8 +180,8 @@ function cc25_season_tickets_on() { return false; }
  */
 function cc25_kit_launch() {
     return array(
-        'enabled'     => false,   // REVIEW MODE: splash/banner/nav hidden. Flip to true to launch.
-        'live_from'   => '',       // '' = go live immediately when enabled; or set 'YYYY-MM-DD HH:MM' to embargo.
+        'enabled'     => true,                // LIVE — splash/banner/nav appear at live_from (UK time).
+        'live_from'   => '2026-07-31 12:00',  // Friday 31 July 2026, 12:00 noon UK.
         'slug'        => 'music-shirts',
         'eyebrow'     => 'Music Shirts · 2026/27',
         'headline'    => 'Four bands. One club. Grassroots music and sport together.',
