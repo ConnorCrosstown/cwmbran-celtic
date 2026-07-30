@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) exit;
 get_template_part('template-parts/site-header');
 
 $cc25_pc_base = get_stylesheet_directory_uri() . '/assets/img/player-cards/';
+$cc25_pc_dir  = get_stylesheet_directory() . '/assets/img/player-cards/';
 $cc25_pc_groups = cc25_squad_players();
 ?>
 <div class="phero">
@@ -26,9 +27,13 @@ $cc25_pc_groups = cc25_squad_players();
       <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ix"><?php printf('%02d', $cc25_ix); ?></span><span class="ln"></span> <?php echo esc_html($cc25_label); ?></div><h2><?php echo esc_html($cc25_label); ?></h2></div></div>
       <div class="pc-grid reveal">
         <?php foreach ($cc25_cards as $cc25_c): $cc25_src = $cc25_pc_base . $cc25_c[1] . '.jpg'; $cc25_st = cc25_player_stat($cc25_c[0]); ?>
+          <?php if (file_exists($cc25_pc_dir . $cc25_c[1] . '.jpg')): ?>
           <button class="pc-card" type="button" data-full="<?php echo esc_url($cc25_src); ?>" data-name="<?php echo esc_attr($cc25_c[0]); ?>"<?php if ($cc25_st): ?> data-apps="<?php echo intval($cc25_st['apps']); ?>" data-goals="<?php echo intval($cc25_st['goals']); ?>" data-assists="<?php echo intval($cc25_st['assists']); ?>"<?php endif; ?> aria-label="<?php echo esc_attr($cc25_c[0]); ?> &mdash; view player card and stats">
             <img src="<?php echo esc_url($cc25_src); ?>" alt="<?php echo esc_attr($cc25_c[0]); ?> &mdash; Cwmbran Celtic" loading="lazy" width="480" height="600">
           </button>
+          <?php else: // No photo yet — holding card (same style as the women's placeholders). ?>
+          <div class="wpc-card"><img class="wpc-crest" src="<?php echo esc_url(cc25_club_logo()); ?>" alt="" aria-hidden="true" loading="lazy"><div class="wpc-name"><?php echo esc_html($cc25_c[0]); ?><small>Cwmbran Celtic</small></div></div>
+          <?php endif; ?>
         <?php endforeach; ?>
       </div>
     <?php endforeach; ?>
