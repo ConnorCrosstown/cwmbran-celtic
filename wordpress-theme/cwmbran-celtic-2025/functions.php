@@ -268,7 +268,7 @@ function cc25_away_grounds() {
         'Abercarn United'     => array('ground' => 'Abercarn Welfare',       'addr' => 'Abercarn Welfare, Abercarn, NP11 5AR', 'pc' => 'NP11 5AR'),
         'Abergavenny Town'    => array('ground' => 'Penypound Stadium',      'addr' => 'Penypound Stadium, Penypound, Abergavenny, NP7 7RN', 'pc' => 'NP7 7RN'),
         'Blaenavon Blues'     => array('ground' => 'The Memorial Ground',    'addr' => 'The Memorial Ground, Stable Row, Abergavenny Road, Blaenavon, NP4 9RQ', 'pc' => 'NP4 9RQ'),
-        'Brecon Corries'      => array('ground' => 'The Risc Field',         'addr' => 'The Risc Field, Canal Road, Brecon, LD3 7HL', 'pc' => 'LD3 7HL'),
+        'Brecon Corries'      => array('ground' => 'The Rich Field',         'addr' => 'The Rich Field, Canal Road, Brecon, LD3 7HL', 'pc' => 'LD3 7HL'),
         'Caldicot Town'       => array('ground' => 'Jubilee Way',            'addr' => 'Jubilee Way, Caldicot, NP26 4NA', 'pc' => 'NP26 4NA'),
         'Chepstow Town'       => array('ground' => 'Larkfield Park',         'addr' => 'Larkfield Park, Chepstow, NP16 5PR', 'pc' => 'NP16 5PR'),
         'Croesyceiliog'       => array('ground' => 'Woodland Road',          'addr' => 'Woodland Road, Croesyceiliog, Cwmbran, NP44 2DZ', 'pc' => 'NP44 2DZ'),
@@ -1384,7 +1384,7 @@ function cc25_squad_players() {
             array('Lewis Watkins', 'lewis-watkins'),
         ),
         'Defenders' => array(
-            array('Zach Fry', 'zach-fry'), array('Arthur Furness', 'arthur-furness'), array('Oliver Berry', 'oliver-berry'),
+            array('Zac Fry', 'zac-fry'), array('Arthur Furness', 'arthur-furness'), array('Oliver Berry', 'oliver-berry'),
             array('Charlie Donovan', 'charlie-donovan'), array('Kian Saunders', 'kian-saunders'),
             array('Elliott Hewings', 'elliott-hewings'), array('Terry Obeng', 'terry-obeng'),
         ),
