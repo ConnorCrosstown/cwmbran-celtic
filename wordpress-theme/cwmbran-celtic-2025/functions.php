@@ -201,12 +201,13 @@ function cc25_kit_launch() {
             array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk',
                   'blurb' => "Manchester punks Loose Articles lead our women's away shirt — all wit, attitude and energy, and proper football fans (their drummer's mum lives in Cwmbran!)."),
         ),
-        // Matchday photos of the SFA shirt in action (files in assets/img/kit/).
-        'action'      => array('sfa-hero.jpg', 'sfa-home.jpg', 'sfa-run.jpg'),
-        // Featured sponsors (music-industry partners). img = file in assets/img/sponsors/.
+        // Matchday photos of the Music Shirts in action (files in assets/img/kit/):
+        // men's SFA celebration, the women's team in Panic Shack, and fans in SFA.
+        'action'      => array('sfa-hero.jpg', 'women-panic.jpg', 'fans-sfa.jpg'),
+        // Featured sponsors — using the club's standard banners (assets/img/sponsor-banners/).
         'sponsors'    => array(
-            array('name' => 'Diverse Vinyl',      'img' => 'diverse.jpg',  'url' => 'https://www.diversevinyl.com',     'desc' => 'Independent record shop · Newport'),
-            array('name' => 'Crosstown Concerts', 'img' => 'crosstown.png', 'url' => 'https://www.crosstownconcerts.com', 'desc' => 'Live music promoter'),
+            array('name' => 'Diverse Vinyl',      'img' => 'diverse-vinyl.jpg',      'url' => 'https://www.diversevinyl.com',     'desc' => 'Independent record shop · Newport'),
+            array('name' => 'Crosstown Concerts', 'img' => 'crosstown-concerts.jpg', 'url' => 'https://www.crosstownconcerts.com', 'desc' => 'Live music promoter'),
         ),
         'bands' => array(
             array('n' => 'Super Furry Animals', 'meta' => 'Cardiff · formed 1993',

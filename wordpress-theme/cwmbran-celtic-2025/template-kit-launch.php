@@ -21,7 +21,7 @@ if (post_password_required()) {
 
 $k = cc25_kit_launch();
 $kbase = get_stylesheet_directory_uri() . '/assets/img/kit/';
-$sponbase = get_stylesheet_directory_uri() . '/assets/img/sponsors/';
+$sponbase = get_stylesheet_directory_uri() . '/assets/img/sponsor-banners/';
 $home  = home_url('/');
 // Music Venue Trust logo appears wherever it fits, once the asset is dropped in
 // at assets/img/mvt-logo.png (transparent PNG). Hidden until then.
