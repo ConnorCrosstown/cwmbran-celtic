@@ -96,7 +96,25 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
       </figure>
       <?php endforeach; ?>
     </div>
-    <p class="kl-shirtnote reveal">Men's and women's shirts are available to pre-order now, with a share of profit from every sale donated to Music Venue Trust.</p>
+
+    <?php if (!empty($k['keepers'])): ?>
+    <div class="kl-gk-head reveal"><span class="kl-gk-eye kick">Between the sticks</span><h3>Goalkeeper Kits</h3></div>
+    <div class="kl-shirts kl-gk-grid">
+      <?php foreach ($k['keepers'] as $s): ?>
+      <figure class="kl-shirt reveal">
+        <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>" data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> goalkeeper shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic goalkeeper shirt — <?php echo esc_attr($s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
+        <figcaption>
+          <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
+          <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
+          <span class="kl-origin"><?php echo esc_html($s['origin']); ?></span>
+          <a class="btn btn-gold btn-sm kl-shirt-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order &rarr;</a>
+        </figcaption>
+      </figure>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
+    <p class="kl-shirtnote reveal">Men's, women's and goalkeeper shirts are available to pre-order now, with a share of profit from every sale donated to Music Venue Trust.</p>
     <div class="kl-shirtcta reveal"><a class="btn btn-gold" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order at Tor Sports &rarr;</a></div>
   </div>
 </section>

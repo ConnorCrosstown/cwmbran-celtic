@@ -1406,6 +1406,14 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .kl-sponsor-meta .ds{color:var(--muted);font-size:.84rem}
 @media(max-width:640px){.kl-sponsors{grid-template-columns:1fr;max-width:360px}}
 
+/* ---- Music Shirts v9: goalkeeper kits subsection ---- */
+.kl-gk-head{margin:34px 0 18px;text-align:center}
+.kl-gk-eye{color:var(--blue-500);letter-spacing:.14em;font-size:.7rem;display:block;margin-bottom:6px}
+.kl-gk-head h3{font-size:clamp(1.4rem,3.5vw,2rem);color:var(--navy-900,#0a1f3c)}
+.kl-shirts.kl-gk-grid{grid-template-columns:repeat(4,1fr);max-width:none}
+@media(max-width:900px){.kl-shirts.kl-gk-grid{grid-template-columns:1fr 1fr;max-width:560px;margin-left:auto;margin-right:auto}}
+@media(max-width:480px){.kl-shirts.kl-gk-grid{grid-template-columns:1fr;max-width:420px}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

@@ -201,6 +201,13 @@ function cc25_kit_launch() {
             array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk',
                   'blurb' => "Manchester punks Loose Articles lead our women's away shirt — all wit, attitude and energy, and proper football fans (their drummer's mum lives in Cwmbran!)."),
         ),
+        // Goalkeeper kits — one per band. img = file in assets/img/kit/.
+        'keepers'     => array(
+            array('band' => 'Super Furry Animals', 'img' => 'gk-sfa.jpg',    'label' => 'Goalkeeper', 'origin' => 'Pink · Cardiff'),
+            array('band' => 'Panic Shack',         'img' => 'gk-panic.jpg',  'label' => 'Goalkeeper', 'origin' => 'Pink & purple · Cardiff'),
+            array('band' => 'Mogwai',              'img' => 'gk-mogwai.jpg', 'label' => 'Goalkeeper', 'origin' => 'Grey · Glasgow'),
+            array('band' => 'Loose Articles',      'img' => 'gk-loose.jpg',  'label' => 'Goalkeeper', 'origin' => 'Grey · Manchester'),
+        ),
         // Matchday photos of the Music Shirts in action (files in assets/img/kit/):
         // men's SFA celebration, the women's team in Panic Shack, and fans in SFA.
         'action'      => array('sfa-hero.jpg', 'women-panic.jpg', 'fans-sfa.jpg'),
