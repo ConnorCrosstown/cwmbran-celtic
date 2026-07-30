@@ -6,6 +6,19 @@
  */
 if (!defined('ABSPATH')) exit;
 get_template_part('template-parts/site-header');
+
+// Honour WordPress's built-in page password so we can lock this page for a
+// private preview: set a password on the page in wp-admin (Visibility →
+// Password protected) and only people with it can view.
+if (post_password_required()) {
+    echo '<div class="phero" style="min-height:auto"><div class="bg"></div><div class="grain"></div>';
+    echo '<div class="phero-in"><div class="kl-eye kick">Cwmbran Celtic · Private preview</div><h1 style="font-size:clamp(1.8rem,5vw,2.8rem)">This page is locked</h1>';
+    echo '<p class="kl-dek">We&rsquo;re still putting the finishing touches to it. Enter the password to take a look.</p>';
+    echo '<div class="pwform">' . get_the_password_form() . '</div></div></div>';
+    get_template_part('template-parts/site-footer');
+    return;
+}
+
 $k = cc25_kit_launch();
 $kbase = get_stylesheet_directory_uri() . '/assets/img/kit/';
 $home  = home_url('/');

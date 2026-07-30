@@ -180,8 +180,8 @@ function cc25_season_tickets_on() { return false; }
  */
 function cc25_kit_launch() {
     return array(
-        'enabled'     => true,
-        'live_from'   => '2026-07-30 10:00',
+        'enabled'     => false,   // REVIEW MODE: splash/banner/nav hidden. Flip to true to launch.
+        'live_from'   => '',       // '' = go live immediately when enabled; or set 'YYYY-MM-DD HH:MM' to embargo.
         'slug'        => 'music-shirts',
         'eyebrow'     => 'Music Shirts · 2026/27',
         'headline'    => 'Four bands. One club. Grassroots music and sport together.',
@@ -553,13 +553,12 @@ function cc25_page_url($key, $fallback = '') {
  */
 function cc25_nav_items() {
     $home = home_url('/');
-    return array(
+    $items = array(
         array('All Teams', cc25_page_url('teams', $home), false, array(
             array("Men's First Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
             array("Men's Reserves", cc25_reserves_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
         )),
-        array('Music Shirts', cc25_page_url('music-shirts', $home), false, array()),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),
             array('Away Days', cc25_page_url('away-days', $home), false),
@@ -586,6 +585,14 @@ function cc25_nav_items() {
         array('Club Shop', cc25_ext_url('shop'), true, array()),
         array('Contact', cc25_page_url('contact', $home), false, array()),
     );
+    // The Music Shirts link joins the nav (next to All Teams) only once the
+    // campaign is live — so it stays hidden during a private preview.
+    if (cc25_kit_launch_live()) {
+        array_splice($items, 1, 0, array(
+            array('Music Shirts', cc25_page_url('music-shirts', $home), false, array()),
+        ));
+    }
+    return $items;
 }
 
 function cc25_nav_fallback() {

@@ -1382,6 +1382,14 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .kl-shirt-buy{margin-top:14px;align-self:flex-start}
 .shirt-lb-buy{margin-top:18px;display:inline-block}
 
+/* ---- Private-preview password form (on the dark hero) ---- */
+.pwform{margin-top:10px;max-width:460px}
+.pwform form{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pwform p{color:var(--on-navy);width:100%;margin:0 0 4px;font-size:.9rem}
+.pwform label{color:#fff;display:flex;gap:8px;align-items:center;flex:1 1 220px}
+.pwform input[type=password]{flex:1;padding:11px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-size:1rem}
+.pwform input[type=submit]{background:var(--gold);color:var(--navy-900,#0a1f3c);border:0;padding:11px 22px;border-radius:8px;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js
