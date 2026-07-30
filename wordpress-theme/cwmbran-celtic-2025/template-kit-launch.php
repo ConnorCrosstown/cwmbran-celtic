@@ -136,7 +136,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
       <div class="kl-mvt-badge">10%</div>
       <div class="kl-mvt-body">
         <div class="kick" style="color:var(--gold)">Backing grassroots music</div>
-        <h2>10% of every shirt goes to Music Venue Trust</h2>
+        <h2>10% of the profit of every shirt goes to Music Venue Trust</h2>
         <p>Music Venue Trust is a UK charity established in 2014 to protect, secure and improve grassroots music venues &mdash; the small rooms where emerging artists cut their teeth and where so much of the country's musical talent first performs. Every shirt you buy helps keep those doors open.</p>
         <a class="btn btn-line" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener">About Music Venue Trust &rarr;</a>
       </div>
