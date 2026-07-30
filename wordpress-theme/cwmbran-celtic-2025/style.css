@@ -1414,6 +1414,17 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 @media(max-width:900px){.kl-shirts.kl-gk-grid{grid-template-columns:1fr 1fr;max-width:560px;margin-left:auto;margin-right:auto}}
 @media(max-width:480px){.kl-shirts.kl-gk-grid{grid-template-columns:1fr;max-width:420px}}
 
+/* ---- Music Shirts v10: goalkeeper "coming soon" gold/blue box ---- */
+.kl-gk-box.soon{margin-top:34px;padding:5px;border-radius:20px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-soft,#fcd34d) 22%,var(--blue-500,#2b6cb0) 72%,var(--navy-800,#12203c) 100%);box-shadow:0 18px 44px rgba(10,31,60,.14)}
+.kl-gk-box.soon .kl-gk-inner{background:var(--surface-2);border-radius:15px;padding:26px 24px 30px}
+.kl-gk-box .kl-gk-head{margin:0 0 20px}
+.kl-gk-soonlbl{display:inline-block;margin-top:10px;background:var(--gold);color:var(--navy-900,#0a1f3c);font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;padding:6px 14px;border-radius:20px}
+.kl-shirt.is-soon{position:relative}
+.kl-soon-badge{position:absolute;top:10px;left:10px;z-index:3;background:var(--blue-500,#2b6cb0);color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.6rem;padding:5px 10px;border-radius:20px;box-shadow:0 2px 8px rgba(10,31,60,.25)}
+.kl-shirt.is-soon .kl-shirt-img img{opacity:.92}
+.kl-soon-chip{align-self:flex-start;margin-top:14px;background:var(--navy-800,#12203c);color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:9px 16px;border-radius:2px}
+.kl-gk-note{text-align:center;color:var(--muted);margin:22px auto 0;max-width:54ch;font-size:.94rem}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

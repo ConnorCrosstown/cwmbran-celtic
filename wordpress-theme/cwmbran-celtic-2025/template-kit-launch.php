@@ -97,24 +97,38 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
       <?php endforeach; ?>
     </div>
 
-    <?php if (!empty($k['keepers'])): ?>
-    <div class="kl-gk-head reveal"><span class="kl-gk-eye kick">Between the sticks</span><h3>Goalkeeper Kits</h3></div>
-    <div class="kl-shirts kl-gk-grid">
-      <?php foreach ($k['keepers'] as $s): ?>
-      <figure class="kl-shirt reveal">
-        <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>" data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> goalkeeper shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic goalkeeper shirt — <?php echo esc_attr($s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
-        <figcaption>
-          <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
-          <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
-          <span class="kl-origin"><?php echo esc_html($s['origin']); ?></span>
-          <a class="btn btn-gold btn-sm kl-shirt-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order &rarr;</a>
-        </figcaption>
-      </figure>
-      <?php endforeach; ?>
+    <?php if (!empty($k['keepers'])): $gk_soon = !empty($k['keepers_soon']); ?>
+    <div class="kl-gk-box<?php echo $gk_soon ? ' soon reveal' : ''; ?>">
+      <div class="kl-gk-inner">
+        <div class="kl-gk-head">
+          <span class="kl-gk-eye kick">Between the sticks</span>
+          <h3>Goalkeeper Kits</h3>
+          <?php if ($gk_soon): ?><span class="kl-gk-soonlbl">&#9733; Coming Soon</span><?php endif; ?>
+        </div>
+        <div class="kl-shirts kl-gk-grid">
+          <?php foreach ($k['keepers'] as $s): ?>
+          <figure class="kl-shirt<?php echo $gk_soon ? ' is-soon' : ' reveal'; ?>">
+            <?php if ($gk_soon): ?><span class="kl-soon-badge">Coming Soon</span><?php endif; ?>
+            <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>" data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> goalkeeper shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic goalkeeper shirt — <?php echo esc_attr($s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
+            <figcaption>
+              <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
+              <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
+              <span class="kl-origin"><?php echo esc_html($s['origin']); ?></span>
+              <?php if ($gk_soon): ?>
+              <span class="kl-soon-chip">Coming Soon</span>
+              <?php else: ?>
+              <a class="btn btn-gold btn-sm kl-shirt-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order &rarr;</a>
+              <?php endif; ?>
+            </figcaption>
+          </figure>
+          <?php endforeach; ?>
+        </div>
+        <?php if ($gk_soon): ?><p class="kl-gk-note">Our four goalkeeper kits are on their way &mdash; pre-order opens very soon. Keep an eye out!</p><?php endif; ?>
+      </div>
     </div>
     <?php endif; ?>
 
-    <p class="kl-shirtnote reveal">Men's, women's and goalkeeper shirts are available to pre-order now, with a share of profit from every sale donated to Music Venue Trust.</p>
+    <p class="kl-shirtnote reveal"><?php if (!empty($k['keepers']) && !empty($k['keepers_soon'])): ?>Men's and women's shirts are available to pre-order now, with a share of profit from every sale donated to Music Venue Trust. Goalkeeper kits coming soon.<?php else: ?>Men's, women's and goalkeeper shirts are available to pre-order now, with a share of profit from every sale donated to Music Venue Trust.<?php endif; ?></p>
     <div class="kl-shirtcta reveal"><a class="btn btn-gold" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order at Tor Sports &rarr;</a></div>
   </div>
 </section>

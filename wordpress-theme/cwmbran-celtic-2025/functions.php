@@ -202,6 +202,8 @@ function cc25_kit_launch() {
                   'blurb' => "Manchester punks Loose Articles lead our women's away shirt — all wit, attitude and energy, and proper football fans (their drummer's mum lives in Cwmbran!)."),
         ),
         // Goalkeeper kits — one per band. img = file in assets/img/kit/.
+        // Set keepers_soon => false once the GK kits are ready to pre-order.
+        'keepers_soon' => true,
         'keepers'     => array(
             array('band' => 'Super Furry Animals', 'img' => 'gk-sfa.jpg',    'label' => 'Goalkeeper', 'origin' => 'Pink · Cardiff'),
             array('band' => 'Loose Articles',      'img' => 'gk-loose.jpg',  'label' => 'Goalkeeper', 'origin' => 'Grey · Manchester'),
