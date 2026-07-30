@@ -1390,6 +1390,22 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .pwform input[type=password]{flex:1;padding:11px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-size:1rem}
 .pwform input[type=submit]{background:var(--gold);color:var(--navy-900,#0a1f3c);border:0;padding:11px 22px;border-radius:8px;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
 
+/* ---- Music Shirts v7: clear outline button for dark backgrounds ---- */
+.btn-line{background:transparent;border:2px solid rgba(255,255,255,.85);color:#fff}
+.btn-line:hover,.btn-line:focus-visible{background:#fff;border-color:#fff;color:var(--navy-900,#0a1f3c);transform:translateY(-1px)}
+
+/* ---- Music Shirts v8: featured sponsors ---- */
+.kl-sponsors-band{background:var(--surface-2)}
+.kl-sponsors{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:760px;margin:0 auto}
+.kl-sponsor{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--hair);border-radius:14px;padding:26px 22px;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s}
+.kl-sponsor:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(10,31,60,.14)}
+.kl-sponsor-tile{display:flex;align-items:center;justify-content:center;height:92px}
+.kl-sponsor-tile img{max-width:100%;max-height:92px;border-radius:8px}
+.kl-sponsor-meta{display:flex;flex-direction:column;gap:2px}
+.kl-sponsor-meta .nm{font-family:var(--display);font-size:1.15rem;color:var(--navy-900,#0a1f3c)}
+.kl-sponsor-meta .ds{color:var(--muted);font-size:.84rem}
+@media(max-width:640px){.kl-sponsors{grid-template-columns:1fr;max-width:360px}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

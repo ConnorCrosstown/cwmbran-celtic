@@ -194,12 +194,20 @@ function cc25_kit_launch() {
         'shirts'      => array(
             array('band' => 'Super Furry Animals', 'img' => 'kit-sfa.jpg',   'label' => "Men's Home",   'origin' => 'Cardiff · Welsh legends',
                   'blurb' => "One of Wales' most celebrated and inventive bands lead the line on our men's home shirt — no strangers to a football kit, having graced an iconic Cardiff City shirt back in 1999."),
-            array('band' => 'Mogwai',              'img' => 'kit-away.jpg',   'label' => "Men's Away",   'origin' => 'Glasgow post-rock'),
-            array('band' => 'Panic Shack',         'img' => 'kit-home.jpg',   'label' => "Women's Home", 'origin' => 'Cardiff punk'),
-            array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk'),
+            array('band' => 'Mogwai',              'img' => 'kit-away.jpg',   'label' => "Men's Away",   'origin' => 'Glasgow post-rock',
+                  'blurb' => "Glasgow post-rock institution and lifelong Celtic fans, Mogwai take pride of place on our men's away shirt — the green-and-white hoops they grew up with."),
+            array('band' => 'Panic Shack',         'img' => 'kit-home.jpg',   'label' => "Women's Home", 'origin' => 'Cardiff punk',
+                  'blurb' => "Cardiff punk favourites Panic Shack front our women's home shirt — one of the sharpest, funniest new voices in Welsh guitar music."),
+            array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk',
+                  'blurb' => "Manchester punks Loose Articles lead our women's away shirt — all wit, attitude and energy, and proper football fans (their drummer's mum lives in Cwmbran!)."),
         ),
         // Matchday photos of the SFA shirt in action (files in assets/img/kit/).
         'action'      => array('sfa-hero.jpg', 'sfa-home.jpg', 'sfa-run.jpg'),
+        // Featured sponsors (music-industry partners). img = file in assets/img/sponsors/.
+        'sponsors'    => array(
+            array('name' => 'Diverse Vinyl',      'img' => 'diverse.jpg',  'url' => 'https://www.diversevinyl.com',     'desc' => 'Independent record shop · Newport'),
+            array('name' => 'Crosstown Concerts', 'img' => 'crosstown.png', 'url' => 'https://www.crosstownconcerts.com', 'desc' => 'Live music promoter'),
+        ),
         'bands' => array(
             array('n' => 'Super Furry Animals', 'meta' => 'Cardiff · formed 1993',
                   'spotify' => 'https://open.spotify.com/artist/0FOcXqJgJ1oq9XfzYTDZmZ', 'insta' => 'https://www.instagram.com/superfurryanimals/',

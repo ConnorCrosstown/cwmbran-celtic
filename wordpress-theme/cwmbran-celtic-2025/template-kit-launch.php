@@ -21,6 +21,7 @@ if (post_password_required()) {
 
 $k = cc25_kit_launch();
 $kbase = get_stylesheet_directory_uri() . '/assets/img/kit/';
+$sponbase = get_stylesheet_directory_uri() . '/assets/img/sponsors/';
 $home  = home_url('/');
 // Music Venue Trust logo appears wherever it fits, once the asset is dropped in
 // at assets/img/mvt-logo.png (transparent PNG). Hidden until then.
@@ -36,7 +37,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
     <p class="kl-dek"><?php echo esc_html($k['dek']); ?></p>
     <div class="kl-cta">
       <a class="btn btn-gold" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order your shirt &rarr;</a>
-      <a class="btn btn-ghost" href="<?php echo esc_url($k['tickets_url']); ?>" target="_blank" rel="noopener">Season tickets</a>
+      <a class="btn btn-line" href="<?php echo esc_url($k['tickets_url']); ?>" target="_blank" rel="noopener">Season Tickets</a>
     </div>
     <div class="kl-date">Cwmbran Celtic AFC &middot; <?php echo esc_html(date('j F Y', strtotime($k['date']))); ?></div>
   </div>
@@ -59,22 +60,25 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
   <div class="wrap">
     <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> The 2026/27 Range</div><h2>The Shirts</h2></div></div>
 
+    <?php // All shirts as data so premium.js can pick a random one to feature each visit. ?>
+    <script type="application/json" id="kl-shirt-data"><?php echo wp_json_encode(array('base' => $kbase, 'shirts' => $k['shirts'])); ?></script>
+
     <?php $feat = $k['shirts'][0]; ?>
-    <div class="kl-featshirt reveal">
+    <div class="kl-featshirt reveal" data-kl-featured>
       <button type="button" class="kl-featshirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $feat['img']); ?>" data-cap="<?php echo esc_attr($feat['band'] . ' · ' . $feat['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($feat['band']); ?> shirt"><img src="<?php echo esc_url($kbase . $feat['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($feat['label'] . ' shirt — ' . $feat['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
       <div class="kl-featshirt-body">
         <span class="kl-tag gold"><?php echo esc_html($feat['label']); ?></span>
         <h3><?php echo esc_html($feat['band']); ?></h3>
         <div class="kl-origin"><?php echo esc_html($feat['origin']); ?></div>
         <p><?php echo esc_html($feat['blurb']); ?></p>
-        <a class="btn btn-gold btn-sm" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order the home shirt &rarr;</a>
+        <a class="btn btn-gold btn-sm kl-feat-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order this shirt &rarr;</a>
       </div>
     </div>
 
     <?php if (!empty($k['action'])): ?>
-    <div class="kl-action reveal" aria-label="The home shirt in action">
+    <div class="kl-action reveal" aria-label="The 2026/27 Music Shirts in action">
       <?php foreach ($k['action'] as $a): ?>
-      <div class="kl-action-img"><img src="<?php echo esc_url($kbase . $a); ?>" alt="Cwmbran Celtic in the Super Furry Animals home shirt" loading="lazy"></div>
+      <div class="kl-action-img"><img src="<?php echo esc_url($kbase . $a); ?>" alt="Cwmbran Celtic in the 2026/27 Music Shirts" loading="lazy"></div>
       <?php endforeach; ?>
     </div>
     <?php endif; ?>
@@ -116,7 +120,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
         <div class="kick" style="color:var(--gold)">Backing grassroots music</div>
         <h2>10% of every shirt goes to Music Venue Trust</h2>
         <p>Music Venue Trust is a UK charity established in 2014 to protect, secure and improve grassroots music venues &mdash; the small rooms where emerging artists cut their teeth and where so much of the country's musical talent first performs. Every shirt you buy helps keep those doors open.</p>
-        <a class="btn btn-ghost" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener">About Music Venue Trust &rarr;</a>
+        <a class="btn btn-line" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener">About Music Venue Trust &rarr;</a>
       </div>
       <?php if ($mvt_has_logo): ?>
       <a class="kl-mvt-logowrap" href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener" aria-label="Music Venue Trust"><img src="<?php echo esc_url($mvt_logo_uri); ?>" alt="Music Venue Trust"></a>
@@ -146,6 +150,22 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
   </div>
 </section>
 
+<?php if (!empty($k['sponsors'])): ?>
+<section class="band kl-sponsors-band">
+  <div class="wrap">
+    <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> In partnership with</div><h2>Featured Sponsors</h2></div></div>
+    <div class="kl-sponsors">
+      <?php foreach ($k['sponsors'] as $sp): ?>
+      <a class="kl-sponsor reveal" href="<?php echo esc_url($sp['url']); ?>" target="_blank" rel="noopener">
+        <div class="kl-sponsor-tile"><img src="<?php echo esc_url($sponbase . $sp['img']); ?>" alt="<?php echo esc_attr($sp['name']); ?>" loading="lazy"></div>
+        <div class="kl-sponsor-meta"><span class="nm"><?php echo esc_html($sp['name']); ?></span><span class="ds"><?php echo esc_html($sp['desc']); ?></span></div>
+      </a>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <section class="band kl-final">
   <div class="wrap">
     <div class="kl-finalcard reveal">
@@ -153,7 +173,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
       <p>Pre-order the 2026/27 Music Shirts now, and grab a season ticket for every home game &mdash; men's and women's &mdash; at Celtic Park.</p>
       <div class="kl-cta">
         <a class="btn btn-gold" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order your shirt &rarr;</a>
-        <a class="btn btn-navy" href="<?php echo esc_url($k['tickets_url']); ?>" target="_blank" rel="noopener">Get a season ticket</a>
+        <a class="btn btn-line" href="<?php echo esc_url($k['tickets_url']); ?>" target="_blank" rel="noopener">Get a Season Ticket</a>
       </div>
       <?php if ($mvt_has_logo): ?>
       <div class="kl-final-mvt"><span>Proudly supporting</span><a href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener"><img src="<?php echo esc_url($mvt_logo_uri); ?>" alt="Music Venue Trust"></a></div>

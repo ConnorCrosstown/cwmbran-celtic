@@ -246,3 +246,32 @@
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
 })();
+
+/* Kit launch: feature a RANDOM shirt each visit (client-side so it works with
+   full-page caching). Repopulates the featured slot + the three grid cards. */
+(function () {
+  var el = document.getElementById('kl-shirt-data');
+  if (!el) return;
+  var cfg;
+  try { cfg = JSON.parse(el.textContent); } catch (e) { return; }
+  var shirts = cfg && cfg.shirts, base = (cfg && cfg.base) || '';
+  if (!shirts || shirts.length < 2) return;
+  for (var i = shirts.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = shirts[i]; shirts[i] = shirts[j]; shirts[j] = t; }
+  function fill(scope, s, isFeat) {
+    if (!scope) return;
+    var img = scope.querySelector('img');
+    if (img) { img.src = base + s.img; img.alt = "Cwmbran Celtic " + s.label + " shirt — " + s.band; }
+    var zoom = scope.querySelector('.shirt-zoom');
+    if (zoom) { zoom.setAttribute('data-full', base + s.img); zoom.setAttribute('data-cap', s.band + ' · ' + s.label); }
+    var tag = scope.querySelector('.kl-tag'); if (tag) tag.textContent = s.label;
+    var band = scope.querySelector(isFeat ? 'h3' : '.kl-band'); if (band) band.textContent = s.band;
+    var origin = scope.querySelector('.kl-origin'); if (origin) origin.textContent = s.origin;
+    if (isFeat) {
+      var p = scope.querySelector('.kl-featshirt-body p'); if (p && s.blurb) p.textContent = s.blurb;
+      var buy = scope.querySelector('.kl-feat-buy'); if (buy) buy.innerHTML = 'Pre-order the ' + s.label + ' shirt →';
+    }
+  }
+  fill(document.querySelector('[data-kl-featured]'), shirts[0], true);
+  var cards = document.querySelectorAll('.kl-shirts .kl-shirt');
+  for (var c = 0; c < cards.length; c++) { if (shirts[c + 1]) fill(cards[c], shirts[c + 1], false); }
+})();
