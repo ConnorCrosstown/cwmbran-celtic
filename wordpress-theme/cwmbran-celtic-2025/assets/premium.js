@@ -225,20 +225,33 @@
   start();
 })();
 
-/* Kit-launch: click a shirt to enlarge it in a lightbox. */
+/* Kit-launch: click a shirt to enlarge it — shows the high-res front + back. */
 (function () {
   var lb = document.getElementById('shirt-lb');
   if (!lb) return;
-  var img = document.getElementById('shirt-lb-img');
+  var imgs = document.getElementById('shirt-lb-imgs');
   var cap = document.getElementById('shirt-lb-cap');
+  function esc(s) { return String(s || '').replace(/"/g, '&quot;'); }
+  function one(src, label, alt) {
+    return '<figure class="shirt-lb-one"><img src="' + esc(src) + '" alt="' + esc(alt) + '">' + (label ? '<figcaption>' + label + '</figcaption>' : '') + '</figure>';
+  }
   function open(btn) {
-    img.src = btn.getAttribute('data-full') || '';
-    img.alt = btn.getAttribute('data-cap') || '';
-    cap.textContent = btn.getAttribute('data-cap') || '';
+    var front = btn.getAttribute('data-front'), back = btn.getAttribute('data-back'), full = btn.getAttribute('data-full');
+    var c = btn.getAttribute('data-cap') || '';
+    var html = '';
+    if (front || back) {
+      if (front) html += one(front, 'Front', c + ' — front');
+      if (back) html += one(back, 'Back', c + ' — back');
+    } else {
+      html = one(full, '', c);
+    }
+    imgs.innerHTML = html;
+    imgs.className = 'shirt-lb-imgs' + ((front && back) ? ' two' : '');
+    cap.textContent = c;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
   }
-  function close() { lb.hidden = true; img.src = ''; document.body.style.overflow = ''; }
+  function close() { lb.hidden = true; imgs.innerHTML = ''; document.body.style.overflow = ''; }
   document.addEventListener('click', function (e) {
     var z = e.target.closest('.shirt-zoom');
     if (z) { e.preventDefault(); open(z); return; }
@@ -262,7 +275,12 @@
     var img = scope.querySelector('img');
     if (img) { img.src = base + s.img; img.alt = "Cwmbran Celtic " + s.label + " shirt — " + s.band; }
     var zoom = scope.querySelector('.shirt-zoom');
-    if (zoom) { zoom.setAttribute('data-full', base + s.img); zoom.setAttribute('data-cap', s.band + ' · ' + s.label); }
+    if (zoom) {
+      zoom.setAttribute('data-full', base + s.img);
+      zoom.setAttribute('data-cap', s.band + ' · ' + s.label);
+      if (s.front) zoom.setAttribute('data-front', base + s.front); else zoom.removeAttribute('data-front');
+      if (s.back) zoom.setAttribute('data-back', base + s.back); else zoom.removeAttribute('data-back');
+    }
     var tag = scope.querySelector('.kl-tag'); if (tag) tag.textContent = s.label;
     var band = scope.querySelector(isFeat ? 'h3' : '.kl-band'); if (band) band.textContent = s.band;
     var origin = scope.querySelector('.kl-origin'); if (origin) origin.textContent = s.origin;

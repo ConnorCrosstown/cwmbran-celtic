@@ -191,14 +191,15 @@ function cc25_kit_launch() {
         'tickets_url' => cc25_ext_url('tickets'),
         'mvt_url'     => 'https://www.musicvenuetrust.com',
         // The four shirts, SFA first (the focus). img = file in assets/img/kit/.
+        // img = the card render (full kit). front/back = high-res product shots shown in the click-to-enlarge lightbox.
         'shirts'      => array(
-            array('band' => 'Super Furry Animals', 'img' => 'kit-sfa.jpg',   'label' => "Men's Home",   'origin' => 'Cardiff · Welsh legends',
+            array('band' => 'Super Furry Animals', 'img' => 'kit-sfa.jpg',   'front' => 'hr-sfa-front.jpg',    'back' => 'hr-sfa-back.jpg',    'label' => "Men's Home",   'origin' => 'Cardiff · Welsh legends',
                   'blurb' => "One of Wales' most celebrated and inventive bands lead the line on our men's home shirt — no strangers to a football kit, having graced an iconic Cardiff City shirt back in 1999."),
-            array('band' => 'Mogwai',              'img' => 'kit-away.jpg',   'label' => "Men's Away",   'origin' => 'Glasgow post-rock',
+            array('band' => 'Mogwai',              'img' => 'kit-away.jpg',   'front' => 'hr-mogwai-front.jpg', 'back' => 'hr-mogwai-back.jpg', 'label' => "Men's Away",   'origin' => 'Glasgow post-rock',
                   'blurb' => "Glasgow post-rock institution and lifelong Celtic fans, Mogwai take pride of place on our men's away shirt — the green-and-white hoops they grew up with."),
-            array('band' => 'Panic Shack',         'img' => 'kit-home.jpg',   'label' => "Women's Home", 'origin' => 'Cardiff punk',
+            array('band' => 'Panic Shack',         'img' => 'kit-home.jpg',   'front' => 'hr-panic-front.jpg',  'back' => 'hr-panic-back.jpg',  'label' => "Women's Home", 'origin' => 'Cardiff punk',
                   'blurb' => "Cardiff punk favourites Panic Shack front our women's home shirt — one of the sharpest, funniest new voices in Welsh guitar music."),
-            array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk',
+            array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'front' => 'hr-loose-front.jpg',  'back' => 'hr-loose-back.jpg',  'label' => "Women's Away", 'origin' => 'Manchester punk',
                   'blurb' => "Manchester punks Loose Articles lead our women's away shirt — all wit, attitude and energy, and proper football fans (their drummer's mum lives in Cwmbran!)."),
         ),
         // Goalkeeper kits — one per band. img = file in assets/img/kit/.

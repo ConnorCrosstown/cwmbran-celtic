@@ -1438,6 +1438,15 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .splash-cd-mvt{font-size:.76rem;color:var(--on-navy-dim,#9fb0d6);margin-bottom:16px}
 @media(max-width:420px){.splash-cd-clock{gap:7px}.splash-cd-clock .u{min-width:58px;padding:11px 4px}}
 
+/* ---- Music Shirts v13: front+back lightbox ---- */
+.shirt-lb-imgs{display:flex;gap:18px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+.shirt-lb-one{margin:0;text-align:center}
+.shirt-lb-one img{max-width:100%;max-height:76vh;background:#fff;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.5);display:block;margin:0 auto}
+.shirt-lb-one figcaption{color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;margin-top:10px;opacity:.85}
+.shirt-lb-imgs.two .shirt-lb-one{flex:1 1 300px;min-width:0;max-width:460px}
+.shirt-lb-imgs.two .shirt-lb-one img{max-height:66vh}
+@media(max-width:640px){.shirt-lb-imgs.two .shirt-lb-one img{max-height:44vh}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

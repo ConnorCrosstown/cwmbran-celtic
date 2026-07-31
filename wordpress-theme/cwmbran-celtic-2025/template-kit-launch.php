@@ -65,7 +65,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
 
     <?php $feat = $k['shirts'][0]; ?>
     <div class="kl-featshirt reveal" data-kl-featured>
-      <button type="button" class="kl-featshirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $feat['img']); ?>" data-cap="<?php echo esc_attr($feat['band'] . ' · ' . $feat['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($feat['band']); ?> shirt"><img src="<?php echo esc_url($kbase . $feat['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($feat['label'] . ' shirt — ' . $feat['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
+      <button type="button" class="kl-featshirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $feat['img']); ?>"<?php if (!empty($feat['front'])): ?> data-front="<?php echo esc_url($kbase . $feat['front']); ?>"<?php endif; ?><?php if (!empty($feat['back'])): ?> data-back="<?php echo esc_url($kbase . $feat['back']); ?>"<?php endif; ?> data-cap="<?php echo esc_attr($feat['band'] . ' · ' . $feat['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($feat['band']); ?> shirt &mdash; front and back"><img src="<?php echo esc_url($kbase . $feat['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($feat['label'] . ' shirt — ' . $feat['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
       <div class="kl-featshirt-body">
         <span class="kl-tag gold"><?php echo esc_html($feat['label']); ?></span>
         <h3><?php echo esc_html($feat['band']); ?></h3>
@@ -86,7 +86,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
     <div class="kl-shirts">
       <?php foreach (array_slice($k['shirts'], 1) as $i => $s): ?>
       <figure class="kl-shirt reveal<?php echo $i === 1 ? ' d1' : ($i === 2 ? ' d2' : ''); ?>">
-        <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>" data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($s['label'] . ' shirt — ' . $s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
+        <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>"<?php if (!empty($s['front'])): ?> data-front="<?php echo esc_url($kbase . $s['front']); ?>"<?php endif; ?><?php if (!empty($s['back'])): ?> data-back="<?php echo esc_url($kbase . $s['back']); ?>"<?php endif; ?> data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> shirt &mdash; front and back"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic <?php echo esc_attr($s['label'] . ' shirt — ' . $s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
         <figcaption>
           <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
           <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
@@ -217,7 +217,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
 <div class="shirt-lb" id="shirt-lb" role="dialog" aria-modal="true" aria-label="Shirt image" hidden>
   <button class="shirt-lb-x" type="button" aria-label="Close">&times;</button>
   <figure class="shirt-lb-fig">
-    <img id="shirt-lb-img" src="" alt="">
+    <div class="shirt-lb-imgs" id="shirt-lb-imgs"></div>
     <figcaption id="shirt-lb-cap"></figcaption>
     <a class="btn btn-gold shirt-lb-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order this shirt &rarr;</a>
   </figure>
