@@ -312,6 +312,17 @@ function cc25_view_log($page) {
     update_option("cc25_views_{$page}_recent", $recent, false);
 }
 
+/** Baseline views added to a page's all-time TOTAL — e.g. views that happened
+ * before this tracker was installed (pull from Cloudflare / host stats). Only
+ * the TOTAL is affected; the live 24h/hour/5min figures stay real. */
+function cc25_view_seed($page) {
+    $seed = array(
+        'home'         => 0,
+        'music-shirts' => 75, // pre-tracker views (from host/Cloudflare stats)
+    );
+    return isset($seed[$page]) ? (int) $seed[$page] : 0;
+}
+
 /** Live stats for one page. */
 function cc25_view_stats($page) {
     $now = time();
@@ -319,7 +330,7 @@ function cc25_view_stats($page) {
     if (!is_array($recent)) $recent = array();
     $since = function ($sec) use ($recent, $now) { $c = 0; foreach ($recent as $t) { if ((int) $t >= $now - $sec) $c++; } return $c; };
     return array(
-        'total' => (int) get_option("cc25_views_{$page}_total", 0),
+        'total' => cc25_view_seed($page) + (int) get_option("cc25_views_{$page}_total", 0),
         'day'   => $since(86400),
         'hour'  => $since(3600),
         'five'  => $since(300),
