@@ -878,18 +878,33 @@ function cc25_opp_crest_file($name) {
         'Newport Corinthians' => 'newport-corinthians.png',
         'Lliswerry' => 'lliswerry.png',
         'Blaenavon Blues' => 'blaenavon-blues.png',
+        'Rogerstone' => 'rogerstone.png',
+        'Abertillery Excelsiors' => 'abertillery-excelsiors.png',
+        'Abertillery Bluebirds' => 'abertillery-bluebirds.png',
         // Women's — Genero Adran South opponents.
         'Pontypridd United' => 'pontypridd-united.png',
         'Carmarthen Town' => 'carmarthen-town.png',
         'Taffs Well' => 'taffs-well.png',
+        'Llanrumney United' => 'llanrumney-united.png',
+        'Cascade YC' => 'cascade-yc.png',
+        'Penybont' => 'penybont.png',
+        'Pure Swansea' => 'pure-swansea.png',
         // Men's First Team opponents (also cover Reserves).
         'Abergavenny Town' => 'abergavenny-town.png',
         'Risca United' => 'risca-united.png',
         'Goytre' => 'goytre.png',
         'Caldicot Town' => 'caldicot-town.jpg',
         'Brecon Corries' => 'brecon-corries.png',
+        'Cardiff Corries' => 'cardiff-corries.png',
     );
-    return isset($map[$name]) ? $map[$name] : '';
+    if (isset($map[$name])) return $map[$name];
+    // Tolerate "FC"/"AFC" and spacing drift (e.g. "Undy FC" -> undy.png) so the
+    // Men's list ("Undy FC") and Reserves list ("Undy") share one crest.
+    $norm = cc25_norm_team($name);
+    foreach ($map as $k => $v) {
+        if (cc25_norm_team($k) === $norm) return $v;
+    }
+    return '';
 }
 function cc25_res_crest($name, $px) {
     if (strpos((string) $name, 'Cwmbran Celtic') !== false) return cc25_own_crest($px);
@@ -971,7 +986,9 @@ function cc25_static_fixtures() {
                 array('2026-08-01', 'Tredegar Town', false, 'League'),
                 array('2026-08-08', 'New Inn', true, 'League'),
                 array('2026-08-15', 'Abergavenny Town', false, 'League'),
-                array('2026-08-22', 'Risca United', true, 'League'),
+                // 22 Aug league game v Risca United postponed — Welsh Cup QR2 (v
+                // Newport Corinthians) takes the slot. Risca to be rearranged.
+                array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2'),
                 array('2026-08-29', 'Cardiff Corries', true, 'League Cup R1'),
                 array('2026-09-05', 'Goytre', true, 'League'),
                 array('2026-09-12', 'Chepstow Town', false, 'League'),
