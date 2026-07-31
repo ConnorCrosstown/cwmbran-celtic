@@ -47,7 +47,7 @@ if ($cc25_kllive): ?>
       <div class="splash-launch-mvt">&#9733; 10% of every shirt supports <a href="<?php echo esc_url($cc25_kl['mvt_url']); ?>" target="_blank" rel="noopener"><b>Music Venue Trust</b></a></div>
       <div class="splash-cta">
         <a class="btn btn-gold" href="<?php echo esc_url($cc25_klurl); ?>">See the shirts</a>
-        <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('shop')); ?>" target="_blank" rel="noopener">Pre-order</a>
+        <a class="btn btn-outline" href="<?php echo esc_url($cc25_kl['shop_url']); ?>" target="_blank" rel="noopener">Pre-order</a>
       </div>
       <button class="splash-later" type="button" data-close>Maybe later</button>
     </div>
