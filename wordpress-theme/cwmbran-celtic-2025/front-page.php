@@ -67,7 +67,6 @@ if ($cc25_kllive): ?>
       <div class="u"><b data-m>00</b><span>Mins</span></div>
       <div class="u"><b data-s>00</b><span>Secs</span></div>
     </div>
-    <div class="splash-cd-bands">Super Furry Animals &middot; Mogwai &middot; Panic Shack &middot; Loose Articles</div>
     <div class="splash-cd-mvt">&#9733; 10% of the profit of every shirt supports Music Venue Trust</div>
     <button class="splash-later" type="button" data-close>Close</button>
   </div>
