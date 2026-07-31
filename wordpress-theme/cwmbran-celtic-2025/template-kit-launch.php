@@ -223,8 +223,4 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
     <span class="shirt-lb-soon" hidden>&#9733; Coming Soon</span>
   </figure>
 </div>
-<?php // Live view beacon — counts this page view even when served from cache. Skips logged-in admins. ?>
-<?php if (!(is_user_logged_in() && current_user_can('manage_options'))): ?>
-<script>(function(){try{fetch(<?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>+'?action=cc25_ms_hit',{method:'POST',keepalive:true,credentials:'omit'});}catch(e){}})();</script>
-<?php endif; ?>
 <?php get_template_part('template-parts/site-footer'); ?>

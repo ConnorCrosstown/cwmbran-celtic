@@ -275,111 +275,141 @@ function cc25_kit_launch_countdown() {
 }
 
 /* ============================================================
- * Music Shirts — self-contained live view counter.
- * Counts client-side (a beacon on the page) so it works even when the
- * page is served from cache. Live dashboard at:
- *   /music-shirts/?stats=<cc25_ms_stats_key()>
+ * Live view counter (per page). Counts client-side via a beacon so it works
+ * even when pages are served from cache. Combined live dashboard at:
+ *   /?stats=<key>   or   /music-shirts/?stats=<key>
  * ============================================================ */
 
-/** Secret key guarding the stats dashboard + data endpoint. */
+/** Secret key guarding the stats dashboard + data endpoints. */
 function cc25_ms_stats_key() { return 'ms-live-7q2xk9'; }
 
-/** Record one view (all-time total + a 24h rolling log for the live figures). */
-function cc25_ms_log_view() {
-    update_option('cc25_ms_total', ((int) get_option('cc25_ms_total', 0)) + 1, false);
-    $recent = get_option('cc25_ms_recent', array());
+/** Pages we track: tracking-slug => label. */
+function cc25_view_pages() {
+    return array(
+        'home'         => 'Home page',
+        'music-shirts' => 'Music Shirts',
+    );
+}
+
+/** Tracking slug for the page being viewed, or '' if it isn't tracked. */
+function cc25_view_slug() {
+    if (is_front_page() || is_home()) return 'home';
+    if (is_page() && get_post_field('post_name', get_queried_object_id()) === 'music-shirts') return 'music-shirts';
+    return '';
+}
+
+/** Record one view for a page (all-time total + a 24h rolling log). */
+function cc25_view_log($page) {
+    $pages = cc25_view_pages();
+    if (!isset($pages[$page])) return;
+    update_option("cc25_views_{$page}_total", ((int) get_option("cc25_views_{$page}_total", 0)) + 1, false);
+    $recent = get_option("cc25_views_{$page}_recent", array());
     if (!is_array($recent)) $recent = array();
     $recent[] = time();
     $cut = time() - 86400;
     $recent = array_values(array_filter($recent, function ($t) use ($cut) { return (int) $t >= $cut; }));
     if (count($recent) > 6000) $recent = array_slice($recent, -6000);
-    update_option('cc25_ms_recent', $recent, false);
+    update_option("cc25_views_{$page}_recent", $recent, false);
 }
 
-/** Current stats as an array. */
-function cc25_ms_stats_data() {
+/** Live stats for one page. */
+function cc25_view_stats($page) {
     $now = time();
-    $recent = get_option('cc25_ms_recent', array());
+    $recent = get_option("cc25_views_{$page}_recent", array());
     if (!is_array($recent)) $recent = array();
-    $since = function ($sec) use ($recent, $now) {
-        $c = 0; foreach ($recent as $t) { if ((int) $t >= $now - $sec) $c++; } return $c;
-    };
+    $since = function ($sec) use ($recent, $now) { $c = 0; foreach ($recent as $t) { if ((int) $t >= $now - $sec) $c++; } return $c; };
     return array(
-        'total' => (int) get_option('cc25_ms_total', 0),
+        'total' => (int) get_option("cc25_views_{$page}_total", 0),
         'day'   => $since(86400),
         'hour'  => $since(3600),
         'five'  => $since(300),
         'one'   => $since(60),
-        'ts'    => $now,
     );
 }
 
-/** admin-ajax: log a view (skips obvious bots). Not page-cached, so cached
- * pages still register via their beacon. */
+/** All tracked pages' stats keyed by slug (each includes its label). */
+function cc25_view_stats_all() {
+    $out = array();
+    foreach (cc25_view_pages() as $slug => $label) {
+        $out[$slug] = array('label' => $label) + cc25_view_stats($slug);
+    }
+    return $out;
+}
+
+/** Beacon: on any tracked page (and not a logged-in admin), ping the hit
+ * endpoint on load. It's baked into the cached HTML, so cached views count. */
+add_action('wp_footer', function () {
+    $slug = cc25_view_slug();
+    if (!$slug) return;
+    if (is_user_logged_in() && current_user_can('manage_options')) return;
+    echo '<script>(function(){try{fetch(' . wp_json_encode(admin_url('admin-ajax.php')) . '+"?action=cc25_ms_hit&p=' . rawurlencode($slug) . '",{method:"POST",keepalive:true,credentials:"omit"});}catch(e){}})();</script>';
+}, 99);
+
+/** admin-ajax: log a view (skips obvious bots). Not page-cached. */
 add_action('wp_ajax_cc25_ms_hit', 'cc25_ms_hit');
 add_action('wp_ajax_nopriv_cc25_ms_hit', 'cc25_ms_hit');
 function cc25_ms_hit() {
+    $p = isset($_GET['p']) ? preg_replace('/[^a-z0-9\-]/', '', (string) $_GET['p']) : '';
     $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-    if (!preg_match('/bot|crawl|spider|slurp|facebookexternalhit|headless|preview|monitor|pingdom|uptime/i', $ua)) {
-        cc25_ms_log_view();
+    if ($p && !preg_match('/bot|crawl|spider|slurp|facebookexternalhit|headless|preview|monitor|pingdom|uptime/i', $ua)) {
+        cc25_view_log($p);
     }
     wp_send_json_success();
 }
 
-/** admin-ajax: return the live stats JSON (key-guarded). */
+/** admin-ajax: return live stats for all tracked pages (key-guarded). */
 add_action('wp_ajax_cc25_ms_stats', 'cc25_ms_stats_json');
 add_action('wp_ajax_nopriv_cc25_ms_stats', 'cc25_ms_stats_json');
 function cc25_ms_stats_json() {
     $k = isset($_GET['k']) ? (string) $_GET['k'] : '';
     if (!hash_equals(cc25_ms_stats_key(), $k)) wp_send_json_error(array('e' => 'auth'), 403);
-    wp_send_json(cc25_ms_stats_data());
+    wp_send_json(cc25_view_stats_all());
 }
 
-/** The live stats dashboard, served at /music-shirts/?stats=KEY. */
+/** Combined live dashboard, served at /?stats=KEY on any tracked page. */
 add_action('template_redirect', function () {
-    if (!is_page()) return;
-    if (get_post_field('post_name', get_queried_object_id()) !== 'music-shirts') return;
     if (!isset($_GET['stats']) || !hash_equals(cc25_ms_stats_key(), (string) $_GET['stats'])) return;
+    if (!cc25_view_slug()) return;
     nocache_headers();
-    $d = cc25_ms_stats_data();
-    $ajax = admin_url('admin-ajax.php');
+    $all = cc25_view_stats_all();
     header('Content-Type: text/html; charset=utf-8');
-    ?><!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Music Shirts &mdash; Live views</title>
+    ?><!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Cwmbran Celtic &mdash; Live views</title>
 <style>
-*{box-sizing:border-box;margin:0}body{background:#0a1424;color:#eaf0fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.wrap{width:100%;max-width:680px;text-align:center}
+*{box-sizing:border-box;margin:0}body{background:#0a1424;color:#eaf0fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;min-height:100vh;padding:32px 18px}
+.wrap{width:100%;max-width:760px;margin:0 auto;text-align:center}
 .eye{color:#f5c518;text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;font-weight:700;margin-bottom:8px}
-h1{font-size:clamp(1.8rem,6vw,2.6rem);font-weight:800;margin-bottom:26px;letter-spacing:-.01em}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.stat{background:#0e1a33;border:1px solid #1e2c4a;border-radius:14px;padding:26px 14px}
-.stat.big{grid-column:1/-1;background:linear-gradient(150deg,#12203c,#0a1f3c);border-color:#2b3d63}
-.stat b{display:block;font-size:clamp(2.2rem,10vw,3.6rem);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:#fff}
-.stat.big b{color:#f5c518;font-size:clamp(3rem,14vw,5rem)}
-.stat span{display:block;margin-top:10px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:#9fb0d6}
-.foot{margin-top:22px;color:#9fb0d6;font-size:.8rem}.pulse{color:#16a34a;animation:p 1.4s infinite}@keyframes p{50%{opacity:.25}}
+h1{font-size:clamp(1.7rem,6vw,2.4rem);font-weight:800;margin-bottom:30px;letter-spacing:-.01em}
+.pg{margin-bottom:26px}.pg h2{font-size:1.05rem;color:#9fb0d6;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;text-align:left}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.stat{background:#0e1a33;border:1px solid #1e2c4a;border-radius:12px;padding:18px 8px}
+.stat.big{background:linear-gradient(150deg,#12203c,#0a1f3c);border-color:#2b3d63}
+.stat b{display:block;font-size:clamp(1.4rem,5vw,2.1rem);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:#fff}
+.stat.big b{color:#f5c518}
+.stat span{display:block;margin-top:8px;font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:#9fb0d6}
+.foot{margin-top:14px;color:#9fb0d6;font-size:.8rem}.pulse{color:#16a34a;animation:p 1.4s infinite}@keyframes p{50%{opacity:.25}}
+@media(max-width:540px){.grid{grid-template-columns:repeat(3,1fr)}}
 </style></head><body><div class="wrap">
-<div class="eye">Cwmbran Celtic &middot; Music Shirts 2026/27</div>
+<div class="eye">Cwmbran Celtic &middot; 2026/27</div>
 <h1>Live page views</h1>
-<div class="grid">
-  <div class="stat big"><b id="s-total"><?php echo number_format($d['total']); ?></b><span>Total views</span></div>
-  <div class="stat"><b id="s-day"><?php echo number_format($d['day']); ?></b><span>Last 24 hours</span></div>
-  <div class="stat"><b id="s-hour"><?php echo number_format($d['hour']); ?></b><span>Last hour</span></div>
-  <div class="stat"><b id="s-five"><?php echo number_format($d['five']); ?></b><span>Last 5 min</span></div>
-  <div class="stat"><b id="s-one"><?php echo number_format($d['one']); ?></b><span>Last minute</span></div>
-</div>
+<?php foreach ($all as $slug => $s): ?>
+<section class="pg">
+  <h2><?php echo esc_html($s['label']); ?></h2>
+  <div class="grid">
+    <div class="stat big"><b id="s-<?php echo esc_attr($slug); ?>-total"><?php echo number_format($s['total']); ?></b><span>Total</span></div>
+    <div class="stat"><b id="s-<?php echo esc_attr($slug); ?>-day"><?php echo number_format($s['day']); ?></b><span>24 h</span></div>
+    <div class="stat"><b id="s-<?php echo esc_attr($slug); ?>-hour"><?php echo number_format($s['hour']); ?></b><span>Hour</span></div>
+    <div class="stat"><b id="s-<?php echo esc_attr($slug); ?>-five"><?php echo number_format($s['five']); ?></b><span>5 min</span></div>
+    <div class="stat"><b id="s-<?php echo esc_attr($slug); ?>-one"><?php echo number_format($s['one']); ?></b><span>1 min</span></div>
+  </div>
+</section>
+<?php endforeach; ?>
 <div class="foot"><span class="pulse">&#9679;</span> live &middot; updates every 5 seconds</div>
 </div>
 <script>
-var AJAX=<?php echo wp_json_encode($ajax); ?>,K=<?php echo wp_json_encode(cc25_ms_stats_key()); ?>;
+var AJAX=<?php echo wp_json_encode(admin_url('admin-ajax.php')); ?>,K=<?php echo wp_json_encode(cc25_ms_stats_key()); ?>;
 function f(n){return (n||0).toLocaleString();}
-function poll(){fetch(AJAX+'?action=cc25_ms_stats&k='+encodeURIComponent(K),{credentials:'omit'}).then(function(r){return r.json();}).then(function(d){
- if(!d||d.total===undefined)return;
- document.getElementById('s-total').textContent=f(d.total);
- document.getElementById('s-day').textContent=f(d.day);
- document.getElementById('s-hour').textContent=f(d.hour);
- document.getElementById('s-five').textContent=f(d.five);
- document.getElementById('s-one').textContent=f(d.one);
-}).catch(function(){});}
+function set(slug,d){['total','day','hour','five','one'].forEach(function(k){var el=document.getElementById('s-'+slug+'-'+k);if(el&&d[k]!==undefined)el.textContent=f(d[k]);});}
+function poll(){fetch(AJAX+'?action=cc25_ms_stats&k='+encodeURIComponent(K),{credentials:'omit'}).then(function(r){return r.json();}).then(function(all){if(all)for(var slug in all){set(slug,all[slug]);}}).catch(function(){});}
 poll();setInterval(poll,5000);
 </script></body></html><?php
     exit;
