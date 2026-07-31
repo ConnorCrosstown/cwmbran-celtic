@@ -231,6 +231,8 @@
   if (!lb) return;
   var imgs = document.getElementById('shirt-lb-imgs');
   var cap = document.getElementById('shirt-lb-cap');
+  var buy = lb.querySelector('.shirt-lb-buy');
+  var soon = lb.querySelector('.shirt-lb-soon');
   function esc(s) { return String(s || '').replace(/"/g, '&quot;'); }
   function one(src, label, alt) {
     return '<figure class="shirt-lb-one"><img src="' + esc(src) + '" alt="' + esc(alt) + '">' + (label ? '<figcaption>' + label + '</figcaption>' : '') + '</figure>';
@@ -248,6 +250,9 @@
     imgs.innerHTML = html;
     imgs.className = 'shirt-lb-imgs' + ((front && back) ? ' two' : '');
     cap.textContent = c;
+    var isSoon = btn.getAttribute('data-soon');
+    if (buy) buy.hidden = !!isSoon;
+    if (soon) soon.hidden = !isSoon;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
   }

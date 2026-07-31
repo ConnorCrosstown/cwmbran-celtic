@@ -109,7 +109,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
           <?php foreach ($k['keepers'] as $s): ?>
           <figure class="kl-shirt<?php echo $gk_soon ? ' is-soon' : ' reveal'; ?>">
             <?php if ($gk_soon): ?><span class="kl-soon-badge">Coming Soon</span><?php endif; ?>
-            <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>" data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> goalkeeper shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic goalkeeper shirt — <?php echo esc_attr($s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
+            <button type="button" class="kl-shirt-img shirt-zoom" data-full="<?php echo esc_url($kbase . $s['img']); ?>"<?php if ($gk_soon): ?> data-soon="1"<?php endif; ?> data-cap="<?php echo esc_attr($s['band'] . ' · ' . $s['label']); ?>" aria-label="Enlarge the <?php echo esc_attr($s['band']); ?> goalkeeper shirt"><img src="<?php echo esc_url($kbase . $s['img']); ?>" alt="Cwmbran Celtic goalkeeper shirt — <?php echo esc_attr($s['band']); ?>" loading="lazy"><span class="zoom-hint" aria-hidden="true">⤢</span></button>
             <figcaption>
               <span class="kl-tag"><?php echo esc_html($s['label']); ?></span>
               <span class="kl-band"><?php echo esc_html($s['band']); ?></span>
@@ -220,6 +220,7 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
     <div class="shirt-lb-imgs" id="shirt-lb-imgs"></div>
     <figcaption id="shirt-lb-cap"></figcaption>
     <a class="btn btn-gold shirt-lb-buy" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order this shirt &rarr;</a>
+    <span class="shirt-lb-soon" hidden>&#9733; Coming Soon</span>
   </figure>
 </div>
 <?php get_template_part('template-parts/site-footer'); ?>
