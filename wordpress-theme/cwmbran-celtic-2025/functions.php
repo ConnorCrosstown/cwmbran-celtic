@@ -55,6 +55,9 @@ add_filter('template_include', function ($template) {
             'mens-reserves'              => 'template-reserves.php',
             'mens-vets'                  => 'template-vets.php',
             'vets'                       => 'template-vets.php',
+            'juniors'                    => 'template-juniors.php',
+            'juniors-and-minis'          => 'template-juniors.php',
+            'minis'                      => 'template-juniors.php',
             'ladies-team'                => 'template-women-cards.php',
             'ladies-1st-team'            => 'template-women-cards.php',
             'sponsors-2'                 => 'template-sponsors.php',
@@ -96,6 +99,7 @@ function cc25_ensure_pages() {
         'travel-and-ground' => 'Travel & Ground',
         'mens-reserves'     => "Men's Reserves",
         'mens-vets'         => "Men's Vets",
+        'juniors'           => 'Juniors & Minis',
         'away-days'         => 'Away Days',
         '2025-26-archive'   => '2025-26 Season',
         'match-report'      => 'Match Report',
@@ -116,7 +120,7 @@ add_action('after_switch_theme', 'cc25_ensure_pages');
 add_action('admin_init', function () {
     // Version-stamped so a new page in cc25_ensure_pages() gets created on the
     // next admin load of an already-installed theme. Bump when adding a page.
-    $ver = '2026-07-31-mens-vets';
+    $ver = '2026-07-31-juniors';
     if (get_option('cc25_pages_provisioned') === $ver) return;
     cc25_ensure_pages();
     update_option('cc25_pages_provisioned', $ver);
@@ -134,6 +138,27 @@ function cc25_reserves_url() {
 function cc25_vets_url() {
     $p = cc25_page_url(array('mens-vets', 'vets'), '');
     return $p ? $p : cc25_page_url('teams', home_url('/'));
+}
+
+/** Juniors & Minis destination: the dedicated /juniors/ page if it exists. */
+function cc25_juniors_url() {
+    $p = cc25_page_url(array('juniors', 'juniors-and-minis', 'minis'), '');
+    return $p ? $p : cc25_page_url('teams', home_url('/'));
+}
+
+/** Junior & Mini section age groups with their coach contact(s), in order.
+ * Each row: ['label' => age group, 'contacts' => [[name, phone], ...]]. */
+function cc25_junior_teams() {
+    return array(
+        array('label' => "Under 16s",       'contacts' => array(array('Nathan Thomas', '07599 291579'), array('Sarah Gooding', '07749 968287'))),
+        array('label' => "Under 15 Girls",  'contacts' => array(array('Mark Millar', '07584 299671'))),
+        array('label' => "Under 14",        'contacts' => array(array('Derrie Ormond', '07399 282840'))),
+        array('label' => "Under 12 Yellow", 'contacts' => array(array('Jason Austin', '07969 215204'))),
+        array('label' => "Under 12 Blue",   'contacts' => array(array('Matt Summers', '07899 113972'))),
+        array('label' => "Under 11 Girls",  'contacts' => array(array('Lee Gwilliam', '07817 238884'))),
+        array('label' => "Under 10",        'contacts' => array(array('Derrie Ormond', '07399 282840'))),
+        array('label' => "Under 9",         'contacts' => array(array('Cleyon Decourte', '07939 431473'))),
+    );
 }
 
 /** Real slug variants (confirmed from the live site) so links resolve to the club's pages. */
@@ -775,6 +800,7 @@ function cc25_nav_items() {
             array("Men's Reserves", cc25_reserves_url(), false),
             array("Men's Vets", cc25_vets_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
+            array("Juniors &amp; Minis", cc25_juniors_url(), false),
         )),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),

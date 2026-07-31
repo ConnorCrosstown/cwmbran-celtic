@@ -1501,3 +1501,13 @@ nav.main a::after{left:10px;right:10px}
 nav.main .cc25-nav .menu-item-has-children>a{padding-right:21px}
 /* CTAs: never shrink or wrap to two lines */
 header.nav .btn-shirts,header.nav .btn-tickets{white-space:nowrap;flex:0 0 auto;padding:9px 16px}
+
+/* ---- Juniors & Minis: age-group contact cards ---- */
+.jr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin:14px 0 4px}
+.jr-card{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.jr-card h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;font-size:1.02rem;margin:0 0 10px;color:var(--text);display:flex;align-items:center;gap:9px}
+.jr-card h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none}
+.jr-contact{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:8px 0;border-top:1px solid var(--hair)}
+.jr-contact .nm{color:var(--muted);font-size:.93rem}
+.jr-contact a.tel{font-family:var(--display);letter-spacing:.02em;font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap;text-decoration:none}
+.jr-contact a.tel:hover{color:var(--gold)}
