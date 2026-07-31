@@ -71,27 +71,27 @@ Saturday's Ardal League South East fixture against Risca United has been postpon
 
 ---
 
-## POST 3 — Vets O40s Cup tie rearranged
+## POST 3 — Vets O40s Cup: Tata Steel United at home (fixture announcement)
 
-**Title:** Vets' O40s Cup tie with Tata Steel United rearranged
+**Title:** Vets drawn at home to Tata Steel United in O40s Cup
 
-**Slug:** `vets-o40s-cup-tata-steel-united-rearranged`
+**Slug:** `vets-o40s-cup-tata-steel-united`
 
 **Category:** Veterans (or Club)
 
 **Suggested featured image:** Vets/matchday shot, or the club crest
 
 **Excerpt:**
-Our Vets' Over-40s Cup first round tie with Tata Steel United has been moved to Sunday 23 August.
+Our Vets open their Over-40s Cup campaign at home to Tata Steel United on Sunday 23 August.
 
 **Body (paste as HTML):**
 
 ```html
-<p>Cwmbran Celtic can confirm that the schedule for our <strong>Vets (Over-40s)</strong> cup tie at home to <strong>Tata Steel United Vets</strong> has been updated.</p>
+<p>Cwmbran Celtic are pleased to confirm that our <strong>Vets (Over-40s)</strong> will host <strong>Tata Steel United Vets</strong> in the first round of the <strong>WVFA Workwear Supermarket Over-40s Cup</strong>.</p>
 
-<p>The first-round tie in the <strong>WVFA Workwear Supermarket Over-40s Cup</strong> has been rearranged from Sunday 16 August and will now be played on <strong>Sunday 23 August 2026, 2:00pm at the Motazone Arena</strong>.</p>
+<p>The tie will be played on <strong>Sunday 23 August 2026, 2:00pm at the Motazone Arena</strong> &mdash; the opening cup outing of the 2026/27 campaign for the Vets, and a home draw to get their knockout run under way.</p>
 
-<p>It's the opening cup outing of the 2026/27 campaign for the Vets, and a home tie to get their knockout run under way. Supporters are more than welcome to head down to Celtic Park and cheer the lads on.</p>
+<p>Supporters are more than welcome to head down to Celtic Park and cheer the lads on.</p>
 
 <p><strong>WVFA Workwear Supermarket Over-40s Cup, Round 1</strong><br>
 Cwmbran Celtic Vets v Tata Steel United Vets<br>

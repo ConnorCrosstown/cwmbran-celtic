@@ -53,6 +53,8 @@ add_filter('template_include', function ($template) {
             'mens-team'                  => 'template-player-cards.php',
             'mens-1st-team'              => 'template-player-cards.php',
             'mens-reserves'              => 'template-reserves.php',
+            'mens-vets'                  => 'template-vets.php',
+            'vets'                       => 'template-vets.php',
             'ladies-team'                => 'template-women-cards.php',
             'ladies-1st-team'            => 'template-women-cards.php',
             'sponsors-2'                 => 'template-sponsors.php',
@@ -93,6 +95,7 @@ function cc25_ensure_pages() {
     $pages = array(
         'travel-and-ground' => 'Travel & Ground',
         'mens-reserves'     => "Men's Reserves",
+        'mens-vets'         => "Men's Vets",
         'away-days'         => 'Away Days',
         '2025-26-archive'   => '2025-26 Season',
         'match-report'      => 'Match Report',
@@ -113,7 +116,7 @@ add_action('after_switch_theme', 'cc25_ensure_pages');
 add_action('admin_init', function () {
     // Version-stamped so a new page in cc25_ensure_pages() gets created on the
     // next admin load of an already-installed theme. Bump when adding a page.
-    $ver = '2026-07-30-music-shirts';
+    $ver = '2026-07-31-mens-vets';
     if (get_option('cc25_pages_provisioned') === $ver) return;
     cc25_ensure_pages();
     update_option('cc25_pages_provisioned', $ver);
@@ -124,6 +127,13 @@ add_action('admin_init', function () {
 function cc25_reserves_url() {
     $p = cc25_page_url('mens-reserves', '');
     return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#reserves');
+}
+
+/** Men's Vets destination: the dedicated /mens-vets/ page if it exists, else
+ * the teams hub (the page is auto-provisioned, so it normally resolves). */
+function cc25_vets_url() {
+    $p = cc25_page_url(array('mens-vets', 'vets'), '');
+    return $p ? $p : cc25_page_url('teams', home_url('/'));
 }
 
 /** Real slug variants (confirmed from the live site) so links resolve to the club's pages. */
@@ -763,6 +773,7 @@ function cc25_nav_items() {
         array('All Teams', cc25_page_url('teams', $home), false, array(
             array("Men's First Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
             array("Men's Reserves", cc25_reserves_url(), false),
+            array("Men's Vets", cc25_vets_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
         )),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(

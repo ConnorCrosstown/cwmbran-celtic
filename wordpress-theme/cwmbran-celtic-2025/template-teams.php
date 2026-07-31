@@ -13,6 +13,7 @@ $cc25_hub = array(
     array('name' => "Men's First Team",   'sub' => 'Ardal League South East',    'page' => cc25_page_url('mens', $cc25_home),   'fx' => $cc25_fx . '#mens'),
     array('name' => "Men's Reserves",      'sub' => 'Gwent Premier Combination',  'page' => cc25_reserves_url(),                 'fx' => $cc25_fx . '#reserves'),
     array('name' => "Women's First Team",  'sub' => 'Genero Adran South',         'page' => cc25_page_url('ladies', $cc25_home), 'fx' => $cc25_fx . '#womens'),
+    array('name' => "Men's Vets",          'sub' => 'WVFA Over-40s',              'page' => cc25_vets_url(),                     'fx' => ''),
 );
 ?>
 <div class="phero">
@@ -34,7 +35,9 @@ $cc25_hub = array(
           <div class="team-sub"><?php echo esc_html($t['sub']); ?></div>
           <div class="team-links">
             <a class="btn btn-sm btn-outline" href="<?php echo esc_url($t['page']); ?>">Squad</a>
+            <?php if (!empty($t['fx'])): ?>
             <a class="btn btn-sm btn-gold" href="<?php echo esc_url($t['fx']); ?>">Fixtures</a>
+            <?php endif; ?>
           </div>
         </div>
       <?php endforeach; ?>
