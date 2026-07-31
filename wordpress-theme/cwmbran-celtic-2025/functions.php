@@ -1006,7 +1006,7 @@ function cc25_static_fixtures() {
             'title'  => "Men's Reserves",
             'badge'  => array('Res', 'tk-team-r'),
             'list'   => array(
-                array('2026-08-08', 'Rogerstone', false, 'League Cup R1'),
+                array('2026-08-07', 'Rogerstone', false, 'League Cup R1'),
                 array('2026-08-15', 'Croesyceiliog', false, 'League'),
                 array('2026-08-22', 'Rogerstone', true, 'League'),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
@@ -1053,7 +1053,7 @@ function cc25_static_fixtures() {
                 array('2027-02-21', 'Pontypridd United', false, 'League'),
                 array('2027-03-14', 'Taffs Well', true, 'League'),
                 array('2027-03-21', 'Pure Swansea', false, 'League'),
-                array('2027-04-04', 'Penybont', true, 'League'),   // venue assumed Home (reverse of 29-Nov) — confirm
+                array('2027-04-04', 'Penybont', true, 'League'),
             ),
         ),
     );
