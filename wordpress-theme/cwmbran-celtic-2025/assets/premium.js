@@ -299,12 +299,29 @@
   for (var c = 0; c < cards.length; c++) { if (shirts[c + 1]) fill(cards[c], shirts[c + 1], false); }
 })();
 
-/* Music Shirts countdown: auto-refresh at launch time to reveal the kit. */
+/* Music Shirts countdown: reveal the kit at launch time, and self-recover if
+   a STALE (cached) countdown page is loaded after launch — refresh once with a
+   cache-buster so the reload bypasses the page cache/CDN and gets the live page. */
 (function () {
   var c = document.querySelector('.splash.is-countdown .splash-count');
   if (!c) return;
   var ko = parseInt(c.getAttribute('data-ko'), 10);
   if (!ko) return;
+  function reloadFresh() {
+    try {
+      if (sessionStorage.getItem('ms-cd-reloaded') === '1') return; // guard: once per tab session
+      sessionStorage.setItem('ms-cd-reloaded', '1');
+    } catch (e) {}
+    try {
+      var u = new URL(location.href);
+      u.searchParams.set('_r', String(Date.now())); // cache-buster → skips cached copy
+      location.replace(u.toString());
+    } catch (e) { try { location.reload(); } catch (e2) {} }
+  }
   var ms = ko - Date.now();
-  if (ms > 0 && ms < 26 * 3600 * 1000) { setTimeout(function () { try { location.reload(); } catch (e) {} }, ms + 2000); }
+  if (ms > 0) {
+    if (ms < 26 * 3600 * 1000) setTimeout(reloadFresh, ms + 1500); // before launch: flip at go-live
+  } else {
+    reloadFresh(); // already past launch but showing the countdown → recover now
+  }
 })();

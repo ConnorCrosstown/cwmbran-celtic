@@ -274,6 +274,117 @@ function cc25_kit_launch_countdown() {
     return $ts > 0 && time() < $ts;
 }
 
+/* ============================================================
+ * Music Shirts — self-contained live view counter.
+ * Counts client-side (a beacon on the page) so it works even when the
+ * page is served from cache. Live dashboard at:
+ *   /music-shirts/?stats=<cc25_ms_stats_key()>
+ * ============================================================ */
+
+/** Secret key guarding the stats dashboard + data endpoint. */
+function cc25_ms_stats_key() { return 'ms-live-7q2xk9'; }
+
+/** Record one view (all-time total + a 24h rolling log for the live figures). */
+function cc25_ms_log_view() {
+    update_option('cc25_ms_total', ((int) get_option('cc25_ms_total', 0)) + 1, false);
+    $recent = get_option('cc25_ms_recent', array());
+    if (!is_array($recent)) $recent = array();
+    $recent[] = time();
+    $cut = time() - 86400;
+    $recent = array_values(array_filter($recent, function ($t) use ($cut) { return (int) $t >= $cut; }));
+    if (count($recent) > 6000) $recent = array_slice($recent, -6000);
+    update_option('cc25_ms_recent', $recent, false);
+}
+
+/** Current stats as an array. */
+function cc25_ms_stats_data() {
+    $now = time();
+    $recent = get_option('cc25_ms_recent', array());
+    if (!is_array($recent)) $recent = array();
+    $since = function ($sec) use ($recent, $now) {
+        $c = 0; foreach ($recent as $t) { if ((int) $t >= $now - $sec) $c++; } return $c;
+    };
+    return array(
+        'total' => (int) get_option('cc25_ms_total', 0),
+        'day'   => $since(86400),
+        'hour'  => $since(3600),
+        'five'  => $since(300),
+        'one'   => $since(60),
+        'ts'    => $now,
+    );
+}
+
+/** admin-ajax: log a view (skips obvious bots). Not page-cached, so cached
+ * pages still register via their beacon. */
+add_action('wp_ajax_cc25_ms_hit', 'cc25_ms_hit');
+add_action('wp_ajax_nopriv_cc25_ms_hit', 'cc25_ms_hit');
+function cc25_ms_hit() {
+    $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+    if (!preg_match('/bot|crawl|spider|slurp|facebookexternalhit|headless|preview|monitor|pingdom|uptime/i', $ua)) {
+        cc25_ms_log_view();
+    }
+    wp_send_json_success();
+}
+
+/** admin-ajax: return the live stats JSON (key-guarded). */
+add_action('wp_ajax_cc25_ms_stats', 'cc25_ms_stats_json');
+add_action('wp_ajax_nopriv_cc25_ms_stats', 'cc25_ms_stats_json');
+function cc25_ms_stats_json() {
+    $k = isset($_GET['k']) ? (string) $_GET['k'] : '';
+    if (!hash_equals(cc25_ms_stats_key(), $k)) wp_send_json_error(array('e' => 'auth'), 403);
+    wp_send_json(cc25_ms_stats_data());
+}
+
+/** The live stats dashboard, served at /music-shirts/?stats=KEY. */
+add_action('template_redirect', function () {
+    if (!is_page()) return;
+    if (get_post_field('post_name', get_queried_object_id()) !== 'music-shirts') return;
+    if (!isset($_GET['stats']) || !hash_equals(cc25_ms_stats_key(), (string) $_GET['stats'])) return;
+    nocache_headers();
+    $d = cc25_ms_stats_data();
+    $ajax = admin_url('admin-ajax.php');
+    header('Content-Type: text/html; charset=utf-8');
+    ?><!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Music Shirts &mdash; Live views</title>
+<style>
+*{box-sizing:border-box;margin:0}body{background:#0a1424;color:#eaf0fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.wrap{width:100%;max-width:680px;text-align:center}
+.eye{color:#f5c518;text-transform:uppercase;letter-spacing:.18em;font-size:.72rem;font-weight:700;margin-bottom:8px}
+h1{font-size:clamp(1.8rem,6vw,2.6rem);font-weight:800;margin-bottom:26px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat{background:#0e1a33;border:1px solid #1e2c4a;border-radius:14px;padding:26px 14px}
+.stat.big{grid-column:1/-1;background:linear-gradient(150deg,#12203c,#0a1f3c);border-color:#2b3d63}
+.stat b{display:block;font-size:clamp(2.2rem,10vw,3.6rem);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:#fff}
+.stat.big b{color:#f5c518;font-size:clamp(3rem,14vw,5rem)}
+.stat span{display:block;margin-top:10px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:#9fb0d6}
+.foot{margin-top:22px;color:#9fb0d6;font-size:.8rem}.pulse{color:#16a34a;animation:p 1.4s infinite}@keyframes p{50%{opacity:.25}}
+</style></head><body><div class="wrap">
+<div class="eye">Cwmbran Celtic &middot; Music Shirts 2026/27</div>
+<h1>Live page views</h1>
+<div class="grid">
+  <div class="stat big"><b id="s-total"><?php echo number_format($d['total']); ?></b><span>Total views</span></div>
+  <div class="stat"><b id="s-day"><?php echo number_format($d['day']); ?></b><span>Last 24 hours</span></div>
+  <div class="stat"><b id="s-hour"><?php echo number_format($d['hour']); ?></b><span>Last hour</span></div>
+  <div class="stat"><b id="s-five"><?php echo number_format($d['five']); ?></b><span>Last 5 min</span></div>
+  <div class="stat"><b id="s-one"><?php echo number_format($d['one']); ?></b><span>Last minute</span></div>
+</div>
+<div class="foot"><span class="pulse">&#9679;</span> live &middot; updates every 5 seconds</div>
+</div>
+<script>
+var AJAX=<?php echo wp_json_encode($ajax); ?>,K=<?php echo wp_json_encode(cc25_ms_stats_key()); ?>;
+function f(n){return (n||0).toLocaleString();}
+function poll(){fetch(AJAX+'?action=cc25_ms_stats&k='+encodeURIComponent(K),{credentials:'omit'}).then(function(r){return r.json();}).then(function(d){
+ if(!d||d.total===undefined)return;
+ document.getElementById('s-total').textContent=f(d.total);
+ document.getElementById('s-day').textContent=f(d.day);
+ document.getElementById('s-hour').textContent=f(d.hour);
+ document.getElementById('s-five').textContent=f(d.five);
+ document.getElementById('s-one').textContent=f(d.one);
+}).catch(function(){});}
+poll();setInterval(poll,5000);
+</script></body></html><?php
+    exit;
+});
+
 /**
  * Opponent grounds in the Ardal League South East (for away-game travel info).
  * Keyed by the opponent name as it appears in the fixture lists.
