@@ -773,13 +773,6 @@ function cc25_nav_items() {
             array('2023-24 Archive', cc25_page_url(array('2023-24-archive'), $home), false),
             array('2022-23 Archive', cc25_page_url(array('2022-23-archive'), $home), false),
         )),
-        array('Sponsors', cc25_page_url('sponsors', $home), false, array(
-            array('Our Sponsors', cc25_page_url(array('sponsors-2', 'sponsors'), $home), false),
-            array('Sponsorship Opportunities', cc25_page_url(array('sponsorship-opportunities', 'sponsorship'), $home), false),
-        )),
-        array('Celtic Bond', cc25_page_url('celtic-bond', $home), false, array(
-            array('Celtic Bond Results', cc25_page_url('bond-results', $home), false),
-        )),
         array('Club', cc25_page_url(array('club-history', 'club', 'the-club', 'about'), $home), false, array(
             array('Club History', cc25_page_url(array('club-history'), $home), false),
             array('News', cc25_page_url('news', $home), false),
@@ -788,13 +781,19 @@ function cc25_nav_items() {
             array('Matchday Programme', cc25_page_url(array('cwmbran-celtic-fc-match-day-programme-digital'), $home), false),
             array('Coleg Gwent', cc25_page_url(array('coleg-gwent-4', 'coleg-gwent'), $home), false),
         )),
+        array('Sponsors', cc25_page_url('sponsors', $home), false, array(
+            array('Our Sponsors', cc25_page_url(array('sponsors-2', 'sponsors'), $home), false),
+            array('Sponsorship Opportunities', cc25_page_url(array('sponsorship-opportunities', 'sponsorship'), $home), false),
+        )),
+        array('Celtic Bond', cc25_page_url('celtic-bond', $home), false, array(
+            array('Celtic Bond Results', cc25_page_url('bond-results', $home), false),
+        )),
         array('Club Shop', cc25_ext_url('shop'), true, array()),
         array('Contact', cc25_page_url('contact', $home), false, array()),
     );
-    // The Music Shirts link joins the nav (next to All Teams) only once the
-    // campaign is live — so it stays hidden during a private preview.
+    // Music Shirts leads the nav while the campaign is live (hidden otherwise).
     if (cc25_kit_launch_live()) {
-        array_splice($items, 1, 0, array(
+        array_splice($items, 0, 0, array(
             array('Music Shirts', cc25_page_url('music-shirts', $home), false, array()),
         ));
     }

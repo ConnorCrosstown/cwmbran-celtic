@@ -1465,6 +1465,17 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .shirt-lb-soon{display:inline-block;margin-top:8px;background:var(--gold);color:var(--navy-900,#0a1f3c);font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;padding:11px 22px;border-radius:2px}
 .shirt-lb-soon[hidden],.shirt-lb-buy[hidden]{display:none}
 
+/* ---- Music Shirts v17: header CTA button + homepage roller ---- */
+.btn-shirts{background:var(--gold);color:var(--navy-900,#0a1f3c);font-weight:700}
+.btn-shirts:hover{background:#f0c23a;transform:translateY(-1px);box-shadow:0 10px 24px -10px var(--gold)}
+.ms-roller{display:block;background:var(--gold);color:var(--navy-900,#0a1f3c);overflow:hidden;text-decoration:none;border-top:2px solid var(--navy-900,#0a1f3c);border-bottom:2px solid var(--navy-900,#0a1f3c);white-space:nowrap}
+.ms-roll-track{display:inline-flex;align-items:center;animation:msroll 80s linear infinite;width:max-content;padding:11px 0}
+.ms-roller:hover .ms-roll-track{animation-play-state:paused}
+@keyframes msroll{to{transform:translateX(-50%)}}
+.ms-roll-item{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;font-weight:700;padding:0 18px}
+.ms-roll-dot{color:var(--navy-900,#0a1f3c);opacity:.45;font-size:.68rem;padding:0 2px}
+@media(prefers-reduced-motion:reduce){.ms-roll-track{animation:none;padding-left:18px}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

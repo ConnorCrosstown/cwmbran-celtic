@@ -26,6 +26,9 @@ if (!defined('ABSPATH')) exit;
         'fallback_cb'    => 'cc25_nav_fallback',
       )); ?>
     </nav>
+    <?php if (function_exists('cc25_kit_launch_live') && cc25_kit_launch_live()): ?>
+    <a class="btn btn-shirts" href="<?php echo esc_url(cc25_page_url('music-shirts', home_url('/'))); ?>">Music Shirts</a>
+    <?php endif; ?>
     <a class="btn btn-tickets" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
     <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="cc25-primary-nav"><span></span></button>
   </div>

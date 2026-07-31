@@ -156,6 +156,23 @@ if ($cc25_kllive): ?>
   </div>
 </section>
 
+<?php if ($cc25_kllive): ?>
+<a class="ms-roller" href="<?php echo esc_url($cc25_klurl); ?>" aria-label="Music Shirts 2026/27 — out now">
+  <span class="ms-roll-track"><?php
+    $cc25_roll_unit = str_repeat(
+      '<span class="ms-roll-item">Music Shirts 2026/27</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">Out now</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">Super Furry Animals</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">Mogwai</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">Panic Shack</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">Loose Articles</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">10% to Music Venue Trust</span><span class="ms-roll-dot">&#9917;</span>'
+      . '<span class="ms-roll-item">Shop now &rarr;</span><span class="ms-roll-dot">&#9917;</span>', 2);
+    echo $cc25_roll_unit . $cc25_roll_unit; // duplicated for a seamless loop
+  ?></span>
+</a>
+<?php endif; ?>
+
 <?php if ($next):
   $o = cc25_opponent($next);
   $venue = $o['home'] ? '⚑ Motazone Arena' : '⚑ Away · ' . ($next['homeTeam'] ?? '');
