@@ -780,6 +780,7 @@ function cc25_nav_items() {
             array('Club Documents', cc25_page_url(array('club-documents'), $home), false),
             array('Matchday Programme', cc25_page_url(array('cwmbran-celtic-fc-match-day-programme-digital'), $home), false),
             array('Coleg Gwent', cc25_page_url(array('coleg-gwent-4', 'coleg-gwent'), $home), false),
+            array('Contact', cc25_page_url('contact', $home), false),
         )),
         array('Sponsors', cc25_page_url('sponsors', $home), false, array(
             array('Our Sponsors', cc25_page_url(array('sponsors-2', 'sponsors'), $home), false),
@@ -789,14 +790,10 @@ function cc25_nav_items() {
             array('Celtic Bond Results', cc25_page_url('bond-results', $home), false),
         )),
         array('Club Shop', cc25_ext_url('shop'), true, array()),
-        array('Contact', cc25_page_url('contact', $home), false, array()),
     );
-    // Music Shirts leads the nav while the campaign is live (hidden otherwise).
-    if (cc25_kit_launch_live()) {
-        array_splice($items, 0, 0, array(
-            array('Music Shirts', cc25_page_url('music-shirts', $home), false, array()),
-        ));
-    }
+    // Music Shirts is surfaced by the gold header button (site-header.php) while
+    // the campaign is live, so it's intentionally not duplicated in the text nav.
+    // Contact lives in the Club dropdown + footer to keep the top bar to one row.
     return $items;
 }
 

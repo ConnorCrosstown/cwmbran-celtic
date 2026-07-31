@@ -1487,3 +1487,17 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .tscroll{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 table.lt{width:100%;min-width:520px;table-layout:auto}
 table.lt th,table.lt td{box-sizing:border-box}
+
+/* ============================================================
+   HEADER TIDY (keep after league-table block; different selectors)
+   One clean row: give the bar a touch more width, tighten menu
+   spacing, and stop the CTA buttons wrapping to two lines. The menu
+   is now 6 items (Contact -> Club dropdown; Music Shirts = gold btn).
+   ============================================================ */
+header.nav .nav-in{max-width:1320px;gap:16px}
+nav.main ul.cc25-nav{gap:1px}
+nav.main a{padding:10px 10px;font-size:.82rem}
+nav.main a::after{left:10px;right:10px}
+nav.main .cc25-nav .menu-item-has-children>a{padding-right:21px}
+/* CTAs: never shrink or wrap to two lines */
+header.nav .btn-shirts,header.nav .btn-tickets{white-space:nowrap;flex:0 0 auto;padding:9px 16px}
