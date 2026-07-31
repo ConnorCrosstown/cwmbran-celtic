@@ -550,7 +550,7 @@ function cc25_signup_secret()   { return ''; }  // the SIGNUP_SECRET shown by "W
 /** Sponsorship page: commercial contact + optional brochure PDF (leave blank to hide the button). */
 function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
 function cc25_bond_amount()  { return '£10'; }           // monthly Celtic Bond subscription
-function cc25_bond_join_url() { return ''; }             // paste the direct-debit sign-up link; blank => Contact page
+function cc25_bond_join_url() { return 'https://pay.gocardless.com/AL0005M1YZB71S'; } // Celtic Bond direct-debit sign-up (GoCardless); blank => thank-you only
 function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
 
 /** Celtic Bond monthly draw results, most recent first. Add a new entry at the
@@ -592,6 +592,12 @@ function cc25_handle_bond_join() {
         . "Next step: follow up to set up their " . cc25_bond_amount() . "/month direct debit and allocate a Bond number.";
     $headers = array('Reply-To: ' . $name . ' <' . $email . '>');
     wp_mail(cc25_bond_email(), 'Celtic Bond sign-up: ' . $name, $body, $headers);
+    // Send them straight to the direct-debit sign-up (GoCardless) so they can
+    // finish setting up their subscription; fall back to the on-page thank-you
+    // if no join link is configured. wp_redirect (not _safe_) because this is a
+    // known, hard-coded external URL, not user input.
+    $join = cc25_bond_join_url();
+    if ($join) { wp_redirect($join); exit; }
     wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit;
 }
 
