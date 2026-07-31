@@ -21,10 +21,29 @@ $cc25_results  = cc25_page_url('bond-results', '');
     <p>The club's 100&nbsp;Club &mdash; back the Celts every month for just <?php echo esc_html($cc25_amt); ?>, and you could land a cash prize while funding the future of the club.</p>
     <div class="teamsel">
       <a class="btn btn-gold btn-sm" href="#join">Join the Bond &rarr;</a>
-      <?php if ($cc25_results): ?><a class="btn btn-outline btn-sm" href="<?php echo esc_url($cc25_results); ?>">Latest winners</a><?php endif; ?>
+      <a class="btn btn-outline btn-sm" href="#winners">Latest winners</a>
     </div>
   </div>
 </div>
+
+<?php $cc25_draws = function_exists('cc25_bond_draws') ? cc25_bond_draws() : array(); if ($cc25_draws): $cc25_d = $cc25_draws[0]; ?>
+<section class="band" id="winners">
+  <div class="wrap">
+    <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> Latest draw &middot; <?php echo esc_html(date('j F Y', strtotime($cc25_d['date']))); ?></div><h2><?php echo esc_html($cc25_d['label']); ?> &mdash; Winners</h2></div></div>
+    <div class="table-wrap reveal"><div class="tscroll">
+      <table class="lt tnum">
+        <thead><tr><th>No.</th><th class="club">Winner</th><th>Prize</th><th class="club">Section</th></tr></thead>
+        <tbody>
+        <?php foreach ($cc25_d['winners'] as $cc25_w): ?>
+          <tr><td class="pos"><?php echo intval($cc25_w['no']); ?></td><td class="club"><?php echo esc_html($cc25_w['name']); ?></td><td class="pts"><?php echo esc_html($cc25_w['prize']); ?></td><td class="club"><?php echo esc_html($cc25_w['group']); ?></td></tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div></div>
+    <p class="reveal" style="color:var(--muted);margin-top:14px">Congratulations to all our winners! Every draw is made by committee members with witnesses. Want your own number in the next one? <a href="#join" style="color:var(--blue-500)">Join the Bond &rarr;</a></p>
+  </div>
+</section>
+<?php endif; ?>
 
 <section class="band">
   <div class="wrap">

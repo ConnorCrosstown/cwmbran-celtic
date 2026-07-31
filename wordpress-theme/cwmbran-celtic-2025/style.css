@@ -1425,6 +1425,19 @@ button.kl-featshirt-img,button.kl-shirt-img{-webkit-appearance:none;appearance:n
 .kl-soon-chip{align-self:flex-start;margin-top:14px;background:var(--navy-800,#12203c);color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:9px 16px;border-radius:2px}
 .kl-gk-note{text-align:center;color:var(--muted);margin:22px auto 0;max-width:54ch;font-size:.94rem}
 
+/* ---- Music Shirts v11: countdown teaser splash ---- */
+.splash-cd{text-align:center;max-width:460px}
+.splash-cd-eye{color:var(--gold);margin-bottom:10px}
+.splash-cd-title{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(2.2rem,8vw,3.1rem);line-height:1;color:#fff;margin-bottom:10px}
+.splash-cd-sub{color:var(--on-navy,#eaf0fb);font-size:.92rem;line-height:1.5;margin:0 auto 22px;max-width:32ch}
+.splash-cd-clock{display:flex;justify-content:center;gap:10px;margin:0 0 20px}
+.splash-cd-clock .u{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:11px;padding:13px 6px;min-width:66px}
+.splash-cd-clock .u b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,7vw,2.6rem);color:var(--gold);line-height:1;font-variant-numeric:tabular-nums}
+.splash-cd-clock .u span{display:block;font-size:.56rem;text-transform:uppercase;letter-spacing:.09em;color:var(--on-navy-dim,#9fb0d6);margin-top:7px}
+.splash-cd-bands{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;font-size:.72rem;color:#fff;margin-bottom:8px}
+.splash-cd-mvt{font-size:.76rem;color:var(--on-navy-dim,#9fb0d6);margin-bottom:16px}
+@media(max-width:420px){.splash-cd-clock{gap:7px}.splash-cd-clock .u{min-width:58px;padding:11px 4px}}
+
 /* ============================================================
    LEAGUE TABLE / TAB-PANEL ROBUSTNESS  (keep last — wins cascade)
    The active tab's content must always show, even if premium.js

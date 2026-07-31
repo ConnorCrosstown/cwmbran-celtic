@@ -275,3 +275,13 @@
   var cards = document.querySelectorAll('.kl-shirts .kl-shirt');
   for (var c = 0; c < cards.length; c++) { if (shirts[c + 1]) fill(cards[c], shirts[c + 1], false); }
 })();
+
+/* Music Shirts countdown: auto-refresh at launch time to reveal the kit. */
+(function () {
+  var c = document.querySelector('.splash.is-countdown .splash-count');
+  if (!c) return;
+  var ko = parseInt(c.getAttribute('data-ko'), 10);
+  if (!ko) return;
+  var ms = ko - Date.now();
+  if (ms > 0 && ms < 26 * 3600 * 1000) { setTimeout(function () { try { location.reload(); } catch (e) {} }, ms + 2000); }
+})();

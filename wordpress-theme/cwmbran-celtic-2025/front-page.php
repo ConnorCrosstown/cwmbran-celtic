@@ -53,6 +53,25 @@ if ($cc25_kllive): ?>
     </div>
   </div>
 </div>
+<?php elseif (cc25_kit_launch_countdown()): $cc25_klts = cc25_kit_launch_ts(); ?>
+<div class="splash is-countdown" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="ms-countdown" hidden>
+  <div class="splash-bg" data-close></div>
+  <div class="splash-card splash-cd">
+    <button class="splash-x" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="splash-cd-eye kick">Dropping today &middot; 12:00 noon</div>
+    <div class="splash-cd-title" id="splash-title">Music Shirts</div>
+    <div class="splash-cd-sub">Four bands. One club. The 2026/27 reveal is almost here&hellip;</div>
+    <div class="splash-count splash-cd-clock" data-ko="<?php echo intval($cc25_klts * 1000); ?>" aria-label="Countdown to the Music Shirts launch">
+      <div class="u"><b data-d>00</b><span>Days</span></div>
+      <div class="u"><b data-h>00</b><span>Hrs</span></div>
+      <div class="u"><b data-m>00</b><span>Mins</span></div>
+      <div class="u"><b data-s>00</b><span>Secs</span></div>
+    </div>
+    <div class="splash-cd-bands">Super Furry Animals &middot; Mogwai &middot; Panic Shack &middot; Loose Articles</div>
+    <div class="splash-cd-mvt">&#9733; 10% of the profit of every shirt supports Music Venue Trust</div>
+    <button class="splash-later" type="button" data-close>Close</button>
+  </div>
+</div>
 <?php elseif ($cc25_cel): ?>
 <div class="splash is-result" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="result-<?php echo esc_attr($cc25_cel['opponent'] . '-' . intval($cc25_cel['us']) . '-' . intval($cc25_cel['them'])); ?>" hidden>
   <canvas class="splash-fw" aria-hidden="true"></canvas>

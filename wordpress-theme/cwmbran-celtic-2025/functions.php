@@ -249,13 +249,28 @@ function cc25_kit_launch() {
     );
 }
 
+/** Launch epoch (Unix seconds, UK time) or 0 if no embargo set. */
+function cc25_kit_launch_ts() {
+    $k = cc25_kit_launch();
+    return empty($k['live_from']) ? 0 : strtotime($k['live_from'] . ' Europe/London');
+}
+
 /** True when the Music Shirts splash + home banner should be shown (enabled
  * and past the embargo time, in UK time). */
 function cc25_kit_launch_live() {
     $k = cc25_kit_launch();
     if (empty($k['enabled'])) return false;
     if (empty($k['live_from'])) return true;
-    return time() >= strtotime($k['live_from'] . ' Europe/London');
+    return time() >= cc25_kit_launch_ts();
+}
+
+/** True during the pre-launch window: enabled, an embargo is set, and we're
+ * still before it — so the homepage shows the countdown teaser splash. */
+function cc25_kit_launch_countdown() {
+    $k = cc25_kit_launch();
+    if (empty($k['enabled'])) return false;
+    $ts = cc25_kit_launch_ts();
+    return $ts > 0 && time() < $ts;
 }
 
 /**
@@ -349,6 +364,24 @@ function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
 function cc25_bond_amount()  { return '£10'; }           // monthly Celtic Bond subscription
 function cc25_bond_join_url() { return ''; }             // paste the direct-debit sign-up link; blank => Contact page
 function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
+
+/** Celtic Bond monthly draw results, most recent first. Add a new entry at the
+ * top after each draw. */
+function cc25_bond_draws() {
+    return array(
+        array(
+            'date'  => '2026-07-31',
+            'label' => 'July 2026 Draw',
+            'winners' => array(
+                array('no' => 181, 'prize' => '£500',     'name' => 'Mia Peacock',     'group' => 'Ladies 1st Team'),
+                array('no' => 20,  'prize' => '£50',       'name' => 'Sharon Williams', 'group' => 'Walking Football'),
+                array('no' => 289, 'prize' => '£50',       'name' => 'Paul Jury',       'group' => 'Walking Football'),
+                array('no' => 235, 'prize' => '£50',       'name' => 'Susan Perrett',   'group' => 'General Club Member / Supporter'),
+                array('no' => 50,  'prize' => 'Ear Pods',  'name' => 'Conor James',     'group' => 'General Club Member / Supporter'),
+            ),
+        ),
+    );
+}
 
 /** Celtic Bond sign-up form handler — emails the club the applicant's details,
  * then redirects back to the Bond page with a thank-you (or error) state. */
