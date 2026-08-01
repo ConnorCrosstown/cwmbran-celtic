@@ -1130,11 +1130,29 @@ function cc25_row_kickoff_ms($ymd) {
     return ($dt ? $dt->getTimestamp() : $d->getTimestamp()) * 1000;
 }
 
+/** Fixtures to hide site-wide (postponed / called off, no new date yet) so the
+ * site shows the NEXT game instead. Matched by opponent (normalised) + date
+ * 'Y-m-d'. Delete a row once the game is rearranged — or just leave it, it ages
+ * out on its own. Applies to the homepage next-game, fixtures page + ticker. */
+function cc25_hidden_fixtures() {
+    return array(
+        array('Tredegar Town', '2026-08-01'), // called off — heatwave left the pitch unplayable
+    );
+}
+function cc25_fixture_hidden($opp, $ymd) {
+    $opp = cc25_norm_team($opp);
+    foreach (cc25_hidden_fixtures() as $h) {
+        if ($h[1] === $ymd && cc25_norm_team($h[0]) === $opp) return true;
+    }
+    return false;
+}
+
 function cc25_render_static_fixtures($list, $tickets_url = '') {
     // Drop games that have finished (kick-off + 2h in the past) so the fixtures
     // list only ever shows what's still to come.
     $now = round(microtime(true) * 1000);
     $list = array_values(array_filter($list, function ($rf) use ($now) {
+        if (cc25_fixture_hidden($rf[1], $rf[0])) return false;
         return cc25_row_kickoff_ms($rf[0]) + 2 * 60 * 60 * 1000 >= $now;
     }));
     if (!$list) {
@@ -1179,6 +1197,14 @@ function cc25_team_items($list, $team) {
 /** Upcoming fixtures (future first); if none are future, soonest available. */
 function cc25_upcoming($feed, $team = 'mens', $n = 5) {
     $fx = cc25_team_items($feed['fixtures'] ?? array(), $team);
+    // Drop any postponed/called-off fixtures so the "next game" is the real one.
+    $fx = array_values(array_filter($fx, function ($f) {
+        $dms = intval($f['date'] ?? 0);
+        $ymd = $dms ? date('Y-m-d', intval($dms / 1000)) : '';
+        $home = strpos((string) ($f['homeTeam'] ?? ''), 'Cwmbran Celtic') !== false;
+        $opp = $home ? ($f['awayTeam'] ?? '') : ($f['homeTeam'] ?? '');
+        return !cc25_fixture_hidden($opp, $ymd);
+    }));
     $now = round(microtime(true) * 1000);
     // A fixture stays "upcoming" until ~2h after its real KICK-OFF (i.e. through
     // the match), not its stored noon date — so today's game remains the "next
@@ -1353,6 +1379,7 @@ function cc25_ticker_items() {
     foreach (cc25_static_fixtures() as $team) {
         $team_up = array();
         foreach ($team['list'] as $rf) {
+            if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
             $ms = strtotime($rf[0] . ' 23:59:59') * 1000; // count a game as "upcoming" all match-day
             if ($ms < $now) continue;
             $team_up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
