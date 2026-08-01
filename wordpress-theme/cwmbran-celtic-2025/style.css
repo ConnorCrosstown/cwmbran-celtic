@@ -1501,6 +1501,14 @@ nav.main a::after{left:10px;right:10px}
 nav.main .cc25-nav .menu-item-has-children>a{padding-right:21px}
 /* CTAs: never shrink or wrap to two lines */
 header.nav .btn-shirts,header.nav .btn-tickets{white-space:nowrap;flex:0 0 auto;padding:9px 16px}
+/* Mobile: the header CTA buttons crowded (and covered) the hamburger toggle on
+   narrow phones, so hide them there and surface Music Shirts + Buy Tickets as
+   mobile-only links inside the hamburger menu instead. */
+@media (min-width:861px){ header.nav nav.main .cc25-nav li.mob-only{display:none} }
+@media (max-width:860px){
+  header.nav .btn-shirts,header.nav .btn-tickets{display:none!important;}
+  header.nav .nav-toggle{display:inline-flex;flex:none;position:relative;z-index:2;}
+}
 
 /* ---- Juniors & Minis: age-group contact cards ---- */
 .jr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin:14px 0 4px}

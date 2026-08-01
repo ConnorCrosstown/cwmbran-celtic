@@ -834,10 +834,16 @@ function cc25_nav_items() {
         )),
         array('Club Shop', cc25_ext_url('shop'), true, array()),
     );
-    // Music Shirts is surfaced by the gold header button (site-header.php) while
-    // the campaign is live, so it's intentionally not duplicated in the text nav.
+    // Music Shirts / Buy Tickets are buttons in the header on desktop. On mobile
+    // those buttons are hidden (they crowded the hamburger toggle), so surface
+    // them at the TOP of the hamburger menu as mobile-only links (5th element).
     // Contact lives in the Club dropdown + footer to keep the top bar to one row.
-    return $items;
+    $mob = array();
+    if (cc25_kit_launch_live()) {
+        $mob[] = array('Music Shirts', cc25_page_url('music-shirts', $home), false, array(), true);
+    }
+    $mob[] = array('Buy Tickets', cc25_ext_url('tickets'), true, array(), true);
+    return array_merge($mob, $items);
 }
 
 function cc25_nav_fallback() {
@@ -845,8 +851,9 @@ function cc25_nav_fallback() {
     foreach (cc25_nav_items() as $it) {
         $children = isset($it[3]) ? $it[3] : array();
         $has = !empty($children);
+        $mob = !empty($it[4]);
         $ext = $it[2] ? ' target="_blank" rel="noopener"' : '';
-        echo '<li class="menu-item' . ($has ? ' menu-item-has-children' : '') . '">';
+        echo '<li class="menu-item' . ($has ? ' menu-item-has-children' : '') . ($mob ? ' mob-only' : '') . '">';
         echo '<a href="' . esc_url($it[1]) . '"' . $ext . '>' . $it[0] . '</a>';
         if ($has) {
             echo '<ul class="sub-menu">';
