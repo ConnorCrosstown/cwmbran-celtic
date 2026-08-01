@@ -102,7 +102,32 @@ Sunday 23 August 2026, 2:00pm &middot; The Motazone Arena, Cwmbran</p>
 
 ---
 
-### Notes
+## POST 4 — Tredegar Town away postponed (pitch unplayable)
+
+**Title:** Urgent fixture update: Tredegar Town away called off
+
+**Slug:** `tredegar-town-away-postponed-pitch`
+
+**Category:** First Team
+
+**Suggested featured image:** the "Urgent Fixture Update" graphic
+
+**Excerpt:**
+Today's away game at Tredegar Town has been called off — the long hot spell has left the pitch too hard and unplayable.
+
+**Body (paste as HTML):**
+
+```html
+<p>Today's game away at <strong>Tredegar Town</strong> has been <strong>called off by the referee</strong>. The long stretch of hot weather has left the pitch too hard and unplayable.</p>
+
+<p>We realise this is a real inconvenience to the hundreds of fans who would no doubt have made the journey to our first away game of the season, and we're sorry for the disappointment.</p>
+
+<p>We've had our own comments about the state of our pitch, so we genuinely sympathise with Tredegar and with every other grassroots club struggling in these conditions — it's a tough time for football at our level right across the country.</p>
+
+<p>If you're craving your football fix this afternoon, our neighbours <strong>Cwmbran Town host Chepstow Town</strong> — it should be a cracking game. Head over, back Welsh League football in our town, and we'll see you all again very soon.</p>
+
+<p>A rearranged date will be confirmed in due course. Thanks, as always, for your support. 🟢⚫</p>
+```
 - Kick-off time (2:30pm) is taken from the postponed Risca fixture's slot (22.08.2026 14:30); adjust if the cup tie is set for a different time.
 - If you prefer a sponsor-correct name, the competition is currently branded the **JD Welsh Cup** — swap "Welsh Cup" for "JD Welsh Cup" in the headline/body if you want the sponsor in.
 - The internal link in Post 2 assumes Post 1 uses the slug above; update it if you change the slug.
