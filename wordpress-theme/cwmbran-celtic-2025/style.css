@@ -1504,8 +1504,8 @@ header.nav .btn-shirts,header.nav .btn-tickets{white-space:nowrap;flex:0 0 auto;
 /* Mobile: the header CTA buttons crowded (and covered) the hamburger toggle on
    narrow phones, so hide them there and surface Music Shirts + Buy Tickets as
    mobile-only links inside the hamburger menu instead. */
-@media (min-width:861px){ header.nav nav.main .cc25-nav li.mob-only{display:none} }
-@media (max-width:860px){
+@media (min-width:901px){ header.nav nav.main .cc25-nav li.mob-only{display:none} }
+@media (max-width:900px){
   header.nav .btn-shirts,header.nav .btn-tickets{display:none!important;}
   header.nav .nav-toggle{display:inline-flex;flex:none;position:relative;z-index:2;}
 }
