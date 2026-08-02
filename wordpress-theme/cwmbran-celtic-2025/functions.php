@@ -6,21 +6,44 @@
 if (!defined('ABSPATH')) exit;
 
 add_action('wp_enqueue_scripts', function () {
-    // Premium design system (this child theme's style.css) + fonts are referenced from it.
-    wp_enqueue_style('cc25', get_stylesheet_uri(), array(), '0.1.0');
-    // Countdown + scroll-reveal.
-    wp_enqueue_script('cc25-js', get_stylesheet_directory_uri() . '/assets/premium.js', array(), '0.1.0', true);
+    // Version by file mtime so edits auto-bust the browser/CDN cache (was pinned
+    // to a hardcoded version, so changes never reached returning visitors).
+    $dir  = get_stylesheet_directory();
+    $cssv = @filemtime($dir . '/style.css') ?: '0.1.0';
+    $jsv  = @filemtime($dir . '/assets/premium.js') ?: '0.1.0';
+    wp_enqueue_style('cc25', get_stylesheet_uri(), array(), $cssv);
+    wp_enqueue_script('cc25-js', get_stylesheet_directory_uri() . '/assets/premium.js', array(), $jsv, true);
 
     // Bespoke templates render their own full premium design, so drop Divi's
-    // stylesheet on them to stop it fighting. Regular pages (which may hold
-    // Divi-built content) keep Divi's styles.
+    // assets on them to stop it fighting + shed unused render-blocking weight.
+    // Regular pages (which may hold Divi-built content) keep Divi's styles.
     $bespoke = is_front_page() || is_singular('post') || is_home() || is_archive()
         || is_search() || is_page_template('template-fixtures.php')
         || is_page_template('template-kit-launch.php') || is_page_template('template-match-report.php');
     if ($bespoke) {
-        wp_dequeue_style('divi-style');
+        foreach (array('divi-style', 'et-builder-modules-style', 'et-builder-modules-global-animations',
+                       'et-shortcodes-css', 'et-shortcodes-responsive-css', 'magnific-popup',
+                       'et-gb-fonts', 'divi-fonts') as $h) {
+            wp_dequeue_style($h);   // no-op if the handle isn't present
+        }
+        foreach (array('divi-custom-script', 'et-builder-modules-script', 'et-jquery-fitvids',
+                       'magnific-popup', 'fitvids') as $h) {
+            wp_dequeue_script($h);
+        }
     }
 }, 99);
+
+/** Preload the fonts + (on the homepage) the hero LCP image, so they aren't
+ * discovered late after CSS parses. */
+add_action('wp_head', function () {
+    $u = get_stylesheet_directory_uri();
+    echo "\n<link rel=\"preload\" as=\"font\" type=\"font/woff2\" crossorigin href=\"" . esc_url($u . '/assets/fonts/oswald.woff2') . "\">";
+    echo "\n<link rel=\"preload\" as=\"font\" type=\"font/woff2\" crossorigin href=\"" . esc_url($u . '/assets/fonts/inter.woff2') . "\">";
+    if (is_front_page()) {
+        echo "\n<link rel=\"preload\" as=\"image\" fetchpriority=\"high\" href=\"" . esc_url($u . '/assets/img/hero.jpg') . "\">";
+    }
+    echo "\n";
+}, 1);
 
 add_action('after_setup_theme', function () {
     add_theme_support('title-tag');
@@ -894,9 +917,11 @@ add_filter('wp_nav_menu_items', function ($items, $args) {
  * ---------------------------------------------------------------------- */
 
 function cc25_feed() {
-    if (!class_exists('CCF_Client')) return array();
+    static $cache = null;
+    if ($cache !== null) return $cache;
+    if (!class_exists('CCF_Client')) return $cache = array();
     $f = CCF_Client::get_feed();
-    return is_array($f) ? $f : array();
+    return $cache = (is_array($f) ? $f : array());
 }
 
 function cc25_club_logo() {
@@ -1047,6 +1072,8 @@ function cc25_overlay_feed_dates($list) {
  * css class] is shown in the ticker so you can see which team a fixture is for.
  */
 function cc25_static_fixtures() {
+    static $cache = null;
+    if ($cache !== null) return $cache;
     $data = array(
         'mens' => array(
             'league' => 'Ardal League South East',
@@ -1147,7 +1174,7 @@ function cc25_static_fixtures() {
     );
     // Men's First Team dates/venues are corrected live from allwalessport.
     $data['mens']['list'] = cc25_overlay_feed_dates($data['mens']['list']);
-    return $data;
+    return $cache = $data;
 }
 
 /** Kick-off timestamp (ms) for a hand-maintained fixture row's 'Y-m-d' date. */
@@ -1392,7 +1419,10 @@ function cc25_sponsors() {
 function cc25_featured_sponsor() {
     $all = cc25_sponsors();
     if (!$all) return null;
-    return $all[mt_rand(0, count($all) - 1)];
+    // Deterministic daily rotation — same sponsor all day and across every slot
+    // on the page, so the logo caches and full-page caching stays stable (was
+    // mt_rand, which changed per render and per slot).
+    return $all[intval(date('z')) % count($all)];
 }
 
 /** Render a Featured Sponsor block. $variant: 'card' (homepage) or 'strip' (footer). */
