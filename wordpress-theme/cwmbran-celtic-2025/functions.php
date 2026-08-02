@@ -544,8 +544,8 @@ function cc25_away_ground_link($opponent) {
  * two values below. Until then the form shows a friendly success without
  * sending anywhere.
  * ---------------------------------------------------------------------- */
-function cc25_signup_endpoint() { return ''; }  // e.g. https://script.google.com/macros/s/AKfyc.../exec
-function cc25_signup_secret()   { return ''; }  // the SIGNUP_SECRET shown by "Website signup info"
+function cc25_signup_endpoint() { return 'https://script.google.com/macros/s/AKfycbzCXBX3nijB8_FGzIrLxrDOduPR1qStOtCSpXeP8itFIrjSxExbPfgqjXy9I8mBkm3Z/exec'; } // @1 "Cwmbran Mailer" web-app deployment
+function cc25_signup_secret()   { return 'a427c2b0e39e4de2bc3bd4b8cfc990a1f42f5139f51240079023a92b39e4eb48'; } // SIGNUP_SECRET from "Website signup info"
 
 /** Sponsorship page: commercial contact + optional brochure PDF (leave blank to hide the button). */
 function cc25_sponsorship_email()    { return 'cwmbrancelticcomms@gmail.com'; }
