@@ -1667,7 +1667,7 @@ function cc25_squad_players() {
         'Midfielders' => array(
             array('Lewis Cochrane', 'lewis-cochrane'), array('Tommy Challenger', 'tommy-challenger'), array('Jack Prosser', 'jack-prosser'),
             array('Cameron Jenkins', 'cameron-jenkins'), array('Efan Fletcher', 'efan-fletcher'), array('Finlay Wood', 'finlay-wood'),
-            array('Joe Barber', 'joe-barber'),
+            array('Joe Barber', 'joe-barber'), array('Jonny Invernizzi', 'jonny-invernizzi'),
         ),
         'Forwards' => array(
             array('Gabriel Howells', 'gabriel-howells'), array('Evan Maidment', 'evan-maidment'), array('Rudi Griffiths', 'rudi-griffiths'),
