@@ -19,7 +19,7 @@ Version: 0.3.0
 
   --bg:#eaeef5; --surface:#ffffff; --surface-2:#f3f6fb; --raise:#ffffff;
   --hair:#e0e6f0; --hair-strong:#c9d3e3;
-  --ink:#0a1424; --text:#0f1b30; --muted:#54617c; --faint:#8794ab;
+  --ink:#0a1424; --text:#0f1b30; --muted:#54617c; --faint:#606e88;
   --on-navy:#eaf0fb; --on-navy-dim:#9fb0d6;
 
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
@@ -46,7 +46,7 @@ Version: 0.3.0
 }
 :root[data-theme="light"]{
   --bg:#eaeef5; --surface:#ffffff; --surface-2:#f3f6fb; --raise:#ffffff;
-  --hair:#e0e6f0; --hair-strong:#c9d3e3; --ink:#0a1424; --text:#0f1b30; --muted:#54617c; --faint:#8794ab;
+  --hair:#e0e6f0; --hair-strong:#c9d3e3; --ink:#0a1424; --text:#0f1b30; --muted:#54617c; --faint:#606e88;
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
   --shadow:0 2px 6px rgba(10,20,40,.07),0 18px 40px -18px rgba(10,20,40,.28);
   --shadow-lg:0 40px 90px -36px rgba(10,20,40,.5);
@@ -279,7 +279,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
   --gold:#f5c518;--gold-soft:#fcd34d;--gold-deep:#c99700;
   --red:#dc2626;--red-dark:#b91c1c;--win:#16a34a;--draw:#d08700;--loss:#dc2626;
   --bg:#eaeef5;--surface:#fff;--surface-2:#f3f6fb;--raise:#fff;
-  --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+  --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
   --on-navy:#eaf0fb;--on-navy-dim:#9fb0d6;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
@@ -297,7 +297,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
   --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 6px 16px -8px rgba(0,0,0,.6);
   --shadow:0 2px 8px rgba(0,0,0,.45),0 24px 50px -20px rgba(0,0,0,.75);--shadow-lg:0 50px 100px -40px rgba(0,0,0,.85);}
 :root[data-theme="light"]{--bg:#eaeef5;--surface:#fff;--surface-2:#f3f6fb;--raise:#fff;--hair:#e0e6f0;--hair-strong:#c9d3e3;
-  --ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+  --ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
   --shadow:0 2px 6px rgba(10,20,40,.07),0 18px 40px -18px rgba(10,20,40,.28);--shadow-lg:0 40px 90px -36px rgba(10,20,40,.5);}
 
@@ -408,7 +408,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
   --gold:#f5c518;--gold-soft:#fcd34d;--gold-deep:#c99700;
   --red:#dc2626;--red-dark:#b91c1c;
   --bg:#eaeef5;--surface:#fff;--surface-2:#f3f6fb;--raise:#fff;
-  --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+  --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
   --on-navy:#eaf0fb;--on-navy-dim:#9fb0d6;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
@@ -426,7 +426,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
   --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 6px 16px -8px rgba(0,0,0,.6);
   --shadow:0 2px 8px rgba(0,0,0,.45),0 24px 50px -20px rgba(0,0,0,.75);--shadow-lg:0 50px 100px -40px rgba(0,0,0,.85);}
 :root[data-theme="light"]{--bg:#eaeef5;--surface:#fff;--surface-2:#f3f6fb;--raise:#fff;--hair:#e0e6f0;--hair-strong:#c9d3e3;
-  --ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+  --ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
   --shadow:0 2px 6px rgba(10,20,40,.07),0 18px 40px -18px rgba(10,20,40,.28);--shadow-lg:0 40px 90px -36px rgba(10,20,40,.5);}
 
@@ -547,7 +547,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
   --gold:#f5c518;--gold-soft:#fcd34d;--gold-deep:#c99700;
   --red:#dc2626;--red-dark:#b91c1c;
   --bg:#eaeef5;--surface:#fff;--surface-2:#f3f6fb;--raise:#fff;
-  --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+  --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
   --on-navy:#eaf0fb;--on-navy-dim:#9fb0d6;
   --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
@@ -562,7 +562,7 @@ footer.ft .grain{position:absolute;inset:0;background-image:var(--grain);backgro
   --ink:#eef3fc;--text:#e6edf9;--muted:#9fb0d0;--faint:#6f82a6;
   --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 6px 16px -8px rgba(0,0,0,.6);--shadow:0 2px 8px rgba(0,0,0,.45),0 24px 50px -20px rgba(0,0,0,.75);}
 :root[data-theme="light"]{--bg:#eaeef5;--surface:#fff;--surface-2:#f3f6fb;--raise:#fff;--hair:#e0e6f0;--hair-strong:#c9d3e3;
-  --ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+  --ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
   --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);--shadow:0 2px 6px rgba(10,20,40,.07),0 18px 40px -18px rgba(10,20,40,.28);}
 
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -1045,7 +1045,7 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="dark"]){
     --bg:#eaeef5;--surface:#ffffff;--surface-2:#f3f6fb;--raise:#ffffff;
-    --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#8794ab;
+    --hair:#e0e6f0;--hair-strong:#c9d3e3;--ink:#0a1424;--text:#0f1b30;--muted:#54617c;--faint:#606e88;
     --shadow-sm:0 1px 2px rgba(10,20,40,.06),0 4px 12px -6px rgba(10,20,40,.14);
     --shadow:0 2px 6px rgba(10,20,40,.07),0 18px 40px -18px rgba(10,20,40,.28);
     --shadow-lg:0 40px 90px -36px rgba(10,20,40,.5);
@@ -1519,3 +1519,39 @@ header.nav .btn-shirts,header.nav .btn-tickets{white-space:nowrap;flex:0 0 auto;
 .jr-contact .nm{color:var(--muted);font-size:.93rem}
 .jr-contact a.tel{font-family:var(--display);letter-spacing:.02em;font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap;text-decoration:none}
 .jr-contact a.tel:hover{color:var(--gold)}
+
+/* ============================================================
+   AUDIT FIXES — a11y, mobile, contrast (keep last; wins cascade)
+   ============================================================ */
+
+/* #2 — visible keyboard focus everywhere (Divi strips outlines) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
+.btn:focus-visible, .tab:focus-visible, .plname:focus-visible{
+  outline:3px solid #4f83ff; outline-offset:2px; border-radius:3px;
+}
+
+/* Screen-reader-only utility (used by the hero H1, table captions) */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* #3 — fixtures team-selector must wrap (was clipping "Women's" on phones) */
+.teamsel{flex-wrap:wrap}
+/* #25 — tab strip scrolls rather than cramming on very narrow screens */
+.tabs-in{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* #14 — gold text on white fails contrast; use a darker gold on light surfaces */
+.tg-info .kick, .mrfeat-scorers, .galcard-body .kick, .panel-h .badge{color:#8a6d00}
+
+/* #5 — league table on small screens: drop P/W/D/L, keep #, Club, GD, Pts,
+   and let it fit without a hidden horizontal scroll */
+@media (max-width:560px){
+  table.lt{min-width:0}
+  table.lt th:nth-child(n+3):nth-child(-n+6),
+  table.lt td:nth-child(n+3):nth-child(-n+6){display:none}
+}
+
+/* #25 — modal close / dismiss controls need a >=44px touch target */
+.splash-x, .splash-later, .pc-lb-close, .shirt-lb-x, .mr-stclose{
+  min-width:44px; min-height:44px; display:inline-flex; align-items:center; justify-content:center;
+}
