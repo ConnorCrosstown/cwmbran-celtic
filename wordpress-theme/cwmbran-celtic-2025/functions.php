@@ -868,6 +868,25 @@ function cc25_nav_fallback() {
     echo '</ul>';
 }
 
+/** Mobile-only header CTA links (Music Shirts + Buy Tickets) as <li>s. The header
+ * buttons are hidden on phones, so these surface at the top of the hamburger.
+ * Injected for a REAL assigned menu too (below), not just the nav fallback. */
+function cc25_mobile_cta_items_html() {
+    $home = home_url('/');
+    $out = '';
+    if (cc25_kit_launch_live()) {
+        $out .= '<li class="menu-item mob-only"><a href="' . esc_url(cc25_page_url('music-shirts', $home)) . '">Music Shirts</a></li>';
+    }
+    $out .= '<li class="menu-item mob-only"><a href="' . esc_url(cc25_ext_url('tickets')) . '" target="_blank" rel="noopener">Buy Tickets</a></li>';
+    return $out;
+}
+add_filter('wp_nav_menu_items', function ($items, $args) {
+    if (isset($args->theme_location) && $args->theme_location === 'cc25_primary') {
+        return cc25_mobile_cta_items_html() . $items;
+    }
+    return $items;
+}, 10, 2);
+
 /* -------------------------------------------------------------------------
  * Live-feed helpers. Data comes from the cwmbran-celtic-feed plugin
  * (CCF_Client::get_feed()). Every helper degrades safely to empty/null so a

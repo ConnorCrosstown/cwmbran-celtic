@@ -12,13 +12,24 @@
       if(e=document.getElementById('cd-s'))e.textContent=pad(s%60);};
     tick();setInterval(tick,1000);
   }
-  // Tabs (fixtures / news)
-  document.querySelectorAll('.tab').forEach(function(tb){tb.addEventListener('click',function(){
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
-    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
-    tb.classList.add('on');var el=document.getElementById(tb.dataset.t);
-    if(el){el.classList.add('on');el.querySelectorAll('.reveal').forEach(function(r){r.classList.add('in');});}
-  });});
+  // Tabs (fixtures / news) — with ARIA tab pattern
+  (function(){
+    var tabs=document.querySelectorAll('.tab');
+    var list=document.querySelector('.tabs-in'); if(list) list.setAttribute('role','tablist');
+    tabs.forEach(function(tb){
+      tb.setAttribute('role','tab');
+      tb.setAttribute('aria-selected', tb.classList.contains('on')?'true':'false');
+      var panel=document.getElementById(tb.dataset.t);
+      if(panel){tb.setAttribute('aria-controls',tb.dataset.t);panel.setAttribute('role','tabpanel');panel.setAttribute('tabindex','0');}
+      tb.addEventListener('click',function(){
+        tabs.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-selected','false');});
+        document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+        tb.classList.add('on');tb.setAttribute('aria-selected','true');
+        var el=document.getElementById(tb.dataset.t);
+        if(el){el.classList.add('on');el.querySelectorAll('.reveal').forEach(function(r){r.classList.add('in');});}
+      });
+    });
+  })();
   // Category chips (news) - visual
   document.querySelectorAll('.cats button').forEach(function(b){b.addEventListener('click',function(){
     b.parentNode.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');});});
@@ -58,11 +69,20 @@
       var open=document.body.classList.toggle('nav-open');
       tgl.setAttribute('aria-expanded',open?'true':'false');
       tgl.setAttribute('aria-label',open?'Close menu':'Open menu');
+      if(open){var f=document.querySelector('header.nav nav.main a');if(f)f.focus();}
+    });
+    // Escape closes the menu and returns focus to the toggle.
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'&&document.body.classList.contains('nav-open')){
+        document.body.classList.remove('nav-open');
+        tgl.setAttribute('aria-expanded','false');tgl.setAttribute('aria-label','Open menu');tgl.focus();
+      }
     });
     // On mobile, tapping a parent item expands its submenu instead of navigating.
     document.querySelectorAll('header.nav nav.main li.menu-item-has-children>a').forEach(function(a){
+      a.setAttribute('aria-haspopup','true');a.setAttribute('aria-expanded','false');
       a.addEventListener('click',function(ev){
-        if(mob.matches){ev.preventDefault();a.parentNode.classList.toggle('open');}
+        if(mob.matches){ev.preventDefault();var open=a.parentNode.classList.toggle('open');a.setAttribute('aria-expanded',open?'true':'false');}
       });
     });
     // Following any real link closes the menu (but a parent tap on mobile only toggles).
@@ -174,6 +194,7 @@
   if (!pop) return;
   var card = pop.querySelector('.mr-statcard');
   var season = pop.getAttribute('data-season') || 'This season';
+  var lastStatTrigger = null;
   function stat(v, l) { return '<div class="mr-st"><b>' + (parseInt(v, 10) || 0) + '</b><span>' + l + '</span></div>'; }
   function open(btn) {
     var d = btn.dataset;
@@ -190,11 +211,12 @@
       '</div>';
     pop.hidden = false;
     document.body.style.overflow = 'hidden';
+    var x = card.querySelector('.mr-stclose'); if (x) x.focus();
   }
-  function close() { pop.hidden = true; document.body.style.overflow = ''; }
+  function close() { pop.hidden = true; document.body.style.overflow = ''; if (lastStatTrigger) { lastStatTrigger.focus(); lastStatTrigger = null; } }
   document.addEventListener('click', function (e) {
     var b = e.target.closest('.plname');
-    if (b) { open(b); return; }
+    if (b) { lastStatTrigger = b; open(b); return; }
     if (e.target === pop || e.target.closest('.mr-stclose')) close();
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) close(); });
@@ -215,13 +237,15 @@
   function go(i) { idx = (i + n) % n; track.scrollTo({ left: track.clientWidth * idx, behavior: 'smooth' }); setDots(); }
   function sync() { var w = track.clientWidth || 1, i = Math.round(track.scrollLeft / w); if (i >= 0 && i < n && i !== idx) { idx = i; setDots(); } }
   function stop() { if (timer) { clearInterval(timer); timer = null; } }
-  function start() { stop(); timer = setInterval(function () { go(idx + 1); }, 3200); }
+  // Don't autoplay for users who prefer reduced motion.
+  function start() { if (matchMedia('(prefers-reduced-motion:reduce)').matches) return; stop(); timer = setInterval(function () { go(idx + 1); }, 3200); }
   if (nextB) nextB.addEventListener('click', function (e) { e.preventDefault(); stop(); go(idx + 1); });
   if (prevB) prevB.addEventListener('click', function (e) { e.preventDefault(); stop(); go(idx - 1); });
   for (var d = 0; d < dots.length; d++) (function (b) { b.addEventListener('click', function () { stop(); go(parseInt(b.getAttribute('data-i'), 10) || 0); }); })(dots[d]);
   track.addEventListener('scroll', function () { clearTimeout(st); st = setTimeout(sync, 90); });
   car.addEventListener('mouseenter', stop);
   car.addEventListener('touchstart', stop, { passive: true });
+  car.addEventListener('focusin', stop);   // pause once keyboard focus enters the carousel
   start();
 })();
 
@@ -233,6 +257,7 @@
   var cap = document.getElementById('shirt-lb-cap');
   var buy = lb.querySelector('.shirt-lb-buy');
   var soon = lb.querySelector('.shirt-lb-soon');
+  var lastShirtTrigger = null;
   function esc(s) { return String(s || '').replace(/"/g, '&quot;'); }
   function one(src, label, alt) {
     return '<figure class="shirt-lb-one"><img src="' + esc(src) + '" alt="' + esc(alt) + '">' + (label ? '<figcaption>' + label + '</figcaption>' : '') + '</figure>';
@@ -255,11 +280,12 @@
     if (soon) soon.hidden = !isSoon;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
+    var x = lb.querySelector('.shirt-lb-x'); if (x) x.focus();
   }
-  function close() { lb.hidden = true; imgs.innerHTML = ''; document.body.style.overflow = ''; }
+  function close() { lb.hidden = true; imgs.innerHTML = ''; document.body.style.overflow = ''; if (lastShirtTrigger) { lastShirtTrigger.focus(); lastShirtTrigger = null; } }
   document.addEventListener('click', function (e) {
     var z = e.target.closest('.shirt-zoom');
-    if (z) { e.preventDefault(); open(z); return; }
+    if (z) { e.preventDefault(); lastShirtTrigger = z; open(z); return; }
     if (e.target === lb || e.target.closest('.shirt-lb-x')) close();
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
