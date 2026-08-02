@@ -1003,6 +1003,11 @@ function cc25_overlay_feed_dates($list) {
         $bi = -1; $best = null;
         foreach ($list as $i => $rf) {
             if (cc25_norm_team($rf[1]) !== $opp) continue;
+            // Only correct plain LEAGUE rows from the feed. Cup ties (e.g. Welsh
+            // Cup, League Cup) are hand-set, so never let a same-opponent league
+            // fixture overwrite a cup row's date/venue.
+            $comp = isset($rf[3]) ? $rf[3] : 'League';
+            if (stripos($comp, 'cup') !== false) continue;
             $diff = abs(strtotime($rf[0]) - strtotime($fdate));
             if ($best === null || $diff < $best) { $best = $diff; $bi = $i; }
         }
@@ -1148,8 +1153,14 @@ function cc25_hidden_fixtures() {
 }
 function cc25_fixture_hidden($opp, $ymd) {
     $opp = cc25_norm_team($opp);
+    $t = strtotime((string) $ymd);
     foreach (cc25_hidden_fixtures() as $h) {
-        if ($h[1] === $ymd && cc25_norm_team($h[0]) === $opp) return true;
+        if (cc25_norm_team($h[0]) !== $opp) continue;
+        if ($h[1] === $ymd) return true;
+        // Tolerate the feed re-dating a postponed game by a few days (otherwise
+        // an overlaid date could silently un-hide it). A far reschedule (>10d) is
+        // a genuinely new fixture and should reappear.
+        if ($t && abs($t - strtotime($h[1])) <= 10 * 86400) return true;
     }
     return false;
 }
@@ -1201,6 +1212,20 @@ function cc25_team_items($list, $team) {
     }));
 }
 
+/** Convert a hand-maintained men's fixture row [date,opp,home,comp] into the
+ * same shape as a feed fixture, so it can stand in when the feed is unavailable. */
+function cc25_static_row_to_fixture($rf) {
+    $home = !empty($rf[2]);
+    return array(
+        'date'        => cc25_row_kickoff_ms($rf[0]),
+        'homeTeam'    => $home ? 'Cwmbran Celtic' : ($rf[1] ?? ''),
+        'awayTeam'    => $home ? ($rf[1] ?? '') : 'Cwmbran Celtic',
+        'homeAway'    => $home ? 'H' : 'A',
+        'competition' => (isset($rf[3]) && $rf[3] !== '') ? $rf[3] : 'League',
+        'team'        => 'mens',
+    );
+}
+
 /** Upcoming fixtures (future first); if none are future, soonest available. */
 function cc25_upcoming($feed, $team = 'mens', $n = 5) {
     $fx = cc25_team_items($feed['fixtures'] ?? array(), $team);
@@ -1220,6 +1245,15 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
         $ko = cc25_kickoff_ms($f);
         return $ko && ($ko + 2 * 60 * 60 * 1000) >= $now;
     }));
+    // Feed empty or lagging behind the next game? Fall back to the hand-maintained
+    // men's season list so the homepage never loses its next-match section (and we
+    // never surface a long-past game as "next").
+    if (!$future && $team === 'mens') {
+        foreach (cc25_static_fixtures()['mens']['list'] as $rf) {
+            if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
+            if (cc25_row_kickoff_ms($rf[0]) + 2 * 60 * 60 * 1000 >= $now) $future[] = cc25_static_row_to_fixture($rf);
+        }
+    }
     $use = $future ? $future : $fx;
     usort($use, function ($a, $b) { return ($a['date'] ?? 0) <=> ($b['date'] ?? 0); });
     return array_slice($use, 0, $n);
@@ -1233,7 +1267,7 @@ function cc25_next_fixture($feed, $team = 'mens') {
 /** The next upcoming HOME fixture (homeAway 'H'), or null. Powers the homepage takeover. */
 function cc25_next_home_fixture($feed, $team = 'mens') {
     foreach (cc25_upcoming($feed, $team, 20) as $f) {
-        if (($f['homeAway'] ?? 'H') === 'H') return $f;
+        if (cc25_is_home($f)) return $f;
     }
     return null;
 }
@@ -1289,8 +1323,15 @@ function cc25_table($feed, $team = 'mens') {
 }
 
 /** Opponent + home/away view of a fixture, from Cwmbran's perspective. */
+/** True if Cwmbran are at home. Fixtures carry an explicit 'homeAway'; feed
+ * RESULTS do not, so fall back to the team names (otherwise every away result
+ * mis-renders as a home game). */
+function cc25_is_home($f) {
+    if (isset($f['homeAway']) && $f['homeAway'] !== '') return $f['homeAway'] === 'H';
+    return strpos((string) ($f['homeTeam'] ?? ''), 'Cwmbran Celtic') !== false;
+}
 function cc25_opponent($f) {
-    $home = ($f['homeAway'] ?? 'H') === 'H';
+    $home = cc25_is_home($f);
     return array(
         'opponent' => $home ? ($f['awayTeam'] ?? '') : ($f['homeTeam'] ?? ''),
         'home'     => $home,
@@ -1371,7 +1412,7 @@ function cc25_ticker_items() {
     usort($rs, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
     foreach (array_slice($rs, 0, 4) as $r) {
         $ro = cc25_opponent($r);
-        $home = ($r['homeAway'] ?? 'H') === 'H';
+        $home = cc25_is_home($r);
         $cc = intval($home ? ($r['homeScore'] ?? 0) : ($r['awayScore'] ?? 0));
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
@@ -1387,8 +1428,11 @@ function cc25_ticker_items() {
         $team_up = array();
         foreach ($team['list'] as $rf) {
             if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
-            $ms = strtotime($rf[0] . ' 23:59:59') * 1000; // count a game as "upcoming" all match-day
-            if ($ms < $now) continue;
+            // Drop games once they've finished (kick-off + 2h), matching the
+            // Fixtures list + homepage — not at midnight, so the ticker doesn't
+            // keep showing a just-finished match as "upcoming" all evening.
+            $ms = cc25_row_kickoff_ms($rf[0]);
+            if ($ms + 2 * 60 * 60 * 1000 < $now) continue;
             $team_up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
                 'badge' => $team['badge'], 'title' => $team['title']);
         }
@@ -1697,13 +1741,13 @@ function cc25_player_stats() {
         // A player counts an appearance if they started or actually came on (not an unused sub).
         $cc25_on = array();
         foreach (($m['subs_made'] ?? array()) as $sm) { $cc25_on[strtolower(trim($sm['on']))] = true; }
-        foreach ($m['starters'] as $p) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; }
-        foreach ($m['subs'] as $p) { if (isset($cc25_on[strtolower(trim($p[1]))])) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; } }
-        foreach ($m['goals'] as $g) {
+        foreach (($m['starters'] ?? array()) as $p) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; }
+        foreach (($m['subs'] ?? array()) as $p) { if (isset($cc25_on[strtolower(trim($p[1]))])) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; } }
+        foreach (($m['goals'] ?? array()) as $g) {
             $k = $touch($s, $g['scorer']); if ($k) $s[$k]['goals']++;
             if (!empty($g['assist'])) { $k = $touch($s, $g['assist']); if ($k) $s[$k]['assists']++; }
         }
-        foreach ($m['cards'] as $c) {
+        foreach (($m['cards'] ?? array()) as $c) {
             $k = $touch($s, $c['player']); if (!$k) continue;
             if (($c['type'] ?? 'y') === 'r') $s[$k]['reds']++; else $s[$k]['yellows']++;
         }

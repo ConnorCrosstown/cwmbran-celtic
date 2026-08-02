@@ -64,7 +64,7 @@ get_template_part('template-parts/site-header');
 
     <div class="panel" id="results">
       <?php if ($results): $lm = ''; foreach ($results as $r): $ro = cc25_opponent($r);
-        $home = ($r['homeAway'] ?? 'H') === 'H';
+        $home = cc25_is_home($r);
         $cc = intval($home ? ($r['homeScore'] ?? 0) : ($r['awayScore'] ?? 0));
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');

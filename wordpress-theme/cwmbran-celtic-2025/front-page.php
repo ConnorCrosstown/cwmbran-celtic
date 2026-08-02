@@ -141,10 +141,12 @@ if ($cc25_kllive): ?>
   <div class="bgphoto has-photo" style="background-image:url('<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/img/hero.jpg'); ?>')"></div><div class="streak"></div><div class="grain"></div>
   <div class="ghost">CELTIC</div>
   <div class="hero-in">
-    <span class="hero-eyebrow kick"><span class="ln"></span> Next Match · Ardal League South East</span>
-    <h1>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
+    <?php $cc25_hero_comp = ($next && !empty($next['competition'])) ? $next['competition'] : 'Ardal League South East'; ?>
+    <span class="hero-eyebrow kick"><span class="ln"></span> <?php echo $next ? 'Next Match &middot; ' . esc_html($cc25_hero_comp) : 'Cwmbran Celtic AFC &middot; ' . esc_html($cc25_hero_comp); ?></span>
+    <?php if ($next): ?>
+    <h1><span class="sr-only">Cwmbran Celtic AFC — </span>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
     <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
-    <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo $next ? intval(cc25_kickoff_ms($next)) : ''; ?>">
+    <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo intval(cc25_kickoff_ms($next)); ?>">
       <div class="u"><div class="n" id="cd-d">00</div><div class="l">Days</div></div>
       <div class="sep">:</div>
       <div class="u"><div class="n" id="cd-h">00</div><div class="l">Hrs</div></div>
@@ -153,6 +155,10 @@ if ($cc25_kllive): ?>
       <div class="sep">:</div>
       <div class="u"><div class="n" id="cd-s">00</div><div class="l">Secs</div></div>
     </div>
+    <?php else: ?>
+    <h1>Cwmbran Celtic AFC<br><span class="thin">The Celts &middot; Est. 1924</span></h1>
+    <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, and the road ahead.</p>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -238,7 +244,7 @@ if ($cc25_kllive): ?>
         <div class="panel-b">
         <?php if ($result):
           $ro = cc25_opponent($result);
-          $home = ($result['homeAway'] ?? 'H') === 'H';
+          $home = cc25_is_home($result);
           $cc = intval($home ? ($result['homeScore'] ?? 0) : ($result['awayScore'] ?? 0));
           $op = intval($home ? ($result['awayScore'] ?? 0) : ($result['homeScore'] ?? 0));
           $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
