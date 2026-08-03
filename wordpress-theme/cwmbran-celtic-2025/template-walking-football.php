@@ -94,4 +94,108 @@ $cc25_tel   = preg_replace('/\s+/', '', $cc25_wf['phone']);
     <p class="spx-note reveal">Prices are set by the Walking Football section &mdash; check the <a href="<?php echo esc_url($cc25_wf['sessions']); ?>" target="_blank" rel="noopener">section's own site</a> for the latest.</p>
   </div>
 </section>
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head reveal"><div>
+      <div class="sec-eye kick"><span class="ln"></span> Since 2024</div>
+      <h2>Our story</h2>
+    </div></div>
+    <p class="reveal" style="color:var(--muted);max-width:62ch;margin:0 0 20px">It started with a handful of players who missed the game. Inside two years it became one of the busiest parts of the club.</p>
+    <ol class="wf-tl reveal">
+      <?php foreach (cc25_wf_timeline() as $m): ?>
+        <li>
+          <span class="when"><?php echo esc_html($m['when']); ?></span>
+          <span class="what"><?php echo esc_html($m['what']); ?></span>
+        </li>
+      <?php endforeach; ?>
+    </ol>
+    <blockquote class="wf-quote reveal">
+      <p>&ldquo;It's incredible that in such a short space of time, walking football has brought back my confidence.&rdquo;</p>
+      <cite>Emma</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head reveal"><div>
+      <div class="sec-eye kick"><span class="ln"></span> Social inclusion</div>
+      <h2>More than just football</h2>
+    </div></div>
+    <p class="reveal" style="color:var(--muted);max-width:62ch;margin:0 0 18px">The section believes football should be open to everyone, whatever their age, background, ability, fitness or financial circumstances.</p>
+    <div class="wf-three reveal">
+      <div class="jr-card">
+        <h3>Our values</h3>
+        <ul class="wf-list">
+          <li>Everyone is welcome</li>
+          <li>New players are encouraged, never judged</li>
+          <li>Social connection matters as much as competition</li>
+        </ul>
+      </div>
+      <div class="jr-card">
+        <h3>Health &amp; wellbeing</h3>
+        <ul class="wf-list">
+          <li>Physical fitness</li>
+          <li>Mental wellbeing</li>
+          <li>Healthy ageing</li>
+          <li>Less loneliness and isolation</li>
+        </ul>
+      </div>
+      <div class="jr-card">
+        <h3>Our commitment</h3>
+        <ul class="wf-list">
+          <li>Treating every member fairly and with respect</li>
+          <li>Promoting equality, diversity and inclusion</li>
+          <li>Challenging discrimination in all its forms</li>
+        </ul>
+      </div>
+    </div>
+    <blockquote class="wf-quote reveal">
+      <p>&ldquo;Walking football means the world to me. It's helped me so much in finding who I am again.&rdquo;</p>
+      <cite>A Cwmbran Celtic walking footballer</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="sec-head reveal"><div>
+      <div class="sec-eye kick"><span class="ln"></span> Keep up</div>
+      <h2>Fixtures &amp; photos</h2>
+    </div></div>
+    <p class="reveal" style="color:var(--muted);max-width:62ch;margin:0 0 18px">The section runs its own site and keeps it up to date &mdash; that's where the current fixtures and the photo gallery live.</p>
+    <div class="wf-two reveal">
+      <div class="jr-card">
+        <h3>Fixtures &amp; tournaments</h3>
+        <p class="wf-fine">Friendlies, league games and tournament dates, kept current by the section.</p>
+        <a class="btn btn-sm btn-gold" href="<?php echo esc_url($cc25_wf['site']); ?>" target="_blank" rel="noopener">View fixtures &rarr;</a>
+      </div>
+      <div class="jr-card">
+        <h3>Photo gallery</h3>
+        <p class="wf-fine">Matchdays, fun days and tournaments, from the first session onwards.</p>
+        <a class="btn btn-sm btn-outline" href="<?php echo esc_url($cc25_wf['gallery']); ?>" target="_blank" rel="noopener">View gallery &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="cta reveal">
+      <div class="grain"></div>
+      <div>
+        <div class="kick" style="color:var(--gold);position:relative;z-index:2">Get involved</div>
+        <h2>Come and have a game</h2>
+        <p>Turn up to a session, or get in touch first if you would rather ask a few questions. Businesses can back the section directly &mdash; sponsorship funds pitch hire, kit, competition fees, insurance and help for new members.</p>
+      </div>
+      <div class="signup" style="display:flex;flex-direction:column;gap:10px;justify-content:center">
+        <a class="btn btn-gold btn-block" href="tel:<?php echo esc_attr($cc25_tel); ?>">Call <?php echo esc_html($cc25_wf['phone']); ?></a>
+        <a class="btn btn-outline btn-block" href="<?php echo esc_url($cc25_wf['whatsapp']); ?>" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn-outline btn-block" href="<?php echo esc_url($cc25_wf['facebook']); ?>" target="_blank" rel="noopener">Facebook</a>
+        <a class="btn btn-outline btn-block" href="<?php echo esc_url($cc25_wf['sponsorship']); ?>" target="_blank" rel="noopener">Sponsor the section</a>
+      </div>
+    </div>
+    <p class="spx-note reveal">Walking Football is part of Cwmbran Celtic AFC and runs its own site at <a href="<?php echo esc_url($cc25_wf['site']); ?>" target="_blank" rel="noopener">cwmbrancelticwalkingfootball.co.uk</a>.</p>
+  </div>
+</section>
 <?php get_template_part('template-parts/site-footer'); ?>
