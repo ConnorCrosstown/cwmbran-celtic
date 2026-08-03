@@ -72,7 +72,7 @@ if ($cc25_kllive): ?>
   </div>
 </div>
 <?php elseif ($cc25_cel): ?>
-<div class="splash is-result" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="result-<?php echo esc_attr($cc25_cel['opponent'] . '-' . intval($cc25_cel['us']) . '-' . intval($cc25_cel['them'])); ?>" hidden>
+<div class="splash is-result" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-key="result-<?php echo esc_attr($cc25_cel['opponent'] . '-' . intval($cc25_cel['us']) . '-' . intval($cc25_cel['them'])); ?>" hidden>
   <canvas class="splash-fw" aria-hidden="true"></canvas>
   <div class="splash-bg" data-close></div>
   <div class="splash-card">

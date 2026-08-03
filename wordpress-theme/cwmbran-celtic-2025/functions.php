@@ -530,13 +530,6 @@ function cc25_travel_url($opponent, $home) {
     // (grounds, addresses + directions for every away trip).
     return $home ? cc25_page_url('travel', home_url('/')) : cc25_page_url('away-days', home_url('/'));
 }
-/** League grounds for the on-page list — deduped + alphabetised. */
-function cc25_league_grounds() {
-    $g = cc25_away_grounds();
-    unset($g['Undy']); // duplicate alias of 'Undy FC'
-    ksort($g);
-    return $g;
-}
 /** Upcoming AWAY fixtures for a team key (mens/reserves/womens). */
 function cc25_away_fixtures($team_key) {
     $sf = cc25_static_fixtures();
