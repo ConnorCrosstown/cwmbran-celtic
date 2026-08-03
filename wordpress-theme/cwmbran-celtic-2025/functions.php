@@ -81,6 +81,9 @@ add_filter('template_include', function ($template) {
             'juniors'                    => 'template-juniors.php',
             'juniors-and-minis'          => 'template-juniors.php',
             'minis'                      => 'template-juniors.php',
+            'walking-football'           => 'template-walking-football.php',
+            'cwmbran-walking-football-2' => 'template-walking-football.php',
+            'walking'                    => 'template-walking-football.php',
             'ladies-team'                => 'template-women-cards.php',
             'ladies-1st-team'            => 'template-women-cards.php',
             'sponsors-2'                 => 'template-sponsors.php',
@@ -128,6 +131,13 @@ function cc25_ensure_pages() {
         'match-report'      => 'Match Report',
         'music-shirts'      => 'Music Shirts',
     );
+    // Walking Football: the live site may already have this page under the
+    // legacy slug, so only provision when none of the known variants exist.
+    $wf_exists = false;
+    foreach (cc25_slug_candidates('walking-football') as $wf_slug) {
+        if (get_page_by_path($wf_slug)) { $wf_exists = true; break; }
+    }
+    if (!$wf_exists) $pages['walking-football'] = 'Walking Football';
     foreach ($pages as $slug => $title) {
         if (get_page_by_path($slug)) continue;
         wp_insert_post(array(
@@ -143,7 +153,7 @@ add_action('after_switch_theme', 'cc25_ensure_pages');
 add_action('admin_init', function () {
     // Version-stamped so a new page in cc25_ensure_pages() gets created on the
     // next admin load of an already-installed theme. Bump when adding a page.
-    $ver = '2026-07-31-juniors';
+    $ver = '2026-08-03-walking-football';
     if (get_option('cc25_pages_provisioned') === $ver) return;
     cc25_ensure_pages();
     update_option('cc25_pages_provisioned', $ver);
@@ -166,6 +176,13 @@ function cc25_vets_url() {
 /** Juniors & Minis destination: the dedicated /juniors/ page if it exists. */
 function cc25_juniors_url() {
     $p = cc25_page_url(array('juniors', 'juniors-and-minis', 'minis'), '');
+    return $p ? $p : cc25_page_url('teams', home_url('/'));
+}
+
+/** Walking Football destination: the dedicated page if it exists (under any of
+ * the known slugs), else the teams hub, so the hub card never dead-links. */
+function cc25_walking_football_url() {
+    $p = cc25_page_url('walking-football', '');
     return $p ? $p : cc25_page_url('teams', home_url('/'));
 }
 
