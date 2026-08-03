@@ -929,6 +929,7 @@ function cc25_nav_items() {
             array("Men's Vets", cc25_vets_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
             array("Juniors &amp; Minis", cc25_juniors_url(), false),
+            array('Walking Football', cc25_walking_football_url(), false),
         )),
         array('Fixtures &amp; Results', cc25_page_url('fixtures', $home), false, array(
             array('Current Season', cc25_page_url('fixtures', $home), false),
