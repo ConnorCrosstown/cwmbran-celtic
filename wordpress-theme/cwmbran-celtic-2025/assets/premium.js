@@ -49,7 +49,9 @@
       var email=sf.querySelector('[name=email]');
       if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value||'')){if(msg){msg.textContent='Please enter a valid email address.';}return;}
       var url=sf.getAttribute('data-endpoint')||'';
-      var done=function(){sf.innerHTML='<div class="signup-done" role="status">🎉 Thanks — you\'re on the list! Watch your inbox for Celts news.</div>';};
+      // Cross-origin no-cors POST can't read the server's result, so keep the
+      // confirmation tentative rather than falsely claiming success.
+      var done=function(){sf.innerHTML='<div class="signup-done" role="status">Thanks — we\'ve got your details. We\'ll be in touch with Celts news soon.</div>';};
       if(url.indexOf('http')!==0){done();return;}  // endpoint not configured yet
       var data=new URLSearchParams();
       data.append('name',(sf.querySelector('[name=name]')||{}).value||'');

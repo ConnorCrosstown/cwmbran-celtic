@@ -603,13 +603,23 @@ function cc25_handle_bond_join() {
     if (!$back) $back = cc25_page_url('celtic-bond', home_url('/'));
     // Honeypot: silently accept (looks successful to bots) without emailing.
     if (!empty($_POST['website'])) { wp_safe_redirect(add_query_arg('bond', 'sent', $back) . '#join'); exit; }
+    // Rate limit: max 3 submissions per IP per 5 minutes (stops inbox floods).
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? md5(preg_replace('/[^0-9a-f:.]/i', '', $_SERVER['REMOTE_ADDR'])) : '0';
+    $rk = 'cc25_bond_rl_' . $ip;
+    $hits = (int) get_transient($rk);
+    if ($hits >= 3) { wp_safe_redirect(add_query_arg('bond', 'slow', $back) . '#join'); exit; }
+    set_transient($rk, $hits + 1, 5 * MINUTE_IN_SECONDS);
+
     $name  = sanitize_text_field(wp_unslash($_POST['cc_name'] ?? ''));
     $email = sanitize_email(wp_unslash($_POST['cc_email'] ?? ''));
     $phone = sanitize_text_field(wp_unslash($_POST['cc_phone'] ?? ''));
     $conn  = sanitize_text_field(wp_unslash($_POST['cc_conn'] ?? ''));
     if ($name === '' || !is_email($email)) {
+        // Keep what they typed so the form can repopulate on the error render.
+        set_transient('cc25_bond_vals_' . $ip, compact('name', 'email', 'phone', 'conn'), 5 * MINUTE_IN_SECONDS);
         wp_safe_redirect(add_query_arg('bond', 'err', $back) . '#join'); exit;
     }
+    delete_transient('cc25_bond_vals_' . $ip);
     $body = "New Celtic Bond sign-up:\n\n"
         . "Name: {$name}\nEmail: {$email}\nPhone: {$phone}\nConnection to the club: {$conn}\n\n"
         . "Next step: follow up to set up their " . cc25_bond_amount() . "/month direct debit and allocate a Bond number.";

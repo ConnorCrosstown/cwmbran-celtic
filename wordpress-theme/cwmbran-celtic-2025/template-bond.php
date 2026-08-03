@@ -88,20 +88,29 @@ $cc25_results  = cc25_page_url('bond-results', '');
         <p>Fill in your details and we'll be in touch to set up your <?php echo esc_html($cc25_amt); ?>-a-month direct debit and give you your Bond number. Questions? Email <a href="mailto:<?php echo esc_attr(cc25_bond_email()); ?>"><?php echo esc_html(cc25_bond_email()); ?></a>.</p>
       </div>
       <div class="bond-form-card">
-        <?php $cc25_bond_state = isset($_GET['bond']) ? sanitize_key($_GET['bond']) : ''; ?>
+        <?php
+          $cc25_bond_state = isset($_GET['bond']) ? sanitize_key($_GET['bond']) : '';
+          // Repopulate the form on a validation error so nothing is retyped.
+          $cc25_bv = array('name' => '', 'email' => '', 'phone' => '', 'conn' => '');
+          if ($cc25_bond_state === 'err' && isset($_SERVER['REMOTE_ADDR'])) {
+              $cc25_bt = get_transient('cc25_bond_vals_' . md5(preg_replace('/[^0-9a-f:.]/i', '', $_SERVER['REMOTE_ADDR'])));
+              if (is_array($cc25_bt)) $cc25_bv = array_merge($cc25_bv, $cc25_bt);
+          }
+        ?>
         <?php if ($cc25_bond_state === 'sent'): ?>
-          <div class="bond-note ok"><strong>Thanks &mdash; you're on the list!</strong><br>We'll be in touch soon to set up your direct debit and give you your Celtic Bond number.</div>
+          <div class="bond-note ok" role="alert"><strong>Thanks &mdash; you're on the list!</strong><br>We'll be in touch soon to set up your direct debit and give you your Celtic Bond number.</div>
         <?php else: ?>
-          <?php if ($cc25_bond_state === 'err'): ?><div class="bond-note err">Please add your name and a valid email address, then try again.</div><?php endif; ?>
+          <?php if ($cc25_bond_state === 'err'): ?><div class="bond-note err" role="alert">Please add your name and a valid email address, then try again.</div><?php endif; ?>
+          <?php if ($cc25_bond_state === 'slow'): ?><div class="bond-note err" role="alert">Thanks &mdash; we've already got your details. Please give us a few minutes before sending again.</div><?php endif; ?>
           <form class="bond-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <input type="hidden" name="action" value="cc25_bond_join">
             <div class="bf-row">
-              <label>Your name<input type="text" name="cc_name" required></label>
-              <label>Email<input type="email" name="cc_email" required></label>
+              <label>Your name<input type="text" name="cc_name" value="<?php echo esc_attr($cc25_bv['name']); ?>" required></label>
+              <label>Email<input type="email" name="cc_email" value="<?php echo esc_attr($cc25_bv['email']); ?>" required></label>
             </div>
             <div class="bf-row">
-              <label>Phone<input type="tel" name="cc_phone"></label>
-              <label>Connection to the club<input type="text" name="cc_conn" placeholder="supporter, player's parent&hellip;"></label>
+              <label>Phone<input type="tel" name="cc_phone" value="<?php echo esc_attr($cc25_bv['phone']); ?>"></label>
+              <label>Connection to the club<input type="text" name="cc_conn" value="<?php echo esc_attr($cc25_bv['conn']); ?>" placeholder="supporter, player's parent&hellip;"></label>
             </div>
             <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="bf-hp">
             <button type="submit" class="btn btn-gold btn-block">Join the Celtic Bond &rarr;</button>
