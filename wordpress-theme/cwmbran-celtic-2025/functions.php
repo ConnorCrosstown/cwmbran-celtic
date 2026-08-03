@@ -184,6 +184,85 @@ function cc25_junior_teams() {
     );
 }
 
+/**
+ * WALKING FOOTBALL — the section runs its own site and keeps it updated, so
+ * only slow-changing content lives here. Fixtures, the photo gallery and
+ * sponsorship tiers link out (see cc25_wf_links()) rather than being copied.
+ *
+ * Weekly sessions, in running order.
+ * Each row: ['label' => session, 'day' => weekday, 'time' => start].
+ * All sessions run at cc25_wf_venue().
+ */
+function cc25_wf_sessions() {
+    return array(
+        array('label' => "Men's Under 50s",                'day' => 'Thursday',  'time' => '7:00pm'),
+        array('label' => "Men's Over 50s",                 'day' => 'Thursday',  'time' => '7:00pm'),
+        array('label' => "Men's Over 60s",                 'day' => 'Thursday',  'time' => '7:00pm'),
+        array('label' => "Men's Social",                   'day' => 'Wednesday', 'time' => '4:00pm'),
+        array('label' => "Women's Competitive (Over 35s)", 'day' => 'Friday',    'time' => '6:00pm'),
+        array('label' => "Women's Social (all ages)",      'day' => 'Friday',    'time' => '6:00pm'),
+        array('label' => "Mixed (all ages)",               'day' => 'Sunday',    'time' => '9:00am'),
+    );
+}
+
+/** Where every Walking Football session is played. */
+function cc25_wf_venue() {
+    return array(
+        'name'    => 'Llantarnam Community Primary School',
+        'address' => 'James Prosser Way, Llantarnam, Cwmbran, NP44 3XB',
+        'map'     => 'https://www.google.com/maps/search/?api=1&query=Llantarnam+Community+Primary+School+NP44+3XB',
+    );
+}
+
+/** Monthly subscriptions. 'bond' marks the row that links to the Celtic Bond. */
+function cc25_wf_prices() {
+    return array(
+        array('label' => 'Social',      'price' => '£6',  'note' => 'Social sessions.',                  'bond' => false),
+        array('label' => 'Competitive', 'price' => '£10', 'note' => 'Competitive squads.',               'bond' => false),
+        array('label' => 'Celtic Bond', 'price' => '£10', 'note' => 'All players — the club\'s draw.',   'bond' => true),
+    );
+}
+
+/** The section's story so far. Each row: ['when' => date, 'what' => milestone]. */
+function cc25_wf_timeline() {
+    return array(
+        array('when' => 'January 2024',   'what' => 'A small group of men decide it is time to bring football back into their lives.'),
+        array('when' => 'April 2024',     'what' => "A women's group launches and the community grows."),
+        array('when' => 'June 2024',      'what' => "The women's team play their first friendly, against Caldicot."),
+        array('when' => 'September 2024', 'what' => 'A first Fun Day celebrates walking football, friendship and community.'),
+        array('when' => 'September 2024', 'what' => "The women's team join their first competitive league."),
+        array('when' => 'November 2024',  'what' => 'Sponsorship and grants bring tracksuits and training kit.'),
+        array('when' => 'March 2025',     'what' => "A men's 50s walking football team is formed."),
+        array('when' => 'April 2025',     'what' => 'First anniversary — 100 members.'),
+        array('when' => 'May 2025',       'what' => "The women's team win their first league campaign."),
+        array('when' => 'August 2025',    'what' => 'The section hosts its first tournament — 300 players.'),
+        array('when' => 'September 2025', 'what' => 'A first social mixed tournament, for players outside the leagues.'),
+        array('when' => 'Nov–Dec 2025',   'what' => 'A tri-national tournament brings together Wales, Ireland and England.'),
+    );
+}
+
+/**
+ * Every outbound Walking Football destination in one place, so a domain move is
+ * a single edit. NOTE: their pages print the address with "club" in it, but the
+ * site only resolves without it.
+ */
+function cc25_wf_links() {
+    $site = 'https://cwmbrancelticwalkingfootball.co.uk';
+    return array(
+        'site'        => $site . '/',
+        'sessions'    => $site . '/session-times',
+        'story'       => $site . '/community-%26-club-story',
+        'inclusion'   => $site . '/social-inclusion',
+        'sponsorship' => $site . '/sponsorship',
+        'gallery'     => $site . '/photo-gallery',
+        'contact'     => $site . '/contact-us',
+        'facebook'    => 'https://www.facebook.com/p/Cwmbran-Celtic-Walking-Football-Club-61573941128119/',
+        // 07919 323520 in international form, as wa.me requires.
+        'whatsapp'    => 'https://wa.me/447919323520',
+        'phone'       => '07919 323520',
+    );
+}
+
 /** Real slug variants (confirmed from the live site) so links resolve to the club's pages. */
 function cc25_slug_candidates($key) {
     $map = array(
