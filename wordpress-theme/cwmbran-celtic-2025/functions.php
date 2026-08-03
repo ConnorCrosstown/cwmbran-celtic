@@ -1520,10 +1520,30 @@ function cc25_seo_desc() {
 
 /** Current canonical URL. */
 function cc25_seo_url() {
-    if (is_singular() || is_page()) { $u = get_permalink(); if ($u) return $u; }
+    if (is_singular() || is_page()) {
+        $u = get_permalink();
+        if ($u) {
+            // Match reports are distinct content at /match-report/?g=<date> — keep
+            // the ?g so each report has its own canonical/og:url (not all collapsed
+            // onto the bare page).
+            if (is_page() && get_post_field('post_name', get_queried_object_id()) === 'match-report' && !empty($_GET['g'])) {
+                $u = add_query_arg('g', preg_replace('/[^0-9-]/', '', $_GET['g']), $u);
+            }
+            return $u;
+        }
+    }
     if (is_front_page() || is_home()) return home_url('/');
     global $wp; return home_url(isset($wp->request) ? $wp->request : '');
 }
+
+/** Give custom-template pages (match reports, Music Shirts) a real <title> — the
+ * document title, not just the OG title — so browser tabs and Google SERPs show
+ * the scoreline instead of one shared "Match Report" for every game. */
+add_filter('pre_get_document_title', function ($title) {
+    if (is_admin()) return $title;
+    $ov = cc25_share_meta();
+    return ($ov && !empty($ov['title'])) ? $ov['title'] : $title;
+});
 
 /** The club as a schema.org SportsTeam (reused across the JSON-LD). */
 function cc25_seo_org() {
@@ -1551,35 +1571,41 @@ function cc25_jsonld($data) {
     echo '<script type="application/ld+json">' . wp_json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "</script>\n";
 }
 
-/** Upcoming Men's First Team fixtures as SportsEvent schema. */
+/** Upcoming fixtures (all three teams) as SportsEvent schema. */
 function cc25_seo_events() {
     $sf = cc25_static_fixtures();
-    if (empty($sf['mens']['list'])) return;
     $now = round(microtime(true) * 1000); $n = 0;
-    foreach ($sf['mens']['list'] as $rf) {
-        if ($n >= 12) break;
-        $ms = cc25_row_kickoff_ms($rf[0]);
-        if ($ms + 2 * 3600 * 1000 < $now) continue;
-        $home = !empty($rf[2]); $opp = $rf[1];
-        if ($home) {
-            $loc = array('@type' => 'Place', 'name' => 'The Motazone Arena', 'address' => 'Henllys Way, Cwmbran, NP44 3FS');
-        } else {
-            $g = cc25_ground_of($opp);
-            $loc = $g ? array('@type' => 'Place', 'name' => $g['ground'], 'address' => $g['addr']) : array('@type' => 'Place', 'name' => $opp);
+    $suffix = array('mens' => '', 'reserves' => ' Reserves', 'womens' => ' Women');
+    foreach (array('mens', 'reserves', 'womens') as $team) {
+        if (empty($sf[$team]['list'])) continue;
+        $league = isset($sf[$team]['league']) ? $sf[$team]['league'] : 'Ardal League South East';
+        $us = 'Cwmbran Celtic' . $suffix[$team];
+        foreach ($sf[$team]['list'] as $rf) {
+            if ($n >= 16) return;
+            if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
+            $ms = cc25_row_kickoff_ms($rf[0]);
+            if ($ms + 2 * 3600 * 1000 < $now) continue;
+            $home = !empty($rf[2]); $opp = $rf[1];
+            if ($home) {
+                $loc = array('@type' => 'Place', 'name' => 'The Motazone Arena', 'address' => 'Henllys Way, Cwmbran, NP44 3FS');
+            } else {
+                $g = cc25_ground_of($opp);
+                $loc = $g ? array('@type' => 'Place', 'name' => $g['ground'], 'address' => $g['addr']) : array('@type' => 'Place', 'name' => $opp);
+            }
+            cc25_jsonld(array(
+                '@context' => 'https://schema.org', '@type' => 'SportsEvent',
+                'name' => $home ? ($us . ' v ' . $opp) : ($opp . ' v ' . $us),
+                'sport' => 'Association Football',
+                'startDate' => wp_date('c', intval($ms / 1000)),
+                'eventStatus' => 'https://schema.org/EventScheduled',
+                'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+                'location' => $loc,
+                'homeTeam' => array('@type' => 'SportsTeam', 'name' => $home ? $us : $opp),
+                'awayTeam' => array('@type' => 'SportsTeam', 'name' => $home ? $opp : $us),
+                'organizer' => array('@type' => 'SportsOrganization', 'name' => $league),
+            ));
+            $n++;
         }
-        cc25_jsonld(array(
-            '@context' => 'https://schema.org', '@type' => 'SportsEvent',
-            'name' => $home ? ('Cwmbran Celtic v ' . $opp) : ($opp . ' v Cwmbran Celtic'),
-            'sport' => 'Association Football',
-            'startDate' => wp_date('c', intval($ms / 1000)),
-            'eventStatus' => 'https://schema.org/EventScheduled',
-            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
-            'location' => $loc,
-            'homeTeam' => array('@type' => 'SportsTeam', 'name' => $home ? 'Cwmbran Celtic' : $opp),
-            'awayTeam' => array('@type' => 'SportsTeam', 'name' => $home ? $opp : 'Cwmbran Celtic'),
-            'organizer' => array('@type' => 'SportsOrganization', 'name' => 'Ardal League South East'),
-        ));
-        $n++;
     }
 }
 
@@ -1587,7 +1613,7 @@ function cc25_seo_events() {
 add_action('wp_head', 'cc25_seo_head', 4);
 function cc25_seo_head() {
     if (is_admin() || is_feed()) return;
-    $desc = trim(wp_trim_words(cc25_seo_desc(), 40, ''));
+    $desc = trim(wp_trim_words(cc25_seo_desc(), 26, '…'));   // ~155 chars for SERPs
     $url  = cc25_seo_url();
     $title = wp_get_document_title();
     $img  = get_stylesheet_directory_uri() . '/assets/img/hero.jpg';
@@ -1595,6 +1621,8 @@ function cc25_seo_head() {
     // Page-specific share title (e.g. the match scoreline) where we have one.
     $ov = cc25_share_meta();
     if ($ov && !empty($ov['title'])) $title = $ov['title'];
+    if ($ov && !empty($ov['img']))   $img  = $ov['img'];
+    if ($ov && !empty($ov['type']))  $type = $ov['type'];
     if (is_singular('post')) {
         $type = 'article';
         if (has_post_thumbnail()) { $t = get_the_post_thumbnail_url(null, 'large'); if ($t) $img = $t; }
@@ -1610,6 +1638,7 @@ function cc25_seo_head() {
     echo '<meta property="og:image" content="' . esc_url($img) . "\">\n";
     echo '<meta property="og:locale" content="en_GB">' . "\n";
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:site" content="@CwmbranCelticFC">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($title) . "\">\n";
     echo '<meta name="twitter:description" content="' . esc_attr($desc) . "\">\n";
     echo '<meta name="twitter:image" content="' . esc_url($img) . "\">\n";
@@ -1629,6 +1658,30 @@ function cc25_seo_head() {
         );
         if (has_post_thumbnail()) $art['image'] = array(get_the_post_thumbnail_url(null, 'large'));
         cc25_jsonld($art);
+    }
+
+    // Match-report page: a SportsEvent with the final score + line-up context.
+    if (is_page() && get_post_field('post_name', get_queried_object_id()) === 'match-report') {
+        $g = isset($_GET['g']) ? preg_replace('/[^0-9-]/', '', $_GET['g']) : '';
+        $m = cc25_get_match($g);
+        if ($m) {
+            $home = !empty($m['home']); $opp = $m['opp'];
+            $ct = array(
+                array('@type' => 'SportsTeam', 'name' => 'Cwmbran Celtic AFC'),
+                array('@type' => 'SportsTeam', 'name' => $opp),
+            );
+            cc25_jsonld(array(
+                '@context' => 'https://schema.org', '@type' => 'SportsEvent', 'sport' => 'Football',
+                'name' => $home ? ('Cwmbran Celtic v ' . $opp) : ($opp . ' v Cwmbran Celtic'),
+                'startDate' => $m['date'] . (!empty($m['time']) ? 'T' . $m['time'] : ''),
+                'eventStatus' => 'https://schema.org/EventScheduled',
+                'homeTeam' => $ct[$home ? 0 : 1],
+                'awayTeam' => $ct[$home ? 1 : 0],
+                'location' => array('@type' => 'Place', 'name' => !empty($m['venue']) ? $m['venue'] : 'The Motazone Arena'),
+                'description' => cc25_match_summary($m),
+                'url' => $url,
+            ));
+        }
     }
 
     if (is_front_page() || (is_page() && in_array(get_post_field('post_name', get_queried_object_id()), array('fixtures', 'fixtures-results', 'fixtures-and-results'), true))) {
@@ -1880,9 +1933,9 @@ function cc25_share_meta() {
                 $line = $home
                     ? 'Cwmbran Celtic ' . intval($m['cc']) . '-' . intval($m['oc']) . ' ' . $opp
                     : $opp . ' ' . intval($m['oc']) . '-' . intval($m['cc']) . ' Cwmbran Celtic';
-                return array('title' => $line . ' | Match Report', 'desc' => cc25_match_summary($m));
+                return array('title' => $line . ' | Match Report', 'desc' => cc25_match_summary($m), 'type' => 'article');
             }
-            return array('title' => 'Match Report | Cwmbran Celtic', 'desc' => 'Full match report, goals, stats and line-ups from the latest Cwmbran Celtic game.');
+            return array('title' => 'Match Report | Cwmbran Celtic', 'desc' => 'Full match report, goals, stats and line-ups from the latest Cwmbran Celtic game.', 'type' => 'article');
         case 'fixtures': case 'fixtures-results': case 'fixtures-and-results':
             return array('desc' => "Every Cwmbran Celtic fixture and result, plus the live Ardal League South East table — First Team, Reserves and Women's, with tickets for home games.");
         case 'travel-and-ground':
@@ -1897,6 +1950,8 @@ function cc25_share_meta() {
             return array(
                 'title' => 'Music Shirts 2026/27 | Cwmbran Celtic',
                 'desc'  => 'Super Furry Animals, Mogwai, Panic Shack and Loose Articles become shirt sponsors for Cwmbran Celtic — with 10% of every shirt going to Music Venue Trust. Pre-order the 2026/27 kit now.',
+                'img'   => get_stylesheet_directory_uri() . '/assets/img/kit/kit-sfa.jpg',
+                'type'  => 'article',
             );
     }
     return null;

@@ -105,6 +105,7 @@ $m = cc25_get_match($cc25_g);
   <div class="phero-in">
     <div class="crumbs"><a href="<?php echo esc_url($cc25_home); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('fixtures', $cc25_home)); ?>" style="color:var(--on-navy-dim)">Fixtures &amp; Results</a> / <span style="color:#fff">Match Report</span></div>
     <div class="mr-eye kick"><?php echo esc_html($m['comp']); ?><?php echo !empty($m['round']) ? ' &middot; ' . esc_html($m['round']) : ''; ?> &middot; <?php echo esc_html(date('l j F Y', $rd)); ?></div>
+    <h1 class="sr-only"><?php echo esc_html(($home ? ('Cwmbran Celtic ' . $cc . '–' . $oc . ' ' . $opp) : ($opp . ' ' . $oc . '–' . $cc . ' Cwmbran Celtic')) . ' — Match Report'); ?></h1>
     <div class="mr-score">
       <span class="mr-team"><?php echo $home ? cc25_own_crest(64) : $oppcrest; ?><span class="nm"><?php echo esc_html($home ? 'Cwmbran Celtic' : $opp); ?></span></span>
       <span class="mr-sc"><?php echo ($home ? $cc : $oc) . ' &ndash; ' . ($home ? $oc : $cc); ?><small>Full Time</small></span>

@@ -419,7 +419,7 @@ if ($cc25_reports):
     <div class="news-lead reveal d1">
       <div class="photo"><?php if (has_post_thumbnail()) the_post_thumbnail('large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?><?php if ($cc25_c) echo '<a class="tag" href="' . esc_url(get_category_link($cc25_c[0]->term_id)) . '">' . esc_html($cc25_c[0]->name) . '</a>'; ?></div>
       <div class="lb">
-        <time><?php echo esc_html(get_the_date()); ?></time>
+        <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date()); ?></time>
         <h3><a class="cardlink" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
         <p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 26)); ?></p>
         <span class="viewall" style="margin-top:4px">Read more &rarr;</span>
@@ -429,7 +429,7 @@ if ($cc25_reports):
         <?php else : ?>
       <div class="ncard reveal">
         <div class="photo"><?php if (has_post_thumbnail()) the_post_thumbnail('medium_large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?><?php if ($cc25_c) echo '<a class="tag" href="' . esc_url(get_category_link($cc25_c[0]->term_id)) . '">' . esc_html($cc25_c[0]->name) . '</a>'; ?></div>
-        <div class="ncb"><time><?php echo esc_html(get_the_date()); ?></time><h3><a class="cardlink" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3><p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 16)); ?></p></div>
+        <div class="ncb"><time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date()); ?></time><h3><a class="cardlink" href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3><p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 16)); ?></p></div>
       </div>
         <?php endif;
       endwhile;

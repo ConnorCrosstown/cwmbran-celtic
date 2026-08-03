@@ -37,7 +37,7 @@ get_template_part('template-parts/site-header');
             <span class="kicker">Featured</span>
             <h2 style="text-transform:none;letter-spacing:0"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
             <p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 32)); ?></p>
-            <time><?php echo esc_html(get_the_date()); ?></time>
+            <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date()); ?></time>
             <a class="viewall" href="<?php the_permalink(); ?>">Read more →</a>
           </div>
         </article>
@@ -48,7 +48,7 @@ get_template_part('template-parts/site-header');
               <?php if (has_post_thumbnail()) the_post_thumbnail('medium_large', array('style' => 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover')); else echo '<div class="fill"></div><div class="gr"></div>'; ?>
               <?php if ($c) echo '<span class="tag">' . esc_html($c[0]->name) . '</span>'; ?>
             </a>
-            <div class="ncb"><time><?php echo esc_html(get_the_date()); ?></time><h3 style="text-transform:none;letter-spacing:0"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3><p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 18)); ?></p></div>
+            <div class="ncb"><time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date()); ?></time><h3 style="text-transform:none;letter-spacing:0"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3><p><?php echo esc_html(wp_trim_words(get_the_excerpt(), 18)); ?></p></div>
           </article>
         <?php endif; ?>
       <?php endwhile; ?>
