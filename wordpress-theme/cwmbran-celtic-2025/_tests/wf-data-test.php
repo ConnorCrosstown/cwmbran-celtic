@@ -5,6 +5,11 @@
  * functions.php loads standalone with these two no-op stubs; WordPress never
  * loads this file.
  */
+
+// This file ships inside the theme zip and must never execute over HTTP.
+// It defines ABSPATH and requires functions.php, bypassing its exit guard.
+if (PHP_SAPI !== 'cli') exit;
+
 function add_action() {}
 function add_filter() {}
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
