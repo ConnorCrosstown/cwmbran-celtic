@@ -1519,6 +1519,42 @@ header.nav .btn-shirts,header.nav .btn-tickets{white-space:nowrap;flex:0 0 auto;
 .jr-contact .nm{color:var(--muted);font-size:.93rem}
 .jr-contact a.tel{font-family:var(--display);letter-spacing:.02em;font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap;text-decoration:none}
 .jr-contact a.tel:hover{color:var(--gold)}
+/* ---- Walking Football ------------------------------------------------- */
+.wf-two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 4px}
+.wf-three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0 4px}
+.wf-list{margin:0;padding-left:18px;color:var(--muted)}
+.wf-list li{padding:5px 0;line-height:1.55}
+.wf-fine{color:var(--muted);font-size:.92rem;line-height:1.62;margin:10px 0 0}
+.jr-card .btn{margin-top:12px}
+
+.wf-sessions{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0 4px}
+.wf-session{background:var(--surface);border:1px solid var(--hair);border-left:3px solid var(--gold);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow-sm)}
+.wf-session .nm{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;font-size:.98rem;color:var(--text)}
+.wf-session .when{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:9px;padding-top:9px;border-top:1px solid var(--hair)}
+.wf-session .day{color:var(--muted);font-size:.93rem}
+.wf-session .time{font-family:var(--display);font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--text);white-space:nowrap}
+
+.wf-prices{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0 4px}
+.wf-price{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:22px 20px;text-align:center;box-shadow:var(--shadow-sm)}
+.wf-price .amt{font-family:var(--display);font-size:2.1rem;line-height:1;color:var(--text)}
+.wf-price .amt .per{font-size:.82rem;color:var(--muted);margin-left:4px;letter-spacing:.02em}
+.wf-price .lbl{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;color:var(--gold);margin:9px 0 6px}
+.wf-price .note{color:var(--muted);font-size:.9rem;line-height:1.55}
+.wf-price .note a{display:block;margin-top:6px}
+
+.wf-tl{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--hair)}
+.wf-tl li{position:relative;padding:0 0 20px 18px}
+.wf-tl li:last-child{padding-bottom:0}
+.wf-tl li::before{content:"";position:absolute;left:-29px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--gold);border:2px solid var(--surface)}
+.wf-tl .when{display:block;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;color:var(--gold);margin-bottom:3px}
+.wf-tl .what{color:var(--muted);line-height:1.62}
+
+.wf-quote{margin:26px 0 0;padding:20px 24px;background:var(--surface);border:1px solid var(--hair);border-left:3px solid var(--gold);border-radius:10px}
+.wf-quote p{margin:0;color:var(--text);font-size:1.06rem;line-height:1.62;font-style:italic}
+.wf-quote cite{display:block;margin-top:9px;font-style:normal;color:var(--muted);font-size:.9rem}
+
+@media(max-width:860px){.wf-three{grid-template-columns:1fr}.wf-prices{grid-template-columns:1fr}}
+@media(max-width:640px){.wf-two{grid-template-columns:1fr}}
 
 /* ============================================================
    AUDIT FIXES — a11y, mobile, contrast (keep last; wins cascade)
