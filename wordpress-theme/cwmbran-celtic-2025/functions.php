@@ -634,7 +634,7 @@ function cc25_away_fixtures($team_key) {
     $out = array();
     foreach ($sf[$team_key]['list'] as $rf) {
         if (!empty($rf[2])) continue;                                    // home — skip
-        if (cc25_row_kickoff_ms($rf[0]) + 2 * 3600 * 1000 < $now) continue; // finished — skip
+        if (cc25_row_kickoff_ms($rf[0], $rf[1]) + 2 * 3600 * 1000 < $now) continue; // finished — skip
         $out[] = $rf;
     }
     return $out;
@@ -1277,13 +1277,13 @@ function cc25_static_fixtures() {
     return $cache = $data;
 }
 
-/** Kick-off timestamp (ms) for a hand-maintained fixture row's 'Y-m-d' date. */
-function cc25_row_kickoff_ms($ymd) {
+/** Kick-off timestamp (ms) for a hand-maintained fixture row's 'Y-m-d' date.
+ * Pass the row's opponent so a game-specific override can be matched. */
+function cc25_row_kickoff_ms($ymd, $opponent = '') {
     $tz = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone('Europe/London');
     $d = DateTime::createFromFormat('Y-m-d', $ymd, $tz);
     if (!$d) return strtotime($ymd . ' 23:59:59') * 1000;
-    $ov = cc25_kickoff_overrides();
-    $ko = isset($ov[$ymd]) ? $ov[$ymd] : cc25_kickoff_default((int) $d->format('N'));
+    $ko = cc25_kickoff_time($ymd, $opponent, (int) $d->format('N'));
     $dt = DateTime::createFromFormat('Y-m-d H:i', $ymd . ' ' . $ko, $tz);
     return ($dt ? $dt->getTimestamp() : $d->getTimestamp()) * 1000;
 }
@@ -1317,7 +1317,7 @@ function cc25_render_static_fixtures($list, $tickets_url = '') {
     $now = round(microtime(true) * 1000);
     $list = array_values(array_filter($list, function ($rf) use ($now) {
         if (cc25_fixture_hidden($rf[1], $rf[0])) return false;
-        return cc25_row_kickoff_ms($rf[0]) + 2 * 60 * 60 * 1000 >= $now;
+        return cc25_row_kickoff_ms($rf[0], $rf[1]) + 2 * 60 * 60 * 1000 >= $now;
     }));
     if (!$list) {
         echo '<p style="color:var(--muted);padding:24px 2px;margin:0">No upcoming fixtures right now &mdash; check back soon.</p>';
@@ -1363,7 +1363,7 @@ function cc25_team_items($list, $team) {
 function cc25_static_row_to_fixture($rf) {
     $home = !empty($rf[2]);
     return array(
-        'date'        => cc25_row_kickoff_ms($rf[0]),
+        'date'        => cc25_row_kickoff_ms($rf[0], $rf[1]),
         'homeTeam'    => $home ? 'Cwmbran Celtic' : ($rf[1] ?? ''),
         'awayTeam'    => $home ? ($rf[1] ?? '') : 'Cwmbran Celtic',
         'homeAway'    => $home ? 'H' : 'A',
@@ -1397,7 +1397,7 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
     if (!$future && $team === 'mens') {
         foreach (cc25_static_fixtures()['mens']['list'] as $rf) {
             if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
-            if (cc25_row_kickoff_ms($rf[0]) + 2 * 60 * 60 * 1000 >= $now) $future[] = cc25_static_row_to_fixture($rf);
+            if (cc25_row_kickoff_ms($rf[0], $rf[1]) + 2 * 60 * 60 * 1000 >= $now) $future[] = cc25_static_row_to_fixture($rf);
         }
     }
     $use = $future ? $future : $fx;
@@ -1424,11 +1424,16 @@ function cc25_next_home_fixture($feed, $team = 'mens') {
  * a per-date override the club has set, else a sensible default by day of week.
  * All times are UK local (Europe/London).
  *
- * >>> To set a kick-off, add a line to the map below: 'YYYY-MM-DD' => 'HH:MM'.
+ * >>> To set a kick-off, add a line to the map below:
+ *       'YYYY-MM-DD'            => 'HH:MM'   every game that day
+ *       'YYYY-MM-DD|Opponent'   => 'HH:MM'   just that one game
+ *     Use the opponent form when two sides play on the same date at different
+ *     times — a bare date key would drag the other game's time with it.
  * ---------------------------------------------------------------------- */
 function cc25_kickoff_overrides() {
     return array(
-        '2026-07-28' => '19:00',  // Cwmbran Town derby (Tue) — 7pm KO
+        '2026-07-28'          => '19:00',  // Cwmbran Town derby (Tue) — 7pm KO
+        '2026-08-07|New Inn'  => '18:30',  // 1st team v New Inn (Fri) — 6:30pm KO
     );
 }
 /** Default kick-off by ISO day-of-week (1=Mon .. 7=Sun). */
@@ -1437,6 +1442,19 @@ function cc25_kickoff_default($dow) {
     if ($dow == 7) return '14:00';  // Sunday
     return '19:30';                 // midweek
 }
+/** Kick-off 'HH:MM' for a date + opponent: the game-specific override wins over
+ * the whole-day one, which wins over the day-of-week default. */
+function cc25_kickoff_time($ymd, $opponent, $dow) {
+    $ov = cc25_kickoff_overrides();
+    $opp = cc25_norm_team((string) $opponent);
+    if ($opp !== '') {
+        foreach ($ov as $key => $time) {
+            $parts = explode('|', $key, 2);
+            if (count($parts) === 2 && $parts[0] === $ymd && cc25_norm_team($parts[1]) === $opp) return $time;
+        }
+    }
+    return isset($ov[$ymd]) ? $ov[$ymd] : cc25_kickoff_default($dow);
+}
 /** Resolved kick-off timestamp (ms) — keeps the match date, sets the real time. */
 function cc25_kickoff_ms($f) {
     $ms = intval(is_array($f) ? ($f['date'] ?? 0) : 0);
@@ -1444,8 +1462,8 @@ function cc25_kickoff_ms($f) {
     $tz = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone('Europe/London');
     $day = (new DateTime('@' . intval($ms / 1000)))->setTimezone($tz);
     $ymd = $day->format('Y-m-d');
-    $ov = cc25_kickoff_overrides();
-    $ko = isset($ov[$ymd]) ? $ov[$ymd] : cc25_kickoff_default((int) $day->format('N'));
+    $opp = cc25_opponent($f);
+    $ko = cc25_kickoff_time($ymd, $opp['opponent'], (int) $day->format('N'));
     $dt = DateTime::createFromFormat('Y-m-d H:i', $ymd . ' ' . $ko, $tz);
     return $dt ? $dt->getTimestamp() * 1000 : $ms;
 }
@@ -1580,7 +1598,7 @@ function cc25_ticker_items() {
             // Drop games once they've finished (kick-off + 2h), matching the
             // Fixtures list + homepage — not at midnight, so the ticker doesn't
             // keep showing a just-finished match as "upcoming" all evening.
-            $ms = cc25_row_kickoff_ms($rf[0]);
+            $ms = cc25_row_kickoff_ms($rf[0], $rf[1]);
             if ($ms + 2 * 60 * 60 * 1000 < $now) continue;
             $team_up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
                 'badge' => $team['badge'], 'title' => $team['title']);
@@ -1683,7 +1701,7 @@ function cc25_seo_events() {
         foreach ($sf[$team]['list'] as $rf) {
             if ($n >= 16) return;
             if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
-            $ms = cc25_row_kickoff_ms($rf[0]);
+            $ms = cc25_row_kickoff_ms($rf[0], $rf[1]);
             if ($ms + 2 * 3600 * 1000 < $now) continue;
             $home = !empty($rf[2]); $opp = $rf[1];
             if ($home) {

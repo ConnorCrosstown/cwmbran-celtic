@@ -49,7 +49,7 @@ $cc25_keys = array('mens' => 's-mens', 'reserves' => 's-res', 'womens' => 's-wom
               <div class="away-ground">
                 <?php if ($cc25_g['known']): ?><strong><?php echo esc_html($cc25_g['ground']); ?></strong> &middot; <?php echo esc_html($cc25_g['addr']); ?><?php else: ?><span style="color:var(--faint)">Ground details to follow</span><?php endif; ?>
               </div>
-              <div class="away-ko"><?php echo esc_html(date('l', $cc25_rd)); ?> &middot; Kick-off <?php echo esc_html(cc25_date(cc25_row_kickoff_ms($cc25_rf[0]), 'g:ia')); ?></div>
+              <div class="away-ko"><?php echo esc_html(date('l', $cc25_rd)); ?> &middot; Kick-off <?php echo esc_html(cc25_date(cc25_row_kickoff_ms($cc25_rf[0], $cc25_rf[1]), 'g:ia')); ?></div>
             </div>
             <a class="btn btn-gold btn-sm away-dir" href="<?php echo esc_url($cc25_g['url']); ?>" target="_blank" rel="noopener">Directions &rarr;</a>
           </div>
