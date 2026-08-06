@@ -68,5 +68,17 @@ check('opponent match ignores case and AFC', ko_row('2026-08-07', 'new inn afc')
 check('missing date gives TBC', cc25_kickoff_label(array()) === 'TBC');
 check('unparseable row date yields 0', cc25_row_kickoff_ms('not-a-date', 'New Inn') === 0);
 
+// Matchday decides whether the homepage takeover shows the game or the Music
+// Shirts launch, so it has to be right on the boundary days as well as today.
+$uk = new DateTimeZone('Europe/London');
+function ko_ymd($offset_days, $uk) {
+    return (new DateTime('now', $uk))->modify($offset_days . ' day')->format('Y-m-d');
+}
+check('a home game today is matchday', cc25_is_matchday(ko_fx(ko_ymd(0, $uk), 'Risca United')) === true);
+check('tomorrow is not matchday', cc25_is_matchday(ko_fx(ko_ymd(1, $uk), 'Risca United')) === false);
+check('yesterday is not matchday', cc25_is_matchday(ko_fx(ko_ymd(-1, $uk), 'Risca United')) === false);
+check('no fixture is not matchday', cc25_is_matchday(null) === false);
+check('a fixture with no date is not matchday', cc25_is_matchday(array()) === false);
+
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);

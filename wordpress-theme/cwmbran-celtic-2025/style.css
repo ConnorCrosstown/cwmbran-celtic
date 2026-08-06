@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.3.1
+Version: 0.3.2
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1309,6 +1309,10 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .splash-launch-mvt{font-size:.82rem;color:var(--on-navy-dim,#9fb0d6);margin-bottom:18px}
 .splash-launch-mvt b{color:var(--gold)}
 .splash-launch .splash-cta{justify-content:center;margin-bottom:8px}
+/* Next home game riding along under the shirts. Reuses .splash-next from the
+   result splash; the card is narrower here, so it fills the body instead. */
+.splash-launch .splash-next{max-width:none;margin:14px 0 10px}
+.splash-next-btn{margin-top:11px}
 
 /* ---- Music Shirts v2: featured SFA, action strip, splash carousel ---- */
 .kl-featshirt{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--hair);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:16px}

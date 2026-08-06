@@ -83,8 +83,9 @@ Spacing for `.splash-next` inside the launch card, and the ticket button, near
 set up with stubs and a `ko_fx()` fixture builder): a fixture dated today is
 matchday, one dated tomorrow is not, one dated yesterday is not, and `null` is not.
 
-Rendering is verified by eye across three states — shirts with the strip, matchday,
-and no home fixture remaining.
+Everything else is checked by `php -l` and by review. There is no local WordPress
+install for this theme, so the three render states — shirts with the strip, matchday,
+and no home fixture remaining — still need a visual pass on staging before release.
 
 ## Out of scope
 

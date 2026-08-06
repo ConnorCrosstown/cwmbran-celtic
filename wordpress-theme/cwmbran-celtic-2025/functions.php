@@ -1418,6 +1418,17 @@ function cc25_next_home_fixture($feed, $team = 'mens') {
     return null;
 }
 
+/** True when $fx falls on today's date. The homepage takeover asks this to decide
+ *  whether the game outranks the Music Shirts launch splash. Resolves "today" in
+ *  Europe/London — the timezone the rest of the kick-off code works in — rather
+ *  than via date_i18n(), so it also runs under the CLI tests. */
+function cc25_is_matchday($fx) {
+    if (empty($fx['date'])) return false;
+    $uk = new DateTimeZone('Europe/London');
+    $ko = (new DateTime('@' . (int) round(((int) $fx['date']) / 1000)))->setTimezone($uk);
+    return $ko->format('Y-m-d') === (new DateTime('now', $uk))->format('Y-m-d');
+}
+
 /* -------------------------------------------------------------------------
  * Kick-off times. allwalessport does NOT publish kick-off times, so feed dates
  * default to midday — which made the countdown wrong. Resolve a real kick-off:

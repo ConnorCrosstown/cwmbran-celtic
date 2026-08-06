@@ -15,6 +15,9 @@ get_template_part('template-parts/site-header');
 
 <?php // Home-page takeover. Priority: MUSIC SHIRTS launch (from its embargo time),
 // then a RESULT celebration (fireworks, every visit), then the next-home-game.
+// On the day of a home game the game outranks the shirts, so the two Music
+// Shirts branches stand down and the bold matchday state below takes over. The
+// shirts carry the fixture as a strip on every other day.
 $cc25_kllive = cc25_kit_launch_live();
 $cc25_kl     = cc25_kit_launch();
 $cc25_klurl  = cc25_page_url('music-shirts', home_url('/'));
@@ -22,7 +25,8 @@ $cc25_kbase  = get_stylesheet_directory_uri() . '/assets/img/kit/';
 $cc25_cel = cc25_result_celebration();
 $cc25_hg  = cc25_next_home_fixture($feed, $team);
 $cc25_hgo = $cc25_hg ? cc25_opponent($cc25_hg) : null;
-if ($cc25_kllive): ?>
+$cc25_md  = cc25_is_matchday($cc25_hg);
+if ($cc25_kllive && !$cc25_md): ?>
 <div class="splash is-launch" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="music-shirts-2627" hidden>
   <div class="splash-bg" data-close></div>
   <div class="splash-card splash-launch">
@@ -49,11 +53,19 @@ if ($cc25_kllive): ?>
         <a class="btn btn-gold" href="<?php echo esc_url($cc25_klurl); ?>">See the shirts</a>
         <a class="btn btn-outline" href="<?php echo esc_url($cc25_kl['shop_url']); ?>" target="_blank" rel="noopener">Pre-order</a>
       </div>
+      <?php // The shirts stay the hero; the next home game rides along beneath them.
+      if ($cc25_hg): ?>
+      <div class="splash-next">
+        <div class="splash-next-eye kick">Next home game &middot; <?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'D j M')); ?> &middot; <?php echo esc_html(cc25_kickoff_label($cc25_hg)); ?></div>
+        <div class="splash-next-match"><?php echo cc25_own_crest(28); ?> <span>Cwmbran Celtic</span> <em>vs</em> <?php echo cc25_crest($feed, $cc25_hgo['opponent'], 28); ?> <span><?php echo esc_html($cc25_hgo['opponent']); ?></span></div>
+        <a class="btn btn-ghost btn-sm splash-next-btn" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
+      </div>
+      <?php endif; ?>
       <button class="splash-later" type="button" data-close>Maybe later</button>
     </div>
   </div>
 </div>
-<?php elseif (cc25_kit_launch_countdown()): $cc25_klts = cc25_kit_launch_ts(); ?>
+<?php elseif (cc25_kit_launch_countdown() && !$cc25_md): $cc25_klts = cc25_kit_launch_ts(); ?>
 <div class="splash is-countdown" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="ms-countdown" hidden>
   <div class="splash-bg" data-close></div>
   <div class="splash-card splash-cd">
@@ -98,8 +110,8 @@ if ($cc25_kllive): ?>
   </div>
 </div>
 <?php elseif ($cc25_hg): $hgo = $cc25_hgo;
-  // Is this home game TODAY? Flip the takeover into a bold "It's Matchday" state.
-  $cc25_md = (cc25_date($cc25_hg['date'] ?? 0, 'Y-m-d') === date_i18n('Y-m-d')); ?>
+  // $cc25_md, resolved above the chain: a home game TODAY flips the takeover into
+  // the bold "It's Matchday" state — and outranks the Music Shirts launch. ?>
 <div class="splash<?php echo $cc25_md ? ' is-matchday' : ''; ?>" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-key="hg-<?php echo intval($cc25_hg['date'] ?? 0); ?><?php echo $cc25_md ? '-md' : ''; ?>" hidden>
   <div class="splash-bg" data-close></div>
   <div class="splash-card">
