@@ -311,13 +311,18 @@ function cc25_ext_url($key) {
 }
 
 /**
- * Celebrate a recent result with a fireworks takeover on the home page, shown on
- * EVERY visit until cleared. 'us' = Cwmbran Celtic's goals, 'them' = opponent's.
- * TO TURN IT OFF (a few days after the game): switch to `return null;` below.
+ * Celebrate a recent result with a fireworks takeover on the home page. OFF by
+ * default, and it should stay that way unless a result is worth shouting about:
+ * it outranks the next-home-game takeover and fires on EVERY visit until it is
+ * cleared again, so a result left in here goes stale in public and buries the
+ * fixture. Nothing clears it automatically — the club does, by hand.
+ *
+ * >>> To celebrate a result, return it — 'us' = Cwmbran Celtic's goals:
+ *       return array('opponent' => 'Cwmbran Town', 'us' => 3, 'them' => 0);
+ * >>> To clear it (within a few days of the game), restore `return null;`.
  */
 function cc25_result_celebration() {
-    return array('opponent' => 'Cwmbran Town', 'us' => 3, 'them' => 0);
-    // return null;  // <- uncomment this (and delete the line above) to switch the celebration off
+    return null;
 }
 
 /** Season-ticket sales window. false once the season is under way (hides all
