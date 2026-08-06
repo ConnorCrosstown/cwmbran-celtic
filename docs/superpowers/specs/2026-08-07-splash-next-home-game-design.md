@@ -35,7 +35,15 @@ elseif ($cc25_hg):                               // next home game / "It's Match
 ```
 
 The gate is deliberately narrow. Only the shirts branches learn about matchday, so
-the result celebration keeps the precedence it has today and no other state moves.
+no other state moves.
+
+**Amended during implementation.** Leaving the result celebration's precedence alone
+turned out to be wrong. `cc25_result_celebration()` is hand-maintained, was still
+returning the Cwmbran Town 3–0 from weeks earlier, and fires on every visit until
+someone clears it. It outranks the next-home-game, so the stale fireworks — not the
+fixture — would have taken the day whenever the shirts stood down. Clearing it to
+`return null` is part of this work; without it the matchday gate above achieves
+nothing.
 
 The matchday test is currently inlined at `front-page.php:102`. Extracting it into
 `cc25_is_matchday()` means the rule is defined once rather than in the two places
