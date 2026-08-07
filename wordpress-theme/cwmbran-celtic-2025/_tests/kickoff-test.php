@@ -46,9 +46,16 @@ check('Saturday defaults to 2:30pm', cc25_kickoff_label(ko_fx('2026-08-15', 'Ris
 check('Sunday defaults to 2:00pm', cc25_kickoff_label(ko_fx('2026-08-16', 'Risca United')) === '2:00pm');
 check('midweek defaults to 7:30pm', cc25_kickoff_label(ko_fx('2026-08-19', 'Risca United')) === '7:30pm');
 
-// A bare 'YYYY-MM-DD' key moves every game that day.
-check('whole-day override applies to the named game', cc25_kickoff_label(ko_fx('2026-07-28', 'Cwmbran Town')) === '7:00pm');
-check('whole-day override applies to any opponent that day', ko_row('2026-07-28', 'Anyone') === '7:00pm');
+// A bare 'YYYY-MM-DD' key moves every game that day. No live override uses that
+// form any more — every one harvested from faw.cymru is scoped to an opponent,
+// because the three teams often play on the same date — so the mechanism is
+// exercised against an injected map rather than whatever the season happens to
+// hold. The scoped form still wins over the whole-day one.
+$ov_probe = array('2026-10-10' => '13:00', '2026-10-10|Brecon Corries' => '16:45');
+check('whole-day override applies to any opponent that day', cc25_kickoff_time('2026-10-10', 'Anyone', 6, $ov_probe) === '13:00');
+check('a scoped override beats the whole-day one', cc25_kickoff_time('2026-10-10', 'Brecon Corries', 6, $ov_probe) === '16:45');
+check('an unlisted date still falls to the default', cc25_kickoff_time('2026-10-17', 'Anyone', 6, $ov_probe) === '14:30');
+check('live overrides are used when none are injected', cc25_kickoff_time('2026-07-28', 'Cwmbran Town', 2) === '19:00');
 
 // A 'YYYY-MM-DD|Opponent' key moves ONLY that game — the point of the scoping:
 // the 1st team host New Inn at 6:30pm while the Reserves play Rogerstone away
@@ -67,6 +74,22 @@ check('opponent match ignores case and AFC', ko_row('2026-08-07', 'new inn afc')
 // a typo'd date in the fixture lists hides that game rather than breaking the page.
 check('missing date gives TBC', cc25_kickoff_label(array()) === 'TBC');
 check('unparseable row date yields 0', cc25_row_kickoff_ms('not-a-date', 'New Inn') === 0);
+
+// Kick-off times are keyed by opponent, so name normalisation decides whether an
+// override lands at all. A miss is silent — it just reverts to the default time.
+check('AFC and FC are ignored', cc25_norm_team('Undy AFC') === cc25_norm_team('Undy FC'));
+check('a region qualifier is ignored', cc25_norm_team('Goytre AFC (Gwent)') === cc25_norm_team('Goytre'));
+check('case is ignored', cc25_norm_team('NEW INN fc') === cc25_norm_team('New Inn'));
+check('distinct clubs stay distinct', cc25_norm_team('Goytre') !== cc25_norm_team('Goytre United'));
+check('Cwmbran clubs stay distinct', cc25_norm_team('Cwmbran Celtic') !== cc25_norm_team('Cwmbran Town'));
+
+// The FAW's published times, harvested into cc25_kickoff_overrides(). Winter
+// Saturdays are 2:00pm, not the 2:30pm default — the case that was wrong before.
+check('winter Saturday is 2:00pm not the default', cc25_kickoff_label(ko_fx('2026-11-14', 'Undy FC')) === '2:00pm');
+check('autumn Saturday keeps 2:30pm', cc25_kickoff_label(ko_fx('2026-10-03', 'Caldicot Town')) === '2:30pm');
+check('Abergavenny away is 7:45pm, not the 7:30pm default', cc25_kickoff_label(ko_fx('2026-08-14', 'Abergavenny Town')) === '7:45pm');
+check('Goytre resolves through the region qualifier', cc25_kickoff_label(ko_fx('2027-01-02', 'Goytre AFC (Gwent)')) === '2:00pm');
+check("women's Sunday game is 2:00pm", cc25_kickoff_label(ko_fx('2026-10-11', 'Pontypridd United')) === '2:00pm');
 
 // Matchday decides whether the homepage takeover shows the game or the Music
 // Shirts launch, so it has to be right on the boundary days as well as today.

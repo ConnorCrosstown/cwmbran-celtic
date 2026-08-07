@@ -1193,6 +1193,11 @@ function cc25_res_crest($name, $px) {
 function cc25_norm_team($n) {
     $n = strtolower(trim((string) $n));
     $n = preg_replace('/\b(a?fc)\b/', '', $n);
+    // Sources qualify a club by region when the name is ambiguous elsewhere in
+    // Wales — faw.cymru lists Goytre as "Goytre AFC (Gwent)" where the site and
+    // the feed just say "Goytre". Without this the two never match and a
+    // kick-off override silently falls back to the day-of-week default.
+    $n = preg_replace('/\([^)]*\)/', '', $n);
     return trim(preg_replace('/\s+/', ' ', $n));
 }
 
@@ -1510,9 +1515,62 @@ function cc25_is_matchday($fx) {
  *     times — a bare date key would drag the other game's time with it.
  * ---------------------------------------------------------------------- */
 function cc25_kickoff_overrides() {
+    // Harvested from faw.cymru on 7 August 2026 — the FAW's own published times
+    // for every Ardal Southern League East (men) and Adran South (women) game
+    // this season. These are real kick-offs, not the day-of-week guess below:
+    // winter Saturdays in particular run at 2:00pm, not the 2:30pm default.
+    //
+    // NOT covered: the Reserves. The Gwent Premier Combination is a county
+    // league outside the FAW's system, so all 27 of their games still fall back
+    // to the default. Cup ties aren't here either — they're drawn later.
+    //
+    // Keyed by opponent as the SITE spells it (cc25_norm_team decides the match),
+    // which is not always how faw.cymru spells it.
     return array(
-        '2026-07-28'          => '19:00',  // Cwmbran Town derby (Tue) — 7pm KO
-        '2026-08-07|New Inn'  => '18:30',  // 1st team v New Inn (Fri) — 6:30pm KO
+        '2026-07-28|Cwmbran Town'         => '19:00',  // M Tue
+        '2026-08-01|Tredegar Town'        => '14:30',  // M Sat POSTPONED
+        '2026-08-07|New Inn'              => '18:30',  // M Fri
+        '2026-08-14|Abergavenny Town'     => '19:45',  // M Fri
+        '2026-08-22|Risca United'         => '14:30',  // M Sat POSTPONED
+        '2026-09-05|Goytre'               => '14:30',  // M Sat POSTPONED
+        '2026-09-12|Chepstow Town'        => '14:30',  // M Sat
+        '2026-09-19|Newport Corinthians'  => '14:30',  // M Sat
+        '2026-09-26|Abercarn United'      => '14:30',  // M Sat
+        '2026-09-27|Llanrumney United'    => '14:00',  // W Sun
+        '2026-10-03|Caldicot Town'        => '14:30',  // M Sat
+        '2026-10-10|Brecon Corries'       => '14:30',  // M Sat
+        '2026-10-11|Pontypridd United'    => '14:00',  // W Sun
+        '2026-10-17|Lliswerry'            => '14:30',  // M Sat
+        '2026-10-31|Croesyceiliog'        => '14:30',  // M Sat
+        '2026-11-01|Carmarthen Town'      => '14:00',  // W Sun
+        '2026-11-06|Blaenavon Blues'      => '19:30',  // M Fri
+        '2026-11-14|Undy FC'              => '14:00',  // M Sat
+        '2026-11-21|Cwmbran Town'         => '14:00',  // M Sat
+        '2026-11-22|Cascade YC'           => '14:00',  // W Sun
+        '2026-11-27|Tredegar Town'        => '19:30',  // M Fri
+        '2026-11-29|Penybont'             => '14:00',  // W Sun
+        '2026-12-04|New Inn'              => '19:30',  // M Fri
+        '2026-12-06|Pure Swansea'         => '14:00',  // W Sun
+        '2026-12-11|Abergavenny Town'     => '19:30',  // M Fri
+        '2026-12-17|Taffs Well'           => '14:00',  // W Thu
+        '2026-12-19|Risca United'         => '14:00',  // M Sat
+        '2027-01-02|Goytre'               => '14:00',  // M Sat
+        '2027-01-08|Chepstow Town'        => '19:30',  // M Fri
+        '2027-01-16|Newport Corinthians'  => '14:00',  // M Sat
+        '2027-01-22|Abercarn United'      => '19:30',  // M Fri
+        '2027-01-30|Caldicot Town'        => '14:00',  // M Sat
+        '2027-01-31|Llanrumney United'    => '14:00',  // W Sun
+        '2027-02-05|Brecon Corries'       => '19:30',  // M Fri
+        '2027-02-07|Cascade YC'           => '14:00',  // W Sun
+        '2027-02-13|Lliswerry'            => '14:30',  // M Sat
+        '2027-02-14|Carmarthen Town'      => '14:00',  // W Sun
+        '2027-02-19|Croesyceiliog'        => '19:30',  // M Fri
+        '2027-02-21|Pontypridd United'    => '14:00',  // W Sun
+        '2027-02-27|Blaenavon Blues'      => '14:00',  // M Sat
+        '2027-03-05|Undy FC'              => '19:30',  // M Fri
+        '2027-03-14|Taffs Well'           => '14:00',  // W Sun
+        '2027-03-21|Pure Swansea'         => '14:00',  // W Sun
+        '2027-04-04|Penybont'             => '14:00',  // W Sun
     );
 }
 /** Default kick-off by ISO day-of-week (1=Mon .. 7=Sun). */
@@ -1523,8 +1581,8 @@ function cc25_kickoff_default($dow) {
 }
 /** Kick-off 'HH:MM' for a date + opponent: the game-specific override wins over
  * the whole-day one, which wins over the day-of-week default. */
-function cc25_kickoff_time($ymd, $opponent, $dow) {
-    $ov = cc25_kickoff_overrides();
+function cc25_kickoff_time($ymd, $opponent, $dow, $ov = null) {
+    $ov = $ov === null ? cc25_kickoff_overrides() : $ov;
     $opp = cc25_norm_team((string) $opponent);
     if ($opp !== '') {
         foreach ($ov as $key => $time) {
