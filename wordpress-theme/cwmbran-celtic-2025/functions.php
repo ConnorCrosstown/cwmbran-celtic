@@ -31,7 +31,20 @@ add_action('wp_enqueue_scripts', function () {
             wp_dequeue_script($h);
         }
     }
+
+    // The programme reader pulls in PDF.js, which is far too heavy to ship
+    // site-wide — so it loads only on a programme that actually has a PDF.
+    if (is_singular('post') && cc25_is_programme_post(get_queried_object())) {
+        $rv = @filemtime($dir . '/assets/programme-reader.mjs') ?: '0.1.0';
+        wp_enqueue_script('cc25-programme-reader', get_stylesheet_directory_uri() . '/assets/programme-reader.mjs', array(), $rv, true);
+    }
 }, 99);
+
+/** PDF.js 6 ships ESM only, so the reader has to load as a module. */
+add_filter('script_loader_tag', function ($tag, $handle) {
+    if ($handle !== 'cc25-programme-reader') return $tag;
+    return str_replace('<script ', '<script type="module" ', $tag);
+}, 10, 2);
 
 /** Preload the fonts + (on the homepage) the hero LCP image, so they aren't
  * discovered late after CSS parses. */
@@ -775,6 +788,46 @@ function cc25_programme_url($id) {
     $u = trim((string) get_post_meta($id, '_cc25_prog_url', true));
     return $u !== '' ? $u : get_permalink($id);
 }
+
+/* -------------------------------------------------------------------------
+ * Programme reader. Programmes used to be Heyzine flipbooks, whose links
+ * expire — so a PDF link is now read on the club's own site instead, at the
+ * programme post's permalink. Non-PDF links (the remaining Heyzine ones) still
+ * pass straight through, so the two can coexist while they are swapped over.
+ * ---------------------------------------------------------------------- */
+
+/** True when $url points at a PDF, ignoring any query string or fragment. */
+function cc25_is_pdf_url($url) {
+    $url = trim((string) $url);
+    if ($url === '') return false;
+    $path = (string) parse_url($url, PHP_URL_PATH);
+    return strtolower(substr($path, -4)) === '.pdf';
+}
+
+/** The programme's PDF, or '' when it has none (an external flipbook, or nothing). */
+function cc25_programme_pdf($id) {
+    $u = trim((string) get_post_meta($id, '_cc25_prog_url', true));
+    return cc25_is_pdf_url($u) ? $u : '';
+}
+
+/** Where a programme card should point: our own reader when there's a PDF to
+ *  read, otherwise the external link exactly as before. */
+function cc25_programme_read_url($id) {
+    return cc25_programme_pdf($id) !== '' ? get_permalink($id) : cc25_programme_url($id);
+}
+
+/** True when this post is a programme the reader can render. */
+function cc25_is_programme_post($post = null) {
+    $post = get_post($post);
+    if (!$post) return false;
+    return in_category(cc25_programme_category(), $post) && cc25_programme_pdf($post->ID) !== '';
+}
+
+/** Sheet 1 of a landscape programme is the outer wrap (back cover | front cover)
+ *  unless the club has said otherwise for this one. */
+function cc25_programme_cover_wrap($id) {
+    return get_post_meta($id, '_cc25_prog_nowrap', true) ? false : true;
+}
 /** All programme posts grouped by season, newest season first. */
 function cc25_programmes_by_season() {
     $posts = get_posts(array(
@@ -831,10 +884,15 @@ function cc25_prog_metabox($post) {
     wp_nonce_field('cc25_prog_save', 'cc25_prog_nonce');
     $url = get_post_meta($post->ID, '_cc25_prog_url', true);
     $season = get_post_meta($post->ID, '_cc25_prog_season', true);
-    echo '<p><label><strong>Programme link (PDF or Issuu)</strong><br>'
-        . '<input type="url" name="cc25_prog_url" value="' . esc_attr($url) . '" style="width:100%" placeholder="https://…"></label></p>';
+    $nowrap = get_post_meta($post->ID, '_cc25_prog_nowrap', true);
+    echo '<p><label><strong>Programme link</strong><br>'
+        . '<input type="url" name="cc25_prog_url" value="' . esc_attr($url) . '" style="width:100%" placeholder="https://…/programme.pdf"></label></p>';
+    echo '<p style="color:#666;font-size:11px;margin:0 0 12px">Upload the <b>PDF</b> to the Media Library and paste its link here — it is then read on this site, at this post\'s own address. Any other link (a Heyzine or Issuu flipbook) still opens away from the site, and will expire.</p>';
     echo '<p><label><strong>Season</strong> (optional)<br>'
         . '<input type="text" name="cc25_prog_season" value="' . esc_attr($season) . '" style="width:100%" placeholder="auto from post date, e.g. 2026/27"></label></p>';
+    echo '<p><label><input type="checkbox" name="cc25_prog_nowrap" value="1"' . ($nowrap ? ' checked' : '') . '> '
+        . '<strong>Pages run straight through</strong></label></p>';
+    echo '<p style="color:#666;font-size:11px;margin:0 0 12px">Only for landscape PDFs, and only on phones, where each sheet is split into its two pages. Leave this unticked for a programme laid out as a booklet — the first sheet being back cover alongside front cover — so it opens on the front cover. Tick it if the PDF simply starts at page 1 on the left.</p>';
     echo '<p style="color:#666;font-size:11px;margin:0">To publish a programme: set the category to <b>Programme</b>, add a <b>Featured Image</b> (the cover), and set the <b>post date</b> to the match date.</p>';
 }
 add_action('save_post', function ($id) {
@@ -843,6 +901,11 @@ add_action('save_post', function ($id) {
     if (!current_user_can('edit_post', $id)) return;
     update_post_meta($id, '_cc25_prog_url', esc_url_raw(wp_unslash($_POST['cc25_prog_url'] ?? '')));
     update_post_meta($id, '_cc25_prog_season', sanitize_text_field(wp_unslash($_POST['cc25_prog_season'] ?? '')));
+    if (empty($_POST['cc25_prog_nowrap'])) {
+        delete_post_meta($id, '_cc25_prog_nowrap');
+    } else {
+        update_post_meta($id, '_cc25_prog_nowrap', '1');
+    }
 });
 
 /** Homepage "Latest Gallery" feature. Post a gallery as a normal Post in the

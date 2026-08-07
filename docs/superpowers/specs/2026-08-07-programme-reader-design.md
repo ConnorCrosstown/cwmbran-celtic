@@ -116,9 +116,15 @@ present in the markup regardless, not injected by script.
   without cover wrap runs plainly left to right; a portrait document maps one page per
   sheet; and 1-sheet and 0-sheet documents don't blow up.
 
-Canvas rendering needs a real browser and there is no local WordPress for this theme,
-so the reader itself is a staging check: desktop spread, phone split, the cover
-landing on the front cover, and the no-JS fallback.
+The clipping arithmetic was verified headlessly against the real New Inn PDF, driving
+the vendored PDF.js from Node with `@napi-rs/canvas` and the same reading order the
+reader uses: page 1 renders the front cover, page 2 the league tables carrying printed
+folio "2", page 32 the back cover, each 505×714 — A5 portrait, as a half of the A4
+landscape sheet should be.
+
+What that cannot cover, and so remains a staging check: layout and controls in a real
+browser, the desktop spread, the split actually triggering at the mobile breakpoint,
+touch swipe, and the no-JS fallback.
 
 ## Out of scope
 

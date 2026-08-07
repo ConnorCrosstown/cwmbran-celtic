@@ -3,6 +3,12 @@
 if (!defined('ABSPATH')) exit;
 get_template_part('template-parts/site-header');
 ?>
+<?php // A programme with a PDF is read on site rather than shown as an article.
+if (cc25_is_programme_post(get_queried_object())) {
+    while (have_posts()) { the_post(); get_template_part('template-parts/programme-reader'); }
+    get_template_part('template-parts/site-footer');
+    return;
+} ?>
 <?php while (have_posts()) : the_post(); $cats = get_the_category(); ?>
 <div class="phero" style="min-height:auto">
   <div class="bg"></div><div class="grain"></div>

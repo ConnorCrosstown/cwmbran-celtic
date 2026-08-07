@@ -40,8 +40,11 @@ foreach ($cc25_progs as $cc25_s => $cc25_l) { $cc25_keys[$cc25_s] = 's' . preg_r
       <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> Season <?php echo esc_html($cc25_s); ?></div><h2>Match Day Programmes</h2></div></div>
       <div class="prog-grid reveal">
         <?php foreach ($cc25_l as $cc25_p):
-          $cc25_ext = trim((string) get_post_meta($cc25_p->ID, '_cc25_prog_url', true)) !== '';
-          $cc25_url = cc25_programme_url($cc25_p->ID);
+          // A PDF is read on our own site, so it stays in this tab. Anything else
+          // is still somebody else's flipbook and opens away from here.
+          $cc25_pdf = cc25_programme_pdf($cc25_p->ID);
+          $cc25_ext = $cc25_pdf === '' && trim((string) get_post_meta($cc25_p->ID, '_cc25_prog_url', true)) !== '';
+          $cc25_url = cc25_programme_read_url($cc25_p->ID);
           $cc25_img = get_the_post_thumbnail($cc25_p->ID, 'medium_large', array('loading' => 'lazy', 'alt' => esc_attr(get_the_title($cc25_p->ID))));
         ?>
           <a class="prog-card" href="<?php echo esc_url($cc25_url); ?>"<?php echo $cc25_ext ? ' target="_blank" rel="noopener"' : ''; ?>>
