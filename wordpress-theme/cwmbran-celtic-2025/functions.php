@@ -1154,7 +1154,7 @@ function cc25_opp_crest_file($name) {
         'Goytre' => 'goytre.png',
         'Caldicot Town' => 'caldicot-town.jpg',
         'Brecon Corries' => 'brecon-corries.png',
-        'Cardiff Corries' => 'cardiff-corries.png',
+        'Cardiff Corinthians' => 'cardiff-corries.png',
     );
     if (isset($map[$name])) return $map[$name];
     // Tolerate "FC"/"AFC" and spacing drift (e.g. "Undy FC" -> undy.png) so the
@@ -1260,8 +1260,9 @@ function cc25_static_fixtures() {
                 // 22 Aug league game v Risca United postponed — Welsh Cup QR2 (v
                 // Newport Corinthians) takes the slot. Risca to be rearranged.
                 array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2'),
-                array('2026-08-29', 'Cardiff Corries', true, 'League Cup R1'),
-                array('2026-09-05', 'Goytre', true, 'League'),
+                array('2026-08-29', 'Cardiff Corinthians', true, 'League Cup R1'),
+                array('2026-09-05', 'TBC', true, 'Amateur Trophy QR2'),  // opponent + venue not yet drawn
+                array('2026-09-05', 'Goytre', true, 'League'),           // POSTPONED — hidden below, needs a new date
                 array('2026-09-12', 'Chepstow Town', false, 'League'),
                 array('2026-09-19', 'Newport Corinthians', true, 'League'),
                 array('2026-09-26', 'Abercarn United', false, 'League'),
@@ -1368,6 +1369,7 @@ function cc25_row_kickoff_ms($ymd, $opponent = '') {
 function cc25_hidden_fixtures() {
     return array(
         array('Tredegar Town', '2026-08-01'), // called off — heatwave left the pitch unplayable
+        array('Goytre', '2026-09-05'),        // postponed — the Amateur Trophy QR2 tie took the date
     );
 }
 function cc25_fixture_hidden($opp, $ymd) {
