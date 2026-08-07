@@ -688,6 +688,18 @@ function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
 function cc25_bond_draws() {
     return array(
         array(
+            'date'  => '2026-08-07',
+            'label' => 'August 2026 Draw',
+            'winners' => array(
+                array('no' => 306, 'prize' => '£500',     'name' => 'Harri Pritchard',    'group' => 'Youth Team'),
+                array('no' => 62,  'prize' => '£50',      'name' => 'Stephen Fry',        'group' => 'Walking Football'),
+                array('no' => 317, 'prize' => '£50',      'name' => 'Christopher Naylor', 'group' => 'Walking Football'),
+                array('no' => 180, 'prize' => '£50',      'name' => 'Philip Kruszewski',  'group' => 'Walking Football'),
+                array('no' => 64,  'prize' => '£50',      'name' => 'Dean Taylor',        'group' => 'Vets'),
+                array('no' => 267, 'prize' => 'Ear Buds', 'name' => 'Joanne Berry',       'group' => 'Mens 1st Team'),
+            ),
+        ),
+        array(
             'date'  => '2026-07-31',
             'label' => 'July 2026 Draw',
             'winners' => array(
