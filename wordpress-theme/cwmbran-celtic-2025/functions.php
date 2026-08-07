@@ -1255,8 +1255,8 @@ function cc25_static_fixtures() {
             'list'   => array(
                 array('2026-07-28', 'Cwmbran Town', true, 'League'),
                 array('2026-08-01', 'Tredegar Town', false, 'League'),
-                array('2026-08-08', 'New Inn', true, 'League'),
-                array('2026-08-15', 'Abergavenny Town', false, 'League'),
+                array('2026-08-07', 'New Inn', true, 'League'),
+                array('2026-08-14', 'Abergavenny Town', false, 'League'),
                 // 22 Aug league game v Risca United postponed — Welsh Cup QR2 (v
                 // Newport Corinthians) takes the slot. Risca to be rearranged.
                 array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2'),
@@ -1274,7 +1274,7 @@ function cc25_static_fixtures() {
                 array('2026-11-14', 'Undy FC', false, 'League'),
                 array('2026-11-21', 'Cwmbran Town', false, 'League'),
                 array('2026-11-27', 'Tredegar Town', true, 'League'),
-                array('2026-12-05', 'New Inn', false, 'League'),
+                array('2026-12-04', 'New Inn', false, 'League'),
                 array('2026-12-11', 'Abergavenny Town', true, 'League'),
                 array('2026-12-19', 'Risca United', false, 'League'),
                 array('2027-01-02', 'Goytre', false, 'League'),
@@ -1334,7 +1334,7 @@ function cc25_static_fixtures() {
                 array('2026-11-22', 'Cascade YC', false, 'League'),
                 array('2026-11-29', 'Penybont', false, 'League'),
                 array('2026-12-06', 'Pure Swansea', true, 'League'),
-                array('2027-01-17', 'Taffs Well', false, 'League'),
+                array('2026-12-17', 'Taffs Well', false, 'League'),
                 array('2027-01-31', 'Llanrumney United', true, 'League'),
                 array('2027-02-07', 'Cascade YC', true, 'League'),
                 array('2027-02-14', 'Carmarthen Town', false, 'League'),
