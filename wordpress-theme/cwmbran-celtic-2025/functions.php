@@ -1334,7 +1334,7 @@ function cc25_static_fixtures() {
                 array('2026-11-22', 'Cascade YC', false, 'League'),
                 array('2026-11-29', 'Penybont', false, 'League'),
                 array('2026-12-06', 'Pure Swansea', true, 'League'),
-                array('2026-12-17', 'Taffs Well', false, 'League'),
+                array('2027-01-17', 'Taffs Well', false, 'League'),  // FAW says Thu 17 Dec 2026 — see cc25_kickoff_overrides()
                 array('2027-01-31', 'Llanrumney United', true, 'League'),
                 array('2027-02-07', 'Cascade YC', true, 'League'),
                 array('2027-02-14', 'Carmarthen Town', false, 'League'),
@@ -1526,6 +1526,11 @@ function cc25_kickoff_overrides() {
     //
     // Keyed by opponent as the SITE spells it (cc25_norm_team decides the match),
     // which is not always how faw.cymru spells it.
+    //
+    // UNRESOLVED — Taffs Well away (women). faw.cymru has it Thu 17 Dec 2026 at
+    // 2:00pm; our list has Sun 17 Jan 2027. Every other Adran South game all
+    // season is a Sunday, so the FAW record looks like a data-entry slip and we
+    // have kept our date. Confirm with the league before trusting either.
     return array(
         '2026-07-28|Cwmbran Town'         => '19:00',  // M Tue
         '2026-08-01|Tredegar Town'        => '14:30',  // M Sat POSTPONED
@@ -1552,7 +1557,6 @@ function cc25_kickoff_overrides() {
         '2026-12-04|New Inn'              => '19:30',  // M Fri
         '2026-12-06|Pure Swansea'         => '14:00',  // W Sun
         '2026-12-11|Abergavenny Town'     => '19:30',  // M Fri
-        '2026-12-17|Taffs Well'           => '14:00',  // W Thu
         '2026-12-19|Risca United'         => '14:00',  // M Sat
         '2027-01-02|Goytre'               => '14:00',  // M Sat
         '2027-01-08|Chepstow Town'        => '19:30',  // M Fri
