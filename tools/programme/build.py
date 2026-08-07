@@ -13,7 +13,7 @@ Currently regenerated: the cover. Everything else carries over from the source
 issue — see the design doc for the pages still to come.
 """
 import argparse, datetime, json, os, re, sys
-import cover
+import cover, faw, table_page
 from compose import Programme
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -75,9 +75,19 @@ def main():
     if not os.path.exists(crest):
         crest = None
 
-    page1 = cover.build(args.source, fx['opp'], kickoff, photo=photo, crest=crest)
     prog = Programme(args.source)
-    prog.replace(1, page1)
+    prog.replace(1, cover.build(args.source, fx['opp'], kickoff, photo=photo, crest=crest))
+
+    # League table — live, where the FAW publishes one for this team.
+    table_note = None
+    try:
+        prog.replace(2, table_page.build(args.source,
+                                         table_page.from_faw(faw.standings(fx['team']))))
+        table_note = 'live from faw.cymru'
+    except KeyError:
+        table_note = 'CARRIED OVER — no FAW competition mapped for this team'
+    except Exception as e:
+        table_note = f'CARRIED OVER — fetch failed ({type(e).__name__})'
 
     team = {'mens': '', 'womens': ' Women'}[fx['team']]
     stem = f"{fx['date']} Cwmbran Celtic{team} v {fx['opp']}"
@@ -89,8 +99,9 @@ def main():
     print(f"  opponent  {fx['opp']}  ({fx['comp']})")
     print(f"  kick-off  {'confirmed' if fx['confirmed'] else 'ASSUMED from day-of-week default'}")
     print(f"  photo     {os.path.basename(photo) if photo else 'kept from previous issue'}")
+    print(f"  table     {table_note}")
     print(f"  written   {path}")
-    print(f"\n  Pages regenerated: cover only. The other 31 carry over from")
+    print(f"\n  Pages regenerated: cover, league table. The rest carry over from")
     print(f"  {os.path.basename(args.source)} and still show that match's content.")
 
 
