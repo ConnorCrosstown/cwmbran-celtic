@@ -5,6 +5,15 @@
  */
 if (!defined('ABSPATH')) exit;
 
+/* Self-service admin: hardening, and the content the club maintains itself.
+   Split out of this file, which is long enough already. */
+// __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
+// the CLI tests load it without WordPress present.
+foreach (array('hardening', 'bond-draws') as $cc25_mod) {
+    $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
+    if (file_exists($cc25_f)) require_once $cc25_f;
+}
+
 add_action('wp_enqueue_scripts', function () {
     // Version by file mtime so edits auto-bust the browser/CDN cache (was pinned
     // to a hardcoded version, so changes never reached returning visitors).
@@ -761,9 +770,21 @@ function cc25_bond_amount()  { return '£10'; }           // monthly Celtic Bond
 function cc25_bond_join_url() { return 'https://pay.gocardless.com/AL0005M1YZB71S'; } // Celtic Bond direct-debit sign-up (GoCardless); blank => thank-you only
 function cc25_bond_email()   { return 'cwmbrancelticcomms@gmail.com'; }
 
-/** Celtic Bond monthly draw results, most recent first. Add a new entry at the
- * top after each draw. */
+/**
+ * Celtic Bond monthly draw results, most recent first.
+ *
+ * Draws are now entered in wp-admin (Bond Draws). This array is the fallback:
+ * it is used only while no draw has been entered there, so uploading the theme
+ * changes nothing until the club migrates, and a half-finished migration shows
+ * last month rather than an empty page.
+ */
 function cc25_bond_draws() {
+    $posts = function_exists('cc25_bond_draws_from_posts') ? cc25_bond_draws_from_posts() : array();
+    return $posts ? $posts : cc25_bond_draws_static();
+}
+
+/** The hand-maintained list, kept as the fallback described above. */
+function cc25_bond_draws_static() {
     return array(
         array(
             'date'  => '2026-08-07',
