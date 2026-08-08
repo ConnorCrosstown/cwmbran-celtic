@@ -112,6 +112,9 @@ add_filter('template_include', function ($template) {
             'match-report'               => 'template-match-report.php',
             'music-shirts'               => 'template-kit-launch.php',
             'kit'                        => 'template-kit-launch.php',
+            'shop'                       => 'template-shop.php',
+            'club-shop'                  => 'template-shop.php',
+            'kit'                        => 'template-shop.php',
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
@@ -300,6 +303,7 @@ function cc25_slug_candidates($key) {
         'sponsors'         => array('sponsors-2', 'sponsors', 'our-sponsors'),
         'news'             => array('news', 'latest-news', 'club-news'),
         'contact'          => array('contact', 'contact-us'),
+        'shop'             => array('shop', 'club-shop', 'kit'),
         'celtic-bond'      => array('the-celtic-bond', 'celtic-bond', 'bond'),
         'bond-results'     => array('the-celtic-bond-results', 'celtic-bond-results', 'bond-results'),
         'teams'            => array('teams', 'all-teams'),
@@ -312,6 +316,80 @@ function cc25_slug_candidates($key) {
         'travel'           => array('travel-and-ground', 'travel-ground', 'getting-here', 'travel', 'matchday'),
     );
     return isset($map[$key]) ? $map[$key] : array($key);
+}
+
+/* -------------------------------------------------------------------------
+ * Club shop.
+ *
+ * Tor Sports takes the orders — stock, sizes and payment are theirs. This is a
+ * shop FRONT: it does the selling Tor's category pages can't, then hands over.
+ *
+ * Deliberately NOT a full product listing. The two ranges carry 36 items
+ * between them, and every price hardcoded here is a price going stale — a wrong
+ * one on the club's own site is a complaint waiting to happen. So: three range
+ * panels, plus a short curated strip of things worth pushing. Keep the strip
+ * small enough to actually maintain.
+ *
+ * >>> Prices last checked against tor-sports.co.uk on 8 August 2026.
+ * ---------------------------------------------------------------------- */
+
+/** The three ranges, in the order they should sell. */
+function cc25_shop_ranges() {
+    $base = 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/';
+    return array(
+        array(
+            'key'   => 'shirts',
+            'eye'   => 'Four bands. One club.',
+            'name'  => 'Music Shirts',
+            'blurb' => 'Super Furry Animals, Mogwai, Panic Shack and Loose Articles on the front of a Cwmbran Celtic shirt — with 10% of every one going to Music Venue Trust.',
+            'meta'  => 'Match shirts · 2026/27',
+            'url'   => cc25_page_url('music-shirts', home_url('/')),
+            'cta'   => 'Read the story',
+            'shop'  => $base . 'cwmbran-celtic-fc-match-shirts',
+            'img'   => 'kit/kit-sfa.jpg',
+            'tone'  => 'gold',
+        ),
+        array(
+            'key'   => 'seniors',
+            'eye'   => 'Wear it anywhere',
+            'name'  => 'Seniors Range',
+            'blurb' => 'Training and leisurewear in club blue and navy — quarter-zips, hoodies, mid-layers, polos and tees, plus bags and caps.',
+            'meta'  => '18 items · from £12',
+            'url'   => $base . 'cwmbran-celtic-fc-seniors',
+            'cta'   => 'Shop seniors',
+            'shop'  => '',
+            'img'   => 'shop/blue-hoodie.jpg',
+            'tone'  => 'blue',
+        ),
+        array(
+            'key'   => 'juniors',
+            'eye'   => 'Under 9 to Under 16',
+            'name'  => 'Juniors Range',
+            'blurb' => 'The same kit sized for the minis and juniors — quarter-zips, hoodies, polos, training shorts, tracksuit bottoms and windbreakers.',
+            'meta'  => '18 items · from £15',
+            'url'   => $base . 'cwmbran-celtic-fc-juniors',
+            'cta'   => 'Shop juniors',
+            'shop'  => '',
+            'img'   => 'shop/junior-navy-hoodie.jpg',
+            'tone'  => 'navy',
+        ),
+    );
+}
+
+/** A short curated strip — the things worth pushing, not the whole catalogue. */
+function cc25_shop_featured() {
+    $s = 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/cwmbran-celtic-fc-seniors/';
+    $j = 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/cwmbran-celtic-fc-juniors/';
+    return array(
+        array('name' => 'Gilet',                  'range' => 'Seniors', 'price' => '£50', 'was' => '', 'img' => 'gilet.jpg',              'url' => $s . 'cwmbran-celtic-fc-gilet'),
+        array('name' => 'Blue Full-Zip Hoodie',   'range' => 'Seniors', 'price' => '£38', 'was' => '', 'img' => 'blue-hoodie.jpg',        'url' => $s . 'cwmbran-celtic-fc-blue-full-zip-hoodie'),
+        array('name' => 'Navy 1/4 Zip',           'range' => 'Seniors', 'price' => '£31', 'was' => '', 'img' => 'navy-quarter-zip.jpg',   'url' => $s . 'cwmbran-celtic-fc-navy-14-zip'),
+        array('name' => 'Backpack',               'range' => 'Seniors', 'price' => '£28', 'was' => '', 'img' => 'backpack.jpg',           'url' => $s . 'cwmbran-celtic-fc-backpack'),
+        array('name' => 'Junior Navy Hoodie',     'range' => 'Juniors', 'price' => '£22.40', 'was' => '£32', 'img' => 'junior-navy-hoodie.jpg', 'url' => $j . 'cwmbran-celtic-fc-junior-navy-full-zip-hoodie'),
+        array('name' => 'Essential Yellow Tee',   'range' => 'Seniors', 'price' => '£20', 'was' => '', 'img' => 'yellow-tee.jpg',         'url' => $s . 'cwmbran-celtic-fc-essential-yellow-tee'),
+        array('name' => 'Junior Blue Polo',       'range' => 'Juniors', 'price' => '£16', 'was' => '', 'img' => 'junior-blue-polo.jpg',   'url' => $j . 'cwmbran-celtic-fc-junior-blue-polo-shirt'),
+        array('name' => 'Cap',                    'range' => 'Seniors', 'price' => '£12', 'was' => '', 'img' => 'cap.jpg',                'url' => $s . 'cwmbran-celtic-fc-cap'),
+    );
 }
 
 /** External destinations (ticketing / shop) — not WordPress pages. */
@@ -1035,7 +1113,11 @@ function cc25_nav_items() {
         array('Celtic Bond', cc25_page_url('celtic-bond', $home), false, array(
             array('Celtic Bond Results', cc25_page_url('bond-results', $home), false),
         )),
-        array('Club Shop', cc25_ext_url('shop'), true, array()),
+        array('Club Shop', cc25_page_url(array('shop', 'club-shop', 'kit'), $home), false, array(
+            array('Music Shirts', cc25_page_url('music-shirts', $home), false),
+            array('Seniors Range', 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/cwmbran-celtic-fc-seniors', true),
+            array('Juniors Range', 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/cwmbran-celtic-fc-juniors', true),
+        )),
     );
     // Music Shirts / Buy Tickets are buttons in the header on desktop. On mobile
     // those buttons are hidden (they crowded the hamburger toggle), so surface
