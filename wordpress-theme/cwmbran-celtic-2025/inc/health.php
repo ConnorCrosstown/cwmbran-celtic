@@ -102,6 +102,24 @@ function cc25_health_checks() {
             }
         }
     }
+    // 6. A phone number a digit short is worse than none: it dials, it fails, and
+    //    it looks just as confident as a right one. The list the club first supplied
+    //    had a ten-digit mobile in it, which is what prompted this.
+    if (function_exists('cc25_people')) {
+        $bad = array();
+        foreach (cc25_people() as $p) {
+            $ph = trim((string) ($p['phone'] ?? ''));
+            if ($ph !== '' && !cc25_phone_looks_complete($ph)) {
+                $bad[] = ($p['name'] ?? 'Someone') . ' (' . $ph . ')';
+            }
+        }
+        if ($bad) {
+            $out[] = array('level' => 'warn', 'text' => sprintf(
+                'Contact number%s that will not dial: %s. Check the digits on the Contact page.',
+                count($bad) === 1 ? '' : 's', implode(', ', $bad)));
+        }
+    }
+
     return $out;
 }
 

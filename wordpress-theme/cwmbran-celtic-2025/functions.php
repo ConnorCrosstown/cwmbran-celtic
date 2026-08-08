@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'health', 'seo', 'programmes', 'kickoff', 'sponsors') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'people') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -120,10 +120,18 @@ add_filter('template_include', function ($template) {
             '2025-26-results'            => 'template-results-archive.php',
             'match-report'               => 'template-match-report.php',
             'music-shirts'               => 'template-kit-launch.php',
-            'kit'                        => 'template-kit-launch.php',
             'shop'                       => 'template-shop.php',
             'club-shop'                  => 'template-shop.php',
+            'club-shop-2'                => 'template-shop.php',
+            /* 'kit' was listed twice — once for the launch page and again for the
+             * shop. The later key wins in a PHP array literal, so it silently went
+             * to the shop. It stays on the shop, which is what it has been doing;
+             * the launch page keeps 'music-shirts'. */
             'kit'                        => 'template-shop.php',
+            'contact'                    => 'template-contact.php',
+            'contact-us'                 => 'template-contact.php',
+            'contacts'                   => 'template-contact.php',
+            'club-contacts'              => 'template-contact.php',
             'the-celtic-bond'            => 'template-bond.php',
             'celtic-bond'                => 'template-bond.php',
             'bond'                       => 'template-bond.php',
@@ -156,6 +164,14 @@ function cc25_ensure_pages() {
         'match-report'      => 'Match Report',
         'music-shirts'      => 'Music Shirts',
     );
+    /* Contact: the live site may already have one under any of the usual slugs, so
+     * only provision when none of them exists — otherwise we'd add a second,
+     * empty Contact page alongside the real one. */
+    $contact_exists = false;
+    foreach (array('contact', 'contact-us', 'contacts', 'club-contacts') as $c_slug) {
+        if (get_page_by_path($c_slug)) { $contact_exists = true; break; }
+    }
+    if (!$contact_exists) $pages['contact'] = 'Contact';
     // Walking Football: the live site may already have this page under the
     // legacy slug, so only provision when none of the known variants exist.
     $wf_exists = false;
