@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.5.3
+Version: 0.6.0
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1715,4 +1715,27 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
   .mrh-match{gap:10px}
   .mrh-team{font-size:.9rem}
   .mrh-team .crest{width:36px;height:36px}
+}
+
+/* ---- Next Up rotator: one card per team, billed in turn ---- */
+.nextup{position:relative}
+/* All slides share one grid cell, so the TALLEST sets the height whatever order
+   they're in and the card never jumps or clips as it rotates. Absolute
+   positioning would have let the first slide define the box instead. */
+.nextup.is-rotating .nextup-track{display:grid}
+.nextup.is-rotating .nextup-slide{grid-area:1/1;opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(10px);transition:opacity .45s cubic-bezier(.2,.7,.2,1),transform .45s cubic-bezier(.2,.7,.2,1),visibility .45s}
+.nextup.is-rotating .nextup-slide.on{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+.nextup-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
+.nextup-arw{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.06);color:#fff;font-size:1.15rem;line-height:1;cursor:pointer;transition:.18s}
+.nextup-arw:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.5)}
+.nextup-arw:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.nextup-dots{display:flex;gap:8px}
+.nextup-dots button{width:9px;height:9px;padding:0;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(255,255,255,.32);transition:.2s}
+.nextup-dots button.on{background:var(--gold);width:24px;border-radius:999px}
+.nextup-dots button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+  .nextup.is-rotating .nextup-slide{transition:none}
 }

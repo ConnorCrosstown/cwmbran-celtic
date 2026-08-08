@@ -1594,6 +1594,58 @@ function cc25_render_static_results($team) {
 }
 
 /**
+ * Next-fixture card for one team, for the homepage rotator.
+ *
+ * Was a single hardcoded card for the men's first team. All three now play at
+ * around the same time, so no one side should be the only thing the homepage
+ * says — and cc25_upcoming() returns nothing for the other two until the static
+ * merge covers every team, which is what made this possible.
+ */
+function cc25_next_up_card($feed, $team, $label) {
+    $next = cc25_upcoming($feed, $team, 1);
+    if (!$next) return '';
+    $f = $next[0];
+    $o = cc25_opponent($f);
+    $venue = $o['home'] ? '⚑ Motazone Arena' : '⚑ Away · ' . ($f['homeTeam'] ?? '');
+    $ours = 'Cwmbran Celtic' . ($team === 'reserves' ? ' Reserves' : ($team === 'womens' ? ' Women' : ''));
+
+    $out  = '<div class="mcard" role="group" aria-label="' . esc_attr($label . ' next fixture') . '">';
+    $out .= '<div class="mcard-top">'
+          . '<span class="mc-tag"><span class="pulse"></span> ' . esc_html($label) . '</span>'
+          . '<span class="mc-comp">' . esc_html($f['competition'] ?? 'Fixture') . '</span>'
+          . '<span class="mc-venue">' . esc_html($venue) . '</span>'
+          . '</div>';
+    $out .= '<div class="mcard-body">'
+          . '<div class="mteam">' . cc25_own_crest(60)
+          . '<div><div class="nm">' . esc_html($ours) . '</div><div class="rec">' . ($o['home'] ? 'At home' : 'On the road') . '</div></div></div>'
+          . '<div class="mko"><div class="t">' . esc_html(cc25_kickoff_label($f)) . '</div>'
+          . '<div class="d">' . esc_html(cc25_date($f['date'] ?? 0, 'D j M')) . '</div></div>'
+          . '<div class="mteam away">' . cc25_crest($feed, $o['opponent'], 60)
+          . '<div><div class="nm">' . esc_html($o['opponent']) . '</div><div class="rec">' . ($o['home'] ? 'Visitors' : 'Hosts') . '</div></div></div>'
+          . '</div>';
+    $out .= '<div class="mcard-foot">'
+          . '<a class="btn btn-navy btn-sm" href="' . esc_url(cc25_page_url('fixtures', home_url('/'))) . '">Fixtures</a>';
+    // Tickets only for home games — we sell none for away.
+    if ($o['home']) {
+        $out .= '<a class="btn btn-gold btn-sm" href="' . esc_url(cc25_ext_url('tickets')) . '" target="_blank" rel="noopener">Buy Tickets</a>';
+    }
+    $out .= '<a class="btn btn-navy btn-sm" href="' . esc_url(cc25_travel_url($o['opponent'], $o['home'])) . '">Travel &amp; Ground</a>'
+          . '</div></div>';
+    return $out;
+}
+
+/** Every team that has a next fixture, in billing order. */
+function cc25_next_up_cards($feed) {
+    $order = array('mens' => "Men's First Team", 'womens' => "Women's First Team", 'reserves' => "Men's Reserves");
+    $out = array();
+    foreach ($order as $team => $label) {
+        $card = cc25_next_up_card($feed, $team, $label);
+        if ($card !== '') $out[$team] = $card;
+    }
+    return $out;
+}
+
+/**
  * The score strip above a match report's prose.
  *
  * Everything here is read from the fixture, never typed into the report — which

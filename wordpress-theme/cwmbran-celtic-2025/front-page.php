@@ -191,35 +191,30 @@ if ($cc25_kllive && !$cc25_md): ?>
 </a>
 <?php endif; ?>
 
-<?php if ($next):
-  $o = cc25_opponent($next);
-  $venue = $o['home'] ? '⚑ Motazone Arena' : '⚑ Away · ' . ($next['homeTeam'] ?? '');
-?>
+<?php // Next Up, rotating. All three teams play at around the same time, so the
+// homepage bills each in turn rather than only the men's first team.
+$cc25_cards = cc25_next_up_cards($feed);
+if ($cc25_cards): $cc25_multi = count($cc25_cards) > 1; ?>
 <div class="mcard-wrap">
-  <div class="mcard">
-    <div class="mcard-top">
-      <span class="mc-tag"><span class="pulse"></span> Next Up</span>
-      <span class="mc-comp"><?php echo esc_html($next['competition'] ?? 'Fixture'); ?></span>
-      <span class="mc-venue"><?php echo esc_html($venue); ?></span>
+  <div class="nextup<?php echo $cc25_multi ? ' is-rotating' : ''; ?>"<?php echo $cc25_multi ? ' data-nextup data-interval="6500"' : ''; ?>>
+    <div class="nextup-track">
+      <?php $cc25_i = 0; foreach ($cc25_cards as $cc25_team => $cc25_card): ?>
+        <div class="nextup-slide<?php echo $cc25_i === 0 ? ' on' : ''; ?>" data-team="<?php echo esc_attr($cc25_team); ?>"<?php echo $cc25_i === 0 ? '' : ' aria-hidden="true"'; ?>><?php echo $cc25_card; ?></div>
+      <?php $cc25_i++; endforeach; ?>
     </div>
-    <div class="mcard-body">
-      <div class="mteam">
-        <?php echo cc25_own_crest(60); ?>
-        <div><div class="nm">Cwmbran Celtic</div><div class="rec"><?php echo $o['home'] ? 'At home' : 'On the road'; ?></div></div>
+    <?php if ($cc25_multi): ?>
+    <div class="nextup-nav">
+      <button class="nextup-arw prev" type="button" aria-label="Previous team">&lsaquo;</button>
+      <div class="nextup-dots" role="tablist" aria-label="Choose a team">
+        <?php $cc25_i = 0; foreach ($cc25_cards as $cc25_team => $cc25_card): ?>
+          <button type="button" role="tab" class="<?php echo $cc25_i === 0 ? 'on' : ''; ?>" data-i="<?php echo $cc25_i; ?>"
+            aria-selected="<?php echo $cc25_i === 0 ? 'true' : 'false'; ?>"
+            aria-label="<?php echo esc_attr(array('mens' => "Men's First Team", 'womens' => "Women's First Team", 'reserves' => "Men's Reserves")[$cc25_team] ?? $cc25_team); ?>"></button>
+        <?php $cc25_i++; endforeach; ?>
       </div>
-      <div class="mko"><div class="t"><?php echo esc_html(cc25_kickoff_label($next)); ?></div><div class="d"><?php echo esc_html(cc25_date($next['date'] ?? 0, 'D j M')); ?></div></div>
-      <div class="mteam away">
-        <?php echo cc25_crest($feed, $o['opponent'], 60); ?>
-        <div><div class="nm"><?php echo esc_html($o['opponent']); ?></div><div class="rec"><?php echo $o['home'] ? 'Visitors' : 'Hosts'; ?></div></div>
-      </div>
+      <button class="nextup-arw next" type="button" aria-label="Next team">&rsaquo;</button>
     </div>
-    <div class="mcard-foot">
-      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/'))); ?>">Fixtures</a>
-      <?php if ($o['home']): // tickets only for home games — no tickets sold for away ?>
-      <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Tickets</a>
-      <?php endif; ?>
-      <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_travel_url($o['opponent'], $o['home'])); ?>">Travel &amp; Ground</a>
-    </div>
+    <?php endif; ?>
   </div>
 </div>
 <?php endif; ?>

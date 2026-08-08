@@ -38,6 +38,50 @@
       });
     });
   })();
+  // Next Up rotator — one card per team, billed in turn.
+  (function(){
+    var root=document.querySelector('[data-nextup]'); if(!root) return;
+    var slides=[].slice.call(root.querySelectorAll('.nextup-slide'));
+    var dots=[].slice.call(root.querySelectorAll('.nextup-dots button'));
+    if(slides.length<2) return;
+    var i=0, timer=null;
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var wait=parseInt(root.getAttribute('data-interval'),10)||6500;
+
+    function show(n){
+      i=(n+slides.length)%slides.length;
+      slides.forEach(function(s,x){
+        var on=x===i;
+        s.classList.toggle('on',on);
+        // Hidden slides are taken out of the accessibility tree, or a screen
+        // reader announces three next fixtures and only one of them is showing.
+        if(on) s.removeAttribute('aria-hidden'); else s.setAttribute('aria-hidden','true');
+      });
+      dots.forEach(function(d,x){
+        d.classList.toggle('on',x===i);
+        d.setAttribute('aria-selected',x===i?'true':'false');
+      });
+    }
+    function start(){ if(reduce||timer) return; timer=setInterval(function(){show(i+1);},wait); }
+    function stop(){ if(timer){clearInterval(timer);timer=null;} }
+    function jump(n){ stop(); show(n); start(); }
+
+    dots.forEach(function(d,x){ d.addEventListener('click',function(){jump(x);}); });
+    var prev=root.querySelector('.nextup-arw.prev'), next=root.querySelector('.nextup-arw.next');
+    if(prev) prev.addEventListener('click',function(){jump(i-1);});
+    if(next) next.addEventListener('click',function(){jump(i+1);});
+
+    // Anyone reading or interacting is not waiting to be moved on.
+    root.addEventListener('mouseenter',stop);
+    root.addEventListener('mouseleave',start);
+    root.addEventListener('focusin',stop);
+    root.addEventListener('focusout',start);
+    // Nor is a background tab worth animating.
+    document.addEventListener('visibilitychange',function(){ document.hidden?stop():start(); });
+
+    show(0); start();
+  })();
+
   // Category chips (news) - visual
   document.querySelectorAll('.cats button').forEach(function(b){b.addEventListener('click',function(){
     b.parentNode.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');});});
