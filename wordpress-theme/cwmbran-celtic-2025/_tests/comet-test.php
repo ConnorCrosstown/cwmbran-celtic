@@ -173,5 +173,41 @@ check('the merged list is newest first', $both[0]['date'] > $both[1]['date']);
 $res = cc25_comet_to_match(load('reserves-rogerstone'), 'reserves', 'Cwmbran Celtic Reserves');
 check('same date, different teams stay separate', count(cc25_merge_match_records(array($imported, $res), array())) === 2);
 
+/* ---- the guard: an import must not silently rewrite a different fixture ---- */
+
+// cc25_comet_mismatch reads post meta, so drive it with a stub that stands in for
+// the fixture being saved onto.
+$GLOBALS['cc25_test_meta'] = array();
+function get_post_meta($id, $key, $single = false) {
+    return $GLOBALS['cc25_test_meta'][$key] ?? '';
+}
+$imported = cc25_comet_to_match(load('mens-new-inn'), 'mens', 'Cwmbran Celtic');
+
+// The real mistake: the New Inn match saved onto the Abergavenny fixture.
+$GLOBALS['cc25_test_meta'] = array('_cc25_fx_date' => '2026-08-14', '_cc25_fx_opponent' => 'Abergavenny Town');
+$why = cc25_comet_mismatch(1, $imported);
+check('a different game is refused', $why !== '');
+check('the refusal names both dates', strpos($why, '14 Aug 2026') !== false && strpos($why, '7 Aug 2026') !== false);
+check('and both opponents', stripos($why, 'Abergavenny Town') !== false && stripos($why, 'New Inn') !== false);
+
+// The right fixture is accepted.
+$GLOBALS['cc25_test_meta'] = array('_cc25_fx_date' => '2026-08-07', '_cc25_fx_opponent' => 'New Inn');
+check('the right fixture is accepted', cc25_comet_mismatch(1, $imported) === '');
+// Spelling differences must not read as a different club.
+$GLOBALS['cc25_test_meta'] = array('_cc25_fx_date' => '2026-08-07', '_cc25_fx_opponent' => 'New Inn FC');
+check('a club suffix is not a mismatch', cc25_comet_mismatch(1, $imported) === '');
+
+// Wrong date alone, or wrong opponent alone, is still wrong.
+$GLOBALS['cc25_test_meta'] = array('_cc25_fx_date' => '2026-08-08', '_cc25_fx_opponent' => 'New Inn');
+check('the wrong date alone is refused', cc25_comet_mismatch(1, $imported) !== '');
+$GLOBALS['cc25_test_meta'] = array('_cc25_fx_date' => '2026-08-07', '_cc25_fx_opponent' => 'Risca United');
+check('the wrong opponent alone is refused', cc25_comet_mismatch(1, $imported) !== '');
+
+// A fixture being filled in for the first time has nothing to contradict.
+$GLOBALS['cc25_test_meta'] = array();
+check('an empty fixture accepts anything', cc25_comet_mismatch(1, $imported) === '');
+$GLOBALS['cc25_test_meta'] = array('_cc25_fx_date' => '2026-08-07');
+check('a date alone, matching, is accepted', cc25_comet_mismatch(1, $imported) === '');
+
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);

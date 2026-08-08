@@ -330,6 +330,13 @@ function cc25_fx_report_metabox($post) {
       <span style="color:#666;font-size:12px">&nbsp;It&rsquo;s in the filename of the report you download &mdash; <code>match_<strong>107656065</strong>_20260808.pdf</code>. Pasting the whole filename works too.</span>
     </p>
     <p><label><input type="checkbox" name="cc25_fx_comet_go" value="1"> <strong>Fetch the line-ups, goals, cards and substitutions from COMET when I save</strong></label></p>
+    <?php // Offered only after a refusal, so it can't be ticked out of habit.
+    if (get_transient('cc25_comet_offer_' . $post->ID)): ?>
+      <p style="background:#fcf9e8;border-left:4px solid #dba617;padding:10px 14px">
+        <label><input type="checkbox" name="cc25_fx_comet_force" value="1">
+        <strong>Import it anyway</strong> &mdash; this will overwrite this fixture&rsquo;s date, opponent, venue, competition and score with that match&rsquo;s.</label>
+      </p>
+    <?php endif; ?>
 
     <?php if (is_array($data)): ?>
       <div style="background:#f0f6fc;border-left:4px solid #2271b1;padding:10px 14px;margin:12px 0">
@@ -399,6 +406,22 @@ add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'
         return;
     }
     $match = cc25_comet_to_match($fetched, $team, $ours);
+
+    // Refuse a match that isn't this fixture.
+    //
+    // The import fills in the fixture's date, opponent, venue, competition and
+    // score. Pointed at the wrong record it would quietly turn that record into a
+    // duplicate of another game, and the only clue would be a fixture that had
+    // changed its own identity. So the id has to agree with the fixture it is
+    // being saved onto, unless someone says otherwise on purpose.
+    $mismatch = cc25_comet_mismatch($id, $match);
+    if ($mismatch && empty($_POST['cc25_fx_comet_force'])) {
+        set_transient('cc25_comet_notice_' . $id, 'Not imported — ' . $mismatch
+            . ' Check the match id, or tick "import it anyway" if this fixture really is that game.', 120);
+        set_transient('cc25_comet_offer_' . $id, 1, 120);
+        return;
+    }
+
     update_post_meta($id, '_cc25_fx_comet_data', wp_json_encode($match));
     update_post_meta($id, '_cc25_fx_comet_at', date_i18n('j M Y, H:i'));
     // Fill the fixture's own fields from the official record, so the score and
@@ -429,6 +452,30 @@ add_action('admin_notices', function () {
     $err = stripos($msg, 'did not answer') !== false;
     printf('<div class="notice notice-%s is-dismissible"><p>%s</p></div>', $err ? 'error' : 'success', esc_html($msg));
 });
+
+/**
+ * Why the fetched match doesn't belong to this fixture, or '' if it does.
+ *
+ * Compares the two things that identify a game — when it was played and who
+ * against. A blank fixture (one being filled in for the first time) matches
+ * anything, because there is nothing yet to contradict.
+ */
+function cc25_comet_mismatch($post_id, $match) {
+    $have_date = trim((string) get_post_meta($post_id, '_cc25_fx_date', true));
+    $have_opp  = trim((string) get_post_meta($post_id, '_cc25_fx_opponent', true));
+    $reasons = array();
+    if ($have_date !== '' && !empty($match['date']) && $have_date !== $match['date']) {
+        $reasons[] = sprintf('this fixture is dated %s but that match was played on %s.',
+            date_i18n('j M Y', strtotime($have_date)), date_i18n('j M Y', strtotime($match['date'])));
+    }
+    if ($have_opp !== '' && !empty($match['opp'])
+        && function_exists('cc25_norm_team')
+        && cc25_norm_team($have_opp) !== cc25_norm_team($match['opp'])) {
+        $reasons[] = sprintf('this fixture is against %s but that match was against %s.',
+            $have_opp, $match['opp']);
+    }
+    return implode(' ', $reasons);
+}
 
 /* --------------------------------------------------------------- the reader */
 
