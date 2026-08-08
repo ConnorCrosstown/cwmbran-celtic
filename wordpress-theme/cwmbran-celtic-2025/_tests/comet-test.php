@@ -121,9 +121,23 @@ $empty = cc25_comet_to_match(array(), 'mens', 'Cwmbran Celtic');
 check('an empty payload gives an empty match', $empty['date'] === '' && $empty['cc'] === 0 && $empty['starters'] === array());
 check('a payload with no events gives no goals',
       cc25_comet_to_match(array('match' => array(), 'lineups' => array(), 'events' => array()), 'mens')['goals'] === array());
-check('the match id is read from a PDF filename',
-      cc25_comet_id_from_filename('match_107656065_20260808_140918.pdf') === '107656065');
-check('a filename with no id gives none', cc25_comet_id_from_filename('report.pdf') === '');
+// Whatever gets pasted into the field. The first long run of digits is the id and
+// everything after it is the date and time — welding all three together produced a
+// 23-digit number, which is the bug these cover.
+foreach (array(
+    'match_107656065_20260808_140918.pdf' => '107656065',
+    '107656065_20260808_140918.pdf'       => '107656065',   // prefix trimmed off
+    '107656065_20260808_140918'           => '107656065',   // no extension either
+    '107656065'                           => '107656065',
+    '  107656065  '                       => '107656065',
+    'match_108166143_20260808_140817.pdf' => '108166143',
+    'report.pdf'                          => '',
+    ''                                    => '',
+    'match_123_x.pdf'                     => '',            // too short to be an id
+) as $in => $want) {
+    check("id from " . ($in === '' ? '(empty)' : trim($in)) . " is " . ($want ?: 'none'),
+          cc25_comet_id_from_filename($in) === $want);
+}
 
 /* ---- the merge: what an import replaces, and what it must not ---- */
 

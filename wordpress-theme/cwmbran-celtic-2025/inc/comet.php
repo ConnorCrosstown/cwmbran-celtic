@@ -63,9 +63,18 @@ function cc25_comet_fetch($id) {
     );
 }
 
-/** The match id out of a COMET PDF filename, or '' — saves reading it off by eye. */
+/**
+ * The match id out of whatever was pasted, or ''.
+ *
+ * Accepts the full filename, the filename without its "match_" prefix, or the
+ * bare id. It must take the FIRST long run of digits and stop: a filename also
+ * carries a date and a time, and stripping every non-digit welds all three into
+ * one 23-digit number that COMET has never heard of.
+ */
 function cc25_comet_id_from_filename($name) {
-    return preg_match('/match[_-](\d{6,})/i', (string) $name, $m) ? $m[1] : '';
+    $name = (string) $name;
+    if (preg_match('/match[_-](\d{6,})/i', $name, $m)) return $m[1];
+    return preg_match('/(\d{6,})/', $name, $m) ? $m[1] : '';
 }
 
 /* --------------------------------------------------------------- transforming */
@@ -357,6 +366,10 @@ function cc25_fx_report_metabox($post) {
       <span style="color:#666;font-size:12px">Everything above is the bare facts. This is the bit only someone who was there can write.</span></p>
     <?php wp_editor($g('report'), 'cc25fx_report', array('textarea_name' => 'cc25_fx_report', 'textarea_rows' => 12, 'media_buttons' => false)); ?>
     <p><label>Words by<br><input type="text" name="cc25_fx_report_by" value="<?php echo esc_attr($g('report_by')); ?>" style="max-width:320px"></label></p>
+    <p style="border-top:1px solid #dcdcde;padding-top:14px;margin-top:18px">
+      <?php submit_button(get_post_status($post) === 'publish' ? 'Save match report' : 'Publish fixture', 'primary', 'cc25_fx_report_submit', false); ?>
+      <span style="color:#666;font-size:12px;margin-left:10px">Same as Update at the top of the page &mdash; here so you don&rsquo;t have to scroll back for it.</span>
+    </p>
     <?php
 }
 
@@ -368,7 +381,6 @@ add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'
     // Accept a bare id or the whole PDF filename.
     $raw = trim((string) wp_unslash($_POST['cc25_fx_comet_id'] ?? ''));
     $cid = cc25_comet_id_from_filename($raw);
-    if ($cid === '') $cid = preg_replace('/\D/', '', $raw);
     update_post_meta($id, '_cc25_fx_comet_id', $cid);
 
     foreach (array('ref', 'ar1', 'ar2', 'report_by') as $k) {
