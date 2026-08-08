@@ -2355,6 +2355,44 @@ function cc25_results_2526() {
  * Add one entry per game from the FAW Comet report. Names must match the player
  * card names. Stats (appearances, goals, assists, cards) are computed from this. */
 function cc25_season_matches() {
+    $records = function_exists('cc25_comet_match_records') ? cc25_comet_match_records() : array();
+    $static  = cc25_season_matches_static();
+    return cc25_merge_match_records($records, $static);
+}
+
+/**
+ * Imported reports plus the hand-written ones they don't cover.
+ *
+ * A record wins where both describe the same game — it came from the FAW — but a
+ * hand-written report is kept if the import has no prose of its own, because the
+ * words are the part COMET cannot supply.
+ *
+ * Pure, so the precedence rule is testable without a database.
+ */
+function cc25_merge_match_records($records, $static) {
+    $key = function ($m) { return ($m['team'] ?? 'mens') . '|' . ($m['date'] ?? ''); };
+    $out = array();
+    foreach ($records as $m) $out[$key($m)] = $m;
+    foreach ($static as $m) {
+        $k = $key($m);
+        if (!isset($out[$k])) { $out[$k] = $m; continue; }
+        // Same game from both: keep the import, but not at the cost of the words.
+        if (trim((string) ($out[$k]['report'] ?? '')) === '' && trim((string) ($m['report'] ?? '')) !== '') {
+            $out[$k]['report'] = $m['report'];
+            if (empty($out[$k]['report_by']) && !empty($m['report_by'])) $out[$k]['report_by'] = $m['report_by'];
+        }
+        // Likewise the officials, which the import never has.
+        foreach (array('ref', 'ar1', 'ar2') as $f) {
+            if (trim((string) ($out[$k][$f] ?? '')) === '' && trim((string) ($m[$f] ?? '')) !== '') $out[$k][$f] = $m[$f];
+        }
+        if (empty($out[$k]['att']) && !empty($m['att'])) $out[$k]['att'] = $m['att'];
+    }
+    usort($out, function ($a, $b) { return strcmp($b['date'] ?? '', $a['date'] ?? ''); });
+    return array_values($out);
+}
+
+/** The hand-written reports, kept as the fallback described above. */
+function cc25_season_matches_static() {
     return array(
         array(
             'team' => 'reserves',

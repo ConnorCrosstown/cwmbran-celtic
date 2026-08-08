@@ -15,14 +15,11 @@ if (PHP_SAPI !== 'cli') exit;
 
 function add_action() {} function add_filter() {}
 function get_transient() { return false; } function set_transient() {}
-function cc25_norm_team($n) {
-    $n = strtolower(trim((string) $n));
-    $n = preg_replace('/\b(a?fc)\b/', '', $n);
-    $n = preg_replace('/\([^)]*\)/', '', $n);
-    return trim(preg_replace('/\s+/', ' ', $n));
-}
+function date_i18n($fmt, $ts = null) { return date($fmt, $ts === null ? time() : $ts); }
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
-require __DIR__ . '/../inc/comet.php';
+// functions.php loads inc/comet.php itself and provides cc25_norm_team, so
+// requiring it here avoids declaring a second copy of either.
+require __DIR__ . '/../functions.php';
 
 $failures = array();
 function check($label, $cond) {
@@ -127,6 +124,40 @@ check('a payload with no events gives no goals',
 check('the match id is read from a PDF filename',
       cc25_comet_id_from_filename('match_107656065_20260808_140918.pdf') === '107656065');
 check('a filename with no id gives none', cc25_comet_id_from_filename('report.pdf') === '');
+
+/* ---- the merge: what an import replaces, and what it must not ---- */
+
+// With nothing imported, the site is exactly as it is today.
+check('no imports leaves the hand-written reports alone',
+      cc25_merge_match_records(array(), cc25_season_matches_static()) === cc25_season_matches_static());
+
+$hand = array(array('team' => 'mens', 'date' => '2026-08-07', 'opp' => 'New Inn', 'cc' => 2, 'oc' => 4,
+                    'report' => 'The words someone wrote.', 'report_by' => 'A Reporter',
+                    'ref' => 'Michal Baniak', 'ar1' => 'Lucas Hoare', 'ar2' => '', 'att' => 210,
+                    'starters' => array(array(1, 'Typed By Hand'))));
+$imported = cc25_comet_to_match(load('mens-new-inn'), 'mens', 'Cwmbran Celtic');
+$merged = cc25_merge_match_records(array($imported), $hand);
+check('the same game appears once, not twice', count($merged) === 1);
+$m = $merged[0];
+// The FAW's version of the facts wins.
+check('the imported line-up replaces the typed one', count($m['starters']) === 11);
+// But never at the cost of the things the import cannot supply.
+check('the written report survives the import', $m['report'] === 'The words someone wrote.');
+check('so does its byline', $m['report_by'] === 'A Reporter');
+check('and the officials, which COMET has none of', $m['ref'] === 'Michal Baniak' && $m['ar1'] === 'Lucas Hoare');
+// COMET had 220 here, so the import's figure stands rather than being overwritten.
+check("an imported attendance is not replaced by the older one", $m['att'] === 220);
+
+// A hand-written report for a game with no import is untouched.
+$other = array(array('team' => 'mens', 'date' => '2026-07-28', 'opp' => 'Cwmbran Town', 'cc' => 3, 'oc' => 0, 'report' => 'Derby day.'));
+$both = cc25_merge_match_records(array($imported), $other);
+check('an un-imported game is kept whole', count($both) === 2);
+check('and keeps its report', $both[1]['report'] === 'Derby day.');
+check('the merged list is newest first', $both[0]['date'] > $both[1]['date']);
+
+// The two teams playing the same date are two different games.
+$res = cc25_comet_to_match(load('reserves-rogerstone'), 'reserves', 'Cwmbran Celtic Reserves');
+check('same date, different teams stay separate', count(cc25_merge_match_records(array($imported, $res), array())) === 2);
 
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);

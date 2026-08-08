@@ -295,3 +295,150 @@ function cc25_comet_to_match($data, $team = 'mens', $ours = 'Cwmbran Celtic') {
         'report_by'    => '',
     );
 }
+
+/* ------------------------------------------------------- storing on a fixture */
+
+/**
+ * The report section of the fixture editor.
+ *
+ * Everything factual is imported. What's left is the three things COMET's API
+ * doesn't carry — the match officials — plus the words, which are nobody's job
+ * but the club's.
+ */
+add_action('add_meta_boxes', function () {
+    if (!defined('CC25_FX_CPT')) return;
+    add_meta_box('cc25_fx_report', 'Match report', 'cc25_fx_report_metabox', CC25_FX_CPT, 'normal', 'default');
+});
+
+function cc25_fx_report_metabox($post) {
+    wp_nonce_field('cc25_fx_report_save', 'cc25_fx_report_nonce');
+    $g = function ($k) use ($post) { return get_post_meta($post->ID, '_cc25_fx_' . $k, true); };
+    $raw = $g('comet_data');
+    $data = $raw ? json_decode($raw, true) : null;
+    ?>
+    <p><label for="cc25fx_comet"><strong>COMET match id</strong></label><br>
+      <input type="text" id="cc25fx_comet" name="cc25_fx_comet_id" value="<?php echo esc_attr($g('comet_id')); ?>" style="max-width:260px">
+      <span style="color:#666;font-size:12px">&nbsp;It&rsquo;s in the filename of the report you download &mdash; <code>match_<strong>107656065</strong>_20260808.pdf</code>. Pasting the whole filename works too.</span>
+    </p>
+    <p><label><input type="checkbox" name="cc25_fx_comet_go" value="1"> <strong>Fetch the line-ups, goals, cards and substitutions from COMET when I save</strong></label></p>
+
+    <?php if (is_array($data)): ?>
+      <div style="background:#f0f6fc;border-left:4px solid #2271b1;padding:10px 14px;margin:12px 0">
+        <p style="margin:0 0 6px"><strong>Imported<?php echo $g('comet_at') ? ' ' . esc_html($g('comet_at')) : ''; ?>:</strong>
+          <?php printf('%s %d&ndash;%d %s',
+            esc_html($data['home'] ? 'Cwmbran Celtic' : $data['opp']), (int) $data['cc'], (int) $data['oc'],
+            esc_html($data['home'] ? $data['opp'] : 'Cwmbran Celtic')); ?>
+          &middot; <?php echo esc_html($data['date'] . ' ' . $data['time']); ?>
+        </p>
+        <p style="margin:0;color:#50575e;font-size:12px">
+          <?php printf('%d + %d in our squad, %d + %d in theirs &middot; %d goal(s) &middot; %d card(s) &middot; %d substitution(s)',
+            count($data['starters']), count($data['subs']), count($data['opp_starters']), count($data['opp_subs']),
+            count($data['goals']) + count($data['opp_goals']),
+            count($data['cards']) + count($data['opp_cards']),
+            count($data['subs_made']) + count($data['opp_subs_made'])); ?>
+          <?php if (!empty($data['att'])): ?>&middot; attendance <?php echo intval($data['att']); ?><?php endif; ?>
+        </p>
+      </div>
+    <?php elseif ($g('comet_id')): ?>
+      <p style="color:#b32d2e"><strong>Nothing imported yet.</strong> Tick the box above and save.</p>
+    <?php endif; ?>
+
+    <p><strong>Match officials</strong><br>
+      <span style="color:#666;font-size:12px">COMET&rsquo;s data doesn&rsquo;t include these, so they&rsquo;re the one part of a report that has to be typed. They&rsquo;re on the front of the PDF.</span></p>
+    <p style="display:flex;gap:14px;flex-wrap:wrap;max-width:820px">
+      <label style="flex:1;min-width:220px">Referee<br><input type="text" name="cc25_fx_ref" value="<?php echo esc_attr($g('ref')); ?>" style="width:100%"></label>
+      <label style="flex:1;min-width:220px">1st assistant<br><input type="text" name="cc25_fx_ar1" value="<?php echo esc_attr($g('ar1')); ?>" style="width:100%"></label>
+      <label style="flex:1;min-width:220px">2nd assistant<br><input type="text" name="cc25_fx_ar2" value="<?php echo esc_attr($g('ar2')); ?>" style="width:100%"></label>
+    </p>
+    <p><label>Attendance <em>(leave blank to use COMET&rsquo;s)</em><br>
+      <input type="number" min="0" name="cc25_fx_att" value="<?php echo esc_attr($g('att')); ?>" style="max-width:140px"></label></p>
+
+    <p><label for="cc25fx_report"><strong>The report</strong></label><br>
+      <span style="color:#666;font-size:12px">Everything above is the bare facts. This is the bit only someone who was there can write.</span></p>
+    <?php wp_editor($g('report'), 'cc25fx_report', array('textarea_name' => 'cc25_fx_report', 'textarea_rows' => 12, 'media_buttons' => false)); ?>
+    <p><label>Words by<br><input type="text" name="cc25_fx_report_by" value="<?php echo esc_attr($g('report_by')); ?>" style="max-width:320px"></label></p>
+    <?php
+}
+
+add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'), function ($id) {
+    if (!isset($_POST['cc25_fx_report_nonce']) || !wp_verify_nonce($_POST['cc25_fx_report_nonce'], 'cc25_fx_report_save')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $id)) return;
+
+    // Accept a bare id or the whole PDF filename.
+    $raw = trim((string) wp_unslash($_POST['cc25_fx_comet_id'] ?? ''));
+    $cid = cc25_comet_id_from_filename($raw);
+    if ($cid === '') $cid = preg_replace('/\D/', '', $raw);
+    update_post_meta($id, '_cc25_fx_comet_id', $cid);
+
+    foreach (array('ref', 'ar1', 'ar2', 'report_by') as $k) {
+        update_post_meta($id, '_cc25_fx_' . $k, sanitize_text_field(wp_unslash($_POST['cc25_fx_' . $k] ?? '')));
+    }
+    $att = $_POST['cc25_fx_att'] ?? '';
+    update_post_meta($id, '_cc25_fx_att', $att === '' ? '' : (string) max(0, (int) $att));
+    update_post_meta($id, '_cc25_fx_report', wp_kses_post(wp_unslash($_POST['cc25_fx_report'] ?? '')));
+
+    if (empty($_POST['cc25_fx_comet_go']) || $cid === '') return;
+    $team = get_post_meta($id, '_cc25_fx_team', true) ?: 'mens';
+    $ours = 'Cwmbran Celtic' . ($team === 'reserves' ? ' Reserves' : ($team === 'womens' ? ' Women' : ''));
+    $fetched = cc25_comet_fetch($cid);
+    if (!$fetched) {
+        set_transient('cc25_comet_notice_' . $id, 'COMET did not answer for id ' . $cid . '. Check the id and try again.', 60);
+        return;
+    }
+    $match = cc25_comet_to_match($fetched, $team, $ours);
+    update_post_meta($id, '_cc25_fx_comet_data', wp_json_encode($match));
+    update_post_meta($id, '_cc25_fx_comet_at', date_i18n('j M Y, H:i'));
+    // Fill the fixture's own fields from the official record, so the score and
+    // kick-off on the site come from the same place as the report.
+    if ($match['date'])  update_post_meta($id, '_cc25_fx_date', $match['date']);
+    if ($match['time'])  update_post_meta($id, '_cc25_fx_time', $match['time']);
+    if ($match['time'])  update_post_meta($id, '_cc25_fx_ko', $match['time']);
+    if ($match['opp'])   update_post_meta($id, '_cc25_fx_opponent', $match['opp']);
+    update_post_meta($id, '_cc25_fx_home', $match['home'] ? '1' : '0');
+    if ($match['comp'])  update_post_meta($id, '_cc25_fx_comp', $match['comp']);
+    update_post_meta($id, '_cc25_fx_us', (string) $match['cc']);
+    update_post_meta($id, '_cc25_fx_them', (string) $match['oc']);
+    update_post_meta($id, '_cc25_fx_status', 'played');
+    set_transient('cc25_comet_notice_' . $id, sprintf(
+        'Imported from COMET: %s %d–%d %s, %d in each line-up, %d goal(s).',
+        $match['home'] ? 'Cwmbran Celtic' : $match['opp'], $match['cc'], $match['oc'],
+        $match['home'] ? $match['opp'] : 'Cwmbran Celtic',
+        count($match['starters']), count($match['goals']) + count($match['opp_goals'])
+    ), 60);
+}, 20);
+
+add_action('admin_notices', function () {
+    $id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
+    if (!$id) return;
+    $msg = get_transient('cc25_comet_notice_' . $id);
+    if (!$msg) return;
+    delete_transient('cc25_comet_notice_' . $id);
+    $err = stripos($msg, 'did not answer') !== false;
+    printf('<div class="notice notice-%s is-dismissible"><p>%s</p></div>', $err ? 'error' : 'success', esc_html($msg));
+});
+
+/* --------------------------------------------------------------- the reader */
+
+/** Match reports held on fixture records, newest first. */
+function cc25_comet_match_records() {
+    if (!function_exists('get_posts') || !defined('CC25_FX_CPT')) return array();
+    if (!function_exists('post_type_exists') || !post_type_exists(CC25_FX_CPT)) return array();
+    $out = array();
+    foreach (get_posts(array('post_type' => CC25_FX_CPT, 'post_status' => 'publish', 'numberposts' => -1,
+                             'meta_key' => '_cc25_fx_comet_data', 'meta_compare' => 'EXISTS')) as $p) {
+        $m = json_decode((string) get_post_meta($p->ID, '_cc25_fx_comet_data', true), true);
+        if (!is_array($m) || empty($m['date'])) continue;
+        // What a person supplied wins over what was imported: officials aren't in
+        // COMET at all, and a hand-counted gate beats a blank one.
+        foreach (array('ref', 'ar1', 'ar2', 'report', 'report_by') as $k) {
+            $v = trim((string) get_post_meta($p->ID, '_cc25_fx_' . $k, true));
+            if ($v !== '') $m[$k] = $v;
+        }
+        $att = trim((string) get_post_meta($p->ID, '_cc25_fx_att', true));
+        if ($att !== '') $m['att'] = (int) $att;
+        $out[] = $m;
+    }
+    usort($out, function ($a, $b) { return strcmp($b['date'], $a['date']); });
+    return $out;
+}
