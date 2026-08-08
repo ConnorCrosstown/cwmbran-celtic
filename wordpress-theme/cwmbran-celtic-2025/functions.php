@@ -1381,6 +1381,7 @@ function cc25_row_kickoff_ms($ymd, $opponent = '') {
 function cc25_hidden_fixtures() {
     return array(
         array('Tredegar Town', '2026-08-01'), // called off — heatwave left the pitch unplayable
+        array('Risca United', '2026-08-22'),  // postponed — the Welsh Cup QR2 tie took the date
         array('Goytre', '2026-09-05'),        // postponed — the Amateur Trophy QR2 tie took the date
     );
 }
@@ -1478,13 +1479,27 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
         $ko = cc25_kickoff_ms($f);
         return $ko && ($ko + 2 * 60 * 60 * 1000) >= $now;
     }));
-    // Feed empty or lagging behind the next game? Fall back to the hand-maintained
-    // men's season list so the homepage never loses its next-match section (and we
-    // never surface a long-past game as "next").
-    if (!$future && $team === 'mens') {
+    // The feed is allwalessport, which only carries LEAGUE games — cup ties exist
+    // only in the hand-maintained list. Merging them in rather than treating the
+    // static list as a fallback is what stops a cup tie being invisible to "next
+    // game": with Risca postponed on 22 August, the feed's next home fixture was
+    // the postponed game and, once hidden, would have skipped the Welsh Cup tie
+    // that replaced it and jumped to September.
+    if ($team === 'mens') {
         foreach (cc25_static_fixtures()['mens']['list'] as $rf) {
+            if (($rf[1] ?? '') === '' || $rf[1] === 'TBC') continue;
             if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
-            if (cc25_row_kickoff_ms($rf[0], $rf[1]) + 2 * 60 * 60 * 1000 >= $now) $future[] = cc25_static_row_to_fixture($rf);
+            $ms = cc25_row_kickoff_ms($rf[0], $rf[1]);
+            if ($ms + 2 * 60 * 60 * 1000 < $now) continue;
+            // Already in the feed? Static dates are feed-corrected by
+            // cc25_overlay_feed_dates(), so the same game matches on opponent and
+            // a close date; anything further apart is a genuinely different tie.
+            $seen = false;
+            foreach ($future as $f) {
+                if (cc25_norm_team(cc25_opponent($f)['opponent']) !== cc25_norm_team($rf[1])) continue;
+                if (abs(intval($f['date'] ?? 0) - $ms) <= 10 * 86400 * 1000) { $seen = true; break; }
+            }
+            if (!$seen) $future[] = cc25_static_row_to_fixture($rf);
         }
     }
     $use = $future ? $future : $fx;
