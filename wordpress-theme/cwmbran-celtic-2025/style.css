@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.5.2
+Version: 0.5.3
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1693,4 +1693,26 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
 @media(prefers-reduced-motion:reduce){
   .shop-range,.shop-card,.shop-range-img img,.shop-card-img img{transition:none}
   .shop-range:hover,.shop-card:hover{transform:none}
+}
+
+/* ---- Match report header: the score, read from the fixture ---- */
+.mrh{background:linear-gradient(165deg,var(--navy-900),var(--navy-950));border:1px solid rgba(245,197,24,.28);
+  border-top:4px solid var(--gold);border-radius:14px;padding:22px 24px;margin:0 0 26px;text-align:center}
+.mrh-eye{color:var(--gold);font-size:.66rem;letter-spacing:.11em;margin-bottom:12px}
+.mrh-match{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.mrh-team{display:flex;align-items:center;gap:10px;color:#eef2fb;font-family:var(--display);font-size:1.02rem}
+.mrh-team.right{flex-direction:row-reverse}
+.mrh-team .crest{width:44px;height:44px}
+.mrh-team.is-own .nm{color:#fff}
+.mrh-score{font-family:var(--display);font-size:clamp(1.9rem,5vw,2.6rem);line-height:1;color:#fff;font-weight:800}
+.mrh-score i{font-style:normal;color:var(--gold);margin:0 6px}
+.mrh-vs{font-family:var(--display);font-size:1.2rem;color:rgba(255,255,255,.5);text-transform:uppercase}
+.mrh-meta{color:var(--on-navy-dim,#9fb0d6);font-size:.84rem;margin-top:14px}
+.mrh-facts{color:#eef2fb;font-size:.86rem;margin-top:8px}
+.mrh-facts b{color:var(--gold);font-weight:600}
+@media(max-width:560px){
+  .mrh{padding:18px 16px}
+  .mrh-match{gap:10px}
+  .mrh-team{font-size:.9rem}
+  .mrh-team .crest{width:36px;height:36px}
 }

@@ -21,6 +21,9 @@ if (cc25_is_programme_post(get_queried_object())) {
   <div class="wrap">
     <article class="article">
       <?php if ($cats): ?><a class="art-cat" href="<?php echo esc_url(get_category_link($cats[0]->term_id)); ?>"><?php echo esc_html($cats[0]->name); ?></a><?php endif; ?>
+      <?php // A match report leads with the score, read from the fixture rather
+            // than retyped into the article. ?>
+      <?php if (function_exists('cc25_is_report_post') && cc25_is_report_post()) echo cc25_report_header(); ?>
       <h1 class="art-h1"><?php the_title(); ?></h1>
       <div class="byline"><img class="av" src="<?php echo esc_url(cc25_club_logo()); ?>" alt="Cwmbran Celtic" width="42" height="42"><div>By <b><?php echo esc_html(cc25_byline()); ?></b> · <?php echo esc_html(get_the_date()); ?></div></div>
       <?php if (has_post_thumbnail()): ?>

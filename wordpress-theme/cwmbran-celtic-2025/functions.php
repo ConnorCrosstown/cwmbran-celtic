@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws', 'fixtures') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -1586,9 +1586,77 @@ function cc25_render_static_results($team) {
             . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
             . '</div>'
             . '<div><span class="res-badge ' . $wdl . '">' . strtoupper($wdl) . '</span></div>'
-            . '<div class="mmeta"><div class="comp">' . esc_html($r['competition'] ?? '') . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span></div>'
+            . '<div class="mmeta"><div class="comp">' . esc_html($r['competition'] ?? '') . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>'
+            . cc25_match_link_buttons(function_exists('cc25_match_links') ? cc25_match_links($team, cc25_date($r['date'], 'Y-m-d')) : array())
+            . '</div>'
             . '</div>';
     }
+}
+
+/**
+ * The score strip above a match report's prose.
+ *
+ * Everything here is read from the fixture, never typed into the report — which
+ * is the whole point of attaching a report to a game rather than asking someone
+ * to retype the score into the article.
+ */
+function cc25_report_header($post = null) {
+    if (!function_exists('cc25_report_game')) return '';
+    $g = cc25_report_game($post);
+    if (!$g) return '';
+    list($team, $ymd) = $g;
+    $lists = cc25_static_fixtures();
+    $row = null;
+    foreach ($lists[$team]['list'] ?? array() as $r) {
+        if ($r[0] === $ymd) { $row = $r; break; }
+    }
+    if (!$row) return '';
+
+    $home = !empty($row[2]);
+    $opp  = $row[1];
+    $comp = (isset($row[3]) && $row[3] !== '') ? $row[3] : 'League';
+    $score = function_exists('cc25_row_score') ? cc25_row_score($row) : null;
+    $titles = function_exists('cc25_fx_teams') ? cc25_fx_teams() : array();
+    $ours = 'Cwmbran Celtic' . ($team === 'reserves' ? ' Reserves' : ($team === 'womens' ? ' Women' : ''));
+
+    $oc = cc25_res_crest($opp, 44);
+    $mid = $score
+        ? '<span class="mrh-score">' . ($home ? $score[0] : $score[1]) . '<i>&ndash;</i>' . ($home ? $score[1] : $score[0]) . '</span>'
+        : '<span class="mrh-vs">v</span>';
+
+    $meta = array(cc25_date(strtotime($ymd) * 1000, 'l j F Y'), $comp, $home ? 'Motazone Arena' : 'Away');
+    $sc  = trim((string) get_post_meta(get_post($post)->ID, '_cc25_mr_scorers', true));
+    $att = trim((string) get_post_meta(get_post($post)->ID, '_cc25_mr_attendance', true));
+
+    $out  = '<div class="mrh">';
+    $out .= '<div class="mrh-eye kick">' . esc_html($titles[$team] ?? $ours) . ' &middot; Match Report</div>';
+    $out .= '<div class="mrh-match">'
+          . '<span class="mrh-team' . ($home ? ' is-own' : '') . '">' . ($home ? cc25_own_crest(44) : $oc) . '<span class="nm">' . esc_html($home ? $ours : $opp) . '</span></span>'
+          . $mid
+          . '<span class="mrh-team right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(44)) . '<span class="nm">' . esc_html($home ? $opp : $ours) . '</span></span>'
+          . '</div>';
+    $out .= '<div class="mrh-meta">' . esc_html(implode(' · ', $meta)) . '</div>';
+    if ($sc !== '' || $att !== '') {
+        $bits = array();
+        if ($sc !== '')  $bits[] = '<b>Scorers</b> ' . esc_html($sc);
+        if ($att !== '') $bits[] = '<b>Attendance</b> ' . esc_html(number_format((int) $att));
+        $out .= '<div class="mrh-facts">' . implode(' &nbsp;&middot;&nbsp; ', $bits) . '</div>';
+    }
+    $out .= '</div>';
+    return $out;
+}
+
+/** "Match Report" / "Programme" buttons for a match row. Renders nothing when the
+ *  game has neither, so a row never grows an empty gap. */
+function cc25_match_link_buttons($links) {
+    $out = '';
+    if (!empty($links['report'])) {
+        $out .= '<a class="mtix btn btn-navy" href="' . esc_url($links['report']) . '">Match Report</a>';
+    }
+    if (!empty($links['programme'])) {
+        $out .= '<a class="mtix btn btn-outline" href="' . esc_url($links['programme']) . '">Programme</a>';
+    }
+    return $out;
 }
 
 function cc25_team_items($list, $team) {
