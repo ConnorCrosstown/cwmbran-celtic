@@ -23,7 +23,10 @@ $cc25_kl     = cc25_kit_launch();
 $cc25_klurl  = cc25_page_url('music-shirts', home_url('/'));
 $cc25_kbase  = get_stylesheet_directory_uri() . '/assets/img/kit/';
 $cc25_cel = cc25_result_celebration();
-$cc25_hg  = cc25_next_home_fixture($feed, $team);
+// The next game at our ground, either first team — see cc25_next_home_fixture_any().
+// Both the takeover and the hero countdown key off this one value, so "It's Matchday"
+// and the countdown can never disagree about which game is next.
+$cc25_hg  = cc25_next_home_fixture_any($feed);
 $cc25_hgo = $cc25_hg ? cc25_opponent($cc25_hg) : null;
 $cc25_md  = cc25_is_matchday($cc25_hg);
 if ($cc25_kllive && !$cc25_md): ?>
@@ -153,12 +156,17 @@ if ($cc25_kllive && !$cc25_md): ?>
   <div class="bgphoto has-photo" style="background-image:url('<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/img/hero.jpg'); ?>')"></div><div class="streak"></div><div class="grain"></div>
   <div class="ghost">CELTIC</div>
   <div class="hero-in">
-    <?php $cc25_hero_comp = ($next && !empty($next['competition'])) ? $next['competition'] : 'Ardal League South East'; ?>
-    <span class="hero-eyebrow kick"><span class="ln"></span> <?php echo $next ? 'Next Match &middot; ' . esc_html($cc25_hero_comp) : 'Cwmbran Celtic AFC &middot; ' . esc_html($cc25_hero_comp); ?></span>
-    <?php if ($next): ?>
+    <?php // The hero promises a matchday at our ground, so it counts down to the next
+    // game AT our ground — either first team, whoever is on next. It used to time the
+    // next men's fixture home or away, which meant an away trip could sit under
+    // "Matchday at the Motazone Arena".
+    $cc25_hero_fx   = $cc25_hg;
+    $cc25_hero_comp = $cc25_hero_fx ? cc25_fixture_comp_label($cc25_hero_fx) : 'Ardal League South East'; ?>
+    <span class="hero-eyebrow kick"><span class="ln"></span> <?php echo $cc25_hero_fx ? 'Next Match &middot; ' . esc_html($cc25_hero_comp) : 'Cwmbran Celtic AFC &middot; ' . esc_html($cc25_hero_comp); ?></span>
+    <?php if ($cc25_hero_fx): ?>
     <h1><span class="sr-only">Cwmbran Celtic AFC — </span>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
     <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
-    <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo intval(cc25_kickoff_ms($next)); ?>">
+    <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo intval(cc25_kickoff_ms($cc25_hero_fx)); ?>">
       <div class="u"><div class="n" id="cd-d">00</div><div class="l">Days</div></div>
       <div class="sep">:</div>
       <div class="u"><div class="n" id="cd-h">00</div><div class="l">Hrs</div></div>

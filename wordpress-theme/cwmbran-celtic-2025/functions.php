@@ -1684,6 +1684,83 @@ function cc25_next_home_fixture($feed, $team = 'mens') {
     return null;
 }
 
+/**
+ * The next game AT the Motazone Arena, whoever is playing it.
+ *
+ * The homepage hero says "Matchday at the Motazone Arena" and counts down. It used
+ * to count down to cc25_next_fixture($feed, 'mens') — the next men's game home OR
+ * away — so it could promise a home matchday and be timing an away trip. It also
+ * ignored the Women's first team entirely, whose home games are at the same ground.
+ *
+ * Both first teams, earliest home kick-off wins. Ordered by real kick-off rather
+ * than the stored date, because two sides can play the same day at different times.
+ */
+function cc25_next_home_fixture_any($feed, $teams = array('mens', 'womens')) {
+    $candidates = array();
+    foreach ($teams as $t) {
+        $f = cc25_next_home_fixture($feed, $t);
+        if ($f) $candidates[$t] = $f;
+    }
+    return cc25_pick_earliest_home($candidates);
+}
+
+/**
+ * Of one candidate fixture per team, the one kicking off soonest at our ground.
+ *
+ * Split out from cc25_next_home_fixture_any() so it can be tested: everything that
+ * reaches a fixture goes through cc25_upcoming(), which deliberately merges the
+ * hand-maintained fixture list into whatever the feed says. That is right for the
+ * site and means a synthetic feed can't be isolated in a test — real static rows
+ * outrank it. The choosing is the part worth pinning, so the choosing is pure.
+ *
+ * $candidates is keyed by team; the winner carries its key as 'team' so the eyebrow
+ * can name the side. Away fixtures are refused rather than ranked — the hero says
+ * "at the Motazone Arena", and a caller passing an away game means it has a bug.
+ */
+function cc25_pick_earliest_home($candidates) {
+    $best = null;
+    $best_ko = 0;
+    foreach ($candidates as $team => $f) {
+        if (!$f || !cc25_is_home($f)) continue;
+        $ko = cc25_kickoff_ms($f);
+        if (!$ko) continue;
+        if ($best === null || $ko < $best_ko) {
+            $f['team'] = is_string($team) ? $team : (isset($f['team']) ? $f['team'] : 'mens');
+            $best = $f;
+            $best_ko = $ko;
+        }
+    }
+    return $best;
+}
+
+/**
+ * What to call the competition in the hero eyebrow.
+ *
+ * Fixtures store a generic 'League' plus the team, not a league name — right for
+ * the data, useless as a label. So a league game resolves to that team's actual
+ * division and a cup tie keeps its own name.
+ *
+ * A cup tie also gets the side named: "Welsh Cup R2" alone doesn't say who is
+ * playing, and with two teams feeding this line that ambiguity is new. League
+ * games don't need it — the division already identifies the side.
+ *
+ * Returns plain text, not markup: callers escape it, and an &middot; entity in
+ * here would come out of esc_html as a literal "&middot;".
+ */
+function cc25_fixture_comp_label($fx) {
+    if (!$fx) return '';
+    $team = isset($fx['team']) ? $fx['team'] : 'mens';
+    $comp = trim((string) (isset($fx['competition']) ? $fx['competition'] : ''));
+    $static = cc25_static_fixtures();
+    $league = isset($static[$team]['league']) ? $static[$team]['league'] : '';
+
+    if ($comp === '' || strcasecmp($comp, 'League') === 0) {
+        return $league !== '' ? $league : 'Ardal League South East';
+    }
+    $sides = array('mens' => "Men's First Team", 'womens' => "Women's First Team");
+    return ($team !== 'mens' && isset($sides[$team])) ? $sides[$team] . ' · ' . $comp : $comp;
+}
+
 /** True when $fx falls on today's date. The homepage takeover asks this to decide
  *  whether the game outranks the Music Shirts launch splash. Resolves "today" in
  *  Europe/London — the timezone the rest of the kick-off code works in — rather

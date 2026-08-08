@@ -126,5 +126,71 @@ $merged = cc25_results(array('results' => array(array(
 ))), 'reserves');
 check('a result the feed already has is not duplicated', count($merged) === 1);
 
+/* -- The hero countdown: next game AT OUR GROUND, either first team -----------
+ * The homepage heading promises "Matchday at the Motazone Arena" and then counts
+ * down. It used to count down to the next men's fixture home OR away, so on
+ * 8 Aug 2026 it was timing an away trip to Abergavenny under that heading.
+ *
+ * The choosing is tested through cc25_pick_earliest_home() rather than the feed:
+ * cc25_upcoming() merges the real hand-maintained fixtures into any feed it is
+ * given, so a synthetic one cannot be isolated — real static rows outrank it. */
+function hero_fx($ymd, $opp, $home, $team, $comp = 'League') {
+    $ms = (new DateTime($ymd . ' 12:00:00', new DateTimeZone('UTC')))->getTimestamp() * 1000;
+    return array(
+        'date' => $ms, 'homeAway' => $home ? 'H' : 'A',
+        'homeTeam' => $home ? 'Cwmbran Celtic' : $opp,
+        'awayTeam' => $home ? $opp : 'Cwmbran Celtic',
+        'competition' => $comp, 'team' => $team,
+    );
+}
+
+$pick = cc25_pick_earliest_home(array(
+    'mens'   => hero_fx('2026-09-26', 'Caldicot Town', true, 'mens'),
+    'womens' => hero_fx('2026-09-13', 'Pontypridd United', true, 'womens'),
+));
+check("the women's home game wins when it is next at our ground",
+      $pick && cc25_opponent($pick)['opponent'] === 'Pontypridd United' && $pick['team'] === 'womens');
+
+$pick = cc25_pick_earliest_home(array(
+    'mens'   => hero_fx('2026-09-13', 'Caldicot Town', true, 'mens'),
+    'womens' => hero_fx('2026-09-26', 'Pontypridd United', true, 'womens'),
+));
+check("the men's home game wins when theirs is the sooner one",
+      $pick && $pick['team'] === 'mens');
+
+/* An away game must be refused outright, not ranked. This is the actual live bug:
+ * the sooner fixture was away, and the hero showed it under "at the Motazone
+ * Arena". Sooner must not win if it is not at our ground. */
+$pick = cc25_pick_earliest_home(array(
+    'mens'   => hero_fx('2026-08-14', 'Abergavenny Town', false, 'mens'),
+    'womens' => hero_fx('2026-09-13', 'Pontypridd United', true, 'womens'),
+));
+check('a sooner AWAY game never wins the hero countdown',
+      $pick && cc25_is_home($pick) && cc25_opponent($pick)['opponent'] === 'Pontypridd United');
+
+check('nothing at home yields null, not an away fixture',
+      cc25_pick_earliest_home(array('mens' => hero_fx('2026-08-14', 'Abergavenny Town', false, 'mens'))) === null);
+check('no candidates at all yields null', cc25_pick_earliest_home(array()) === null);
+
+/* Whatever the data says on any given day, the live answer is always a home game. */
+$live = cc25_next_home_fixture_any(cc25_feed());
+check('the live hero fixture is always a home game', $live === null || cc25_is_home($live));
+
+/* -- The eyebrow label ------------------------------------------------------- */
+check("a men's league game names the Ardal division",
+      cc25_fixture_comp_label(array('team' => 'mens', 'competition' => 'League')) === 'Ardal League South East');
+check("a women's league game names Genero Adran South",
+      cc25_fixture_comp_label(array('team' => 'womens', 'competition' => 'League')) === 'Genero Adran South');
+check('a cup tie keeps its own name rather than a league',
+      cc25_fixture_comp_label(array('team' => 'mens', 'competition' => 'Welsh Cup QR2')) === 'Welsh Cup QR2');
+check("a women's cup tie names the side, since the cup alone does not",
+      cc25_fixture_comp_label(array('team' => 'womens', 'competition' => 'Welsh Cup R2')) === "Women's First Team · Welsh Cup R2");
+check('a missing competition still yields a league, never an empty label',
+      cc25_fixture_comp_label(array('team' => 'womens')) === 'Genero Adran South');
+/* Escaped by the caller, so it must not carry entities of its own. */
+check('the label is plain text, not markup',
+      strpos(cc25_fixture_comp_label(array('team' => 'womens', 'competition' => 'Welsh Cup R2')), '&') === false);
+
+
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);
