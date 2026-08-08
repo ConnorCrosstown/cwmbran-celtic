@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -1360,6 +1360,15 @@ function cc25_overlay_feed_dates($list) {
  * css class] is shown in the ticker so you can see which team a fixture is for.
  */
 function cc25_static_fixtures() {
+    $rows = array();
+    if (function_exists('cc25_fx_posts')) {
+        foreach (cc25_fx_posts() as $f) $rows[$f['team']][] = cc25_fx_to_row($f);
+    }
+    return cc25_fx_merge_lists(cc25_static_fixtures_static(), $rows);
+}
+
+/** The hand-maintained lists, kept as the fallback described above. */
+function cc25_static_fixtures_static() {
     static $cache = null;
     if ($cache !== null) return $cache;
     $data = array(
@@ -1482,6 +1491,15 @@ function cc25_row_kickoff_ms($ymd, $opponent = '') {
  * 'Y-m-d'. Delete a row once the game is rearranged — or just leave it, it ages
  * out on its own. Applies to the homepage next-game, fixtures page + ticker. */
 function cc25_hidden_fixtures() {
+    $base = cc25_hidden_fixtures_static();
+    if (function_exists('cc25_fx_hidden_from_posts')) {
+        $base = array_merge($base, cc25_fx_hidden_from_posts());
+    }
+    return $base;
+}
+
+/** The hand-maintained list, kept as the fallback described above. */
+function cc25_hidden_fixtures_static() {
     return array(
         array('Tredegar Town', '2026-08-01'), // called off — heatwave left the pitch unplayable
         array('Risca United', '2026-08-22'),  // postponed — the Welsh Cup QR2 tie took the date
@@ -1740,6 +1758,16 @@ function cc25_is_matchday($fx) {
  *     times — a bare date key would drag the other game's time with it.
  * ---------------------------------------------------------------------- */
 function cc25_kickoff_overrides() {
+    // Admin-entered times win; the hardcoded map still covers unmigrated teams.
+    $base = cc25_kickoff_overrides_static();
+    if (function_exists('cc25_fx_kickoffs_from_posts')) {
+        $base = array_merge($base, cc25_fx_kickoffs_from_posts());
+    }
+    return $base;
+}
+
+/** The hand-maintained map, kept as the fallback described above. */
+function cc25_kickoff_overrides_static() {
     // Harvested from faw.cymru on 7 August 2026 — the FAW's own published times
     // for every Ardal Southern League East (men) and Adran South (women) game
     // this season. These are real kick-offs, not the day-of-week guess below:
