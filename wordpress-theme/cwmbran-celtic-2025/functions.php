@@ -1448,7 +1448,7 @@ function cc25_team_items($list, $team) {
 
 /** Convert a hand-maintained men's fixture row [date,opp,home,comp] into the
  * same shape as a feed fixture, so it can stand in when the feed is unavailable. */
-function cc25_static_row_to_fixture($rf) {
+function cc25_static_row_to_fixture($rf, $team = 'mens') {
     $home = !empty($rf[2]);
     return array(
         'date'        => cc25_row_kickoff_ms($rf[0], $rf[1]),
@@ -1456,7 +1456,7 @@ function cc25_static_row_to_fixture($rf) {
         'awayTeam'    => $home ? ($rf[1] ?? '') : 'Cwmbran Celtic',
         'homeAway'    => $home ? 'H' : 'A',
         'competition' => (isset($rf[3]) && $rf[3] !== '') ? $rf[3] : 'League',
-        'team'        => 'mens',
+        'team'        => $team,
     );
 }
 
@@ -1485,8 +1485,13 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
     // game": with Risca postponed on 22 August, the feed's next home fixture was
     // the postponed game and, once hidden, would have skipped the Welsh Cup tie
     // that replaced it and jumped to September.
-    if ($team === 'mens') {
-        foreach (cc25_static_fixtures()['mens']['list'] as $rf) {
+    // Every team, not just the men's first team: the feed carries only their
+    // league games, so gating this on 'mens' left cc25_upcoming() returning
+    // nothing at all for the Reserves and the Women — which is why the homepage
+    // could only ever feature one side.
+    $cc25_static = cc25_static_fixtures();
+    if (isset($cc25_static[$team]['list'])) {
+        foreach ($cc25_static[$team]['list'] as $rf) {
             if (($rf[1] ?? '') === '' || $rf[1] === 'TBC') continue;
             if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
             $ms = cc25_row_kickoff_ms($rf[0], $rf[1]);
@@ -1499,7 +1504,7 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
                 if (cc25_norm_team(cc25_opponent($f)['opponent']) !== cc25_norm_team($rf[1])) continue;
                 if (abs(intval($f['date'] ?? 0) - $ms) <= 10 * 86400 * 1000) { $seen = true; break; }
             }
-            if (!$seen) $future[] = cc25_static_row_to_fixture($rf);
+            if (!$seen) $future[] = cc25_static_row_to_fixture($rf, $team);
         }
     }
     $use = $future ? $future : $fx;
@@ -1741,21 +1746,12 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
         . esc_attr($name) . ' (opens in a new tab)">' . $img . '</a>';
 }
 
-/** Match-ticker items: recent results + upcoming fixtures (both teams) with M/W badges. */
+/** Match-ticker items: upcoming fixtures across every team, with M/W/Res badges.
+ *  Fixtures only — the ticker used to lead with the last four Men's First Team
+ *  results, which read as the headline news when what it is for is telling people
+ *  what's coming up. Results have their own place on the fixtures page. */
 function cc25_ticker_items() {
-    $feed = cc25_feed();
     $out = '';
-    // Recent Men's First Team results (the only team the live feed carries).
-    $rs = (isset($feed['results']) && is_array($feed['results'])) ? $feed['results'] : array();
-    usort($rs, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
-    foreach (array_slice($rs, 0, 4) as $r) {
-        $ro = cc25_opponent($r);
-        $home = cc25_is_home($r);
-        $cc = intval($home ? ($r['homeScore'] ?? 0) : ($r['awayScore'] ?? 0));
-        $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
-        $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
-        $out .= '<span class="tk-item"><em class="tk-team tk-team-m" title="Men&#39;s First Team">1st</em><b class="tk-' . $wdl . '">FT</b> Cwmbran Celtic ' . $cc . '&ndash;' . $op . ' ' . esc_html($ro['opponent']) . '</span>';
-    }
     // Upcoming fixtures across ALL teams (Men's First, Reserves, Women's).
     // Take each team's next few games so EVERY team features in the banner even
     // when their season starts later (e.g. Women's kick off in late Sept), then
