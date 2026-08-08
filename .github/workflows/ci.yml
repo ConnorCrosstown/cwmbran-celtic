@@ -36,3 +36,59 @@ jobs:
       # any time a transitive dep gets a CVE between deploys. Run it advisory
       # only — surface in the job log without failing the build.
       - run: npm audit --audit-level=high || true
+
+  # The WordPress theme carries its own assertions — kick-off resolution, which
+  # fixture counts as "next", results, match reports, the COMET import, the
+  # programme reader. They ran only when someone typed the command, which is how
+  # a broken Results tab reached the live site: php -l passed, and nothing else
+  # looked.
+  theme:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: wordpress-theme/cwmbran-celtic-2025
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Syntax first: a parse error would make every suite below fail with the
+      # same unhelpful message.
+      - name: Lint PHP
+        run: find . -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+
+      - name: Lint JavaScript
+        run: for f in assets/*.mjs assets/premium.js; do node --check "$f"; done
+
+      # Every suite, and the whole job fails if any one of them does.
+      - name: Run theme test suites
+        run: |
+          rc=0
+          for t in _tests/*-test.php; do
+            echo "--- $t"
+            php "$t" || rc=1
+          done
+          for t in _tests/*-test.mjs; do
+            echo "--- $t"
+            node "$t" || rc=1
+          done
+          exit $rc
+
+      # A // comment on the same line as code silently deletes the rest of that
+      # line, and php -l cannot see it. This is the shape that broke the Results
+      # tab, so it is now a build failure rather than something to notice later.
+      - name: Reject code after a line comment
+        run: |
+          if grep -rnE '//[^"'"'"']*(\$[A-Za-z_]+ *=[^=]|\becho\b|\bif *\(|\bforeach *\()' \
+               --include='*.php' . | grep -v '://' ; then
+            echo "::error::A // comment is followed by code on the same line — that code never runs."
+            exit 1
+          fi
+          echo "none found"
+
