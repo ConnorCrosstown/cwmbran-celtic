@@ -100,7 +100,10 @@ $r = $res[0];
 check('it is the Rogerstone cup tie', cc25_norm_team(cc25_opponent($r)['opponent']) === cc25_norm_team('Rogerstone'));
 check('away, so our score is the away one', cc25_is_home($r) === false);
 check('recorded as a 1-2 defeat', intval($r['awayScore']) === 1 && intval($r['homeScore']) === 2);
-check('it carries the cup competition', ($r['competition'] ?? '') === 'League Cup R1');
+// Renamed from "League Cup R1" once the official record showed this is the Gwent
+// Premier Combination CUP — a different competition from the men's league cup,
+// which carried the same label.
+check('it carries the cup competition', ($r['competition'] ?? '') === 'Gwent Premier Cup R1');
 
 // A played row is a result, not a fixture — it must not appear in both.
 $ups = cc25_upcoming(array(), 'reserves', 30);

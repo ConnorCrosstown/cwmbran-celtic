@@ -1379,7 +1379,7 @@ function cc25_static_fixtures_static() {
             'list'   => array(
                 array('2026-07-28', 'Cwmbran Town', true, 'League'),
                 array('2026-08-01', 'Tredegar Town', false, 'League'),
-                array('2026-08-07', 'New Inn', true, 'League'),
+                array('2026-08-07', 'New Inn', true, 'League', array(2, 4)),
                 array('2026-08-14', 'Abergavenny Town', false, 'League'),
                 // 22 Aug league game v Risca United postponed — Welsh Cup QR2 (v
                 // Newport Corinthians) takes the slot. Risca to be rearranged.
@@ -1419,7 +1419,7 @@ function cc25_static_fixtures_static() {
             'title'  => "Men's Reserves",
             'badge'  => array('Res', 'tk-team-r'),
             'list'   => array(
-                array('2026-08-07', 'Rogerstone', false, 'League Cup R1', array(1, 2)),
+                array('2026-08-07', 'Rogerstone', false, 'Gwent Premier Cup R1', array(1, 2)),
                 array('2026-08-15', 'Croesyceiliog', false, 'League'),
                 array('2026-08-22', 'Rogerstone', true, 'League'),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
@@ -1748,7 +1748,7 @@ function cc25_static_row_to_fixture($rf, $team = 'mens') {
  * opponent or competition.
  *
  * >>> To record a result, append OUR score then THEIRS to the row:
- *       array('2026-08-07', 'Rogerstone', false, 'League Cup R1', array(1, 2)),
+ *       array('2026-08-07', 'Rogerstone', false, 'Gwent Premier Cup R1', array(1, 2)),
  *     Home or away makes no difference — the first number is always ours.
  * ---------------------------------------------------------------------- */
 
@@ -1907,7 +1907,8 @@ function cc25_kickoff_overrides_static() {
     return array(
         '2026-07-28|Cwmbran Town'         => '19:00',  // M Tue
         '2026-08-01|Tredegar Town'        => '14:30',  // M Sat POSTPONED
-        '2026-08-07|New Inn'              => '18:30',  // M Fri
+        '2026-08-07|New Inn'              => '18:30',  // M Fri — confirmed, COMET
+        '2026-08-07|Rogerstone'           => '19:30',  // Res Fri — confirmed, COMET  // M Fri
         '2026-08-14|Abergavenny Town'     => '19:45',  // M Fri
         '2026-08-22|Newport Corinthians'  => '14:00',  // M Sat Welsh Cup QR2 — confirmed by the club
         '2026-08-22|Risca United'         => '14:30',  // M Sat POSTPONED
@@ -2355,6 +2356,76 @@ function cc25_results_2526() {
  * card names. Stats (appearances, goals, assists, cards) are computed from this. */
 function cc25_season_matches() {
     return array(
+        array(
+            'date' => '2026-08-07', 'time' => '18:30', 'opp' => 'New Inn', 'home' => true, 'cc' => 2, 'oc' => 4,
+            'comp' => 'Ardal League South East', 'round' => 'Round 3', 'venue' => 'The Motazone Arena, Cwmbran', 'att' => 0,
+            'ref' => 'Michal Baniak', 'ar1' => 'Lucas Hoare', 'ar2' => 'Paul Albert Lewis',
+            'captain' => 'Terry Obeng', 'opp_captain' => 'Luke Carwyn Jones',
+            'starters' => array(
+                array(13, 'Lewis Watkins', 'GK'), array(2, 'Arthur Furness'), array(3, 'Kian Saunders'),
+                array(4, 'Tommy Challenger'), array(5, 'Terry Obeng'), array(6, 'Louis Cochrane'),
+                array(7, 'Gabriel Howells'), array(8, 'Cameron Jenkins'), array(9, 'Rudi Griffiths'),
+                array(10, 'Finlay Wood'), array(11, 'Cameron Dean'),
+            ),
+            'subs' => array(
+                array(12, 'Charlie Donovan'), array(14, 'Elliott Hewings'), array(15, 'Daniel Camaj'), array(16, 'Ollie Walters'),
+            ),
+            'opp_starters' => array(
+                array(1, 'Max Lewis Manson', 'GK'), array(2, 'Joel Richards'), array(3, 'Luke Carwyn Jones'),
+                array(4, 'Rico David Richards'), array(5, 'Anthony Richards'), array(6, 'Jordan Taylor'),
+                array(7, 'Connor Tutton-Coff'), array(8, 'Brad Baker'), array(9, 'Kobi Preston Watkins'),
+                array(10, 'Alex Berrow'), array(11, 'Ethan Preston-Watkins'),
+            ),
+            'opp_subs' => array(
+                array(12, 'C-jay Jones'), array(14, 'Joshua Loder'), array(15, 'Bayley Zac Loder'),
+                array(16, 'Daniel James Clouth'), array(17, 'Benjamin Williams'),
+            ),
+            'subs_made' => array(
+                array('min' => 46, 'off' => 'Tommy Challenger', 'on' => 'Charlie Donovan'),
+                array('min' => 70, 'off' => 'Cameron Dean',     'on' => 'Daniel Camaj'),
+                array('min' => 84, 'off' => 'Arthur Furness',   'on' => 'Ollie Walters'),
+            ),
+            'opp_subs_made' => array(
+                array('min' => 64, 'off' => 'Ethan Preston-Watkins', 'on' => 'Benjamin Williams'),
+                array('min' => 79, 'off' => 'Rico David Richards',   'on' => 'C-jay Jones'),
+                array('min' => 79, 'off' => 'Kobi Preston Watkins',  'on' => 'Daniel James Clouth'),
+                array('min' => 88, 'off' => 'Alex Berrow',           'on' => 'Bayley Zac Loder'),
+                array('min' => 88, 'off' => 'Joel Richards',         'on' => 'Joshua Loder'),
+            ),
+            'goals' => array(
+                array('scorer' => 'Rudi Griffiths', 'assist' => 'Finlay Wood', 'min' => 7),
+                array('scorer' => 'Kian Saunders',  'assist' => 'Finlay Wood', 'min' => 71),
+            ),
+            'opp_goals' => array(
+                array('scorer' => 'Alex Berrow', 'assist' => '', 'min' => 33),
+                array('scorer' => 'Alex Berrow', 'assist' => 'Kobi Preston Watkins', 'min' => 41),
+                array('scorer' => 'Alex Berrow', 'assist' => 'Joel Richards', 'min' => 43),
+                array('scorer' => 'Brad Baker',  'assist' => 'Benjamin Williams', 'min' => 87),
+            ),
+            'cards' => array(
+                array('player' => 'Tommy Challenger', 'type' => 'y', 'min' => 35, 'reason' => 'Persistent infringements of the Laws of the Game'),
+                array('player' => 'Gabriel Howells',  'type' => 'y', 'min' => 56, 'reason' => 'Persistent infringements of the Laws of the Game'),
+            ),
+            'opp_cards' => array(
+                array('player' => 'Rico David Richards', 'type' => 'y', 'min' => 76, 'reason' => 'Unsporting behaviour'),
+            ),
+            'staff' => array(
+                array('role' => 'First Team Manager', 'name' => 'Samuel Lewis'),
+                array('role' => 'First Team Manager', 'name' => 'Stephen Muir'),
+                array('role' => 'Assistant Manager', 'name' => 'Conor James'),
+                array('role' => 'First Aider', 'name' => 'Martin Ingram'),
+            ),
+            'opp_staff' => array(
+                array('role' => 'Team Manager', 'name' => 'Gareth Richards'),
+                array('role' => 'Assistant Manager', 'name' => 'Chris Perry'),
+                array('role' => 'Coach', 'name' => 'Stefan Edward Allcock'),
+            ),
+            // Written from the official COMET record — the facts are the FAW's, the
+            // eyewitness detail is not ours to invent. Expand with what was actually
+            // seen from the touchline.
+            'report' => "Celtic's first home league game of the season ended in a 4-2 defeat to New Inn, undone by a ten-minute spell either side of the half hour in which Alex Berrow scored three times.\n\nIt had started well. Rudi Griffiths put Celtic ahead inside seven minutes, turning in a Finlay Wood delivery, and the lead held until the 33rd minute. What followed was as quick as it was costly: Berrow levelled on 33, put New Inn ahead on 41 from Kobi Preston Watkins, and completed his hat-trick two minutes later from Joel Richards. Three goals in eleven minutes, and a game that had been going Celtic's way was gone.\n\nCeltic did not fold. Wood turned provider again on 71 minutes, Kian Saunders finishing to make it 3-2 with the better part of twenty minutes left. But Brad Baker settled it three minutes from time, converting Benjamin Williams's pass to restore the two-goal margin.\n\nThere is something to build on in a first half hour that produced the opening goal and in a response that got Celtic back within one. There is also a plain lesson in conceding three times in eleven minutes. Sam Lewis and Stephen Muir made three changes across the evening, Charlie Donovan on at the break for Tommy Challenger, Daniel Camaj for Cameron Dean on 70 and Ollie Walters for Arthur Furness on 84.\n\nReferee Michal Baniak booked Challenger and Gabriel Howells, both for persistent infringement, with New Inn's Rico Richards cautioned late on.",
+            'report_by' => '',
+        ),
         array(
             'date' => '2026-07-28', 'time' => '19:00', 'opp' => 'Cwmbran Town', 'home' => true, 'cc' => 3, 'oc' => 0,
             'comp' => 'Ardal League South East', 'round' => 'Round 1', 'venue' => 'The Motazone Arena, Cwmbran', 'att' => 410,

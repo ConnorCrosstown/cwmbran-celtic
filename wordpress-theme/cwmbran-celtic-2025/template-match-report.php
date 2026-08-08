@@ -97,7 +97,7 @@ $m = cc25_get_match($cc25_g);
 
   $ev_us  = $cc25_events($m['goals'], $m['cards'] ?? array(), $m['subs_made'] ?? array());
   $on_us  = $cc25_onmap($m['subs_made'] ?? array());
-  $ev_opp = $cc25_events(array(), $m['opp_cards'] ?? array(), $m['opp_subs_made'] ?? array());
+  $ev_opp = $cc25_events($m['opp_goals'] ?? array(), $m['opp_cards'] ?? array(), $m['opp_subs_made'] ?? array());
   $on_opp = $cc25_onmap($m['opp_subs_made'] ?? array());
 ?>
 <div class="phero mr-hero">
@@ -118,12 +118,19 @@ $m = cc25_get_match($cc25_g);
 <section class="band">
   <div class="wrap mr-wrap">
     <div class="mr-main">
-      <?php if (!empty($m['goals'])): ?>
+      <?php
+      // Both sides in one timeline, in the order they went in. Listing only our
+      // goals reads fine for a 3-0 and loses four of them in a 2-4.
+      $cc25_tl = array();
+      foreach ($m['goals'] as $g)                   $cc25_tl[] = $g + array('side' => 'us');
+      foreach ($m['opp_goals'] ?? array() as $g)    $cc25_tl[] = $g + array('side' => 'them');
+      usort($cc25_tl, function ($a, $b) { return intval($a['min']) <=> intval($b['min']); });
+      if ($cc25_tl): ?>
       <div class="mr-block reveal">
         <h2 class="mr-h">Goals</h2>
         <ul class="mr-goals">
-          <?php foreach ($m['goals'] as $g): ?>
-            <li><span class="mr-min"><?php echo intval($g['min']); ?>&rsquo;</span> <span class="mr-gball">&#9917;</span> <b><?php echo esc_html($g['scorer']); ?></b><?php echo !empty($g['pen']) ? ' <em>(pen)</em>' : ''; ?><?php echo !empty($g['assist']) ? ' <span class="mr-assist">assist: ' . esc_html($g['assist']) . '</span>' : ''; ?></li>
+          <?php foreach ($cc25_tl as $g): $cc25_who = $g['side'] === 'us' ? 'Cwmbran Celtic' : $m['opp']; ?>
+            <li class="mr-goal-<?php echo esc_attr($g['side']); ?>"><span class="mr-min"><?php echo esc_html($g['min']); ?>&rsquo;</span> <span class="mr-gball">&#9917;</span> <b><?php echo esc_html($g['scorer']); ?></b><?php echo !empty($g['pen']) ? ' <em>(pen)</em>' : ''; ?> <span class="mr-goal-team"><?php echo esc_html($cc25_who); ?></span><?php echo !empty($g['assist']) ? ' <span class="mr-assist">assist: ' . esc_html($g['assist']) . '</span>' : ''; ?></li>
           <?php endforeach; ?>
         </ul>
       </div>

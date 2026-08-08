@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.6.0
+Version: 0.6.1
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1739,3 +1739,8 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
 @media(prefers-reduced-motion:reduce){
   .nextup.is-rotating .nextup-slide{transition:none}
 }
+
+/* Goal timeline: both sides, so a defeat reads as honestly as a win. */
+.mr-goals li.mr-goal-them{opacity:.82}
+.mr-goals li.mr-goal-us{border-left:3px solid var(--gold);padding-left:10px}
+.mr-goal-team{color:var(--muted);font-size:.82rem;margin-left:4px}
