@@ -7,11 +7,16 @@
 if (!defined('ABSPATH')) exit;
 get_template_part('template-parts/site-header');
 $cc25_home = home_url('/');
-$cc25_g = isset($_GET['g']) ? preg_replace('/[^0-9-]/', '', $_GET['g']) : '';
-// ?t= names the team, because more than one side can play on the same date. A
-// bare ?g= still means the men's first team, as it always has.
-$cc25_t = isset($_GET['t']) ? preg_replace('/[^a-z]/', '', strtolower($_GET['t'])) : 'mens';
-if (!in_array($cc25_t, array('mens', 'reserves', 'womens'), true)) $cc25_t = 'mens';
+// The team travels inside ?g= — "2026-08-07-reserves" — because the CDN's cache
+// key ignores every parameter but g, so a separate ?t= was dropped and served the
+// men's cached report. A bare date still means the men's first team.
+$cc25_raw = isset($_GET['g']) ? preg_replace('/[^0-9a-z-]/', '', strtolower($_GET['g'])) : '';
+list($cc25_g, $cc25_t) = cc25_parse_match_slug($cc25_raw);
+// Honour ?t= as well, for any link already shared in that form.
+if (isset($_GET['t'])) {
+    $cc25_alt = preg_replace('/[^a-z]/', '', strtolower($_GET['t']));
+    if (in_array($cc25_alt, array('mens', 'reserves', 'womens'), true)) $cc25_t = $cc25_alt;
+}
 $m = cc25_get_match($cc25_g, $cc25_t);
 ?>
 <?php if (!$m): ?>

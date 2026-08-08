@@ -2663,10 +2663,32 @@ function cc25_get_match($date = '', $team = 'mens') {
 function cc25_match_report_url($date, $team = 'mens') {
     foreach (cc25_season_matches() as $m) {
         if ($m['date'] !== $date || ($m['team'] ?? 'mens') !== $team) continue;
-        $url = add_query_arg('g', $date, cc25_page_url('match-report', home_url('/')));
-        return $team === 'mens' ? $url : add_query_arg('t', $team, $url);
+        return add_query_arg('g', cc25_match_slug($date, $team), cc25_page_url('match-report', home_url('/')));
     }
     return '';
+}
+
+/**
+ * The ?g= value identifying one game: the date, plus the team when it isn't the
+ * men's first team.
+ *
+ * The team rides inside g rather than in its own parameter because the site sits
+ * behind a CDN whose cache key includes g and ignores everything else — a second
+ * parameter was silently dropped, so ?g=<date>&t=reserves served the cached men's
+ * report instead. A bare date still means the men's game, so existing links keep
+ * working.
+ */
+function cc25_match_slug($date, $team = 'mens') {
+    return $team === 'mens' || $team === '' ? $date : $date . '-' . $team;
+}
+
+/** Split a ?g= value back into [date, team]. */
+function cc25_parse_match_slug($g) {
+    $g = strtolower(trim((string) $g));
+    if (!preg_match('/^(\d{4}-\d{2}-\d{2})(?:-([a-z]+))?$/', $g, $mm)) return array('', 'mens');
+    $team = $mm[2] ?? 'mens';
+    if (!in_array($team, array('mens', 'reserves', 'womens'), true)) $team = 'mens';
+    return array($mm[1], $team);
 }
 /** One-line, factual summary of a match — used for share/meta descriptions. */
 function cc25_match_summary($m) {

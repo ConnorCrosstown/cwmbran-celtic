@@ -86,14 +86,29 @@ check('no programme without WordPress', cc25_programme_for_date('2026-07-28') ==
 // kinds of report are one answer to the reader rather than two systems.
 $has = cc25_match_links('mens', '2026-07-28');
 check('a match-centre report is still offered', strpos($has['report'], 'g=2026-07-28') !== false);
-check('the men\'s URL carries no team parameter', strpos($has['report'], 't=') === false);
 
-// A Reserves report is a different game on the same date, and must not collide.
+// The team must travel INSIDE g. A separate parameter was silently dropped by the
+// CDN, whose cache key includes g and ignores everything else, so ?g=<date>&t=reserves
+// served the men's cached report. That is the bug these next checks exist for.
 $res = cc25_match_links('reserves', '2026-08-07');
-check('the reserves report is a separate URL', strpos($res['report'], 't=reserves') !== false);
 $men = cc25_match_links('mens', '2026-08-07');
-check('the same date gives the men their own URL', strpos($men['report'], 't=') === false);
+check('the reserves URL carries the team inside g', strpos($res['report'], 'g=2026-08-07-reserves') !== false);
+check('the reserves URL uses no second parameter', strpos($res['report'], 't=') === false);
+check('the same date gives the men a bare date', strpos($men['report'], 'g=2026-08-07&') === false && strpos($men['report'], 'g=2026-08-07') !== false);
 check('and the two are not the same link', $men['report'] !== $res['report']);
+
+// Slug round-trip, including the backwards-compatible bare date.
+check('a bare date means the men', cc25_parse_match_slug('2026-07-28') === array('2026-07-28', 'mens'));
+check('a team suffix is read', cc25_parse_match_slug('2026-08-07-reserves') === array('2026-08-07', 'reserves'));
+check('the women are read too', cc25_parse_match_slug('2026-10-11-womens') === array('2026-10-11', 'womens'));
+check('an unknown team falls back to the men', cc25_parse_match_slug('2026-08-07-vets') === array('2026-08-07', 'mens'));
+check('junk gives no date', cc25_parse_match_slug('nonsense') === array('', 'mens'));
+check('an empty value gives no date', cc25_parse_match_slug('') === array('', 'mens'));
+check('a half-written date is rejected', cc25_parse_match_slug('2026-08') === array('', 'mens'));
+foreach (array('mens' => '2026-08-07', 'reserves' => '2026-08-07-reserves', 'womens' => '2026-08-07-womens') as $t => $expect) {
+    check("slug for $t round-trips", cc25_match_slug('2026-08-07', $t) === $expect
+        && cc25_parse_match_slug($expect) === array('2026-08-07', $t));
+}
 
 // A game with nothing attached must render nothing at all.
 $none = cc25_match_links('womens', '2026-09-27');
