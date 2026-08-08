@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'health') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -1377,7 +1377,7 @@ function cc25_static_fixtures_static() {
             'title'  => "Men's First Team",
             'badge'  => array('1st', 'tk-team-m'),
             'list'   => array(
-                array('2026-07-28', 'Cwmbran Town', true, 'League'),
+                array('2026-07-28', 'Cwmbran Town', true, 'League', array(3, 0)),
                 array('2026-08-01', 'Tredegar Town', false, 'League'),
                 array('2026-08-07', 'New Inn', true, 'League', array(2, 4)),
                 array('2026-08-14', 'Abergavenny Town', false, 'League'),
