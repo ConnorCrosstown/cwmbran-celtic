@@ -22,8 +22,16 @@
       var panel=document.getElementById(tb.dataset.t);
       if(panel){tb.setAttribute('aria-controls',tb.dataset.t);panel.setAttribute('role','tabpanel');panel.setAttribute('tabindex','0');}
       tb.addEventListener('click',function(){
-        tabs.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-selected','false');});
-        document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+        // Scoped to this tab's own group. There are now three groups on the
+        // fixtures page (men's, reserves, women's); clearing every .tab and
+        // .panel on the document would switch one group and blank the others.
+        var group=tb.closest('.tabs');
+        var siblings=group?group.querySelectorAll('.tab'):tabs;
+        siblings.forEach(function(x){x.classList.remove('on');x.setAttribute('aria-selected','false');});
+        siblings.forEach(function(x){
+          var p=x.dataset.t?document.getElementById(x.dataset.t):null;
+          if(p)p.classList.remove('on');
+        });
         tb.classList.add('on');tb.setAttribute('aria-selected','true');
         var el=document.getElementById(tb.dataset.t);
         if(el){el.classList.add('on');el.querySelectorAll('.reveal').forEach(function(r){r.classList.add('in');});}

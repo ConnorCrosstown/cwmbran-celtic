@@ -1307,7 +1307,7 @@ function cc25_static_fixtures() {
             'title'  => "Men's Reserves",
             'badge'  => array('Res', 'tk-team-r'),
             'list'   => array(
-                array('2026-08-07', 'Rogerstone', false, 'League Cup R1'),
+                array('2026-08-07', 'Rogerstone', false, 'League Cup R1', array(1, 2)),
                 array('2026-08-15', 'Croesyceiliog', false, 'League'),
                 array('2026-08-22', 'Rogerstone', true, 'League'),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
@@ -1439,6 +1439,37 @@ function cc25_render_static_fixtures($list, $tickets_url = '') {
     }
 }
 
+/** Results for a team the feed doesn't cover — the same row markup as the men's
+ *  results panel, so the two read identically. */
+function cc25_render_static_results($team) {
+    $rs = cc25_static_results($team);
+    if (!$rs) {
+        echo '<p style="color:var(--muted);padding:24px 2px;margin:0">No results yet this season.</p>';
+        return;
+    }
+    $lm = '';
+    foreach ($rs as $r) {
+        $home = cc25_is_home($r);
+        $opp  = cc25_opponent($r)['opponent'];
+        $us   = intval($home ? $r['homeScore'] : $r['awayScore']);
+        $them = intval($home ? $r['awayScore'] : $r['homeScore']);
+        $wdl  = $us > $them ? 'w' : ($us < $them ? 'l' : 'd');
+        $mo = cc25_date($r['date'], 'F Y');
+        if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
+        $oc = cc25_res_crest($opp, 34);
+        echo '<div class="mrow reveal">'
+            . '<div class="mdate"><div class="d">' . esc_html(cc25_date($r['date'], 'd')) . '</div><div class="m">' . esc_html(cc25_date($r['date'], 'M')) . '</div><div class="day">' . esc_html(cc25_date($r['date'], 'D')) . '</div></div>'
+            . '<div class="mteams">'
+            . '<span class="mt' . ($home ? ' is-own' : '') . '">' . ($home ? cc25_own_crest(34) : $oc) . '<span class="nm">' . esc_html($home ? 'Cwmbran Celtic' : $opp) . '</span></span>'
+            . '<span class="mscore">' . intval($r['homeScore']) . ' &ndash; ' . intval($r['awayScore']) . '</span>'
+            . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
+            . '</div>'
+            . '<div><span class="res-badge ' . $wdl . '">' . strtoupper($wdl) . '</span></div>'
+            . '<div class="mmeta"><div class="comp">' . esc_html($r['competition'] ?? '') . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span></div>'
+            . '</div>';
+    }
+}
+
 function cc25_team_items($list, $team) {
     if (!is_array($list)) return array();
     return array_values(array_filter($list, function ($x) use ($team) {
@@ -1450,7 +1481,7 @@ function cc25_team_items($list, $team) {
  * same shape as a feed fixture, so it can stand in when the feed is unavailable. */
 function cc25_static_row_to_fixture($rf, $team = 'mens') {
     $home = !empty($rf[2]);
-    return array(
+    $f = array(
         'date'        => cc25_row_kickoff_ms($rf[0], $rf[1]),
         'homeTeam'    => $home ? 'Cwmbran Celtic' : ($rf[1] ?? ''),
         'awayTeam'    => $home ? ($rf[1] ?? '') : 'Cwmbran Celtic',
@@ -1458,6 +1489,62 @@ function cc25_static_row_to_fixture($rf, $team = 'mens') {
         'competition' => (isset($rf[3]) && $rf[3] !== '') ? $rf[3] : 'League',
         'team'        => $team,
     );
+    $sc = cc25_row_score($rf);
+    if ($sc) {
+        $f['homeScore'] = $home ? $sc[0] : $sc[1];
+        $f['awayScore'] = $home ? $sc[1] : $sc[0];
+    }
+    return $f;
+}
+
+/* -------------------------------------------------------------------------
+ * Results for the teams the feed doesn't cover.
+ *
+ * allwalessport carries the Men's First Team only, so the Reserves' and Women's
+ * results sections read "No results yet" for the whole season. A played game is
+ * recorded by adding a score to its existing fixture row rather than keeping a
+ * second list, so a fixture and its result can never disagree about the date,
+ * opponent or competition.
+ *
+ * >>> To record a result, append OUR score then THEIRS to the row:
+ *       array('2026-08-07', 'Rogerstone', false, 'League Cup R1', array(1, 2)),
+ *     Home or away makes no difference — the first number is always ours.
+ * ---------------------------------------------------------------------- */
+
+/** [ours, theirs] for a played row, or null while it's still a fixture. */
+function cc25_row_score($rf) {
+    if (!isset($rf[4]) || !is_array($rf[4]) || count($rf[4]) < 2) return null;
+    if (!is_numeric($rf[4][0]) || !is_numeric($rf[4][1])) return null;
+    return array((int) $rf[4][0], (int) $rf[4][1]);
+}
+
+/** Hand-recorded results for a team, newest first, shaped like feed results. */
+function cc25_static_results($team) {
+    $static = cc25_static_fixtures();
+    $out = array();
+    foreach ($static[$team]['list'] ?? array() as $rf) {
+        if (!cc25_row_score($rf)) continue;
+        if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
+        $out[] = cc25_static_row_to_fixture($rf, $team);
+    }
+    usort($out, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
+    return $out;
+}
+
+/** Every result for a team, newest first: the feed's plus any hand-recorded ones
+ *  it doesn't already hold. The feed wins where both have a game. */
+function cc25_results($feed, $team = 'mens') {
+    $out = cc25_team_items($feed['results'] ?? array(), $team);
+    foreach (cc25_static_results($team) as $r) {
+        $seen = false;
+        foreach ($out as $f) {
+            if (cc25_norm_team(cc25_opponent($f)['opponent']) !== cc25_norm_team(cc25_opponent($r)['opponent'])) continue;
+            if (abs(intval($f['date'] ?? 0) - intval($r['date'])) <= 10 * 86400 * 1000) { $seen = true; break; }
+        }
+        if (!$seen) $out[] = $r;
+    }
+    usort($out, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
+    return $out;
 }
 
 /** Upcoming fixtures (future first); if none are future, soonest available. */
@@ -1494,6 +1581,7 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
         foreach ($cc25_static[$team]['list'] as $rf) {
             if (($rf[1] ?? '') === '' || $rf[1] === 'TBC') continue;
             if (cc25_fixture_hidden($rf[1], $rf[0])) continue;
+            if (cc25_row_score($rf)) continue;   // played — it's a result now
             $ms = cc25_row_kickoff_ms($rf[0], $rf[1]);
             if ($ms + 2 * 60 * 60 * 1000 < $now) continue;
             // Already in the feed? Static dates are feed-corrected by

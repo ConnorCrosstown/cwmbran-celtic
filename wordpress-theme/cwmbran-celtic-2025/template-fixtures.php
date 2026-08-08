@@ -123,11 +123,16 @@ get_template_part('template-parts/site-header');
 <div class="teamwrap" id="team-reserves" hidden>
   <section class="band">
     <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_res_league); ?></div><h2>Men's Reserves &mdash; Fixtures</h2></div></div>
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_res_league); ?></div><h2>Men's Reserves &mdash; Fixtures &amp; Results</h2></div></div>
       <div class="team-links reveal">
         <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_reserves_url()); ?>">Men's Reserves &rarr;</a>
       </div>
-      <div class="panel on"><?php cc25_render_static_fixtures($cc25_reserves); ?></div>
+      <div class="tabs reveal">
+        <button class="tab on" data-t="reserves-fx">Fixtures</button>
+        <button class="tab" data-t="reserves-res">Results</button>
+      </div>
+      <div class="panel on" id="reserves-fx"><?php cc25_render_static_fixtures($cc25_reserves); ?></div>
+      <div class="panel" id="reserves-res"><?php cc25_render_static_results('reserves'); ?></div>
     </div>
   </section>
 </div><!-- /#team-reserves -->
@@ -135,11 +140,16 @@ get_template_part('template-parts/site-header');
 <div class="teamwrap" id="team-womens" hidden>
   <section class="band">
     <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_womens_league); ?></div><h2>Women's First Team &mdash; Fixtures</h2></div></div>
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_womens_league); ?></div><h2>Women's First Team &mdash; Fixtures &amp; Results</h2></div></div>
       <div class="team-links reveal">
         <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url(array('ladies-team', 'ladies-1st-team'), home_url('/'))); ?>">Women's First Team squad &rarr;</a>
       </div>
-      <div class="panel on"><?php cc25_render_static_fixtures($cc25_womens); ?></div>
+      <div class="tabs reveal">
+        <button class="tab on" data-t="womens-fx">Fixtures</button>
+        <button class="tab" data-t="womens-res">Results</button>
+      </div>
+      <div class="panel on" id="womens-fx"><?php cc25_render_static_fixtures($cc25_womens); ?></div>
+      <div class="panel" id="womens-res"><?php cc25_render_static_results('womens'); ?></div>
     </div>
   </section>
 </div><!-- /#team-womens -->
