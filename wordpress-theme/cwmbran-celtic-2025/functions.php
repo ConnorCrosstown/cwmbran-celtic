@@ -1550,6 +1550,7 @@ function cc25_kickoff_overrides() {
         '2026-08-01|Tredegar Town'        => '14:30',  // M Sat POSTPONED
         '2026-08-07|New Inn'              => '18:30',  // M Fri
         '2026-08-14|Abergavenny Town'     => '19:45',  // M Fri
+        '2026-08-22|Newport Corinthians'  => '14:00',  // M Sat Welsh Cup QR2 — confirmed by the club
         '2026-08-22|Risca United'         => '14:30',  // M Sat POSTPONED
         '2026-09-05|Goytre'               => '14:30',  // M Sat POSTPONED
         '2026-09-12|Chepstow Town'        => '14:30',  // M Sat
