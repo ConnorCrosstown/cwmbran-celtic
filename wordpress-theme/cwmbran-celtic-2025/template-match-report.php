@@ -8,7 +8,11 @@ if (!defined('ABSPATH')) exit;
 get_template_part('template-parts/site-header');
 $cc25_home = home_url('/');
 $cc25_g = isset($_GET['g']) ? preg_replace('/[^0-9-]/', '', $_GET['g']) : '';
-$m = cc25_get_match($cc25_g);
+// ?t= names the team, because more than one side can play on the same date. A
+// bare ?g= still means the men's first team, as it always has.
+$cc25_t = isset($_GET['t']) ? preg_replace('/[^a-z]/', '', strtolower($_GET['t'])) : 'mens';
+if (!in_array($cc25_t, array('mens', 'reserves', 'womens'), true)) $cc25_t = 'mens';
+$m = cc25_get_match($cc25_g, $cc25_t);
 ?>
 <?php if (!$m): ?>
 <div class="phero" style="min-height:auto"><div class="bg"></div><div class="grain"></div>
@@ -51,7 +55,8 @@ $m = cc25_get_match($cc25_g);
   };
 
   // Our players' season stats (keyed by lower-cased name) power the click-for-stats popup.
-  $cc25_stats = cc25_player_stats();
+  // This match's own team, so a Reserves report shows Reserves numbers.
+  $cc25_stats = cc25_player_stats($m['team'] ?? 'mens');
   $cc25_cardbase = get_stylesheet_directory_uri() . '/assets/img/player-cards/';
   // A player's name: a stats button for our players who have season stats,
   // a plain span for opponents or players with no stats yet.

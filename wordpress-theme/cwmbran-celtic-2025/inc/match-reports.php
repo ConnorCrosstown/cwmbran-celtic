@@ -158,7 +158,13 @@ function cc25_report_game($post = null) {
 function cc25_match_links($team, $ymd) {
     $out = array('report' => '', 'programme' => '');
     $r = function_exists('cc25_report_for') ? cc25_report_for($team, $ymd) : null;
-    if ($r) $out['report'] = get_permalink($r);
+    if ($r) {
+        $out['report'] = get_permalink($r);
+    } elseif (function_exists('cc25_match_report_url')) {
+        // Falls back to the full match-centre report, so the two kinds of report
+        // are one answer to the reader rather than two systems.
+        $out['report'] = cc25_match_report_url($ymd, $team);
+    }
     if (function_exists('cc25_programme_for_date')) {
         $p = cc25_programme_for_date($ymd);
         if ($p) $out['programme'] = cc25_programme_read_url($p->ID);

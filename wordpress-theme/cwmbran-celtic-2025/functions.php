@@ -2357,8 +2357,68 @@ function cc25_results_2526() {
 function cc25_season_matches() {
     return array(
         array(
+            'team' => 'reserves',
+            'date' => '2026-08-07', 'time' => '19:30', 'opp' => 'Rogerstone', 'home' => false, 'cc' => 1, 'oc' => 2,
+            'comp' => 'Gwent Premier Combination Cup', 'round' => 'Round 1',
+            'venue' => 'Rogerstone Fugitives Stadium, Rogerstone', 'att' => 0,
+            'ref' => 'Stephen Richards', 'ar1' => '', 'ar2' => '',
+            'captain' => 'Ethan Hooper', 'opp_captain' => 'Ryan Cook',
+            'starters' => array(
+                array(1, 'Samuel Walsh', 'GK'), array(2, 'Gethin Phillips'), array(4, 'Zachary Benjamin Fry'),
+                array(5, 'Rhys Jones'), array(6, 'Harri Pritchard'), array(7, 'Joe Barber'),
+                array(8, 'Ethan Hooper'), array(9, 'Sam Smith'), array(10, 'Luke Betts'),
+                array(11, 'Charlie Waters'), array(16, 'Jacob Cook'),
+            ),
+            'subs' => array(
+                array(3, 'Tobias Williams-Dunne'), array(14, 'Evan Harvey'), array(15, 'Jack Shepard'),
+                array(17, 'Noah Willis'), array(18, 'Daniel Madge'),
+            ),
+            'opp_starters' => array(
+                array(19, 'Stephen Meaker', 'GK'), array(5, 'Oliver Lawson'), array(22, 'Robert Davies'),
+                array(29, 'Alexander Pritchard'), array(31, 'Ryan Cook'), array(49, 'Sebastian Bowen'),
+                array(63, 'Lloyd Saunders'), array(67, 'Connor Morgan'), array(68, 'Oliver Smith'),
+                array(76, 'Owen Thomas'), array(95, 'Alfie Campbell'),
+            ),
+            'opp_subs' => array(
+                array(15, 'Daniel Fraser Lewis Butler'), array(42, 'Benjamin Allcock'),
+                array(53, 'Samuel Julian Ethan Cody'), array(89, 'Adam Crocker'), array(91, 'Luc Payne'),
+            ),
+            'subs_made' => array(
+                array('min' => 52, 'off' => 'Joe Barber',           'on' => 'Evan Harvey'),
+                array('min' => 57, 'off' => 'Zachary Benjamin Fry', 'on' => 'Tobias Williams-Dunne'),
+                array('min' => 57, 'off' => 'Sam Smith',            'on' => 'Noah Willis'),
+                array('min' => 57, 'off' => 'Charlie Waters',       'on' => 'Daniel Madge'),
+            ),
+            'opp_subs_made' => array(
+                array('min' => 61, 'off' => 'Connor Morgan',       'on' => 'Adam Crocker'),
+                array('min' => 70, 'off' => 'Robert Davies',       'on' => 'Luc Payne'),
+                array('min' => 70, 'off' => 'Oliver Lawson',       'on' => 'Daniel Fraser Lewis Butler'),
+                array('min' => 73, 'off' => 'Alfie Campbell',      'on' => 'Samuel Julian Ethan Cody'),
+                array('min' => 78, 'off' => 'Alexander Pritchard', 'on' => 'Benjamin Allcock'),
+            ),
+            'goals' => array(
+                array('scorer' => 'Daniel Madge', 'assist' => 'Tobias Williams-Dunne', 'min' => 59),
+            ),
+            'opp_goals' => array(
+                array('scorer' => 'Alexander Pritchard', 'assist' => 'Robert Davies', 'min' => 7),
+                array('scorer' => 'Luc Payne', 'assist' => 'Lloyd Saunders', 'min' => '90+3'),
+            ),
+            'cards'     => array(),
+            'opp_cards' => array(),
+            'staff' => array(
+                array('role' => 'Coach', 'name' => 'Jacob Pritchard'),
+                array('role' => 'Coach', 'name' => 'Jack Shepard'),
+            ),
+            'opp_staff' => array(array('role' => 'Coach', 'name' => 'Jakob Jones')),
+            // From the official COMET record. No eyewitness detail — that is for
+            // whoever was at Rogerstone to add.
+            'report' => "The Reserves went out of the Gwent Premier Combination Cup at the first round, beaten by a goal three minutes into stoppage time at Rogerstone Fugitives Stadium.\n\nRogerstone led inside seven minutes through Alexander Pritchard, set up by Robert Davies, and Celtic spent the next hour chasing the tie. Jacob Pritchard reshuffled at the break and after — Evan Harvey on for Joe Barber on 52, then a triple change on 57 that brought on Tobias Williams-Dunne, Noah Willis and Daniel Madge.\n\nIt worked. Two minutes later Madge levelled, finishing a Williams-Dunne pass to make it 1-1 with half an hour to play, and a replay looked the likeliest outcome. Instead, in the 93rd minute, Luc Payne turned in Lloyd Saunders's ball to send Rogerstone through.\n\nHard on a side that had changed the game with its substitutions and got itself level. Ethan Hooper captained, Samuel Walsh started in goal, and referee Stephen Richards had no cards to give all evening.",
+            'report_by' => '',
+        ),
+        array(
+            'team' => 'mens',
             'date' => '2026-08-07', 'time' => '18:30', 'opp' => 'New Inn', 'home' => true, 'cc' => 2, 'oc' => 4,
-            'comp' => 'Ardal League South East', 'round' => 'Round 3', 'venue' => 'The Motazone Arena, Cwmbran', 'att' => 0,
+            'comp' => 'Ardal League South East', 'round' => 'Round 3', 'venue' => 'The Motazone Arena, Cwmbran', 'att' => 210,
             'ref' => 'Michal Baniak', 'ar1' => 'Lucas Hoare', 'ar2' => 'Paul Albert Lewis',
             'captain' => 'Terry Obeng', 'opp_captain' => 'Luke Carwyn Jones',
             'starters' => array(
@@ -2427,6 +2487,7 @@ function cc25_season_matches() {
             'report_by' => '',
         ),
         array(
+            'team' => 'mens',
             'date' => '2026-07-28', 'time' => '19:00', 'opp' => 'Cwmbran Town', 'home' => true, 'cc' => 3, 'oc' => 0,
             'comp' => 'Ardal League South East', 'round' => 'Round 1', 'venue' => 'The Motazone Arena, Cwmbran', 'att' => 410,
             'ref' => 'Joshua Lewis Howells', 'ar1' => 'Gavin Harris', 'ar2' => 'Joseph Williams',
@@ -2526,7 +2587,7 @@ function cc25_player_card_slug($name) {
 }
 
 /** Aggregate player stats for the season, keyed by lower-cased name. */
-function cc25_player_stats() {
+function cc25_player_stats($team = 'mens') {
     $s = array();
     $touch = function (&$s, $n) {
         $k = strtolower(trim($n));
@@ -2535,6 +2596,10 @@ function cc25_player_stats() {
         return $k;
     };
     foreach (cc25_season_matches() as $m) {
+        // One team's stats at a time. Reserves games live in the same list, and
+        // without this filter their players appear in the first team's table and
+        // anyone who played for both has their appearances added together.
+        if (($m['team'] ?? 'mens') !== $team) continue;
         // A player counts an appearance if they started or actually came on (not an unused sub).
         $cc25_on = array();
         foreach (($m['subs_made'] ?? array()) as $sm) { $cc25_on[strtolower(trim($sm['on']))] = true; }
@@ -2552,14 +2617,14 @@ function cc25_player_stats() {
     return $s;
 }
 /** Stats for one player by name, or null. */
-function cc25_player_stat($name) {
-    $s = cc25_player_stats();
+function cc25_player_stat($name, $team = 'mens') {
+    $s = cc25_player_stats($team);
     $k = strtolower(trim($name));
     return isset($s[$k]) ? $s[$k] : null;
 }
 /** Season stats sorted: goals, then assists, then apps, then name. */
-function cc25_player_stats_sorted() {
-    $s = array_values(cc25_player_stats());
+function cc25_player_stats_sorted($team = 'mens') {
+    $s = array_values(cc25_player_stats($team));
     usort($s, function ($a, $b) {
         if ($a['goals'] !== $b['goals']) return $b['goals'] - $a['goals'];
         if ($a['assists'] !== $b['assists']) return $b['assists'] - $a['assists'];
@@ -2578,17 +2643,28 @@ function cc25_match_reports($limit = 3) {
 }
 
 /** A match by date (Y-m-d), or the most recent match if the date is empty/not found. */
-function cc25_get_match($date = '') {
+function cc25_get_match($date = '', $team = 'mens') {
     $ms = cc25_season_matches();
     if (!$ms) return null;
+    // Date alone stopped identifying a game once more than one side played the same
+    // evening — 7 August had the men home to New Inn and the Reserves away in the cup.
+    foreach ($ms as $m) {
+        if ($m['date'] === $date && ($m['team'] ?? 'mens') === $team) return $m;
+    }
+    // A bare ?g= from an older link means the men's game, which is what it always meant.
     foreach ($ms as $m) { if ($m['date'] === $date) return $m; }
     usort($ms, function ($a, $b) { return strcmp($b['date'], $a['date']); });
     return $ms[0];
 }
-/** Match-report URL for a game date, or '' if no report exists for it. */
-function cc25_match_report_url($date) {
+
+/** Match-report URL for a game, or '' if no report exists. The team is added to
+ *  the URL only when it isn't the men's first team, so every existing ?g=<date>
+ *  link keeps working and keeps meaning what it meant. */
+function cc25_match_report_url($date, $team = 'mens') {
     foreach (cc25_season_matches() as $m) {
-        if ($m['date'] === $date) return add_query_arg('g', $date, cc25_page_url('match-report', home_url('/')));
+        if ($m['date'] !== $date || ($m['team'] ?? 'mens') !== $team) continue;
+        $url = add_query_arg('g', $date, cc25_page_url('match-report', home_url('/')));
+        return $team === 'mens' ? $url : add_query_arg('t', $team, $url);
     }
     return '';
 }

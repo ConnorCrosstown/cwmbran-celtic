@@ -18,6 +18,10 @@ function date_i18n($fmt, $ts = null) { return date($fmt, $ts === null ? time() :
 function esc_url($u) { return htmlspecialchars((string) $u, ENT_QUOTES); }
 function esc_html($s) { return htmlspecialchars((string) $s, ENT_QUOTES); }
 function esc_attr($s) { return htmlspecialchars((string) $s, ENT_QUOTES); }
+function add_query_arg($k, $v, $u) { return $u . (strpos($u, '?') === false ? '?' : '&') . $k . '=' . rawurlencode($v); }
+function home_url($p = '') { return 'https://www.cwmbranceltic.com' . $p; }
+function get_page_by_path($s) { return $s === 'match-report' ? (object) array('ID' => 1) : null; }
+function get_permalink($p = 0) { return 'https://www.cwmbranceltic.com/match-report/'; }
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
 require __DIR__ . '/../functions.php';
 
@@ -74,13 +78,27 @@ check('a TBC opponent is never offered', !array_filter($games, function ($l) { r
 
 /* ---- Links on a match row ---- */
 
-// Without WordPress there is nothing attached, and nothing must be rendered —
-// a row must not grow an empty button.
-check('no report without WordPress', cc25_report_for('mens', '2026-07-28') === null);
+// No post-based report or programme exists without WordPress.
+check('no post-based report without WordPress', cc25_report_for('mens', '2026-07-28') === null);
 check('no programme without WordPress', cc25_programme_for_date('2026-07-28') === null);
-$links = cc25_match_links('mens', '2026-07-28');
-check('links come back empty, not missing', $links === array('report' => '', 'programme' => ''));
-check('empty links render no buttons', cc25_match_link_buttons($links) === '');
+
+// But a game with a full match-centre report still offers one, because the two
+// kinds of report are one answer to the reader rather than two systems.
+$has = cc25_match_links('mens', '2026-07-28');
+check('a match-centre report is still offered', strpos($has['report'], 'g=2026-07-28') !== false);
+check('the men\'s URL carries no team parameter', strpos($has['report'], 't=') === false);
+
+// A Reserves report is a different game on the same date, and must not collide.
+$res = cc25_match_links('reserves', '2026-08-07');
+check('the reserves report is a separate URL', strpos($res['report'], 't=reserves') !== false);
+$men = cc25_match_links('mens', '2026-08-07');
+check('the same date gives the men their own URL', strpos($men['report'], 't=') === false);
+check('and the two are not the same link', $men['report'] !== $res['report']);
+
+// A game with nothing attached must render nothing at all.
+$none = cc25_match_links('womens', '2026-09-27');
+check('a game with no report offers none', $none['report'] === '' && $none['programme'] === '');
+check('empty links render no buttons', cc25_match_link_buttons($none) === '');
 check('a missing key renders no buttons', cc25_match_link_buttons(array()) === '');
 
 // With links present, both buttons render and are labelled for what they are.
