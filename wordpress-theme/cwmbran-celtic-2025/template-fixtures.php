@@ -7,8 +7,10 @@ if (!defined('ABSPATH')) exit;
 $feed     = cc25_feed();
 $team     = 'mens';
 $upcoming = cc25_upcoming($feed, $team, 30);
-$results  = cc25_team_items($feed['results'] ?? array(), $team);
-usort($results, function ($a, $b) { return ($b['date'] ?? 0) <=> ($a['date'] ?? 0); });
+// cc25_results(), not the raw feed: it merges hand-recorded scores in, so a
+// result stays visible whether or not allwalessport has caught up. Already sorted
+// newest first.
+$results  = cc25_results($feed, $team);
 $table    = cc25_table($feed, $team);
 
 // Fixture lists live in cc25_static_fixtures() (functions.php) so the home-page
@@ -69,7 +71,7 @@ get_template_part('template-parts/site-header');
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
         $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
         $mo = cc25_date($r['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
-        $rurl = cc25_match_report_url(cc25_date($r['date'] ?? 0, 'Y-m-d'), 'mens');  // men's results panel $rtag = $rurl ? 'a' : 'div'; ?>
+        $rurl = cc25_match_report_url(cc25_date($r['date'] ?? 0, 'Y-m-d'), 'mens'); /* men's results panel */ $rtag = $rurl ? 'a' : 'div'; ?>
         <?php $oppCrest = cc25_crest($feed, $ro['opponent'], 34); // Home team + its score on the left. ?>
         <<?php echo $rtag; ?> class="mrow reveal"<?php echo $rurl ? ' href="' . esc_url($rurl) . '"' : ''; ?>>
           <div class="mdate"><div class="d"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'd')); ?></div><div class="m"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'M')); ?></div><div class="day"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'D')); ?></div></div>
