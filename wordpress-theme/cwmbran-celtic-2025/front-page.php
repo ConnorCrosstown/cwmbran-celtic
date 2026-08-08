@@ -262,7 +262,7 @@ if ($cc25_cards): $cc25_multi = count($cc25_cards) > 1; ?>
             <div><?php echo cc25_crest($feed, $ro['opponent'], 58); ?><div class="cn"><?php echo esc_html($ro['opponent']); ?></div></div>
           </div>
           <div class="result-foot"><span class="wdl <?php echo $wdl; ?>"><?php echo strtoupper($wdl); ?></span> <?php echo esc_html(cc25_date($result['date'] ?? 0)); ?><?php echo !empty($result['scorers']) ? ' · ' . esc_html($result['scorers']) : ''; ?></div>
-          <?php $cc25_rrl = cc25_match_report_url(cc25_date($result['date'] ?? 0, 'Y-m-d')); if ($cc25_rrl): ?>
+          <?php $cc25_rrl = cc25_match_report_url(cc25_date($result['date'] ?? 0, 'Y-m-d'), 'mens'); /* men's latest result */ if ($cc25_rrl): ?>
           <a class="panel-more" href="<?php echo esc_url($cc25_rrl); ?>">Full match report &amp; stats &rarr;</a>
           <?php endif; ?>
         <?php else: ?>
@@ -300,7 +300,7 @@ if ($cc25_reports):
     $rfh  = !empty($rf['home']); $rfopp = $rf['opp'];
     $rfcc = intval($rf['cc']); $rfoc = intval($rf['oc']);
     $rfwd = $rfcc > $rfoc ? 'w' : ($rfcc < $rfoc ? 'l' : 'd');
-    $rfurl = cc25_match_report_url($rf['date']);
+    $rfurl = cc25_match_report_url($rf['date'], $rf['team'] ?? 'mens');
     $rfex  = wp_trim_words(wp_strip_all_tags($rf['report']), 40, ' …');
     $rfsc  = array();
     foreach (($rf['goals'] ?? array()) as $g) { $rfsc[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . " " . intval($g['min']) . "'"; }
@@ -336,7 +336,7 @@ if ($cc25_reports):
     <div class="mrfeat-more">
       <?php foreach (array_slice($cc25_reports, 1) as $rm):
         $mh = !empty($rm['home']); $mo = $rm['opp']; $mcc = intval($rm['cc']); $moc = intval($rm['oc']);
-        $mwd = $mcc > $moc ? 'w' : ($mcc < $moc ? 'l' : 'd'); $murl = cc25_match_report_url($rm['date']); ?>
+        $mwd = $mcc > $moc ? 'w' : ($mcc < $moc ? 'l' : 'd'); $murl = cc25_match_report_url($rm['date'], $rm['team'] ?? 'mens'); ?>
       <a class="mrfeat-card" href="<?php echo esc_url($murl); ?>">
         <span class="mrfeat-rb <?php echo $mwd; ?>"><?php echo strtoupper($mwd); ?></span>
         <span class="cx"><?php echo $mh ? cc25_own_crest(26) : cc25_res_crest($mo, 26); ?><?php echo cc25_res_crest($mh ? $mo : 'Cwmbran Celtic', 26); ?></span>
