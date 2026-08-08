@@ -32,6 +32,14 @@ if (cc25_is_programme_post(get_queried_object())) {
         <div class="art-hero photo"><div class="fill"></div><div class="gr"></div></div>
       <?php endif; ?>
       <div class="art-body prose"><?php the_content(); ?></div>
+      <?php // A written report shows the same gallery as the match centre does for that
+      // game — one set of photos, keyed to the fixture, not two places to upload them.
+      if (function_exists('cc25_report_game') && function_exists('cc25_match_gallery_html')) {
+          $cc25_rg = cc25_report_game();
+          if ($cc25_rg) {
+              echo cc25_match_gallery_html($cc25_rg[0], $cc25_rg[1]);
+          }
+      } ?>
       <div class="share">
         <span>Share</span>
         <a href="<?php echo esc_url('https://www.facebook.com/sharer/sharer.php?u=' . urlencode(get_permalink())); ?>" target="_blank" rel="noopener" aria-label="Share on Facebook">f</a>

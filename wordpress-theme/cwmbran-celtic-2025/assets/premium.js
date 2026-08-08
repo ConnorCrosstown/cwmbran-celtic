@@ -405,3 +405,71 @@
     reloadFresh(); // already past launch but showing the countdown → recover now
   }
 })();
+
+/* Match photography lightbox. Prev/next because a gallery is a sequence, and the
+ * credit travels with the photo — a shot cannot be viewed full-size without the
+ * byline, which is the whole point of it being here. */
+(function () {
+  var lb = document.getElementById('mrg-lightbox');
+  var grid = document.querySelector('[data-mrg]');
+  if (!lb || !grid) return;
+
+  var items = Array.prototype.slice.call(grid.querySelectorAll('.mrg-item'));
+  if (!items.length) return;
+
+  var img = document.getElementById('mrg-lb-img');
+  var capEl = lb.querySelector('.mrg-lb-cap');
+  var creditEl = lb.querySelector('.mrg-lb-credit');
+  var credit = grid.getAttribute('data-credit') || '';
+  var i = 0, last = null;
+
+  function show(n) {
+    i = (n + items.length) % items.length;   // wraps both ways
+    var b = items[i];
+    img.src = b.getAttribute('data-full');
+    var inner = b.querySelector('img');
+    img.alt = inner ? (inner.getAttribute('alt') || '') : '';
+    capEl.textContent = b.getAttribute('data-caption') || '';
+    creditEl.textContent = credit ? 'Photograph by ' + credit : '';
+  }
+  function open(n) {
+    last = document.activeElement;
+    show(n);
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lb.querySelector('.mrg-lb-close').focus();
+  }
+  function close() {
+    lb.hidden = true;
+    img.src = '';
+    document.body.style.overflow = '';
+    if (last && last.focus) last.focus();
+  }
+
+  items.forEach(function (b, n) {
+    b.addEventListener('click', function () { open(n); });
+  });
+
+  lb.addEventListener('click', function (e) {
+    if (e.target === lb || e.target.classList.contains('mrg-lb-close')) close();
+    if (e.target.classList.contains('prev')) show(i - 1);
+    if (e.target.classList.contains('next')) show(i + 1);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(i - 1);
+    if (e.key === 'ArrowRight') show(i + 1);
+  });
+
+  // Swipe, since most people reading a report are on a phone at or near the ground.
+  var x0 = null;
+  lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 45) show(dx < 0 ? i + 1 : i - 1);
+    x0 = null;
+  }, { passive: true });
+})();

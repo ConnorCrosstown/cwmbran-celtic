@@ -233,6 +233,14 @@ $m = cc25_get_match($cc25_g, $cc25_t);
   </div>
 </section>
 
+<?php // Match photography, when there is any for this game. Prints nothing at all
+// otherwise, so a report without photos reads exactly as it did before.
+$cc25_ghtml = function_exists('cc25_match_gallery_html') ? cc25_match_gallery_html($cc25_t, $cc25_g) : '';
+if ($cc25_ghtml !== ''): ?>
+<section class="band band-tight">
+  <div class="wrap reveal"><?php echo $cc25_ghtml; ?></div>
+</section>
+<?php endif; ?>
 <div class="mr-statpop" id="mr-statpop" data-season="<?php echo esc_attr(cc25_season()); ?>" role="dialog" aria-modal="true" aria-label="Player season stats" hidden>
   <div class="mr-statcard"></div>
 </div>
