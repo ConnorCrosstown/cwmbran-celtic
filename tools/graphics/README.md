@@ -20,23 +20,48 @@ Rerun both commands after any fixture, kick-off or crest change.
 
 ## Score cards
 
-Every possible full-time scoreline for every Men's First Team fixture, in both
-Instagram sizes, so whoever is posting at full time picks one rather than making it.
+Every possible scoreline for every Men's First Team fixture, at half time and full
+time, in both Instagram sizes — so whoever is posting picks a card rather than making
+one. 144 per game, 3,888 in all, about 100 seconds to run.
 
     python3 scores.py                # all 27 men's fixtures
     python3 scores.py 2026-08-22     # one game (matches date, opponent or filename)
+    python3 audit.py                 # measure the geometry; --all for every scoreline
 
-Output: `~/Downloads/CCFC Score Cards/<game>/Feed|Story/` — 36 cards per game per
-size (0-0 up to 5-5), 1,944 in total, about a minute to run.
+Output:
+
+    CCFC Score Cards/<game>/Full Time/Feed|Story/CCFC 2-1 <Opponent>.png
+                           /Half Time/Feed|Story/
 
 - **Cwmbran Celtic's score is always first**, home or away, because our crest is
   always on the left. `CCFC 2-1 Abergavenny Town.png` means Celtic scored two.
-- Feed is 1080x1350, Story is 1080x1920. The story frame is a **splice, not a
-  stretch**: both PSDs carry 661 byte-identical rows from y=491, so 570 rows are
-  inserted inside that band and the border, corners and sponsor bar are untouched.
-- The white panel's bounds are measured off the frame, not hardcoded, so content is
-  centred at both sizes. Note `batch.py` still centres the fixture cards on
-  `CX=515`, which is 18px right of the panel's real centre (497).
-- Crest sizes are derived from the panel width. The story frame is taller, not
-  wider, so hardcoded larger crests pushed both badges over the border — the run
-  reports any card that draws outside the panel.
+- Feed 1080x1350, Story 1080x1920. The story frame is a **splice, not a stretch**:
+  both PSDs carry 661 byte-identical rows from y=491, so 570 rows are inserted
+  inside that band and the border, corners and sponsor bar are untouched.
+- Badges are placed by their **ink**, not by a square box, and the row is laid out
+  from a centred origin. Both gaps either side of the score come out equal and the
+  row is balanced against the panel whatever shape the opponent's badge is.
+
+### audit.py
+
+Renders cards and measures them. Every fault in this set was invisible in the code
+and obvious in the pixels:
+
+- Badges positioned by their square box, so a narrow shield sat 55px from the score
+  on one side and 93px on the other.
+- The row centred on the score rather than on itself, leaving 28px of panel on one
+  side and 108px on the other.
+- Crests sized larger than the panel is wide, putting both badges over the border.
+
+It measures every scoreline with `--all` (3,888 cards) and exits non-zero on a
+breach, so it can gate a rerun. Run it after any change to the layout or a crest.
+
+### Known crest problems
+
+- `brecon-corries.png` is a **photograph of an embroidered badge on a red shirt**,
+  not a logo. There is no background to remove — the red is fabric. It needs a
+  proper crest file.
+- `llanrumney-united.png` is a photo of a 3D plaque; its background has been made
+  transparent but it still carries a drop shadow. Not in the men's fixture list.
+- `batch.py` still centres the fixture cards on `CX=515`, 18px right of the panel's
+  real centre (497). The score cards read the bounds off the frame instead.

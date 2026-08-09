@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-Full-time score cards for every Men's First Team fixture.
+Score cards for every Men's First Team fixture.
 
-One card per possible scoreline, 0-0 up to 5-5 — 36 per game — in both Instagram
-sizes, so whoever is posting at full time picks the right one instead of making it.
+Every possible scoreline, 0-0 up to 5-5, at both half time and full time, in both
+Instagram sizes — so whoever is posting picks the right card instead of making one.
+144 per game.
 
-    python3 export.php   # (from batch.py's flow) refreshes fixtures.json
     python3 scores.py            # every men's fixture
     python3 scores.py 2026-08-14 # one game
+    python3 audit.py             # measure the geometry of what it produced
 
-Output: ~/Downloads/CCFC Score Cards/<game>/Feed|Story/
+Output: ~/Downloads/CCFC Score Cards/<game>/Full Time|Half Time/Feed|Story/
 
 CWMBRAN CELTIC'S SCORE IS ALWAYS FIRST, home or away, because our crest is always
 on the left — the same convention as the fixture cards. "CCFC 2-1 Abergavenny Town"
@@ -18,6 +19,11 @@ means Celtic scored two. Filenames say so explicitly.
 The story size is a SPLICE, not a stretch: both frames carry 661 byte-identical
 rows (y 491-1151), so 570 extra rows are inserted inside that band and the frame's
 proportions, border and sponsor bar are untouched.
+
+Badges are placed by their INK, not by a square box, and the row is laid out from a
+centred origin — so the two gaps either side of the score are equal and the row is
+balanced against the panel whatever shape the opponent's badge is. audit.py measures
+all of that; it is the only reason the faults in it were ever found.
 """
 import json
 import os
@@ -98,15 +104,25 @@ def fit_size(target_w, s, lo=8, hi=400):
 _crestcache = {}
 
 
-def crest(path, px):
-    """Fit a badge into a px box, whatever its shape. No circular mask — most badges
-    are roundels but some are shields, and a circle slices the corners off. Trimmed
-    of flat light padding first so badges from different sources end up the same
-    optical size."""
-    key = (path, px)
+def crest(path, slot_h, slot_w):
+    """A badge trimmed to its ink and scaled to fill slot_h, capped by slot_w.
+
+    Returns the ink itself, at its natural aspect — NOT padded into a square. That
+    padding was the spacing bug: the badges were positioned by their square box, so
+    a narrow shield left 38px of empty box between itself and the score while a
+    round crest left none. On the Blaenavon card the score sat 55px from one badge
+    and 93px from the other. Callers now place by the ink, so the gaps are equal
+    whatever shape the badge is.
+
+    No circular mask: most are roundels, but Blaenavon and Croesyceiliog are shields
+    and a circle slices their corners off.
+    """
+    key = (path, slot_h, slot_w)
     if key in _crestcache:
         return _crestcache[key]
     im = Image.open(path).convert('RGBA')
+    # Content = dark-ish AND opaque, so flat white padding round the artwork is
+    # trimmed but white INSIDE the badge is kept.
     mask = im.convert('L').point(lambda v: 255 if v < 248 else 0)
     alpha = im.getchannel('A').point(lambda v: 255 if v > 8 else 0)
     mask = Image.composite(mask, Image.new('L', im.size, 0), alpha)
@@ -114,10 +130,8 @@ def crest(path, px):
     if bb:
         im = im.crop(bb)
     w, h = im.size
-    sc = px / max(w, h)
-    im = im.resize((max(1, round(w * sc)), max(1, round(h * sc))), Image.LANCZOS)
-    out = Image.new('RGBA', (px, px), (0, 0, 0, 0))
-    out.alpha_composite(im, ((px - im.width) // 2, (px - im.height) // 2))
+    sc = min(slot_h / h, slot_w / w)
+    out = im.resize((max(1, round(w * sc)), max(1, round(h * sc))), Image.LANCZOS)
     _crestcache[key] = out
     return out
 
@@ -200,7 +214,7 @@ def panel(base):
     return _panelcache[key]
 
 
-def build(fx, us_goals, them_goals, size):
+def build(fx, us_goals, them_goals, size, stage='FULL TIME'):
     """Composite one card.
 
     The content is drawn onto a transparent overlay starting at y=0, measured, then
@@ -217,9 +231,13 @@ def build(fx, us_goals, them_goals, size):
     overlay = Image.new('RGBA', size, (0, 0, 0, 0))
     d = ImageDraw.Draw(overlay)
     story = size == STORY
+    # The layout as actually computed, handed back so audit.py can check the real
+    # numbers instead of trying to re-detect them from the pixels — which it got
+    # wrong, locking onto the team-name row rather than the badge row.
+    geom = {'panel': (px0, py0, px1, py1), 'size': size}
 
     y = 0
-    draw_tracked(d, (CX, y), 'FULL TIME', body(33 if not story else 40, 700), accent, tracking=8, centre=True)
+    draw_tracked(d, (CX, y), stage, body(33 if not story else 40, 700), accent, tracking=8, centre=True)
     y += 58 if not story else 70
     d.line([(CX - 62, y + 6), (CX + 62, y + 6)], fill=(214, 220, 226), width=3)
     y += 28 if not story else 34
@@ -230,25 +248,53 @@ def build(fx, us_goals, them_goals, size):
     draw_tracked(d, (CX, y), sub, subf, MUTED, tracking=7, centre=True)
     y += (58 if not story else 72)
 
-    # Crests either side, score between them — the fixture cards put a "V" in that
-    # slot, so a result reads as the same family with the number where the V was.
+    # Badge — score — badge, laid out from the middle outwards so the two gaps are
+    # equal by construction rather than by luck.
     #
     # Sized off the panel, not hardcoded. The story frame is TALLER, not wider, so an
     # earlier attempt at 310px crests with a 350px gap came to 970px across a 902px
-    # panel and pushed both badges over the border — measuring the render is the only
-    # reason that was caught.
-    row_w = (px1 - px0) - 60
-    SCORE_GAP = 300 if not story else 310
-    CREST = min(250 if not story else 280, (row_w - SCORE_GAP) // 2)
-    overlay.alpha_composite(crest(THEME + 'club-logo.webp', CREST), (CX - SCORE_GAP // 2 - CREST, y))
-    overlay.alpha_composite(crest(THEME + 'opponents/' + fx['crest'], CREST), (CX + SCORE_GAP // 2, y))
+    # panel and pushed both badges over the border.
+    row_w = (px1 - px0) - 56
+    SLOT_H = 250 if not story else 270
+    PAD = 46 if not story else 52          # air between a badge and the score
 
     score = f'{us_goals}-{them_goals}'
-    sf = black(min(150 if not story else 190, fit_size(SCORE_GAP - 24, score)))
+    sf = black(150 if not story else 176)
     sb = d.textbbox((0, 0), score, font=sf)
-    d.text((CX - (sb[2] - sb[0]) / 2 - sb[0], y + CREST / 2 - (sb[3] - sb[1]) / 2 - sb[1]),
-           score, font=sf, fill=NAVY)
-    y += CREST + (48 if not story else 66)
+    score_w, score_h = sb[2] - sb[0], sb[3] - sb[1]
+
+    # Shrink the badges until the whole lockup fits the panel. Two goals-of-5 is the
+    # widest score, so a card that fits 5-5 fits every other scoreline in the set.
+    slot_w = (row_w - score_w - 2 * PAD) / 2
+    us_im = crest(THEME + 'club-logo.webp', SLOT_H, slot_w)
+    them_im = crest(THEME + 'opponents/' + fx['crest'], SLOT_H, slot_w)
+
+    row_h = max(us_im.height, them_im.height, score_h)
+    cy = y + row_h // 2                    # one centre line for both badges and the score
+
+    # Lay the row out from a centred origin rather than outward from the score.
+    #
+    # Centring on the score keeps both gaps equal but lets the ROW sit off-centre
+    # whenever the badges differ in width: Blaenavon's narrow shield left 28px on the
+    # left of the panel and 108px on the right. Centring the row keeps the gaps equal
+    # AND the row balanced; the score then sits off panel-centre by half the
+    # difference in badge widths, which is far less visible than an 80px imbalance
+    # against the panel edge the eye actually measures against.
+    row_total = us_im.width + PAD + score_w + PAD + them_im.width
+    x = round(CX - row_total / 2)
+    row_x0 = x
+    overlay.alpha_composite(us_im, (x, cy - us_im.height // 2))
+    geom['us'] = (x, cy - us_im.height // 2, x + us_im.width, cy + us_im.height // 2)
+    x += us_im.width + PAD
+    d.text((x - sb[0], cy - score_h // 2 - sb[1]), score, font=sf, fill=NAVY)
+    geom['score'] = (x, cy - score_h // 2, x + score_w, cy + score_h // 2)
+    x += score_w + PAD
+    overlay.alpha_composite(them_im, (x, cy - them_im.height // 2))
+    geom['them'] = (x, cy - them_im.height // 2, x + them_im.width, cy + them_im.height // 2)
+    geom['row'] = (row_x0, x + them_im.width)
+    geom['pad'] = PAD
+
+    y += row_h + (48 if not story else 62)
 
     NAME_MAX = 62 if not story else 74
     avail = row_w
@@ -281,7 +327,12 @@ def build(fx, us_goals, them_goals, size):
     if ink:
         block = overlay.crop(ink)
         top = py0 + ((py1 - py0) - block.height) // 2
+        dy = max(py0 + 8, top) - ink[1]
         canvas.alpha_composite(block, (ink[0], max(py0 + 8, top)))
+        for k in ('us', 'score', 'them'):
+            a, b, c, e = geom[k]
+            geom[k] = (a, b + dy, c, e + dy)
+        geom['block'] = (ink[0], ink[1] + dy, ink[2], ink[3] + dy)
         # Did anything land outside the white panel? Returned so the batch reports it
         # rather than writing 1,944 cards with a badge over the border.
         overflow = max(0, px0 - ink[0], ink[2] - px1,
@@ -302,7 +353,7 @@ def build(fx, us_goals, them_goals, size):
         strip = strip.crop(ink)
     canvas.alpha_composite(strip, (round((BAND_X0 + BAND_X1) / 2 - strip.width / 2), LABEL_TOP))
 
-    return canvas, overflow
+    return canvas, overflow, geom
 
 def game_folder(fx):
     """One folder per game, named as the fixture card is, so the two sets sit
@@ -310,20 +361,24 @@ def game_folder(fx):
     return OUT + os.path.splitext(fx['out'])[0] + '/'
 
 
+STAGES = (('FULL TIME', 'Full Time'), ('HALF TIME', 'Half Time'))
+
+
 def render_game(fx, verbose=True):
     made, worst = 0, 0
-    for us in range(MAX_GOALS + 1):
-        for them in range(MAX_GOALS + 1):
-            for size, label in ((FEED, 'Feed'), (STORY, 'Story')):
-                canvas, overflow = build(fx, us, them, size)
-                worst = max(worst, overflow)
-                folder = game_folder(fx) + label + '/'
-                os.makedirs(folder, exist_ok=True)
-                # Celtic's score first, and the filename says which is which so
-                # nobody has to remember the convention at five o'clock.
-                name = f'CCFC {us}-{them} {fx["opp"]}.png'
-                canvas.convert('RGB').save(folder + name, quality=95)
-                made += 1
+    for stage, stage_dir in STAGES:
+        for us in range(MAX_GOALS + 1):
+            for them in range(MAX_GOALS + 1):
+                for size, size_dir in ((FEED, 'Feed'), (STORY, 'Story')):
+                    canvas, overflow, _ = build(fx, us, them, size, stage)
+                    worst = max(worst, overflow)
+                    folder = f'{game_folder(fx)}{stage_dir}/{size_dir}/'
+                    os.makedirs(folder, exist_ok=True)
+                    # Celtic's score first, and the filename says which is which so
+                    # nobody has to remember the convention at five o'clock.
+                    name = f'CCFC {us}-{them} {fx["opp"]}.png'
+                    canvas.convert('RGB').save(folder + name, quality=95)
+                    made += 1
     if verbose:
         flag = '' if worst <= 0 else f'  OUTSIDE THE PANEL by {worst}px'
         print(f'  {fx["date"]}  {"H" if fx["home"] else "A"}  {fx["opp"][:26]:26} '
@@ -347,7 +402,8 @@ def main():
         if worst > 0:
             overflows.append((fx['out'], worst))
 
-    print(f'\n{total} score cards ({MAX_GOALS + 1}x{MAX_GOALS + 1} per game, Feed + Story) -> {OUT}')
+    print(f'\n{total} score cards -> {OUT}')
+    print(f'   {len(fixtures)} games x {len(STAGES)} stages x {(MAX_GOALS+1)**2} scorelines x 2 sizes')
     if overflows:
         print(f'WARNING: {len(overflows)} game(s) draw outside the white panel:')
         for o, w in overflows:
