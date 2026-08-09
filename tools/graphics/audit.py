@@ -25,12 +25,37 @@ from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import scores  # noqa: E402
 import batch   # noqa: E402
+import cards   # noqa: E402
 
 # What "correct" means here. Generous enough not to trip on a glyph's side bearing,
 # tight enough to catch anything a reader would notice.
 TOL_GAP = 6        # px difference between the left and right gaps
 TOL_MARGIN = 26    # px difference between the row's left and right panel margins
 TOL_CENTRE = 4     # px difference between the two badges' vertical centres
+
+
+def band_intrusion(canvas, fx, size):
+    """Has any content been drawn into the vertical label band?
+
+    Checked against the BAND'S OWN PIXELS, independently of panel(). That matters: the
+    faults Connor found were caused by panel() reporting the wrong right edge, and an
+    audit that trusts panel() cannot see them — it passed while badges were running
+    under the yellow lettering.
+
+    Compares the finished card's band columns against the same columns of the bare
+    frame plus its label. Any difference is content that should not be there.
+    """
+    base, _, label_col = cards.frame(fx['frame'], size)
+    ref = base.copy()
+    cards.vertical_label(ref, fx['label'], label_col)
+    x0, x1 = cards.BAND_X0 - 1, cards.BAND_X1 + 1
+    got = np.asarray(canvas.convert('RGB').crop((x0, 0, x1, size[1]))).astype(int)
+    want = np.asarray(ref.convert('RGB').crop((x0, 0, x1, size[1]))).astype(int)
+    diff = np.abs(got - want).max(axis=2) > 12
+    if not diff.any():
+        return 0
+    cols = np.where(diff.any(axis=0))[0]
+    return len(cols)
 
 
 def check_card(canvas, overflow, g):
@@ -80,7 +105,11 @@ def main():
     for fx in allfx:
         problems = []
         for size, sl in ((scores.FEED, 'Feed'), (scores.STORY, 'Story')):
-            faults = check_card(*batch.build(fx, size))
+            canvas, overflow, g = batch.build(fx, size)
+            faults = check_card(canvas, overflow, g)
+            intr = band_intrusion(canvas, fx, size)
+            if intr:
+                faults.append(f'content drawn into the label band ({intr} columns)')
             total += 1
             if faults:
                 bad += 1
@@ -99,7 +128,11 @@ def main():
         for size, sl in ((scores.FEED, 'Feed'), (scores.STORY, 'Story')):
             for us, them in scorelines:
                 for stage, _ in scores.STAGES:
-                    faults = check_card(*scores.build(fx, us, them, size, stage))
+                    canvas, overflow, g = scores.build(fx, us, them, size, stage)
+                    faults = check_card(canvas, overflow, g)
+                    intr = band_intrusion(canvas, fx, size)
+                    if intr:
+                        faults.append(f'content drawn into the label band ({intr} columns)')
                     total += 1
                     if faults:
                         bad += 1

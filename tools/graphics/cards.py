@@ -178,23 +178,53 @@ def frame(psd_name, size):
 _panelcache = {}
 
 
-def panel(base):
-    """The white panel's bounds, measured off the frame rather than hardcoded.
+def panel(base, psd_name):
+    """The white panel the content may occupy.
 
-    batch.py used to centre on CX=515. The panel spans x 47-948, whose centre is 497,
-    so every fixture card sat 18px right of centre. Reading it from the pixels is
-    also what makes the spliced story frame work without a second set of numbers.
+    Two things make this harder than "find the white pixels", and both produced live
+    faults:
+
+    1. The navy frame's label band is YELLOW, but the green frame's is WHITE and butts
+       straight onto the panel — so a white scan runs through it and reports the panel
+       as 82px wider than it is, putting badges under the "MEN'S TEAM" lettering. The
+       right edge therefore comes from BAND_X0, which is the band's position in the
+       PSD and identical in both colourways.
+
+    2. The green frame's SPONSOR LOGOS are white too. Taking min/max of every white
+       row jumped the green sponsor bar entirely and reported the panel as ending at
+       y=1305 rather than 1157. So the vertical extent is a CONTIGUOUS scan from the
+       top of the panel, which stops at the frame colour above the sponsor bar.
+
+    Keyed by frame AND size. It used to be keyed on size alone, so both 1080x1350
+    frames shared one entry and whichever rendered first imposed its bounds on the
+    other — which is how navy cards ended up laid out to the green frame's 1028.
     """
-    key = base.size
+    key = (psd_name, base.size)
     if key in _panelcache:
         return _panelcache[key]
+
     px = base.convert('RGB').load()
     w, h = base.size
+    WHITE = (255, 255, 255)
     mid = w // 2
-    ys = [y for y in range(h) if px[mid, y] == (255, 255, 255)]
-    row = (ys[0] + ys[-1]) // 2
-    xs = [x for x in range(w) if px[x, row] == (255, 255, 255)]
-    _panelcache[key] = (xs[0], ys[0], xs[-1], ys[-1])
+
+    # Top: first white row down the middle. Bottom: keep going only while it stays
+    # white, so the sponsor bar ends it whatever colour the logos are.
+    y0 = next(y for y in range(h) if px[mid, y] == WHITE)
+    y1 = y0
+    while y1 + 1 < h and px[mid, y1 + 1] == WHITE:
+        y1 += 1
+
+    # Left: first white column across the middle of the panel, scanned contiguously
+    # inward so the border cannot be mistaken for it.
+    row = (y0 + y1) // 2
+    x0 = next(x for x in range(w) if px[x, row] == WHITE)
+    # Right: the label band, from the PSD. Not measured — on the green frame it is the
+    # same white as the panel and there is nothing in the pixels to find. The band's
+    # first column is 949, so the panel's last usable one is 948.
+    x1 = BAND_X0 - 2
+
+    _panelcache[key] = (x0, y0, x1, y1)
     return _panelcache[key]
 
 
@@ -237,7 +267,7 @@ def build(fx, size, middle, kicker, sub, extra_line=None):
     """
     base, accent, label_col = frame(fx['frame'], size)
     canvas = base.copy()
-    px0, py0, px1, py1 = panel(base)
+    px0, py0, px1, py1 = panel(base, fx['frame'])
     CX = (px0 + px1) // 2
     story = size == STORY
 
