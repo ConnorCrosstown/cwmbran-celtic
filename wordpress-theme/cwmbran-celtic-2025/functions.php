@@ -2029,6 +2029,42 @@ function cc25_season_matches_static() {
 }
 /** The Men's 1st Team squad, grouped by role, as [name, card-image slug].
  * Single source for the squad page and match-report player links. */
+/**
+ * The Reserves squad.
+ *
+ * Seeded from the 7 August Gwent Premier Combination Cup tie at Rogerstone — the
+ * first game of their season and the only squad list on record so far. Squad
+ * numbers and the one known position come from that team sheet; nothing here is
+ * guessed. Add players as they appear.
+ *
+ * Ordered by squad number, which is how a team sheet reads. 'pos' is '' for
+ * everyone the record doesn't place — an invented position would look exactly as
+ * authoritative as a real one.
+ */
+function cc25_reserves_squad() {
+    return array(
+        array('no' => 1,  'name' => 'Samuel Walsh',          'pos' => 'GK'),
+        array('no' => 2,  'name' => 'Gethin Phillips',       'pos' => ''),
+        array('no' => 3,  'name' => 'Tobias Williams-Dunne', 'pos' => ''),
+        array('no' => 4,  'name' => 'Zachary Benjamin Fry',  'pos' => ''),
+        array('no' => 5,  'name' => 'Rhys Jones',            'pos' => ''),
+        array('no' => 6,  'name' => 'Harri Pritchard',       'pos' => ''),
+        array('no' => 7,  'name' => 'Joe Barber',            'pos' => ''),
+        array('no' => 8,  'name' => 'Ethan Hooper',          'pos' => ''),
+        array('no' => 9,  'name' => 'Sam Smith',             'pos' => ''),
+        array('no' => 10, 'name' => 'Luke Betts',            'pos' => ''),
+        array('no' => 11, 'name' => 'Charlie Waters',        'pos' => ''),
+        array('no' => 14, 'name' => 'Evan Harvey',           'pos' => ''),
+        array('no' => 15, 'name' => 'Jack Shepard',          'pos' => ''),
+        array('no' => 16, 'name' => 'Jacob Cook',            'pos' => ''),
+        array('no' => 17, 'name' => 'Noah Willis',           'pos' => ''),
+        array('no' => 18, 'name' => 'Daniel Madge',          'pos' => ''),
+    );
+}
+
+/** Who has captained the Reserves. Marked on the squad cards. */
+function cc25_reserves_captain() { return 'Ethan Hooper'; }
+
 function cc25_squad_players() {
     return array(
         'Management' => array(

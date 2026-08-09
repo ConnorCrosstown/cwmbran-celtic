@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.10.1
+Version: 0.11.0
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1804,3 +1804,12 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
   .mrg-lb-nav{width:44px;height:44px;font-size:1.8rem }
   .mrg-lb-inner img{max-height:70vh }
 }
+
+/* ---- Reserves squad: number + captain on the holding cards -------------------
+ * The Women's holding card reused for the Reserves, plus the two facts the match
+ * record actually gives us: a squad number and who captained. Both sit on the
+ * existing .wpc-card, which is already position:relative. */
+.wpc-no { position:absolute;top:10px;left:12px;z-index:2;font-family:var(--display);
+  font-size:1.5rem;line-height:1;color:var(--gold);opacity:.92;
+  text-shadow:0 2px 10px rgba(0,0,0,.5);font-variant-numeric:tabular-nums }
+.wpc-card.is-captain { box-shadow:0 0 0 2px var(--gold),var(--shadow-sm) }
