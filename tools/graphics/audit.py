@@ -24,6 +24,7 @@ from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import scores  # noqa: E402
+import batch   # noqa: E402
 
 # What "correct" means here. Generous enough not to trip on a glyph's side bearing,
 # tight enough to catch anything a reader would notice.
@@ -32,9 +33,8 @@ TOL_MARGIN = 26    # px difference between the row's left and right panel margin
 TOL_CENTRE = 4     # px difference between the two badges' vertical centres
 
 
-def check(fx, us, them, size, stage):
-    """Measure the layout build() actually used, plus the rendered ink extent."""
-    canvas, overflow, g = scores.build(fx, us, them, size, stage)
+def check_card(canvas, overflow, g):
+    """Measure the layout the builder actually used, plus the rendered ink extent."""
     px0, py0, px1, py1 = g['panel']
     usb, scb, thb = g['us'], g['score'], g['them']
 
@@ -45,12 +45,11 @@ def check(fx, us, them, size, stage):
     margin_r = px1 - row_r
     cy_us = (usb[1] + usb[3]) / 2
     cy_th = (thb[1] + thb[3]) / 2
-
-    # The rendered block, for panel containment and overall centring.
     bl, bt, br, bb = g['block']
+
     faults = []
     if abs(gap_l - gap_r) > TOL_GAP:
-        faults.append(f'gaps either side of the score differ by {abs(gap_l-gap_r)}px ({gap_l} vs {gap_r})')
+        faults.append(f'gaps either side of the middle differ by {abs(gap_l-gap_r)}px ({gap_l} vs {gap_r})')
     if abs(margin_l - margin_r) > TOL_MARGIN:
         faults.append(f'badge row off-centre by {abs(margin_l-margin_r)//2}px (margins {margin_l} / {margin_r})')
     if abs(cy_us - cy_th) > TOL_CENTRE:
@@ -65,38 +64,58 @@ def check(fx, us, them, size, stage):
         faults.append(f'card not vertically centred ({bt-py0} top / {py1-bb} bottom)')
     if overflow > 0:
         faults.append(f'reported {overflow}px outside the panel')
-    return faults, {'gap_l': gap_l, 'gap_r': gap_r, 'margin_l': margin_l, 'margin_r': margin_r}
+    return faults
 
 
 def main():
     every = '--all' in sys.argv
-    fixtures = [f for f in json.load(open(scores.HERE + 'fixtures.json')) if f['team'] == 'mens']
+    allfx = json.load(open(scores.HERE + 'fixtures.json'))
     scorelines = ([(u, t) for u in range(6) for t in range(6)] if every
                   else [(0, 0), (2, 1), (5, 5)])
 
     total, bad = 0, 0
-    worst = []
-    for fx in fixtures:
+    faulty = []
+
+    print('  FIXTURE CARDS (all teams)')
+    for fx in allfx:
+        problems = []
+        for size, sl in ((scores.FEED, 'Feed'), (scores.STORY, 'Story')):
+            faults = check_card(*batch.build(fx, size))
+            total += 1
+            if faults:
+                bad += 1
+                problems.append((sl, faults))
+        if problems:
+            faulty.append(fx['out'])
+            print(f'    {fx["date"]} {fx["team"]:8} {fx["opp"][:22]:22} {len(problems)} problem(s)')
+            for sl, faults in problems:
+                for f in faults:
+                    print(f'        {sl}: {f}')
+    print(f'    {len(allfx)} fixtures x 2 sizes checked')
+
+    print('\n  SCORE CARDS (men\'s first team)')
+    for fx in [f for f in allfx if f['team'] == 'mens']:
         problems = []
         for size, sl in ((scores.FEED, 'Feed'), (scores.STORY, 'Story')):
             for us, them in scorelines:
                 for stage, _ in scores.STAGES:
-                    faults, m = check(fx, us, them, size, stage)
+                    faults = check_card(*scores.build(fx, us, them, size, stage))
                     total += 1
                     if faults:
                         bad += 1
                         problems.append((sl, f'{us}-{them}', stage, faults))
-        tag = 'OK' if not problems else f'{len(problems)} problem(s)'
-        print(f'  {fx["date"]}  {"H" if fx["home"] else "A"}  {fx["opp"][:24]:24} {tag}')
-        for sl, sc, stage, faults in problems[:4]:
-            for f in faults:
-                print(f'        {sl} {sc} {stage}: {f}')
         if problems:
-            worst.append(fx['opp'])
+            faulty.append(fx['out'])
+            print(f'    {fx["date"]}  {fx["opp"][:22]:22} {len(problems)} problem(s)')
+            for sl, sc, stage, faults in problems[:4]:
+                for f in faults:
+                    print(f'        {sl} {sc} {stage}: {f}')
 
     print(f'\n  {total} cards measured, {bad} with a fault')
-    if worst:
-        print(f'  games needing attention: {", ".join(sorted(set(worst)))}')
+    if faulty:
+        print(f'  needing attention: {", ".join(sorted(set(faulty)))}')
+    else:
+        print('  every card: gaps equal, row centred, badges on one line, inside the panel')
     return 1 if bad else 0
 
 
