@@ -26,6 +26,8 @@ function cc25_fx_teams() {
         'mens'     => "Men's First Team",
         'womens'   => "Women's First Team",
         'reserves' => "Men's Reserves",
+        'u18s'     => "Under-18s",
+        'vets'     => "Men's Vets",
     );
 }
 

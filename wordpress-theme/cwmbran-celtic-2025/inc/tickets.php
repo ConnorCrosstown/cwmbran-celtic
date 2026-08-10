@@ -39,10 +39,14 @@ function cc25_ticket_links_static() {
         /* ---- Men's First Team ---- */
         'mens|2026-08-22' => $b . '2026-08-22-13-00',   /* v Newport Corinthians */
         'mens|2026-08-29' => $b . '2026-08-29-13-30',   /* v Cardiff Corinthians */
-        /* Keyed WITH the opponent: 5 September carries two home games — this Goytre
-         * league tie and an Amateur Trophy QR2 whose opponent is not drawn. Keyed on the
-         * date alone, the Trophy row would have offered a Goytre ticket. */
-        'mens|2026-09-05|goytre' => $b . '2026-09-05-13-30',   /* v Goytre */
+        /* 5 September. The listing is TITLED "Cwmbran Celtic v Goytre", but the club's
+         * updated fixture list of 10 Aug 2026 has that date as the Amateur Trophy R1 tie
+         * against Penygraig United, with the Goytre league game still postponed. Same
+         * date, same event — the Gigantic title is out of date and needs correcting on
+         * their side. Filed against the game that is actually being played, so the site's
+         * Buy Tickets works; keyed with the opponent because the postponed Goytre row
+         * shares the date. */
+        'mens|2026-09-05|penygraig united' => $b . '2026-09-05-13-30',
         'mens|2026-09-19' => $b . '2026-09-19-13-30',   /* v Newport Corinthians */
         'mens|2026-10-03' => $b . '2026-10-03-13-30',   /* v Caldicot Town */
         'mens|2026-10-17' => $b . '2026-10-17-13-30',   /* v Lliswerry */
@@ -121,7 +125,10 @@ function cc25_team_sells_tickets($team) {
 /**
  * The link SET for this match, with no fallback. What the health check asks.
  *
- * A key may be "team|date" or "team|date|opponent". The qualified form exists because
+ * A key may be "team|date" or "team|date|opponent", where the opponent segment must be
+ * exactly cc25_norm_team()'s output — which lower-cases and drops suffixes but KEEPS
+ * spaces, so it is "penygraig united", not "penygraigunited". A key that does not match
+ * simply never fires, which is silent. The qualified form exists because
  * two home games can fall on one day — 5 September 2026 has both a Goytre league tie
  * and an Amateur Trophy round with no opponent drawn. Matching on the date alone would
  * have sold a Goytre ticket for the Trophy game.

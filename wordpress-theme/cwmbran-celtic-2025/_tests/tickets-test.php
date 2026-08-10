@@ -33,7 +33,7 @@ check('there are ticket links', count($links) > 0);
 $badkey = $badurl = array();
 foreach ($links as $k => $u) {
     // team|date, optionally |opponent for a day carrying two home games.
-    if (!preg_match('/^(mens|reserves|womens)\|\d{4}-\d{2}-\d{2}(\|[a-z0-9-]+)?$/', $k)) $badkey[] = $k;
+    if (!preg_match('/^(mens|reserves|womens)\|\d{4}-\d{2}-\d{2}(\|[a-z0-9 -]+)?$/', $k)) $badkey[] = $k;
     if (strpos($u, 'https://') !== 0) $badurl[] = $k;
 }
 check('every key is team|YYYY-MM-DD', $badkey === array());
@@ -63,17 +63,27 @@ check("a men's home game with no link falls back to the promoter page",
 
 /* -- Two home games on one day ----------------------------------------------- */
 
-/* 5 September carries a Goytre league tie AND an Amateur Trophy round with no opponent
- * drawn. Keyed on the date alone, the Trophy row was offered the Goytre ticket. */
-check('the Goytre game resolves to its own link',
-      strpos(cc25_ticket_url('mens', '2026-09-05', true, 'Goytre'), '2026-09-05-13-30') !== false);
-check('...and the other game that day does NOT inherit it',
-      strpos(cc25_ticket_url('mens', '2026-09-05', true, 'TBC'), '2026-09-05-13-30') === false);
-check('...falling back instead',
-      cc25_ticket_url('mens', '2026-09-05', true, 'TBC') === cc25_ext_url('tickets'));
+/* 5 September carries two home games: the Amateur Trophy R1 tie against Penygraig
+ * United that is being played, and the Goytre league game that is still postponed.
+ * Keyed on the date alone, whichever came first would answer for both. */
+check('the game being played resolves to the listing',
+      strpos(cc25_ticket_url('mens', '2026-09-05', true, 'Penygraig United'), '2026-09-05-13-30') !== false);
+check('...and the postponed game that day does NOT inherit it',
+      strpos(cc25_ticket_url('mens', '2026-09-05', true, 'Goytre'), '2026-09-05-13-30') === false);
 /* Asking without naming an opponent must refuse rather than guess. */
 check('an unnamed opponent on a shared date resolves to nothing exact',
       cc25_ticket_url_exact('mens', '2026-09-05') === '');
+
+/* An opponent key must be cc25_norm_team()'s exact output. It keeps spaces, so
+ * "penygraigunited" silently matches nothing — which is how this first went wrong. */
+$qual = array();
+foreach (array_keys($links) as $k) {
+    $p = explode('|', $k);
+    if (count($p) === 3) $qual[] = $p[2];
+}
+$badnorm = array_filter($qual, function ($o) { return cc25_norm_team($o) !== $o; });
+check('every opponent-qualified key is already normalised', $badnorm === array());
+check('there is at least one multi-word opponent key to prove it', (bool) array_filter($qual, function ($o) { return strpos($o, ' ') !== false; }));
 
 /* The Reserves sell nothing in advance, so they get NOTHING — not the promoter page.
  * Falling back for them put a Buy Tickets button on all thirteen of their home games
@@ -115,12 +125,17 @@ foreach ($links as $k => $u) {
 }
 check('every link URL contains the date it is filed under', $wrongdate === array());
 
-/* The conflict check must actually fire. It went silent once already, when a key with
- * an opponent segment made it read the opponent as part of the date. */
-$conf = cc25_ticket_conflicts();
-check('tickets on sale for a postponed game are reported', count($conf) === 1);
-check('...and it is the Goytre game', $conf && $conf[0]['opponent'] === 'Goytre'
-      && $conf[0]['date'] === '2026-09-05');
+/* Nothing should be on sale for a postponed game now: the club's updated list moved
+ * 5 September to Penygraig United, and the link was re-filed against it. */
+check('no tickets are on sale for a postponed game', cc25_ticket_conflicts() === array());
+
+/* But silence must mean "nothing wrong", not "the check is broken" — it went quiet once
+ * already, when an opponent-qualified key made it read the opponent as part of the date.
+ * So prove it still detects one, by asking about a game we know is postponed. */
+check('the postponed Goytre game is still hidden', cc25_fixture_hidden('Goytre', '2026-09-05'));
+check('...so a link filed against it WOULD be reported',
+      cc25_ticket_url_exact('mens', '2026-09-05', 'Goytre') === ''
+      && cc25_ticket_url_exact('mens', '2026-09-05', 'Penygraig United') !== '');
 
 /* -- Every home game that sells tickets has one ------------------------------ */
 

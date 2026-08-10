@@ -22,6 +22,10 @@ $cc25_res_league    = $cc25_sf['reserves']['league'];
 $cc25_reserves      = $cc25_sf['reserves']['list'];
 $cc25_womens_league = $cc25_sf['womens']['league'];
 $cc25_womens        = $cc25_sf['womens']['list'];
+$cc25_u18s          = $cc25_sf['u18s']['list'];
+$cc25_u18s_league   = $cc25_sf['u18s']['league'];
+$cc25_vets          = $cc25_sf['vets']['list'];
+$cc25_vets_league   = $cc25_sf['vets']['league'];
 get_template_part('template-parts/site-header');
 ?>
 <div class="phero">
@@ -34,6 +38,8 @@ get_template_part('template-parts/site-header');
       <button class="on" data-team="mens">Men's First Team</button>
       <button data-team="reserves">Men's Reserves</button>
       <button data-team="womens">Women's First Team</button>
+      <button data-team="u18s">Under-18s</button>
+      <button data-team="vets">Men's Vets</button>
     </div>
   </div>
 </div>
@@ -155,4 +161,30 @@ get_template_part('template-parts/site-header');
     </div>
   </section>
 </div><!-- /#team-womens -->
+<div class="teamwrap" id="team-u18s" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_u18s_league); ?></div><h2>Under-18s &mdash; Fixtures &amp; Results</h2></div></div>
+      <div class="tabs reveal">
+        <button class="tab on" data-t="u18s-fx">Fixtures</button>
+        <button class="tab" data-t="u18s-res">Results</button>
+      </div>
+      <div class="panel on" id="u18s-fx"><?php cc25_render_static_fixtures($cc25_u18s, 'u18s'); ?></div>
+      <div class="panel" id="u18s-res"><?php cc25_render_static_results('u18s'); ?></div>
+    </div>
+  </section>
+</div><!-- /#team-u18s -->
+<div class="teamwrap" id="team-vets" hidden>
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_vets_league); ?></div><h2>Men's Vets &mdash; Fixtures &amp; Results</h2></div></div>
+      <div class="tabs reveal">
+        <button class="tab on" data-t="vets-fx">Fixtures</button>
+        <button class="tab" data-t="vets-res">Results</button>
+      </div>
+      <div class="panel on" id="vets-fx"><?php cc25_render_static_fixtures($cc25_vets, 'vets'); ?></div>
+      <div class="panel" id="vets-res"><?php cc25_render_static_results('vets'); ?></div>
+    </div>
+  </section>
+</div><!-- /#team-vets -->
 <?php get_template_part('template-parts/site-footer'); ?>

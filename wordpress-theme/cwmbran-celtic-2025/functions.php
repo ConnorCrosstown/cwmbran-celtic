@@ -1231,8 +1231,8 @@ function cc25_static_fixtures_static() {
                 // Newport Corinthians) takes the slot. Risca to be rearranged.
                 array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2'),
                 array('2026-08-29', 'Cardiff Corinthians', true, 'League Cup R1'),
-                array('2026-09-05', 'TBC', true, 'Amateur Trophy QR2'),  // opponent + venue not yet drawn
-                array('2026-09-05', 'Goytre', true, 'League'),           // POSTPONED — hidden below, needs a new date
+                array('2026-09-05', 'Penygraig United', true, 'Amateur Trophy R1'),
+                array('2026-09-05', 'Goytre', true, 'League'),           // POSTPONED — the Amateur Trophy R1 tie has the date. Still hidden; needs rearranging.
                 array('2026-09-12', 'Chepstow Town', false, 'League'),
                 array('2026-09-19', 'Newport Corinthians', true, 'League'),
                 array('2026-09-26', 'Abercarn United', false, 'League'),
@@ -1266,8 +1266,8 @@ function cc25_static_fixtures_static() {
             'badge'  => array('Res', 'tk-team-r'),
             'list'   => array(
                 array('2026-08-07', 'Rogerstone', false, 'Gwent Premier Cup R1', array(1, 2)),
-                array('2026-08-15', 'Croesyceiliog', false, 'League'),
-                array('2026-08-22', 'Rogerstone', true, 'League'),
+                array('2026-08-15', 'Croesyceiliog', true, 'League'),
+                array('2026-08-21', 'Rogerstone', true, 'League'),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
                 array('2026-09-05', 'Tredegar Town', true, 'League'),
                 array('2026-09-12', 'Chepstow Town', false, 'League'),
@@ -1280,7 +1280,7 @@ function cc25_static_fixtures_static() {
                 array('2026-10-31', 'Abertillery Bluebirds', false, 'League'),
                 array('2026-11-07', 'Blaenavon Blues', true, 'League'),
                 array('2026-11-14', 'Blaenavon Blues', false, 'League'),
-                array('2026-11-21', 'Croesyceiliog', true, 'League'),
+                array('2026-11-21', 'Croesyceiliog', false, 'League'),
                 array('2026-11-28', 'Rogerstone', false, 'League'),
                 array('2026-12-05', 'Abercarn United', true, 'League'),
                 array('2026-12-12', 'Tredegar Town', false, 'League'),
@@ -1313,6 +1313,53 @@ function cc25_static_fixtures_static() {
                 array('2027-03-14', 'Taffs Well', true, 'League'),
                 array('2027-03-21', 'Pure Swansea', false, 'League'),
                 array('2027-04-04', 'Penybont', true, 'League'),
+            ),
+        ),
+        /* Under-18s. New to the site with the club's fixture list of 10 Aug 2026 — the
+         * age group plays Sundays. Most of their opponents have no badge on file yet, so
+         * those rows show initials until one is added. */
+        'u18s' => array(
+            'league' => 'Gwent County Youth League',
+            'title'  => "Under-18s",
+            'badge'  => array('U18', 'tk-team-u'),
+            'list'   => array(
+                array('2026-09-06', 'Caldicot Town Dev', true, 'League'),
+                array('2026-09-13', 'Newport Corinthians', false, 'League'),
+                array('2026-09-20', 'Sifil', true, 'League'),
+                array('2026-09-27', 'Monmouth Town', false, 'League'),
+                array('2026-10-11', 'Chepstow Town', true, 'League'),
+                array('2026-10-18', 'Abergavenny Town', false, 'League'),
+                array('2026-10-25', 'Coed Eva Athletic', true, 'League'),
+                array('2026-11-01', 'Croesyceiliog', false, 'League'),
+                array('2026-11-08', 'Graig Villa Dino', true, 'League'),
+                array('2026-11-15', 'Ponthir', false, 'League'),
+                array('2026-11-22', 'Caerleon', true, 'League'),
+                array('2026-11-29', 'Caldicot Town', true, 'League'),
+                array('2026-12-06', 'Llanyrafon', true, 'League'),
+                array('2026-12-13', 'Riverside Rovers', false, 'League'),
+                array('2027-01-10', 'Riverside Rovers', true, 'League'),
+                array('2027-01-17', 'Sifil', false, 'League'),
+                array('2027-01-24', 'Monmouth Town', true, 'League'),
+                array('2027-01-31', 'Chepstow Town', false, 'League'),
+                array('2027-02-07', 'Abergavenny Town', true, 'League'),
+                array('2027-02-14', 'Coed Eva Athletic', false, 'League'),
+                array('2027-02-21', 'Croesyceiliog', true, 'League'),
+                array('2027-02-28', 'Graig Villa Dino', false, 'League'),
+                array('2027-03-07', 'Ponthir', true, 'League'),
+                array('2027-03-14', 'Caerleon', false, 'League'),
+                array('2027-03-21', 'Caldicot Town', false, 'League'),
+                array('2027-03-28', 'Llanyrafon', false, 'League'),
+                array('2027-04-04', 'Caldicot Town Dev', false, 'League'),
+                array('2027-04-11', 'Newport Corinthians', true, 'League'),
+            ),
+        ),
+        /* Men's Vets, O40s. One cup tie on the list so far. */
+        'vets' => array(
+            'league' => 'WVFA Over-40s',
+            'title'  => "Men's Vets",
+            'badge'  => array('O40', 'tk-team-v'),
+            'list'   => array(
+                array('2026-08-16', 'Tata Steel United', true, 'Workwear Supermarket O40s Cup (R1)'),
             ),
         ),
     );
