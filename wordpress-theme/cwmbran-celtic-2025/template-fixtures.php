@@ -61,7 +61,7 @@ get_template_part('template-parts/site-header');
     </div>
 
     <div class="panel on" id="fixtures">
-      <?php cc25_render_static_fixtures($cc25_mens_fixtures, cc25_ext_url('tickets')); ?>
+      <?php cc25_render_static_fixtures($cc25_mens_fixtures, 'mens'); ?>
     </div>
 
     <div class="panel" id="results">
@@ -133,7 +133,7 @@ get_template_part('template-parts/site-header');
         <button class="tab on" data-t="reserves-fx">Fixtures</button>
         <button class="tab" data-t="reserves-res">Results</button>
       </div>
-      <div class="panel on" id="reserves-fx"><?php cc25_render_static_fixtures($cc25_reserves); ?></div>
+      <div class="panel on" id="reserves-fx"><?php cc25_render_static_fixtures($cc25_reserves, 'reserves'); ?></div>
       <div class="panel" id="reserves-res"><?php cc25_render_static_results('reserves'); ?></div>
     </div>
   </section>
@@ -150,7 +150,7 @@ get_template_part('template-parts/site-header');
         <button class="tab on" data-t="womens-fx">Fixtures</button>
         <button class="tab" data-t="womens-res">Results</button>
       </div>
-      <div class="panel on" id="womens-fx"><?php cc25_render_static_fixtures($cc25_womens); ?></div>
+      <div class="panel on" id="womens-fx"><?php cc25_render_static_fixtures($cc25_womens, 'womens'); ?></div>
       <div class="panel" id="womens-res"><?php cc25_render_static_results('womens'); ?></div>
     </div>
   </section>

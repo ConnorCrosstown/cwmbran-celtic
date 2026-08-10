@@ -140,6 +140,17 @@ function cc25_fx_metabox($post) {
           <?php endforeach; ?>
         </datalist>
       </div>
+      <div class="cc25fx-full">
+        <label for="cc25fx_tickets">Ticket link</label>
+        <input type="url" id="cc25fx_tickets" name="cc25_fx_tickets" value="<?php echo esc_attr($g('tickets')); ?>"
+               placeholder="https://cwmbranceltic.gigantic.com/cwmbran-celtic-tickets/...">
+        <p class="hint">The Gigantic page for <strong>this game</strong>. Every Buy Tickets button for it
+          &mdash; the fixtures list, the home page, the matchday takeover &mdash; then goes straight there
+          instead of the general listing. Leave it blank and they fall back to the club's promoter page,
+          and the dashboard will tell you it is missing.
+          <?php if ($g('home', '1') === '0'): ?><br><strong>This is an away game</strong>, so no ticket
+          link is shown even if you enter one.<?php endif; ?></p>
+      </div>
       <div>
         <label>Score</label>
         <div class="cc25fx-score">
@@ -198,6 +209,8 @@ add_action('save_post_' . CC25_FX_CPT, function ($id) {
         'comp'     => sanitize_text_field(wp_unslash($_POST['cc25_fx_comp'] ?? '')) ?: 'League',
         'us'       => ($_POST['cc25_fx_us'] ?? '') === '' ? '' : (string) max(0, (int) $_POST['cc25_fx_us']),
         'them'     => ($_POST['cc25_fx_them'] ?? '') === '' ? '' : (string) max(0, (int) $_POST['cc25_fx_them']),
+        // esc_url_raw, so a pasted address that is not a URL is not stored as one.
+        'tickets'  => esc_url_raw(trim((string) wp_unslash($_POST['cc25_fx_tickets'] ?? ''))),
     );
     foreach ($meta as $k => $v) update_post_meta($id, '_cc25_fx_' . $k, $v);
 
@@ -285,6 +298,7 @@ function cc25_fx_posts() {
             'status'   => $g('status') ?: 'scheduled',
             'us'       => $g('us'),
             'them'     => $g('them'),
+            'tickets'  => $g('tickets'),
         );
     }
     usort($out, function ($a, $b) { return strcmp($a['date'], $b['date']); });

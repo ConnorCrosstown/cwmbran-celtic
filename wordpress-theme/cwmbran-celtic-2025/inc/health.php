@@ -120,6 +120,37 @@ function cc25_health_checks() {
         }
     }
 
+    // 7. A home game that sells tickets but has no link of its own. The button still
+    //    works — it falls back to the promoter listing — so nothing looks broken, which
+    //    is exactly why this needs saying out loud.
+    if (function_exists('cc25_ticket_gaps')) {
+        $gaps = cc25_ticket_gaps();
+        if ($gaps) {
+            $bits = array();
+            foreach (array_slice($gaps, 0, 5) as $g) {
+                $bits[] = cc25_date(strtotime($g['date']) * 1000, 'j M') . ' v ' . $g['opponent'];
+            }
+            $out[] = array('level' => 'info', 'text' => sprintf(
+                '%d home game%s with no ticket link of its own: %s%s. Buy Tickets still works '
+                . 'for them, but it lands on the full listing rather than that game.',
+                count($gaps), count($gaps) === 1 ? '' : 's', implode(', ', $bits),
+                count($gaps) > 5 ? ' and others' : ''));
+        }
+    }
+
+    // 8. Tickets on sale for a game the site says is postponed. Worse than a missing
+    //    link, because one of the two is telling supporters something untrue.
+    if (function_exists('cc25_ticket_conflicts')) {
+        foreach (cc25_ticket_conflicts() as $c) {
+            $out[] = array('level' => 'warn', 'text' => sprintf(
+                'Tickets are on sale for %s v %s (%s), but the site has that game marked '
+                . 'postponed so it is not shown anywhere. Either the game is back on and the '
+                . 'postponement should be lifted, or the Gigantic listing should come down.',
+                esc_html($c['label'] ?? "Cwmbran Celtic"), esc_html($c['opponent']),
+                cc25_date(strtotime($c['date']) * 1000, 'j M Y')));
+        }
+    }
+
     return $out;
 }
 

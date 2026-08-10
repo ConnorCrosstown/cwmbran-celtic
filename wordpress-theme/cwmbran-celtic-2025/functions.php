@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'people', 'gallery') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'people', 'gallery', 'tickets') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -1366,7 +1366,7 @@ function cc25_fixture_hidden($opp, $ymd) {
     return false;
 }
 
-function cc25_render_static_fixtures($list, $tickets_url = '') {
+function cc25_render_static_fixtures($list, $team = 'mens') {
     // Drop games that have finished (kick-off + 2h in the past) so the fixtures
     // list only ever shows what's still to come.
     $now = round(microtime(true) * 1000);
@@ -1387,8 +1387,11 @@ function cc25_render_static_fixtures($list, $tickets_url = '') {
         $oc = cc25_res_crest($opp, 34);
         // Home games: a ticket link (we host, we sell). Away games: Travel &
         // Ground -> the Away Days hub (ground + directions for the trip).
-        if ($home && $tickets_url) {
-            $tix = '<a class="mtix btn btn-gold" href="' . esc_url($tickets_url) . '" target="_blank" rel="noopener">Buy Tickets</a>';
+        // Each row resolves its own link, so a game with its own Gigantic page goes
+        // straight there. cc25_ticket_url() falls back to the promoter listing.
+        $turl = function_exists('cc25_ticket_url') ? cc25_ticket_url($team, $rf[0], $home, $opp) : '';
+        if ($home && $turl) {
+            $tix = '<a class="mtix btn btn-gold" href="' . esc_url($turl) . '" target="_blank" rel="noopener">Buy Tickets</a>';
         } elseif (!$home) {
             $tix = '<a class="mtix btn btn-navy" href="' . esc_url(cc25_page_url('away-days', home_url('/'))) . '">Travel &amp; Ground</a>';
         } else {
@@ -1473,7 +1476,9 @@ function cc25_next_up_card($feed, $team, $label) {
           . '<a class="btn btn-navy btn-sm" href="' . esc_url(cc25_page_url('fixtures', home_url('/'))) . '">Fixtures</a>';
     // Tickets only for home games — we sell none for away.
     if ($o['home']) {
-        $out .= '<a class="btn btn-gold btn-sm" href="' . esc_url(cc25_ext_url('tickets')) . '" target="_blank" rel="noopener">Buy Tickets</a>';
+        // This card is one specific game, so it links to that game's tickets.
+        $turl = function_exists('cc25_fixture_ticket_url') ? cc25_fixture_ticket_url($f, $team) : cc25_ext_url('tickets');
+        $out .= '<a class="btn btn-gold btn-sm" href="' . esc_url($turl) . '" target="_blank" rel="noopener">Buy Tickets</a>';
     }
     $out .= '<a class="btn btn-navy btn-sm" href="' . esc_url(cc25_travel_url($o['opponent'], $o['home'])) . '">Travel &amp; Ground</a>'
           . '</div></div>';

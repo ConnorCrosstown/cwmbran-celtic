@@ -28,6 +28,11 @@ $cc25_cel = cc25_result_celebration();
 // and the countdown can never disagree about which game is next.
 $cc25_hg  = cc25_next_home_fixture_any($feed);
 $cc25_hgo = $cc25_hg ? cc25_opponent($cc25_hg) : null;
+// The splash and the matchday takeover both bill ONE game, so their Buy Tickets goes
+// to that game's own listing. cc25_ticket_url() falls back to the promoter page.
+$cc25_hgtix = ($cc25_hg && function_exists('cc25_fixture_ticket_url'))
+    ? cc25_fixture_ticket_url($cc25_hg, $cc25_hg['team'] ?? 'mens')
+    : cc25_ext_url('tickets');
 $cc25_md  = cc25_is_matchday($cc25_hg);
 if ($cc25_kllive && !$cc25_md): ?>
 <div class="splash is-launch" id="cc25-splash" role="dialog" aria-modal="true" aria-labelledby="splash-title" data-always="1" data-key="music-shirts-2627" hidden>
@@ -61,7 +66,7 @@ if ($cc25_kllive && !$cc25_md): ?>
       <div class="splash-next">
         <div class="splash-next-eye kick">Next home game &middot; <?php echo esc_html(cc25_date($cc25_hg['date'] ?? 0, 'D j M')); ?> &middot; <?php echo esc_html(cc25_kickoff_label($cc25_hg)); ?></div>
         <div class="splash-next-match"><?php echo cc25_own_crest(28); ?> <span>Cwmbran Celtic</span> <em>vs</em> <?php echo cc25_crest($feed, $cc25_hgo['opponent'], 28); ?> <span><?php echo esc_html($cc25_hgo['opponent']); ?></span></div>
-        <a class="btn btn-ghost btn-sm splash-next-btn" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
+        <a class="btn btn-ghost btn-sm splash-next-btn" href="<?php echo esc_url($cc25_hgtix); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
       </div>
       <?php endif; ?>
       <button class="splash-later" type="button" data-close>Maybe later</button>
@@ -106,8 +111,8 @@ if ($cc25_kllive && !$cc25_md): ?>
     </div>
     <?php endif; ?>
     <div class="splash-cta">
-      <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
-      <?php if (cc25_season_tickets_on()): ?><a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a><?php endif; ?>
+      <a class="btn btn-gold" href="<?php echo esc_url($cc25_hgtix); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
+      <?php if (cc25_season_tickets_on()): ?><a class="btn btn-outline" href="<?php echo esc_url(function_exists('cc25_season_ticket_url') ? cc25_season_ticket_url() : cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a><?php endif; ?>
     </div>
     <button class="splash-later" type="button" data-close>Maybe later</button>
   </div>
@@ -138,11 +143,11 @@ if ($cc25_kllive && !$cc25_md): ?>
       <div class="u"><b data-s>00</b><span>Secs</span></div>
     </div>
     <div class="splash-cta">
-      <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
+      <a class="btn btn-gold" href="<?php echo esc_url($cc25_hgtix); ?>" target="_blank" rel="noopener">Buy Matchday Ticket</a>
       <?php if ($cc25_md): ?>
         <a class="btn btn-outline" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
       <?php elseif (cc25_season_tickets_on()): ?>
-        <a class="btn btn-outline" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
+        <a class="btn btn-outline" href="<?php echo esc_url(function_exists('cc25_season_ticket_url') ? cc25_season_ticket_url() : cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Season Ticket</a>
       <?php else: ?>
         <a class="btn btn-outline" href="<?php echo esc_url(cc25_page_url('travel', home_url('/'))); ?>">Travel &amp; Ground</a>
       <?php endif; ?>
@@ -365,7 +370,7 @@ if ($cc25_reports):
         <div class="kick" style="color:var(--gold)">Season <?php echo esc_html(cc25_season()); ?></div>
         <h3>Season Tickets</h3>
         <p>Every home league game at Motazone Arena — the best-value way to back the Celts all season long.</p>
-        <a class="btn btn-gold" href="<?php echo esc_url(cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Get a Season Ticket</a>
+        <a class="btn btn-gold" href="<?php echo esc_url(function_exists('cc25_season_ticket_url') ? cc25_season_ticket_url() : cc25_ext_url('tickets')); ?>" target="_blank" rel="noopener">Get a Season Ticket</a>
       </div>
       <?php endif; ?>
       <div class="tk-card tk-match">
