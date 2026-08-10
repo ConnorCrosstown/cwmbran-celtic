@@ -98,6 +98,9 @@ add_filter('template_include', function ($template) {
             'mens-team'                  => 'template-player-cards.php',
             'mens-1st-team'              => 'template-player-cards.php',
             'mens-reserves'              => 'template-reserves.php',
+            'under-18s'                  => 'template-u18s.php',
+            'u18s'                       => 'template-u18s.php',
+            'under-18'                   => 'template-u18s.php',
             'mens-vets'                  => 'template-vets.php',
             'vets'                       => 'template-vets.php',
             'juniors'                    => 'template-juniors.php',
@@ -158,6 +161,7 @@ function cc25_ensure_pages() {
         'travel-and-ground' => 'Travel & Ground',
         'mens-reserves'     => "Men's Reserves",
         'mens-vets'         => "Men's Vets",
+        'under-18s'         => 'Under-18s',
         'juniors'           => 'Juniors & Minis',
         'away-days'         => 'Away Days',
         '2025-26-archive'   => '2025-26 Season',
@@ -205,6 +209,13 @@ add_action('admin_init', function () {
 function cc25_reserves_url() {
     $p = cc25_page_url('mens-reserves', '');
     return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#reserves');
+}
+
+/** Under-18s destination: the dedicated page if it exists, else straight to their
+ * fixtures tab, which works with no WP page at all. */
+function cc25_u18s_url() {
+    $p = cc25_page_url(array('under-18s', 'u18s', 'under-18'), '');
+    return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#u18s');
 }
 
 /** Men's Vets destination: the dedicated /mens-vets/ page if it exists, else
@@ -951,6 +962,7 @@ function cc25_nav_items() {
         array('All Teams', cc25_page_url('teams', $home), false, array(
             array("Men's First Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
             array("Men's Reserves", cc25_reserves_url(), false),
+            array("Under-18s", cc25_u18s_url(), false),
             array("Men's Vets", cc25_vets_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
             array("Juniors &amp; Minis", cc25_juniors_url(), false),
@@ -1503,7 +1515,11 @@ function cc25_next_up_card($feed, $team, $label) {
     $f = $next[0];
     $o = cc25_opponent($f);
     $venue = $o['home'] ? '⚑ Motazone Arena' : '⚑ Away · ' . ($f['homeTeam'] ?? '');
-    $ours = 'Cwmbran Celtic' . ($team === 'reserves' ? ' Reserves' : ($team === 'womens' ? ' Women' : ''));
+    // Named per team rather than three-way, so the Under-18s and Vets read correctly
+    // on their own cards instead of both showing a bare "Cwmbran Celtic".
+    $suffix = array('reserves' => ' Reserves', 'womens' => ' Women',
+                    'u18s' => ' U18s', 'vets' => ' Vets');
+    $ours = 'Cwmbran Celtic' . ($suffix[$team] ?? '');
 
     $out  = '<div class="mcard" role="group" aria-label="' . esc_attr($label . ' next fixture') . '">';
     $out .= '<div class="mcard-top">'
@@ -1523,9 +1539,14 @@ function cc25_next_up_card($feed, $team, $label) {
           . '<a class="btn btn-navy btn-sm" href="' . esc_url(cc25_page_url('fixtures', home_url('/'))) . '">Fixtures</a>';
     // Tickets only for home games — we sell none for away.
     if ($o['home']) {
-        // This card is one specific game, so it links to that game's tickets.
+        // This card is one specific game, so it links to that game's tickets — and only
+        // if there are any. cc25_ticket_url() returns '' for a team that does not sell in
+        // advance, and rendering the button regardless gave the Under-18s a Buy Tickets
+        // button with an empty href.
         $turl = function_exists('cc25_fixture_ticket_url') ? cc25_fixture_ticket_url($f, $team) : cc25_ext_url('tickets');
-        $out .= '<a class="btn btn-gold btn-sm" href="' . esc_url($turl) . '" target="_blank" rel="noopener">Buy Tickets</a>';
+        if ($turl !== '') {
+            $out .= '<a class="btn btn-gold btn-sm" href="' . esc_url($turl) . '" target="_blank" rel="noopener">Buy Tickets</a>';
+        }
     }
     $out .= '<a class="btn btn-navy btn-sm" href="' . esc_url(cc25_travel_url($o['opponent'], $o['home'])) . '">Travel &amp; Ground</a>'
           . '</div></div>';
@@ -1567,7 +1588,11 @@ function cc25_report_header($post = null) {
     $comp = (isset($row[3]) && $row[3] !== '') ? $row[3] : 'League';
     $score = function_exists('cc25_row_score') ? cc25_row_score($row) : null;
     $titles = function_exists('cc25_fx_teams') ? cc25_fx_teams() : array();
-    $ours = 'Cwmbran Celtic' . ($team === 'reserves' ? ' Reserves' : ($team === 'womens' ? ' Women' : ''));
+    // Named per team rather than three-way, so the Under-18s and Vets read correctly
+    // on their own cards instead of both showing a bare "Cwmbran Celtic".
+    $suffix = array('reserves' => ' Reserves', 'womens' => ' Women',
+                    'u18s' => ' U18s', 'vets' => ' Vets');
+    $ours = 'Cwmbran Celtic' . ($suffix[$team] ?? '');
 
     $oc = cc25_res_crest($opp, 44);
     $mid = $score
@@ -2112,6 +2137,18 @@ function cc25_reserves_squad() {
         array('no' => 17, 'name' => 'Noah Willis',           'pos' => ''),
         array('no' => 18, 'name' => 'Daniel Madge',          'pos' => ''),
     );
+}
+
+/**
+ * The Under-18s squad.
+ *
+ * Empty on purpose: the age group joined the site with the club's fixture list of
+ * 10 Aug 2026 and the player list is coming later. template-u18s.php hides its squad
+ * section while this returns none, so adding players here is the only step — same
+ * shape as cc25_reserves_squad(): ['no' => int, 'name' => string, 'pos' => string].
+ */
+function cc25_u18s_squad() {
+    return array();
 }
 
 /** Who has captained the Reserves. Marked on the squad cards. */

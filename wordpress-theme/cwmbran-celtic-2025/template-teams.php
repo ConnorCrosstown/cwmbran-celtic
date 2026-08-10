@@ -13,6 +13,7 @@ $cc25_hub = array(
     array('name' => "Men's First Team",   'sub' => 'Ardal League South East',    'page' => cc25_page_url('mens', $cc25_home),   'fx' => $cc25_fx . '#mens'),
     array('name' => "Women's First Team",  'sub' => 'Genero Adran South',         'page' => cc25_page_url('ladies', $cc25_home), 'fx' => $cc25_fx . '#womens'),
     array('name' => "Men's Reserves",      'sub' => 'Gwent Premier Combination',  'page' => cc25_reserves_url(),                 'fx' => $cc25_fx . '#reserves'),
+    array('name' => "Under-18s",           'sub' => 'Gwent County Youth League',  'page' => cc25_u18s_url(),                     'fx' => $cc25_fx . '#u18s'),
     array('name' => "Men's Vets",          'sub' => 'WVFA Over-40s',              'page' => cc25_vets_url(),                     'fx' => '', 'cta' => 'View team'),
     array('name' => "Juniors & Minis",     'sub' => 'Under 9 to Under 16',        'page' => cc25_juniors_url(),                  'fx' => '', 'cta' => 'Contacts'),
     array('name' => "Walking Football",    'sub' => 'Men\'s, Women\'s & Mixed · All ages welcome', 'page' => cc25_walking_football_url(), 'fx' => '', 'cta' => 'View section'),
