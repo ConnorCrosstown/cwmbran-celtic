@@ -21,7 +21,13 @@ if (!defined('ABSPATH')) exit;
 const CC25_FX_CPT = 'cc25_fixture';
 
 /** team key => label, in the order the club thinks about them — and the order
- *  the fixtures page renders them, which now reads this list. */
+ *  the fixtures page renders them, which now reads this list.
+ *
+ *  These labels are trusted PHP literals, rendered as HTML *text nodes* by
+ *  cc25_fx_esc_text() rather than esc_html() — see that function for why. If
+ *  team labels are ever moved out of this literal array (e.g. into editable
+ *  post meta, alongside the fixture-record migration in this file), that
+ *  trust assumption breaks and they must be escaped as untrusted input. */
 function cc25_fx_teams() {
     return array(
         'mens'     => "Men's First Team",
@@ -35,7 +41,10 @@ function cc25_fx_teams() {
 /** Presentation data the fixtures page needs per team, kept beside the team
  * registry so a new team is one entry in two places rather than a copied block.
  *  - squad_slugs: candidate page slugs for the team's squad page, first match wins
- *  - squad_label: the button's text; '' means the team has no squad page yet */
+ *  - squad_label: the button's text; '' means the team has no squad page yet
+ *
+ *  Like the labels in cc25_fx_teams(), squad_label is a trusted PHP literal
+ *  rendered via cc25_fx_esc_text(), not esc_html() — see that function. */
 function cc25_fx_team_meta($key) {
     $meta = array(
         'mens'     => array('squad_slugs' => array('mens-team', 'mens-1st-team'),     'squad_label' => "Men's First Team squad"),
@@ -45,6 +54,21 @@ function cc25_fx_team_meta($key) {
         'vets'     => array('squad_slugs' => array(), 'squad_label' => ''),
     );
     return isset($meta[$key]) ? $meta[$key] : array('squad_slugs' => array(), 'squad_label' => '');
+}
+
+/** Escape text that is rendered inside an HTML element (a text node), not an
+ * attribute — so, unlike esc_html() (which uses ENT_QUOTES), a straight
+ * apostrophe does not need turning into &#039; to be safe. Still escapes
+ * & < > so a stray one of those can never break the markup around it.
+ *
+ * Exists because the fixtures page's team/squad labels (see cc25_fx_teams(),
+ * cc25_fx_team_meta()) are today trusted PHP literals that were always
+ * rendered unescaped — the ENT_QUOTES form of esc_html() would silently
+ * rewrite their apostrophes and change the page's rendered bytes for no
+ * safety benefit. This still escapes them defensively for the day those
+ * labels stop being literals. */
+function cc25_fx_esc_text($s) {
+    return htmlspecialchars((string) $s, ENT_NOQUOTES, 'UTF-8');
 }
 
 function cc25_fx_statuses() {
