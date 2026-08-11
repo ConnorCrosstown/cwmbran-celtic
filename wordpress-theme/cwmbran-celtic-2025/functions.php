@@ -235,7 +235,7 @@ function cc25_womens_res_url() {
 /** Women's Under-19s destination: the dedicated page if it exists, else straight
  * to their fixtures tab, which works with no WP page at all. */
 function cc25_womens_u19_url() {
-    $p = cc25_page_url(array('womens-under-19s', 'womens-u19s'), '');
+    $p = cc25_page_url(array('womens-under-19s', 'womens-u19s', 'ladies-under-19s', 'ladies-u19s'), '');
     return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#womens_u19');
 }
 
