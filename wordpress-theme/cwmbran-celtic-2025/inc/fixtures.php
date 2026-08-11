@@ -30,11 +30,13 @@ const CC25_FX_CPT = 'cc25_fixture';
  *  trust assumption breaks and they must be escaped as untrusted input. */
 function cc25_fx_teams() {
     return array(
-        'mens'     => "Men's First Team",
-        'reserves' => "Men's Reserves",
-        'womens'   => "Women's First Team",
-        'u18s'     => "Under-18s",
-        'vets'     => "Men's Vets",
+        'mens'       => "Men's First Team",
+        'reserves'   => "Men's Reserves",
+        'womens'     => "Women's First Team",
+        'womens_res' => "Women's Reserves",
+        'womens_u19' => "Women's U19s",
+        'u18s'       => "Under-18s",
+        'vets'       => "Men's Vets",
     );
 }
 
@@ -50,6 +52,8 @@ function cc25_fx_team_meta($key) {
         'mens'     => array('squad_slugs' => array('mens-team', 'mens-1st-team'),     'squad_label' => "Men's First Team squad"),
         'reserves' => array('squad_slugs' => array(),                                 'squad_label' => "Men's Reserves"),
         'womens'   => array('squad_slugs' => array('ladies-team', 'ladies-1st-team'), 'squad_label' => "Women's First Team squad"),
+        'womens_res' => array('squad_slugs' => array(), 'squad_label' => ''),
+        'womens_u19' => array('squad_slugs' => array(), 'squad_label' => ''),
         'u18s'     => array('squad_slugs' => array(), 'squad_label' => ''),
         'vets'     => array('squad_slugs' => array(), 'squad_label' => ''),
     );

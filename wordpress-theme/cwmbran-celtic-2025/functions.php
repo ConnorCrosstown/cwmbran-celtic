@@ -1128,6 +1128,8 @@ function cc25_opp_crest_file($name) {
         'Caldicot Town' => 'caldicot-town.jpg',
         'Brecon Corries' => 'brecon-corries.png',
         'Cardiff Corinthians' => 'cardiff-corries.png',
+        // Women's U19s — Adran U19s. Already had artwork on the Next.js side.
+        'Aberystwyth Town' => 'aberystwyth-town.png',
     );
     if (isset($map[$name])) return $map[$name];
     // Tolerate "FC"/"AFC" and spacing drift (e.g. "Undy FC" -> undy.png) so the
@@ -1325,6 +1327,67 @@ function cc25_static_fixtures_static() {
                 array('2027-03-14', 'Taffs Well', true, 'League'),
                 array('2027-03-21', 'Pure Swansea', false, 'League'),
                 array('2027-04-04', 'Penybont', true, 'League'),
+            ),
+        ),
+        /* Women's Reserves. New to the site with the club's list of 11 Aug 2026.
+         * SWWGL Development League, Sundays, so kick-off falls to the 2pm Sunday
+         * default — ASSUMED, not confirmed by the club.
+         *
+         * Source is the workbook's "Womens (Reserves)" sheet alone; the master tab
+         * does not list the team. Rows below the league block on that sheet are last
+         * season's and are excluded.
+         *
+         * Their round numbers run out of order and skip 3 and 10, and rounds 4 and 6
+         * are BOTH given as home on 4 October. Carried as the club has it, and raised
+         * with them — see docs/2026-08-11-club-fixture-queries.md.
+         * Three of these opponents have no crest and show initials. */
+        'womens_res' => array(
+            'league' => 'SWWGL Women\'s Development League',
+            'title'  => "Women's Reserves",
+            'badge'  => array('WRes', 'tk-team-w'),
+            'list'   => array(
+                array('2026-09-06', 'Undy', true, 'League'),
+                array('2026-09-13', 'Taffs Well', false, 'League'),
+                array('2026-09-27', 'Goytre', false, 'League'),
+                array('2026-10-04', 'Porth Harlequins BGC', true, 'League'),
+                array('2026-10-04', 'North Cardiff Cosmos', true, 'League'),  // club has two home games this day
+                array('2026-10-11', 'Caerphilly Dragons', false, 'League'),
+                array('2026-10-18', 'Undy', false, 'League'),
+                array('2026-10-25', 'Taffs Well', true, 'League'),
+                array('2026-11-08', 'Porth Harlequins BGC', false, 'League'),
+                array('2026-11-15', 'Goytre', true, 'League'),
+                array('2026-11-22', 'North Cardiff Cosmos', false, 'League'),
+                array('2026-11-29', 'Caerphilly Dragons', true, 'League'),
+                array('2026-12-06', 'Goytre', false, 'League'),
+                array('2026-12-13', 'North Cardiff Cosmos', true, 'League'),
+                array('2026-12-20', 'Undy', true, 'League'),
+                array('2027-01-10', 'Caerphilly Dragons', false, 'League'),
+                array('2027-01-17', 'Taffs Well', true, 'League'),
+                array('2027-01-24', 'Porth Harlequins BGC', true, 'League'),
+            ),
+        ),
+        /* Women's U19s. New to the site with the club's list of 11 Aug 2026. Friday
+         * nights, so kick-off falls to the midweek default of 7:30pm — that time is
+         * ASSUMED, not confirmed by the club, and should become an explicit
+         * cc25_kickoff_overrides() entry once real times are known.
+         * The list covers the first half of the season only; it genuinely ends on
+         * 20 November. Five of these opponents have no crest and show initials. */
+        'womens_u19' => array(
+            'league' => 'Adran U19s',
+            'title'  => "Women's U19s",
+            'badge'  => array('U19', 'tk-team-w'),
+            'list'   => array(
+                array('2026-09-11', 'Pontypridd United', true, 'League'),
+                array('2026-09-18', 'Penybont', false, 'League'),
+                array('2026-09-25', 'Briton Ferry Llansawel', true, 'League'),
+                array('2026-10-02', 'Barry Town United', false, 'League'),
+                array('2026-10-09', 'Taffs Well', true, 'League'),
+                array('2026-10-16', 'Cardiff Met', false, 'League'),
+                array('2026-10-23', 'Carmarthen Town', true, 'League'),
+                array('2026-10-30', 'Cascade YC', true, 'League'),
+                array('2026-11-06', 'Swansea City', false, 'League'),
+                array('2026-11-13', 'Aberystwyth Town', true, 'League'),
+                array('2026-11-20', 'Cardiff City', false, 'League'),
             ),
         ),
         /* Under-18s. New to the site with the club's fixture list of 10 Aug 2026 — the

@@ -98,7 +98,8 @@ check('a postponed game carries no score', cc25_row_score($post) === null);
 
 $teams = cc25_fx_teams();
 check('every team the site carries is offered in the editor',
-      count($teams) === 5 && isset($teams['mens'], $teams['womens'], $teams['reserves'], $teams['u18s'], $teams['vets']));
+      count($teams) === 7 && isset($teams['mens'], $teams['womens'], $teams['reserves'],
+      $teams['womens_res'], $teams['womens_u19'], $teams['u18s'], $teams['vets']));
 /* The editor's team list and the fixture data must not drift apart, or a team gets
  * fixtures nobody can edit. */
 check('the editor offers exactly the teams that have fixtures',
@@ -109,17 +110,22 @@ $opps = cc25_fx_known_opponents();
 check('known opponents are suggested', count($opps) > 20);
 check('TBC is not suggested as an opponent', !in_array('TBC', $opps, true));
 check('the suggestions are sorted', $opps === array_values(array_unique($opps)) && $opps[0] < $opps[count($opps) - 1]);
-/* Every suggested name should resolve to a badge, or the editor's hint lies. Eleven do
- * not: the Under-18s and Vets arrived with the club's list of 10 Aug 2026 and most of
- * their opponents have no artwork on file. Those rows show initials, which is handled,
- * and the fixture editor warns when a name has no badge.
+/* Every suggested name should resolve to a badge, or the editor's hint lies.
+ * Nineteen do not: the Under-18s and Vets arrived with the club's list of 10 Aug
+ * 2026, and the Women's Reserves and Women's U19s with the list of 11 Aug, and
+ * most of their opponents have no artwork on file. Those rows show initials,
+ * which is handled, and the fixture editor warns when a name has no badge.
  *
- * Listed explicitly rather than the check being relaxed, so a TWELFTH badge-less
- * opponent fails here and gets a decision instead of quietly showing initials. */
+ * Listed explicitly rather than the check being relaxed, so a TWENTIETH
+ * badge-less opponent fails here and gets a decision instead of quietly showing
+ * initials. Connor is collecting the missing artwork from the club. */
 $known_gaps = array(
     'Caerleon', 'Caldicot Town Dev', 'Coed Eva Athletic', 'Graig Villa Dino',
     'Llanyrafon', 'Monmouth Town', 'Penygraig United', 'Ponthir',
     'Riverside Rovers', 'Sifil', 'Tata Steel United',
+    'Barry Town United', 'Briton Ferry Llansawel', 'Caerphilly Dragons',
+    'Cardiff City', 'Cardiff Met', 'North Cardiff Cosmos',
+    'Porth Harlequins BGC', 'Swansea City',
 );
 $nocrest = array_values(array_filter($opps, function ($o) { return cc25_opp_crest_file($o) === ''; }));
 sort($nocrest);
@@ -143,6 +149,39 @@ $sep = cc25_t_row($res, '2026-09-05', 'Tredegar Town');
 $dec = cc25_t_row($res, '2026-12-12', 'Tredegar Town');
 check('Reserves v Tredegar Town, 5 Sep, is AWAY', $sep !== null && empty($sep[2]));
 check('Reserves v Tredegar Town, 12 Dec, is HOME', $dec !== null && !empty($dec[2]));
+
+/* Women's U19s — new with the club's list of 11 Aug 2026. Adran U19s, Friday
+ * nights. The club's list covers the first half of the season only; it ends on
+ * 20 November and that is not a truncated sheet. */
+$u19 = cc25_static_fixtures_static()['womens_u19']['list'];
+check('Women\'s U19s have the club\'s eleven fixtures', count($u19) === 11);
+check('Women\'s U19s open at home to Pontypridd United on 11 Sep',
+    $u19[0][0] === '2026-09-11' && $u19[0][1] === 'Pontypridd United' && !empty($u19[0][2]));
+check('Women\'s U19s finish away to Cardiff City on 20 Nov',
+    $u19[10][0] === '2026-11-20' && $u19[10][1] === 'Cardiff City' && empty($u19[10][2]));
+check('every Women\'s U19s game is a Friday', count(array_filter($u19, function ($r) {
+    return date('N', strtotime($r[0])) != 5;
+})) === 0);
+check('Women\'s U19s are in the team registry', isset(cc25_fx_teams()['womens_u19']));
+
+/* Women's Reserves — also new with the 11 Aug list. SWWGL Development League,
+ * Sundays. These exist ONLY on the workbook's "Womens (Reserves)" sheet; the
+ * master "This Year Games" tab omits the team entirely.
+ *
+ * The club has them down for two home games on Sunday 4 October (rounds 4 and 6).
+ * That is imported as given and raised with the club — see
+ * docs/2026-08-11-club-fixture-queries.md. The duplicate is asserted here so that
+ * when the club corrects it, this test tells us to update the record. */
+$wres = cc25_static_fixtures_static()['womens_res']['list'];
+check('Women\'s Reserves have the club\'s eighteen fixtures', count($wres) === 18);
+check('Women\'s Reserves open at home to Undy on 6 Sep',
+    $wres[0][0] === '2026-09-06' && $wres[0][1] === 'Undy' && !empty($wres[0][2]));
+check('every Women\'s Reserves game is a Sunday', count(array_filter($wres, function ($r) {
+    return date('N', strtotime($r[0])) != 7;
+})) === 0);
+$oct4 = array_values(array_filter($wres, function ($r) { return $r[0] === '2026-10-04'; }));
+check('the club\'s 4 Oct double booking is carried as-is, pending their answer', count($oct4) === 2);
+check('Women\'s Reserves are in the team registry', isset(cc25_fx_teams()['womens_res']));
 
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);

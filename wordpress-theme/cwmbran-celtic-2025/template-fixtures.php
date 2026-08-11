@@ -128,10 +128,6 @@ get_template_part('template-parts/site-header');
             ? cc25_page_url($cc25_meta['squad_slugs'], home_url('/'))
             : cc25_reserves_url();
     }
-    // Reserves keeps the blank line that separated it from the Men's block above;
-    // Women's keeps the blank line that separated it from Reserves. u18s and vets
-    // never had one, so nothing is echoed for them — preserves today's byte layout.
-    if ($cc25_k === 'womens') echo "\n";
     // Control-only PHP tags below sit at column 0: PHP eats the newline after a
     // closing tag, so leading whitespace here would be prepended to the next
     // line's output (unlike the indented control tags in the untouched Men's
