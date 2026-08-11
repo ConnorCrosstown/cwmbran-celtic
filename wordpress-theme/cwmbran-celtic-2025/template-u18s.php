@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Under-18s
+ * Template Name: Men's Under-18s
  * Under-18s team page — intro, their fixtures, and a squad section that appears only
  * once there are players to show.
  *
@@ -17,16 +17,16 @@ $cc25_stats   = function_exists('cc25_player_stats') ? cc25_player_stats('u18s')
 $cc25_logo    = cc25_club_logo();
 $cc25_league  = cc25_static_fixtures()['u18s']['league'];
 // Their next game, so the page says something current while the squad is still to come.
-$cc25_card    = function_exists('cc25_next_up_card') ? cc25_next_up_card(cc25_feed(), 'u18s', 'Under-18s') : '';
+$cc25_card    = function_exists('cc25_next_up_card') ? cc25_next_up_card(cc25_feed(), 'u18s', "Men's Under-18s") : '';
 ?>
 <div class="phero">
   <div class="bg"></div><div class="grain"></div><div class="ghost">U18s</div>
   <div class="phero-in">
-    <div class="crumbs"><a href="<?php echo esc_url($cc25_home); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('teams', $cc25_home)); ?>" style="color:var(--on-navy-dim)">Teams</a> / <span style="color:#fff">Under-18s</span></div>
-    <h1>Under-18s</h1>
+    <div class="crumbs"><a href="<?php echo esc_url($cc25_home); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('teams', $cc25_home)); ?>" style="color:var(--on-navy-dim)">Teams</a> / <span style="color:#fff">Men's Under-18s</span></div>
+    <h1>Men's Under-18s</h1>
     <p>The next generation of Celts, competing in the <?php echo esc_html($cc25_league); ?> on Sunday afternoons.</p>
     <div class="teamsel">
-      <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', $cc25_home) . '#u18s'); ?>">View Under-18s fixtures &rarr;</a>
+      <a class="btn btn-gold btn-sm" href="<?php echo esc_url(cc25_page_url('fixtures', $cc25_home) . '#u18s'); ?>">View Men's Under-18s fixtures &rarr;</a>
     </div>
   </div>
 </div>
@@ -47,11 +47,11 @@ $cc25_card    = function_exists('cc25_next_up_card') ? cc25_next_up_card(cc25_fe
       <div class="grain"></div>
       <div>
         <div class="kick" style="color:var(--gold);position:relative;z-index:2"><?php echo esc_html($cc25_league); ?></div>
-        <h2>Follow the Under-18s</h2>
+        <h2>Follow the Men's Under-18s</h2>
         <p>Every fixture for the season &mdash; home and away, all on a Sunday.</p>
       </div>
       <div class="signup" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
-        <a class="btn btn-gold btn-block" href="<?php echo esc_url(cc25_page_url('fixtures', $cc25_home) . '#u18s'); ?>">View Under-18s fixtures &rarr;</a>
+        <a class="btn btn-gold btn-block" href="<?php echo esc_url(cc25_page_url('fixtures', $cc25_home) . '#u18s'); ?>">View Men's Under-18s fixtures &rarr;</a>
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@ if ($cc25_squad): ?>
     <div class="sec-head reveal">
       <div>
         <div class="sec-eye kick"><span class="ix">01</span><span class="ln"></span> Squad <?php echo esc_html(cc25_season()); ?></div>
-        <h2>Under-18s Squad</h2>
+        <h2>Men's Under-18s Squad</h2>
       </div>
     </div>
     <div class="pc-grid reveal">

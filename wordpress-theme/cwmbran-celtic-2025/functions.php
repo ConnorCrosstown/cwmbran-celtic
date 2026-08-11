@@ -225,6 +225,20 @@ function cc25_vets_url() {
     return $p ? $p : cc25_page_url('teams', home_url('/'));
 }
 
+/** Women's Reserves destination: the dedicated page if it exists, else straight
+ * to their fixtures tab, which works with no WP page at all. */
+function cc25_womens_res_url() {
+    $p = cc25_page_url(array('womens-reserves', 'ladies-reserves'), '');
+    return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#womens_res');
+}
+
+/** Women's Under-19s destination: the dedicated page if it exists, else straight
+ * to their fixtures tab, which works with no WP page at all. */
+function cc25_womens_u19_url() {
+    $p = cc25_page_url(array('womens-under-19s', 'womens-u19s'), '');
+    return $p ? $p : (cc25_page_url('fixtures', home_url('/')) . '#womens_u19');
+}
+
 /** Juniors & Minis destination: the dedicated /juniors/ page if it exists. */
 function cc25_juniors_url() {
     $p = cc25_page_url(array('juniors', 'juniors-and-minis', 'minis'), '');
@@ -962,9 +976,11 @@ function cc25_nav_items() {
         array('All Teams', cc25_page_url('teams', $home), false, array(
             array("Men's First Team", cc25_page_url(array('mens-team', 'mens-1st-team'), $home), false),
             array("Men's Reserves", cc25_reserves_url(), false),
-            array("Under-18s", cc25_u18s_url(), false),
+            array("Men's Under-18s", cc25_u18s_url(), false),
             array("Men's Vets", cc25_vets_url(), false),
             array("Women's First Team", cc25_page_url(array('ladies-team', 'ladies-1st-team'), $home), false),
+            array("Women's Reserves", cc25_womens_res_url(), false),
+            array("Women's Under-19s", cc25_womens_u19_url(), false),
             array("Juniors &amp; Minis", cc25_juniors_url(), false),
             array('Walking Football', cc25_walking_football_url(), false),
         )),
