@@ -131,5 +131,18 @@ if ($nocrest !== $expected) {
     echo '        now has one: ' . implode(', ', array_diff($expected, $nocrest)) . "\n";
 }
 
+/* The club's list of 11 Aug 2026 swapped the venue on both Reserves v Tredegar
+ * Town games — 5 September was ours, 12 December was theirs. Their sheet tags
+ * these "Was Home" and "Was Away" respectively. */
+$res = cc25_static_fixtures_static()['reserves']['list'];
+function cc25_t_row($list, $ymd, $opp) {
+    foreach ($list as $r) if ($r[0] === $ymd && $r[1] === $opp) return $r;
+    return null;
+}
+$sep = cc25_t_row($res, '2026-09-05', 'Tredegar Town');
+$dec = cc25_t_row($res, '2026-12-12', 'Tredegar Town');
+check('Reserves v Tredegar Town, 5 Sep, is AWAY', $sep !== null && empty($sep[2]));
+check('Reserves v Tredegar Town, 12 Dec, is HOME', $dec !== null && !empty($dec[2]));
+
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);
