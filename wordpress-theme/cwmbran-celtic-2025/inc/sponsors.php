@@ -76,12 +76,17 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
  *  what's coming up. Results have their own place on the fixtures page. */
 function cc25_ticker_items() {
     $out = '';
-    // Upcoming fixtures across ALL teams (Men's First, Reserves, Women's).
-    // Take each team's next few games so EVERY team features in the banner even
-    // when their season starts later (e.g. Women's kick off in late Sept), then
-    // merge and sort by date.
+    // Upcoming fixtures across ALL teams (Men's First, Reserves, Women's, ...).
+    // A flat date-sort-then-truncate would silently drop whichever teams' seasons
+    // start latest once there are enough teams to fill the cap before their first
+    // game comes round (this happened to the Women's First Team once the roster
+    // grew to seven teams). So instead: seed the list with each team's very next
+    // upcoming game first — guaranteeing every team features regardless of team
+    // count or season start — then fill the remaining slots with whatever's
+    // soonest across all teams, and only then sort the whole thing by date.
     $now = round(microtime(true) * 1000);
-    $up = array();
+    $cap = 15; // sensible overall length for a header ticker
+    $teams_up = array();
     foreach (cc25_static_fixtures() as $team) {
         $team_up = array();
         foreach ($team['list'] as $rf) {
@@ -94,10 +99,19 @@ function cc25_ticker_items() {
             $team_up[] = array('ms' => $ms, 'opp' => $rf[1], 'home' => !empty($rf[2]),
                 'badge' => $team['badge'], 'title' => $team['title']);
         }
-        $up = array_merge($up, array_slice($team_up, 0, 5)); // guarantee each team appears
+        usort($team_up, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
+        $teams_up[] = array_slice($team_up, 0, 5); // cap any one team's contribution
     }
+    $seeded = array();
+    $rest = array();
+    foreach ($teams_up as $team_up) {
+        if ($team_up) $seeded[] = array_shift($team_up);
+        $rest = array_merge($rest, $team_up);
+    }
+    usort($rest, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
+    $up = array_merge($seeded, array_slice($rest, 0, max(0, $cap - count($seeded))));
     usort($up, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
-    foreach (array_slice($up, 0, 15) as $f) {
+    foreach ($up as $f) {
         $match = $f['home']
             ? 'Cwmbran Celtic v ' . esc_html($f['opp'])
             : esc_html($f['opp']) . ' v Cwmbran Celtic';

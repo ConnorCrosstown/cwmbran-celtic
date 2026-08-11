@@ -1597,6 +1597,7 @@ function cc25_next_up_card($feed, $team, $label) {
     // Named per team rather than three-way, so the Under-18s and Vets read correctly
     // on their own cards instead of both showing a bare "Cwmbran Celtic".
     $suffix = array('reserves' => ' Reserves', 'womens' => ' Women',
+                    'womens_res' => " Women's Reserves", 'womens_u19' => " Women's U19s",
                     'u18s' => ' U18s', 'vets' => ' Vets');
     $ours = 'Cwmbran Celtic' . ($suffix[$team] ?? '');
 
@@ -1670,6 +1671,7 @@ function cc25_report_header($post = null) {
     // Named per team rather than three-way, so the Under-18s and Vets read correctly
     // on their own cards instead of both showing a bare "Cwmbran Celtic".
     $suffix = array('reserves' => ' Reserves', 'womens' => ' Women',
+                    'womens_res' => " Women's Reserves", 'womens_u19' => " Women's U19s",
                     'u18s' => ' U18s', 'vets' => ' Vets');
     $ours = 'Cwmbran Celtic' . ($suffix[$team] ?? '');
 
