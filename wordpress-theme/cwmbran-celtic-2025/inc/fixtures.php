@@ -34,8 +34,8 @@ function cc25_fx_teams() {
         'reserves'   => "Men's Reserves",
         'womens'     => "Women's First Team",
         'womens_res' => "Women's Reserves",
-        'womens_u19' => "Women's U19s",
-        'u18s'       => "Under-18s",
+        'womens_u19' => "Women's Under-19s",
+        'u18s'       => "Men's Under-18s",
         'vets'       => "Men's Vets",
     );
 }

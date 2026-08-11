@@ -1374,7 +1374,7 @@ function cc25_static_fixtures_static() {
          * 20 November. Five of these opponents have no crest and show initials. */
         'womens_u19' => array(
             'league' => 'Adran U19s',
-            'title'  => "Women's U19s",
+            'title'  => "Women's Under-19s",
             'badge'  => array('U19', 'tk-team-w'),
             'list'   => array(
                 array('2026-09-11', 'Pontypridd United', true, 'League'),
@@ -1395,7 +1395,7 @@ function cc25_static_fixtures_static() {
          * those rows show initials until one is added. */
         'u18s' => array(
             'league' => 'Gwent County Youth League',
-            'title'  => "Under-18s",
+            'title'  => "Men's Under-18s",
             'badge'  => array('U18', 'tk-team-u'),
             'list'   => array(
                 array('2026-09-06', 'Caldicot Town Dev', true, 'League'),
