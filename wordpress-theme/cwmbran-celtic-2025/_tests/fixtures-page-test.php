@@ -93,7 +93,10 @@ foreach ($teams as $key => $label) {
 }
 
 /* Teams must link to their own squad page, not another team's.
- * This was also copied along with league names in the historical bug. */
+ * This was also copied along with league names in the historical bug.
+ * u18s and vets are the victims — they were copied from womens and inherited
+ * its squad link. So the assertion for u18s/vets is critical: they must
+ * contain NONE of the other teams' squad URLs. */
 $squad_urls = array(
     'mens'     => array('mens-team', 'mens-1st-team'),
     'reserves' => array('mens-reserves'),
@@ -101,24 +104,25 @@ $squad_urls = array(
     // u18s and vets have no squad links in the template.
 );
 foreach ($teams as $key => $label) {
-    if (!isset($squad_urls[$key])) continue; // This team has no squad link.
     $start = strpos($html, 'id="team-' . $key . '"');
     check("$key wrapper exists for the squad link check", $start !== false);
     if ($start === false) continue;
     $end = strpos($html, '<!-- /#team-', $start);
     $block = substr($html, $start, ($end === false ? strlen($html) : $end) - $start);
 
-    // Check that the block contains at least one of this team's squad URLs.
-    $has_own_link = false;
-    foreach ($squad_urls[$key] as $url_part) {
-        if (strpos($block, $url_part) !== false) {
-            $has_own_link = true;
-            break;
+    // If this team has its own squad link, check that it's there.
+    if (isset($squad_urls[$key])) {
+        $has_own_link = false;
+        foreach ($squad_urls[$key] as $url_part) {
+            if (strpos($block, $url_part) !== false) {
+                $has_own_link = true;
+                break;
+            }
         }
+        check("$key contains link to its squad page", $has_own_link);
     }
-    check("$key contains link to its squad page", $has_own_link);
 
-    // Check that the block does NOT contain another team's squad URLs.
+    // For ALL teams (including u18s and vets), check they don't contain other teams' squad URLs.
     foreach ($squad_urls as $other => $other_urls) {
         if ($other === $key) continue;
         foreach ($other_urls as $url_part) {
