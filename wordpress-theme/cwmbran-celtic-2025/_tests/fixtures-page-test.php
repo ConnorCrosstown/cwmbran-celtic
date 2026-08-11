@@ -132,12 +132,8 @@ foreach ($teams as $key => $label) {
 }
 
 /* Teams must appear in the page in the same order as cc25_fx_teams() returns them.
- * Currently the page renders as: mens, reserves, womens, u18s, vets
- * But the registry is:            mens, womens,   reserves, u18s, vets
- * The next task makes the page loop over the registry. If it does so naively
- * the DOM silently reorders, and every other check still passes.
- * This assertion will FAIL right now (expected — reserves and womens are swapped).
- * It is marked as pending until the registry order is fixed. */
+ * The page now loops over the registry, so a silent DOM reorder would mean the
+ * loop stopped reading cc25_fx_teams() — every other check above would still pass. */
 $team_order = array_keys($teams);
 $prev_pos_selector = -1;
 $team_order_ok = true;
@@ -173,15 +169,7 @@ if ($team_order_ok) {
         $prev_pos_wrapper = $pos_wrapper;
     }
 }
-// This check FAILS right now (expected: reserves and womens are swapped in the template).
-// Mark it pending so the committed suite is green. The next task must flip this from
-// pending to a real check() once the registry order is reconciled with the template.
-if ($team_order_ok) {
-    echo "  ok  teams render in registry order\n";
-} else {
-    // Expected failure: reserves/womens swap. Print as pending, not a failure.
-    echo "  pending  teams render in registry order — reserves/womens swapped, fixed in the loop refactor\n";
-}
+check('teams render in registry order' . ($order_error ? " ($order_error)" : ''), $team_order_ok);
 
 echo $failures ? "\n" . count($failures) . " FAILED\n" : "\nall passed\n";
 exit($failures ? 1 : 0);

@@ -18,14 +18,6 @@ $table    = cc25_table($feed, $team);
 // the allwalessport feed, so those lists are hand-maintained there.
 $cc25_sf            = cc25_static_fixtures();
 $cc25_mens_fixtures = $cc25_sf['mens']['list'];
-$cc25_res_league    = $cc25_sf['reserves']['league'];
-$cc25_reserves      = $cc25_sf['reserves']['list'];
-$cc25_womens_league = $cc25_sf['womens']['league'];
-$cc25_womens        = $cc25_sf['womens']['list'];
-$cc25_u18s          = $cc25_sf['u18s']['list'];
-$cc25_u18s_league   = $cc25_sf['u18s']['league'];
-$cc25_vets          = $cc25_sf['vets']['list'];
-$cc25_vets_league   = $cc25_sf['vets']['league'];
 get_template_part('template-parts/site-header');
 ?>
 <div class="phero">
@@ -35,11 +27,9 @@ get_template_part('template-parts/site-header');
     <h1>Fixtures &amp; Results</h1>
     <p>Every match, result and the live league table — updated automatically, hourly, from allwalessport.</p>
     <div class="teamsel">
-      <button class="on" data-team="mens">Men's First Team</button>
-      <button data-team="reserves">Men's Reserves</button>
-      <button data-team="womens">Women's First Team</button>
-      <button data-team="u18s">Under-18s</button>
-      <button data-team="vets">Men's Vets</button>
+<?php $cc25_first = true; foreach (cc25_fx_teams() as $cc25_k => $cc25_label): ?>
+      <button<?php echo $cc25_first ? ' class="on"' : ''; ?> data-team="<?php echo esc_attr($cc25_k); ?>"><?php echo $cc25_label; ?></button>
+<?php $cc25_first = false; endforeach; ?>
     </div>
   </div>
 </div>
@@ -128,63 +118,38 @@ get_template_part('template-parts/site-header');
 </section>
 </div><!-- /#team-mens -->
 
-<div class="teamwrap" id="team-reserves" hidden>
+<?php foreach (cc25_fx_teams() as $cc25_k => $cc25_label):
+    if ($cc25_k === 'mens') continue;                       // bespoke block above
+    if (!isset($cc25_sf[$cc25_k])) continue;                // no fixture list yet
+    $cc25_meta = cc25_fx_team_meta($cc25_k);
+    $cc25_squad = '';
+    if ($cc25_meta['squad_label'] !== '') {
+        $cc25_squad = $cc25_meta['squad_slugs']
+            ? cc25_page_url($cc25_meta['squad_slugs'], home_url('/'))
+            : cc25_reserves_url();
+    }
+    // Reserves keeps the blank line that separated it from the Men's block above;
+    // Women's keeps the blank line that separated it from Reserves. u18s and vets
+    // never had one, so nothing is echoed for them — preserves today's byte layout.
+    if ($cc25_k === 'womens') echo "\n";
+?>
+<div class="teamwrap" id="team-<?php echo esc_attr($cc25_k); ?>" hidden>
   <section class="band">
     <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_res_league); ?></div><h2>Men's Reserves &mdash; Fixtures &amp; Results</h2></div></div>
+      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_sf[$cc25_k]['league']); ?></div><h2><?php echo $cc25_label; ?> &mdash; Fixtures &amp; Results</h2></div></div>
+<?php if ($cc25_squad !== ''): ?>
       <div class="team-links reveal">
-        <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_reserves_url()); ?>">Men's Reserves &rarr;</a>
+        <a class="btn btn-navy btn-sm" href="<?php echo esc_url($cc25_squad); ?>"><?php echo $cc25_meta['squad_label']; ?> &rarr;</a>
       </div>
+<?php endif; ?>
       <div class="tabs reveal">
-        <button class="tab on" data-t="reserves-fx">Fixtures</button>
-        <button class="tab" data-t="reserves-res">Results</button>
+        <button class="tab on" data-t="<?php echo esc_attr($cc25_k); ?>-fx">Fixtures</button>
+        <button class="tab" data-t="<?php echo esc_attr($cc25_k); ?>-res">Results</button>
       </div>
-      <div class="panel on" id="reserves-fx"><?php cc25_render_static_fixtures($cc25_reserves, 'reserves'); ?></div>
-      <div class="panel" id="reserves-res"><?php cc25_render_static_results('reserves'); ?></div>
+      <div class="panel on" id="<?php echo esc_attr($cc25_k); ?>-fx"><?php cc25_render_static_fixtures($cc25_sf[$cc25_k]['list'], $cc25_k); ?></div>
+      <div class="panel" id="<?php echo esc_attr($cc25_k); ?>-res"><?php cc25_render_static_results($cc25_k); ?></div>
     </div>
   </section>
-</div><!-- /#team-reserves -->
-
-<div class="teamwrap" id="team-womens" hidden>
-  <section class="band">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_womens_league); ?></div><h2>Women's First Team &mdash; Fixtures &amp; Results</h2></div></div>
-      <div class="team-links reveal">
-        <a class="btn btn-navy btn-sm" href="<?php echo esc_url(cc25_page_url(array('ladies-team', 'ladies-1st-team'), home_url('/'))); ?>">Women's First Team squad &rarr;</a>
-      </div>
-      <div class="tabs reveal">
-        <button class="tab on" data-t="womens-fx">Fixtures</button>
-        <button class="tab" data-t="womens-res">Results</button>
-      </div>
-      <div class="panel on" id="womens-fx"><?php cc25_render_static_fixtures($cc25_womens, 'womens'); ?></div>
-      <div class="panel" id="womens-res"><?php cc25_render_static_results('womens'); ?></div>
-    </div>
-  </section>
-</div><!-- /#team-womens -->
-<div class="teamwrap" id="team-u18s" hidden>
-  <section class="band">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_u18s_league); ?></div><h2>Under-18s &mdash; Fixtures &amp; Results</h2></div></div>
-      <div class="tabs reveal">
-        <button class="tab on" data-t="u18s-fx">Fixtures</button>
-        <button class="tab" data-t="u18s-res">Results</button>
-      </div>
-      <div class="panel on" id="u18s-fx"><?php cc25_render_static_fixtures($cc25_u18s, 'u18s'); ?></div>
-      <div class="panel" id="u18s-res"><?php cc25_render_static_results('u18s'); ?></div>
-    </div>
-  </section>
-</div><!-- /#team-u18s -->
-<div class="teamwrap" id="team-vets" hidden>
-  <section class="band">
-    <div class="wrap">
-      <div class="sec-head reveal"><div><div class="sec-eye kick"><span class="ln"></span> <?php echo esc_html($cc25_vets_league); ?></div><h2>Men's Vets &mdash; Fixtures &amp; Results</h2></div></div>
-      <div class="tabs reveal">
-        <button class="tab on" data-t="vets-fx">Fixtures</button>
-        <button class="tab" data-t="vets-res">Results</button>
-      </div>
-      <div class="panel on" id="vets-fx"><?php cc25_render_static_fixtures($cc25_vets, 'vets'); ?></div>
-      <div class="panel" id="vets-res"><?php cc25_render_static_results('vets'); ?></div>
-    </div>
-  </section>
-</div><!-- /#team-vets -->
+</div><!-- /#team-<?php echo esc_attr($cc25_k); ?> -->
+<?php endforeach; ?>
 <?php get_template_part('template-parts/site-footer'); ?>

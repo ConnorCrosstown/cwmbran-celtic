@@ -20,15 +20,31 @@ if (!defined('ABSPATH')) exit;
 
 const CC25_FX_CPT = 'cc25_fixture';
 
-/** team key => label, in the order the club thinks about them. */
+/** team key => label, in the order the club thinks about them — and the order
+ *  the fixtures page renders them, which now reads this list. */
 function cc25_fx_teams() {
     return array(
         'mens'     => "Men's First Team",
-        'womens'   => "Women's First Team",
         'reserves' => "Men's Reserves",
+        'womens'   => "Women's First Team",
         'u18s'     => "Under-18s",
         'vets'     => "Men's Vets",
     );
+}
+
+/** Presentation data the fixtures page needs per team, kept beside the team
+ * registry so a new team is one entry in two places rather than a copied block.
+ *  - squad_slugs: candidate page slugs for the team's squad page, first match wins
+ *  - squad_label: the button's text; '' means the team has no squad page yet */
+function cc25_fx_team_meta($key) {
+    $meta = array(
+        'mens'     => array('squad_slugs' => array('mens-team', 'mens-1st-team'),     'squad_label' => "Men's First Team squad"),
+        'reserves' => array('squad_slugs' => array(),                                 'squad_label' => "Men's Reserves"),
+        'womens'   => array('squad_slugs' => array('ladies-team', 'ladies-1st-team'), 'squad_label' => "Women's First Team squad"),
+        'u18s'     => array('squad_slugs' => array(), 'squad_label' => ''),
+        'vets'     => array('squad_slugs' => array(), 'squad_label' => ''),
+    );
+    return isset($meta[$key]) ? $meta[$key] : array('squad_slugs' => array(), 'squad_label' => '');
 }
 
 function cc25_fx_statuses() {
