@@ -17,7 +17,7 @@
 - **The five existing teams must render byte-for-byte identically after the template refactor.** Verified by diffing captured output, not by reading.
 - Kick-offs for both new teams are **assumptions**, not club-confirmed: U19s Fridays fall to `19:30`, Women's Reserves Sundays to `14:00` via `cc25_kickoff_default()`. Comment them as assumptions. Do not add `cc25_kickoff_overrides()` entries.
 - Do NOT modify `tools/graphics/export.php`. Widening the graphics pipeline beyond `mens`/`reserves`/`womens` is explicitly out of scope.
-- Do NOT "fix" the five items listed in the spec's "Raised, not changed" section. Leave the site as it is for those and write them up in Task 8.
+- Do NOT "fix" the five items listed in the spec's "Raised, not changed" section. Leave the site as it is for those and write them up in Task 6.
 - Team registry order is: `mens`, `reserves`, `womens`, `womens_res`, `womens_u19`, `u18s`, `vets`.
 
 ---
@@ -26,16 +26,16 @@
 
 | File | Responsibility | Task |
 | --- | --- | --- |
-| `functions.php` → `cc25_static_fixtures_static()` | Hand-maintained fixture lists per team | 1, 4, 5 |
-| `inc/fixtures.php` → `cc25_fx_teams()` | The team registry — drives admin editor, reports, tickets, fixtures page | 4, 5 |
-| `_tests/fixture-record-test.php` | Fixture-record and badge-coverage assertions | 1, 4, 5, 6 |
+| `functions.php` → `cc25_static_fixtures_static()` | Hand-maintained fixture lists per team | 1, 4 |
+| `inc/fixtures.php` → `cc25_fx_teams()` | The team registry — drives admin editor, reports, tickets, fixtures page | 3, 4 |
+| `_tests/fixture-record-test.php` | Fixture-record and badge-coverage assertions | 1, 4 |
 | `_tests/fixtures-page-test.php` (new) | Renders `template-fixtures.php` under stubs; guards the refactor | 2, 3 |
 | `template-fixtures.php` | The fixtures page — seven hardcoded blocks become one loop | 3 |
-| `assets/img/opponents/aberystwyth-town.png` (new) | Recovered crest | 6 |
-| `tools/graphics/fixtures.json`, `tools/programme/fixtures.json` | Generated, not edited | 7 |
-| `docs/2026-08-11-club-fixture-queries.md` (new) | The five items to put to the club | 8 |
+| `assets/img/opponents/aberystwyth-town.png` (new) | Recovered crest | 4 |
+| `tools/graphics/fixtures.json`, `tools/programme/fixtures.json` | Generated, not edited | 5 |
+| `docs/2026-08-11-club-fixture-queries.md` (new) | The five items to put to the club | 6 |
 
-**Intermediate state note:** Tasks 4 and 5 add team data. Because Task 3 lands first, each new team appears on the page as soon as its data task completes.
+**Commit hygiene note:** Task 4 merges both new teams with the crest fix into ONE commit. The badge-coverage test is an equality check against a named list, so it cannot be green until both teams AND the extended list exist. Splitting them would commit a red suite twice. No commit in this plan leaves the suite failing.
 
 ---
 
@@ -251,7 +251,7 @@ it exists to protect."
 
 **Interfaces:**
 - Consumes: `cc25_render_fixtures_page()` from Task 2; `cc25_fx_teams(): array<string,string>`; `cc25_static_fixtures(): array<string, array{league:string,...,list:array}>`; `cc25_render_static_fixtures(array $list, string $teamKey): void`; `cc25_render_static_results(string $teamKey): void`.
-- Produces: `cc25_fx_team_meta(string $key): array{squad_slugs: string[], squad_label: string, has_table: bool}` — Tasks 4 and 5 add entries to it.
+- Produces: `cc25_fx_team_meta(string $key): array{squad_slugs: string[], squad_label: string}` — Task 4 adds entries to it.
 
 - [ ] **Step 1a: Reconcile the registry order with the page order — do this first**
 
@@ -290,18 +290,16 @@ In `inc/fixtures.php`, after `cc25_fx_teams()`, add:
 /** Presentation data the fixtures page needs per team, kept beside the team
  * registry so a new team is one entry in two places rather than a copied block.
  *  - squad_slugs: candidate page slugs for the team's squad page, first match wins
- *  - squad_label: the button's text; '' means the team has no squad page yet
- *  - has_table:   whether the team has a live league table (only the Men's
- *                 First Team does — allwalessport is the only table source) */
+ *  - squad_label: the button's text; '' means the team has no squad page yet */
 function cc25_fx_team_meta($key) {
     $meta = array(
-        'mens'     => array('squad_slugs' => array('mens-team', 'mens-1st-team'), 'squad_label' => "Men's First Team squad", 'has_table' => true),
-        'reserves' => array('squad_slugs' => array(),                             'squad_label' => "Men's Reserves",         'has_table' => false),
-        'womens'   => array('squad_slugs' => array('ladies-team', 'ladies-1st-team'), 'squad_label' => "Women's First Team squad", 'has_table' => false),
-        'u18s'     => array('squad_slugs' => array(), 'squad_label' => '', 'has_table' => false),
-        'vets'     => array('squad_slugs' => array(), 'squad_label' => '', 'has_table' => false),
+        'mens'     => array('squad_slugs' => array('mens-team', 'mens-1st-team'),     'squad_label' => "Men's First Team squad"),
+        'reserves' => array('squad_slugs' => array(),                                 'squad_label' => "Men's Reserves"),
+        'womens'   => array('squad_slugs' => array('ladies-team', 'ladies-1st-team'), 'squad_label' => "Women's First Team squad"),
+        'u18s'     => array('squad_slugs' => array(), 'squad_label' => ''),
+        'vets'     => array('squad_slugs' => array(), 'squad_label' => ''),
     );
-    return isset($meta[$key]) ? $meta[$key] : array('squad_slugs' => array(), 'squad_label' => '', 'has_table' => false);
+    return isset($meta[$key]) ? $meta[$key] : array('squad_slugs' => array(), 'squad_label' => '');
 }
 ```
 
@@ -408,20 +406,23 @@ The rendered page is byte-for-byte identical for all five teams already live."
 
 ---
 
-### Task 4: Women's U19s
+### Task 4: Both new women's teams, and the crests
+
+Women's Reserves and Women's U19s land together with the badge-coverage fix, as **one commit**. They are merged deliberately: the badge check is an equality assertion against a named list, so it cannot be green until both teams exist *and* the crest list is extended. Splitting them would mean committing a red suite twice.
 
 **Files:**
 - Modify: `wordpress-theme/cwmbran-celtic-2025/inc/fixtures.php` (`cc25_fx_teams()`, `cc25_fx_team_meta()`)
 - Modify: `wordpress-theme/cwmbran-celtic-2025/functions.php` (`cc25_static_fixtures_static()`)
+- Create: `wordpress-theme/cwmbran-celtic-2025/assets/img/opponents/aberystwyth-town.png` (copied, not drawn)
 - Test: `wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php`
 
 **Interfaces:**
-- Consumes: `cc25_fx_team_meta()` from Task 3.
-- Produces: team key `womens_u19`.
+- Consumes: `cc25_fx_team_meta()` from Task 3, with keys `squad_slugs` and `squad_label` only.
+- Produces: team keys `womens_res` and `womens_u19`.
 
-- [ ] **Step 1: Write the failing test**
+- [ ] **Step 1: Write the failing tests**
 
-Append to `_tests/fixture-record-test.php`:
+Append to `_tests/fixture-record-test.php`, before the final summary/exit block:
 
 ```php
 /* Women's U19s — new with the club's list of 11 Aug 2026. Adran U19s, Friday
@@ -437,115 +438,10 @@ check('every Women\'s U19s game is a Friday', count(array_filter($u19, function 
     return date('N', strtotime($r[0])) != 5;
 })) === 0);
 check('Women\'s U19s are in the team registry', isset(cc25_fx_teams()['womens_u19']));
-```
 
-- [ ] **Step 2: Run test to verify it fails**
-
-```bash
-php _tests/fixture-record-test.php
-```
-Expected: FAIL — `womens_u19` is not a key yet (a PHP warning on the undefined index is expected at this point).
-
-- [ ] **Step 3: Add the team to the registry**
-
-In `inc/fixtures.php`, `cc25_fx_teams()` becomes — note the order, women's teams grouped together:
-
-```php
-function cc25_fx_teams() {
-    return array(
-        'mens'       => "Men's First Team",
-        'reserves'   => "Men's Reserves",
-        'womens'     => "Women's First Team",
-        'womens_u19' => "Women's U19s",
-        'u18s'       => "Under-18s",
-        'vets'       => "Men's Vets",
-    );
-}
-```
-
-And add to `cc25_fx_team_meta()`'s `$meta` array:
-
-```php
-        'womens_u19' => array('squad_slugs' => array(), 'squad_label' => '', 'has_table' => false),
-```
-
-- [ ] **Step 4: Add the fixture list**
-
-In `functions.php`, in `cc25_static_fixtures_static()`, after the `womens` block:
-
-```php
-        /* Women's U19s. New to the site with the club's list of 11 Aug 2026. Friday
-         * nights, so kick-off falls to the midweek default of 7:30pm — that time is
-         * ASSUMED, not confirmed by the club, and should become an explicit
-         * cc25_kickoff_overrides() entry once real times are known.
-         * The list covers the first half of the season only; it genuinely ends on
-         * 20 November. Five of these opponents have no crest and show initials. */
-        'womens_u19' => array(
-            'league' => 'Adran U19s',
-            'title'  => "Women's U19s",
-            'badge'  => array('U19', 'tk-team-w'),
-            'list'   => array(
-                array('2026-09-11', 'Pontypridd United', true, 'League'),
-                array('2026-09-18', 'Penybont', false, 'League'),
-                array('2026-09-25', 'Briton Ferry Llansawel', true, 'League'),
-                array('2026-10-02', 'Barry Town United', false, 'League'),
-                array('2026-10-09', 'Taffs Well', true, 'League'),
-                array('2026-10-16', 'Cardiff Met', false, 'League'),
-                array('2026-10-23', 'Carmarthen Town', true, 'League'),
-                array('2026-10-30', 'Cascade YC', true, 'League'),
-                array('2026-11-06', 'Swansea City', false, 'League'),
-                array('2026-11-13', 'Aberystwyth Town', true, 'League'),
-                array('2026-11-20', 'Cardiff City', false, 'League'),
-            ),
-        ),
-```
-
-- [ ] **Step 5: Run the tests**
-
-```bash
-php _tests/fixture-record-test.php
-php _tests/fixtures-page-test.php
-```
-Expected: the new U19s checks PASS and the page test now covers seven wrappers.
-
-The badge-coverage check in `fixture-record-test.php` is EXPECTED TO FAIL here, naming Briton Ferry Llansawel, Barry Town United, Cardiff Met, Swansea City, Cardiff City and Aberystwyth Town. Task 6 resolves it. Note the failure and continue.
-
-- [ ] **Step 6: Commit**
-
-```bash
-git add wordpress-theme/cwmbran-celtic-2025/functions.php wordpress-theme/cwmbran-celtic-2025/inc/fixtures.php wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php
-git commit -m "feat(theme): Women's U19s, from the club's 11 Aug list
-
-Adran U19s, eleven fixtures, Friday nights. The list ends on 20 November because
-it covers the first half of the season, not because the sheet is cut short.
-
-Kick-off falls to the 7:30pm midweek default. That is an assumption and is
-commented as one — the club has not given times.
-
-Badge coverage fails until the next commits: five of these opponents have no
-crest on file."
-```
-
----
-
-### Task 5: Women's Reserves
-
-**Files:**
-- Modify: `wordpress-theme/cwmbran-celtic-2025/inc/fixtures.php`
-- Modify: `wordpress-theme/cwmbran-celtic-2025/functions.php`
-- Test: `wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php`
-
-**Interfaces:**
-- Produces: team key `womens_res`.
-
-- [ ] **Step 1: Write the failing test**
-
-Append to `_tests/fixture-record-test.php`:
-
-```php
-/* Women's Reserves — new with the club's list of 11 Aug 2026. SWWGL Development
- * League, Sundays. These exist ONLY on the workbook's "Womens (Reserves)" sheet;
- * the master "This Year Games" tab omits the team entirely.
+/* Women's Reserves — also new with the 11 Aug list. SWWGL Development League,
+ * Sundays. These exist ONLY on the workbook's "Womens (Reserves)" sheet; the
+ * master "This Year Games" tab omits the team entirely.
  *
  * The club has them down for two home games on Sunday 4 October (rounds 4 and 6).
  * That is imported as given and raised with the club — see
@@ -563,16 +459,16 @@ check('the club\'s 4 Oct double booking is carried as-is, pending their answer',
 check('Women\'s Reserves are in the team registry', isset(cc25_fx_teams()['womens_res']));
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
 php _tests/fixture-record-test.php
 ```
-Expected: FAIL — `womens_res` is not a key yet.
+Expected: FAIL — neither `womens_u19` nor `womens_res` is a key yet. PHP warnings on the undefined indexes are expected at this point.
 
-- [ ] **Step 3: Add the team to the registry**
+- [ ] **Step 3: Add both teams to the registry**
 
-In `inc/fixtures.php`, `cc25_fx_teams()` — inserting `womens_res` before `womens_u19`:
+In `inc/fixtures.php`, `cc25_fx_teams()` — women's teams grouped, existing five keeping the order Task 3 established:
 
 ```php
 function cc25_fx_teams() {
@@ -588,15 +484,16 @@ function cc25_fx_teams() {
 }
 ```
 
-And in `cc25_fx_team_meta()`'s `$meta` array:
+And add both to `cc25_fx_team_meta()`'s `$meta` array — neither has a squad page:
 
 ```php
-        'womens_res' => array('squad_slugs' => array(), 'squad_label' => '', 'has_table' => false),
+        'womens_res' => array('squad_slugs' => array(), 'squad_label' => ''),
+        'womens_u19' => array('squad_slugs' => array(), 'squad_label' => ''),
 ```
 
-- [ ] **Step 4: Add the fixture list**
+- [ ] **Step 4: Add the Women's Reserves fixture list**
 
-In `functions.php`, after the `womens` block and before `womens_u19`:
+In `functions.php`, in `cc25_static_fixtures_static()`, after the `womens` block:
 
 ```php
         /* Women's Reserves. New to the site with the club's list of 11 Aug 2026.
@@ -638,43 +535,40 @@ In `functions.php`, after the `womens` block and before `womens_u19`:
         ),
 ```
 
-- [ ] **Step 5: Run the tests**
+- [ ] **Step 5: Add the Women's U19s fixture list**
 
-```bash
-php _tests/fixture-record-test.php
-php _tests/fixtures-page-test.php
-php _tests/upcoming-test.php
+Immediately after the `womens_res` block:
+
+```php
+        /* Women's U19s. New to the site with the club's list of 11 Aug 2026. Friday
+         * nights, so kick-off falls to the midweek default of 7:30pm — that time is
+         * ASSUMED, not confirmed by the club, and should become an explicit
+         * cc25_kickoff_overrides() entry once real times are known.
+         * The list covers the first half of the season only; it genuinely ends on
+         * 20 November. Five of these opponents have no crest and show initials. */
+        'womens_u19' => array(
+            'league' => 'Adran U19s',
+            'title'  => "Women's U19s",
+            'badge'  => array('U19', 'tk-team-w'),
+            'list'   => array(
+                array('2026-09-11', 'Pontypridd United', true, 'League'),
+                array('2026-09-18', 'Penybont', false, 'League'),
+                array('2026-09-25', 'Briton Ferry Llansawel', true, 'League'),
+                array('2026-10-02', 'Barry Town United', false, 'League'),
+                array('2026-10-09', 'Taffs Well', true, 'League'),
+                array('2026-10-16', 'Cardiff Met', false, 'League'),
+                array('2026-10-23', 'Carmarthen Town', true, 'League'),
+                array('2026-10-30', 'Cascade YC', true, 'League'),
+                array('2026-11-06', 'Swansea City', false, 'League'),
+                array('2026-11-13', 'Aberystwyth Town', true, 'League'),
+                array('2026-11-20', 'Cardiff City', false, 'League'),
+            ),
+        ),
 ```
-Expected: the Women's Reserves checks PASS; the page test now covers all seven teams and each shows its own league name. Badge coverage still fails pending Task 6.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Copy the crest that already exists**
 
-```bash
-git add wordpress-theme/cwmbran-celtic-2025/functions.php wordpress-theme/cwmbran-celtic-2025/inc/fixtures.php wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php
-git commit -m "feat(theme): Women's Reserves, from the club's 11 Aug list
-
-SWWGL Development League, eighteen fixtures, Sundays. These live only on the
-workbook's own sheet — the club's master tab does not list the team at all.
-
-Their round numbers run out of order, skip 3 and 10, and put rounds 4 and 6 both
-at home on 4 October. Carried exactly as the club has it and raised with them
-rather than quietly corrected; a test pins the double booking so their answer
-forces an update here.
-
-Kick-off falls to the 2pm Sunday default, commented as the assumption it is."
-```
-
----
-
-### Task 6: The recovered crest and the badge-coverage list
-
-**Files:**
-- Create: `wordpress-theme/cwmbran-celtic-2025/assets/img/opponents/aberystwyth-town.png` (copied)
-- Modify: `wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php:112-123`
-
-- [ ] **Step 1: Copy the crest that already exists**
-
-Aberystwyth Town has artwork on the Next.js side but not in the theme:
+Aberystwyth Town has artwork on the Next.js side but not in the theme. Run from the repo root:
 
 ```bash
 cp public/images/opponents/aberystwyth-town.png \
@@ -683,14 +577,16 @@ file wordpress-theme/cwmbran-celtic-2025/assets/img/opponents/aberystwyth-town.p
 ```
 Expected: `PNG image data, 139 x 181`.
 
-- [ ] **Step 2: Run the test to see the remaining gap**
+- [ ] **Step 7: Check the remaining badge gap before editing the list**
 
 ```bash
 php _tests/fixture-record-test.php
 ```
-Expected: FAIL on the badge check, with `unexpected:` naming exactly eight opponents — Barry Town United, Briton Ferry Llansawel, Caerphilly Dragons, Cardiff City, Cardiff Met, North Cardiff Cosmos, Porth Harlequins BGC, Swansea City. If the list differs, stop: something in Tasks 4 or 5 is wrong.
+Expected: the team checks now PASS, and the badge check FAILS with `unexpected:` naming exactly eight opponents — Barry Town United, Briton Ferry Llansawel, Caerphilly Dragons, Cardiff City, Cardiff Met, North Cardiff Cosmos, Porth Harlequins BGC, Swansea City.
 
-- [ ] **Step 3: Extend the known-gaps list**
+If the list differs, stop and report — the fixture data above is wrong somewhere.
+
+- [ ] **Step 8: Extend the known-gaps list**
 
 In `_tests/fixture-record-test.php`, replace the comment and array at lines 112-123:
 
@@ -714,7 +610,7 @@ $known_gaps = array(
 );
 ```
 
-- [ ] **Step 4: Run the full test set**
+- [ ] **Step 9: Run the full test set — everything must be green**
 
 ```bash
 php _tests/fixture-record-test.php
@@ -723,25 +619,39 @@ php _tests/upcoming-test.php
 php _tests/tickets-test.php
 php _tests/kickoff-test.php
 ```
-Expected: **all PASS**, including the badge check. This is the first point in the plan where everything is green.
+Expected: **all PASS**, with no failures anywhere. The page test now covers seven teams and asserts each shows its own league name. Do not commit with any check red.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 10: Commit**
 
 ```bash
-git add wordpress-theme/cwmbran-celtic-2025/assets/img/opponents/aberystwyth-town.png wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php
-git commit -m "feat(theme): recover the Aberystwyth Town crest, and pin the badge gap at nineteen
+git add wordpress-theme/cwmbran-celtic-2025/functions.php \
+        wordpress-theme/cwmbran-celtic-2025/inc/fixtures.php \
+        wordpress-theme/cwmbran-celtic-2025/_tests/fixture-record-test.php \
+        wordpress-theme/cwmbran-celtic-2025/assets/img/opponents/aberystwyth-town.png
+git commit -m "feat(theme): Women's Reserves and Women's U19s, from the club's 11 Aug list
+
+Two teams the site has never carried. Women's Reserves: SWWGL Development
+League, eighteen fixtures, Sundays — and they exist only on the workbook's own
+sheet, because the club's master tab does not list the team at all. Women's
+U19s: Adran U19s, eleven fixtures, Friday nights, ending 20 November because the
+list covers the first half of the season, not because the sheet is cut short.
+
+Kick-offs fall to the 2pm Sunday and 7:30pm midweek defaults. Both are
+assumptions and are commented as such — the club has not given times.
+
+The Women's Reserves round numbers run out of order, skip 3 and 10, and put
+rounds 4 and 6 both at home on 4 October. Carried exactly as the club has it and
+raised with them rather than quietly corrected; a test pins the double booking so
+their answer forces an update here.
 
 Aberystwyth Town already had artwork on the Next.js side and not in the theme,
-so it is a copy rather than a gap. That leaves eight new badge-less opponents
-across the two new women's teams, on top of the eleven from the U18s and Vets.
-
-Still an equality check against a named list, not a count, so a twentieth fails
-with its name printed and gets a decision."
+so it is a copy rather than a gap. That leaves eight new badge-less opponents on
+top of the eleven from the U18s and Vets — still an equality check against a
+named list, so a twentieth fails with its name printed."
 ```
 
 ---
-
-### Task 7: Regenerate the tools' fixture data
+### Task 5: Regenerate the tools' fixture data
 
 `tools/graphics/fixtures.json` and `tools/programme/fixtures.json` are generated from the theme, never hand-edited.
 
@@ -777,7 +687,7 @@ pipeline to all seven teams is its own piece of work."
 
 ---
 
-### Task 8: Write up the queries for the club
+### Task 6: Write up the queries for the club
 
 **Files:**
 - Create: `docs/2026-08-11-club-fixture-queries.md`
@@ -862,18 +772,18 @@ wrong, so the site keeps what it had and the club gets asked."
 | --- | --- |
 | Two Reserves venue changes | 1 |
 | Men's 24 Oct / Reserves 15 Aug + 21 Nov are non-changes | — (no action by design) |
-| Women's Reserves added | 5 |
+| Women's Reserves added | 4 |
 | Women's U19s added | 4 |
-| Both in `cc25_fx_teams()` | 4, 5 |
+| Both in `cc25_fx_teams()` | 4 |
 | Fixtures page loop, five teams render identically | 2, 3 |
-| Kick-offs assumed and commented | 4, 5 |
-| Aberystwyth crest recovered | 6 |
-| Badge test to nineteen names, comment updated | 6 |
-| Tools JSON regenerated, `export.php` untouched | 7 |
-| Five items raised not changed | 5 (test pin), 8 (write-up) |
+| Kick-offs assumed and commented | 4 |
+| Aberystwyth crest recovered | 4 |
+| Badge test to nineteen names, comment updated | 4 |
+| Tools JSON regenerated, `export.php` untouched | 5 |
+| Five items raised not changed | 4 (test pin), 6 (write-up) |
 
-**Placeholder scan:** No TBD/TODO. Every code step carries real code. Task 8's document is written out in full rather than described.
+**Placeholder scan:** No TBD/TODO. Every code step carries real code. Task 6's document is written out in full rather than described.
 
-**Type consistency:** `cc25_render_fixtures_page()` is defined in Task 2 and consumed in Task 3. `cc25_fx_team_meta()` is defined in Task 3 with keys `squad_slugs`, `squad_label`, `has_table`, and extended with those same keys in Tasks 4 and 5. Team keys `womens_res` and `womens_u19` are spelled identically in the registry, the fixture lists and the tests.
+**Type consistency:** `cc25_render_fixtures_page()` is defined in Task 2 and consumed in Task 3. `cc25_fx_team_meta()` is defined in Task 3 with keys `squad_slugs` and `squad_label`, and extended with those same two keys in Task 4. Team keys `womens_res` and `womens_u19` are spelled identically in the registry, the fixture lists and the tests.
 
-**Known gap, deliberate:** `has_table` is carried in `cc25_fx_team_meta()` but not yet read by the template, because only the Men's First Team has a table and it keeps its bespoke block. It is there so a second team gaining a table is a data change. If a reviewer would rather not carry an unread field, drop it from Task 3 and from Tasks 4 and 5.
+**Registry order:** Task 3 sets the five-team order to `mens, reserves, womens, u18s, vets` to match what the page renders today; Task 4 inserts `womens_res, womens_u19` after `womens`. The Global Constraints order is the end state after Task 4.
