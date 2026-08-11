@@ -22,7 +22,7 @@ played. Are they still to be scheduled?
 
 ## 3. The Amateur Trophy round is given twice, differently
 
-The tie away to Penygraig United on 5 September is "R1" on the master tab and
+The tie at home to Penygraig United on 5 September is "R1" on the master tab and
 "QR2" on the note recording the Goytre postponement. The site says R1. Which is
 right?
 
@@ -45,7 +45,7 @@ Cardiff Corinthians — it is the form that resolves to the club crest.
   is a Friday, and your Reserves sheet says Friday with a 6:30pm kick-off. The
   site has it as Friday.
 
-- **Kick-off times for the two new teams are assumed.** Women's U19s Friday games
+- **Kick-off times for the two new teams are assumed.** Women's Under-19s Friday games
   show 7:30pm and Women's Reserves Sunday games show 2:00pm, because those are
   the site's defaults for those days. Real times would be better.
 
