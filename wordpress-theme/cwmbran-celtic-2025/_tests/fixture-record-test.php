@@ -121,7 +121,7 @@ check('the suggestions are sorted', $opps === array_values(array_unique($opps)) 
  * initials. Connor is collecting the missing artwork from the club. */
 $known_gaps = array(
     'Caerleon', 'Caldicot Town Dev', 'Coed Eva Athletic', 'Graig Villa Dino',
-    'Llanyrafon', 'Monmouth Town', 'Penygraig United', 'Ponthir',
+    'Llanyrafon', 'Monmouth Town', 'Ponthir',
     'Riverside Rovers', 'Sifil', 'Tata Steel United',
     'Barry Town United', 'Briton Ferry Llansawel', 'Caerphilly Dragons',
     'Cardiff City', 'Cardiff Met', 'North Cardiff Cosmos',

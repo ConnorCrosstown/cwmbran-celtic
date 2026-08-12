@@ -1144,6 +1144,7 @@ function cc25_opp_crest_file($name) {
         'Caldicot Town' => 'caldicot-town.jpg',
         'Brecon Corries' => 'brecon-corries.png',
         'Cardiff Corinthians' => 'cardiff-corries.png',
+        'Penygraig United' => 'penygraig-united.png',
         // Women's U19s — Adran U19s. Already had artwork on the Next.js side.
         'Aberystwyth Town' => 'aberystwyth-town.png',
     );
