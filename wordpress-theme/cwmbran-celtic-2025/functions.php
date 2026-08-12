@@ -1300,7 +1300,9 @@ function cc25_static_fixtures_static() {
                 array('2026-08-21', 'Rogerstone', true, 'League'),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
                 array('2026-09-05', 'Tredegar Town', false, 'League'),
-                array('2026-09-12', 'Chepstow Town', false, 'League'),
+                // Chepstow swapped round by the club's list of 12 Aug 2026:
+                // September is the home leg now, 19 December the away one.
+                array('2026-09-12', 'Chepstow Town', true, 'League'),
                 array('2026-09-19', 'Cwmbran Town', true, 'League'),
                 array('2026-09-26', 'Abertillery Excelsiors', true, 'League'),
                 array('2026-10-03', 'New Inn', false, 'League'),
@@ -1314,7 +1316,7 @@ function cc25_static_fixtures_static() {
                 array('2026-11-28', 'Rogerstone', false, 'League'),
                 array('2026-12-05', 'Abercarn United', true, 'League'),
                 array('2026-12-12', 'Tredegar Town', true, 'League'),
-                array('2026-12-19', 'Chepstow Town', true, 'League'),
+                array('2026-12-19', 'Chepstow Town', false, 'League'),
                 array('2027-01-09', 'New Inn', true, 'League'),
                 array('2027-01-16', 'Undy', false, 'League'),
                 array('2027-01-23', 'Newport Corinthians', true, 'League'),
