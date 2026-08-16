@@ -96,14 +96,27 @@ check('a TBC opponent is never surfaced', !array_filter(cc25_upcoming($feed, 'me
 // Reserves or Women's result exists solely as a score on its fixture row.
 $res = cc25_static_results('reserves');
 check('the reserves result is recorded', count($res) >= 1);
-$r = $res[0];
-check('it is the Rogerstone cup tie', cc25_norm_team(cc25_opponent($r)['opponent']) === cc25_norm_team('Rogerstone'));
+// Picked by date rather than position: the list is newest-first, so every new
+// result recorded would otherwise move the game these assertions describe.
+$by_date = function ($rows, $ymd) {
+    foreach ($rows as $row) if (cc25_date($row['date'], 'Y-m-d') === $ymd) return $row;
+    return null;
+};
+$r = $by_date($res, '2026-08-07');
+check('the Rogerstone cup tie is there', $r && cc25_norm_team(cc25_opponent($r)['opponent']) === cc25_norm_team('Rogerstone'));
 check('away, so our score is the away one', cc25_is_home($r) === false);
 check('recorded as a 1-2 defeat', intval($r['awayScore']) === 1 && intval($r['homeScore']) === 2);
 // Renamed from "League Cup R1" once the official record showed this is the Gwent
 // Premier Combination CUP — a different competition from the men's league cup,
 // which carried the same label.
 check('it carries the cup competition', ($r['competition'] ?? '') === 'Gwent Premier Cup R1');
+
+// The home league defeat to Croesyceiliog — the other orientation, because a
+// score read off the wrong end looks perfectly plausible on an away row alone.
+$h = $by_date($res, '2026-08-15');
+check('the Croesyceiliog league game is there', $h && cc25_norm_team(cc25_opponent($h)['opponent']) === cc25_norm_team('Croesyceiliog'));
+check('home, so our score is the home one', cc25_is_home($h) === true);
+check('recorded as a 1-2 defeat at home', intval($h['homeScore']) === 1 && intval($h['awayScore']) === 2);
 
 // A played row is a result, not a fixture — it must not appear in both.
 $ups = cc25_upcoming(array(), 'reserves', 30);
@@ -124,7 +137,10 @@ $merged = cc25_results(array('results' => array(array(
     'homeAway' => 'A', 'homeTeam' => 'Rogerstone', 'awayTeam' => 'Cwmbran Celtic',
     'homeScore' => 2, 'awayScore' => 1, 'team' => 'reserves',
 ))), 'reserves');
-check('a result the feed already has is not duplicated', count($merged) === 1);
+$rogerstone = array_filter($merged, function ($f) {
+    return cc25_norm_team(cc25_opponent($f)['opponent']) === cc25_norm_team('Rogerstone');
+});
+check('a result the feed already has is not duplicated', count($rogerstone) === 1);
 
 /* -- The hero countdown: next game AT OUR GROUND, either first team -----------
  * The homepage heading promises "Matchday at the Motazone Arena" and then counts

@@ -1297,7 +1297,7 @@ function cc25_static_fixtures_static() {
             'badge'  => array('Res', 'tk-team-r'),
             'list'   => array(
                 array('2026-08-07', 'Rogerstone', false, 'Gwent Premier Cup R1', array(1, 2)),
-                array('2026-08-15', 'Croesyceiliog', true, 'League'),
+                array('2026-08-15', 'Croesyceiliog', true, 'League', array(1, 2)),
                 array('2026-08-21', 'Rogerstone', true, 'League'),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
                 array('2026-09-05', 'Tredegar Town', false, 'League'),
@@ -1994,6 +1994,73 @@ function cc25_season_matches_static() {
     return array(
         array(
             'team' => 'reserves',
+            'date' => '2026-08-15', 'time' => '14:30', 'opp' => 'Croesyceiliog', 'home' => true, 'cc' => 1, 'oc' => 2,
+            'comp' => 'Autocentre Gwent Premier Combination League', 'round' => 'Round 1',
+            'venue' => 'Motazone Arena, Cwmbran', 'att' => 0,
+            // The API carries no officials for this game; the printed report does.
+            'ref' => 'Shaun Colin Knox', 'ar1' => '', 'ar2' => '',
+            'captain' => 'Jamie Pring', 'opp_captain' => 'Kofi Williams',
+            'starters' => array(
+                array(1, 'Jamie Pring', 'GK'), array(2, 'Bailey Goodall'), array(3, 'Brooklyn Lee'),
+                array(5, 'Jamie Williams'), array(6, 'Evan Prosser'), array(7, 'Sam Smith'),
+                array(8, 'Ethan Hooper'), array(9, 'Daniel Madge'), array(10, 'Jack Prosser'),
+                array(11, 'Daniel Camaj'), array(16, 'Jacob Cook'),
+            ),
+            'subs' => array(
+                array(4, 'Cam Williams'), array(14, 'Joe Barber'), array(15, 'Luke Betts'),
+                array(17, 'Harri Pritchard'), array(18, 'Tadiwa Chidembo'),
+            ),
+            'opp_starters' => array(
+                array(1, 'Harley James', 'GK'), array(2, 'Jake West'), array(3, 'Shay Jones'),
+                array(4, 'Mak James'), array(5, 'Logan Mulcahy'), array(6, 'Evan Haines'),
+                array(7, 'Kenny Hurford'), array(8, 'Kofi Williams'), array(9, 'Oscar Balkwill'),
+                array(10, 'Sam Leek'), array(11, 'Hari Holtham'),
+            ),
+            // Oliver Williams comes from the printed report. The API returns him as
+            // "N/A" with hideProfile set — a redaction, not a missing player — so an
+            // import of this game would drop the name and the substitution with it.
+            'opp_subs' => array(
+                array(12, 'Maxwell Wright'), array(14, 'Morgan Meredith'),
+                array(15, 'Oliver Williams'), array(16, 'Samuel Jackson'),
+            ),
+            'subs_made' => array(
+                array('min' => 57, 'off' => 'Jack Prosser',  'on' => 'Joe Barber'),
+                array('min' => 58, 'off' => 'Daniel Madge',  'on' => 'Luke Betts'),
+                array('min' => 75, 'off' => 'Brooklyn Lee',  'on' => 'Cam Williams'),
+            ),
+            'opp_subs_made' => array(
+                array('min' => '45+4', 'off' => 'Evan Haines',   'on' => 'Morgan Meredith'),
+                array('min' => 67,     'off' => 'Mak James',     'on' => 'Maxwell Wright'),
+                array('min' => 77,     'off' => 'Kenny Hurford', 'on' => 'Oliver Williams'),
+            ),
+            'goals' => array(
+                array('scorer' => 'Sam Smith', 'assist' => 'Daniel Madge', 'min' => 11),
+            ),
+            'opp_goals' => array(
+                array('scorer' => 'Oscar Balkwill', 'assist' => 'Sam Leek',      'min' => 37),
+                array('scorer' => 'Oscar Balkwill', 'assist' => 'Kenny Hurford', 'min' => 66),
+            ),
+            'cards' => array(
+                array('player' => 'Jamie Williams', 'type' => 'y', 'min' => 41, 'reason' => 'Unsporting behaviour'),
+                array('player' => 'Bailey Goodall', 'type' => 'y', 'min' => 45, 'reason' => 'Unsporting behaviour'),
+            ),
+            'opp_cards' => array(
+                array('player' => 'Kofi Williams', 'type' => 'y', 'min' => 20, 'reason' => 'Unsporting behaviour'),
+                array('player' => 'Logan Mulcahy', 'type' => 'y', 'min' => 31, 'reason' => 'Unsporting behaviour'),
+            ),
+            'staff' => array(
+                array('role' => 'Coach', 'name' => 'Matt Hewkins'),
+                array('role' => 'Coach', 'name' => 'Jack Shepard'),
+                array('role' => 'Coach', 'name' => 'Jacob Pritchard'),
+            ),
+            'opp_staff' => array(array('role' => 'Team Manager', 'name' => 'Wayne James')),
+            // From the official COMET record. No eyewitness detail — that is for
+            // whoever was at the Motazone to add.
+            'report' => "Croesyceiliog turned the Reserves' league opener around at the Motazone Arena, coming from behind to take the first points of the season back down the road.\n\nCeltic led inside twelve minutes, Sam Smith finishing a Daniel Madge pass, and held the lead for the best part of half an hour while the game turned scrappy — Kofi Williams booked on 20, Logan Mulcahy on 31. Then Oscar Balkwill levelled on 37 from Sam Leek's ball, and by the break Jamie Williams and Bailey Goodall had been cautioned too. Half-time: 1-1.\n\nBalkwill got the second on 66, this time set up by Kenny Hurford. Celtic had already gone to the bench — Joe Barber on for Jack Prosser on 57, Luke Betts for Madge a minute later — and Cam Williams replaced Brooklyn Lee on 75, but the equaliser never came.\n\nJamie Pring captained the side from goal; Shaun Colin Knox refereed.",
+            'report_by' => '',
+        ),
+        array(
+            'team' => 'reserves',
             'date' => '2026-08-07', 'time' => '19:30', 'opp' => 'Rogerstone', 'home' => false, 'cc' => 1, 'oc' => 2,
             'comp' => 'Gwent Premier Combination Cup', 'round' => 'Round 1',
             'venue' => 'Rogerstone Fugitives Stadium, Rogerstone', 'att' => 0,
@@ -2191,35 +2258,49 @@ function cc25_season_matches_static() {
 /** The Men's 1st Team squad, grouped by role, as [name, card-image slug].
  * Single source for the squad page and match-report player links. */
 /**
- * The Reserves squad.
+ * The Reserves squad: everyone named on a team sheet so far this season.
  *
- * Seeded from the 7 August Gwent Premier Combination Cup tie at Rogerstone — the
- * first game of their season and the only squad list on record so far. Squad
- * numbers and the one known position come from that team sheet; nothing here is
- * guessed. Add players as they appear.
+ * Deliberately no squad number. The list was seeded from the 7 August cup tie at
+ * Rogerstone, where the numbers looked permanent; the 15 August league game
+ * against Croesyceiliog showed they are not. Only Ethan Hooper (8) and Jacob Cook
+ * (16) wore the same shirt twice — Sam Smith went 9 to 7, Daniel Madge 18 to 9,
+ * Joe Barber 7 to 14. At this level the shirts are handed out on the day, so a
+ * number on a squad card would be true of one match and wrong from the next, and
+ * two team sheets cannot both be honoured without printing duplicates. The number
+ * a player actually wore is on each match report, which is the only place it means
+ * anything. Same reasoning as cc25_vets_squad().
  *
- * Ordered by squad number, which is how a team sheet reads. 'pos' is '' for
- * everyone the record doesn't place — an invented position would look exactly as
- * authoritative as a real one.
+ * Ordered alphabetically by surname, like the Vets. 'pos' is '' for everyone the
+ * record doesn't place — an invented position would look exactly as authoritative
+ * as a real one.
  */
 function cc25_reserves_squad() {
     return array(
-        array('no' => 1,  'name' => 'Samuel Walsh',          'pos' => 'GK'),
-        array('no' => 2,  'name' => 'Gethin Phillips',       'pos' => ''),
-        array('no' => 3,  'name' => 'Tobias Williams-Dunne', 'pos' => ''),
-        array('no' => 4,  'name' => 'Zachary Benjamin Fry',  'pos' => ''),
-        array('no' => 5,  'name' => 'Rhys Jones',            'pos' => ''),
-        array('no' => 6,  'name' => 'Harri Pritchard',       'pos' => ''),
-        array('no' => 7,  'name' => 'Joe Barber',            'pos' => ''),
-        array('no' => 8,  'name' => 'Ethan Hooper',          'pos' => ''),
-        array('no' => 9,  'name' => 'Sam Smith',             'pos' => ''),
-        array('no' => 10, 'name' => 'Luke Betts',            'pos' => ''),
-        array('no' => 11, 'name' => 'Charlie Waters',        'pos' => ''),
-        array('no' => 14, 'name' => 'Evan Harvey',           'pos' => ''),
-        array('no' => 15, 'name' => 'Jack Shepard',          'pos' => ''),
-        array('no' => 16, 'name' => 'Jacob Cook',            'pos' => ''),
-        array('no' => 17, 'name' => 'Noah Willis',           'pos' => ''),
-        array('no' => 18, 'name' => 'Daniel Madge',          'pos' => ''),
+        array('name' => 'Joe Barber',            'pos' => ''),
+        array('name' => 'Luke Betts',            'pos' => ''),
+        array('name' => 'Daniel Camaj',          'pos' => ''),
+        array('name' => 'Tadiwa Chidembo',       'pos' => ''),
+        array('name' => 'Jacob Cook',            'pos' => ''),
+        array('name' => 'Zachary Benjamin Fry',  'pos' => ''),
+        array('name' => 'Bailey Goodall',        'pos' => ''),
+        array('name' => 'Evan Harvey',           'pos' => ''),
+        array('name' => 'Ethan Hooper',          'pos' => ''),
+        array('name' => 'Rhys Jones',            'pos' => ''),
+        array('name' => 'Brooklyn Lee',          'pos' => ''),
+        array('name' => 'Daniel Madge',          'pos' => ''),
+        array('name' => 'Gethin Phillips',       'pos' => ''),
+        array('name' => 'Jamie Pring',           'pos' => 'GK'),
+        array('name' => 'Harri Pritchard',       'pos' => ''),
+        array('name' => 'Evan Prosser',          'pos' => ''),
+        array('name' => 'Jack Prosser',          'pos' => ''),
+        array('name' => 'Jack Shepard',          'pos' => ''),
+        array('name' => 'Sam Smith',             'pos' => ''),
+        array('name' => 'Samuel Walsh',          'pos' => 'GK'),
+        array('name' => 'Charlie Waters',        'pos' => ''),
+        array('name' => 'Cam Williams',          'pos' => ''),
+        array('name' => 'Jamie Williams',        'pos' => ''),
+        array('name' => 'Tobias Williams-Dunne', 'pos' => ''),
+        array('name' => 'Noah Willis',           'pos' => ''),
     );
 }
 
@@ -2233,6 +2314,49 @@ function cc25_reserves_squad() {
  */
 function cc25_u18s_squad() {
     return array();
+}
+
+/**
+ * The Men's Vets (Over-40s) squad.
+ *
+ * The registered WVFA squad, in the order the registration list gives them —
+ * alphabetical by surname. 'id' is the player's FAW/COMET registration number,
+ * kept so these players can be matched to the match record the day the Vets
+ * appear in the feed; it is never shown on the page. Deliberately no 'no' or
+ * 'pos': the Vets have no squad numbers on record and an invented position
+ * would look exactly as authoritative as a real one.
+ */
+function cc25_vets_squad() {
+    return array(
+        array('id' => 669586,  'name' => 'Jonathan Behr'),
+        array('id' => 1062929, 'name' => 'Paul Dummett'),
+        array('id' => 1305026, 'name' => 'James Edwards'),
+        array('id' => 25712,   'name' => 'Martyn Graham John Evans'),
+        array('id' => 1104797, 'name' => 'Ben Felvud'),
+        array('id' => 34189,   'name' => 'David Michael Fullagar'),
+        array('id' => 1305030, 'name' => 'John Gibbs'),
+        array('id' => 28662,   'name' => 'Ward Griffiths'),
+        array('id' => 67242,   'name' => 'Matthew Holyfield'),
+        array('id' => 36199,   'name' => 'Thomas Andrew James'),
+        array('id' => 1305024, 'name' => 'Jason Anthony Jones'),
+        array('id' => 1304676, 'name' => 'Daniel Kendall'),
+        array('id' => 1283920, 'name' => 'Jonathan Lowndes'),
+        array('id' => 24145,   'name' => 'Kieran Masterson'),
+        array('id' => 34193,   'name' => 'Sean Matthews'),
+        array('id' => 14340,   'name' => 'Alexander Pritchard'),
+        array('id' => 298471,  'name' => 'Andy Rees'),
+        array('id' => 151731,  'name' => 'Richmond Rice'),
+        array('id' => 25799,   'name' => 'Paul Scarfi'),
+        array('id' => 28653,   'name' => 'Peter Scarfi'),
+        array('id' => 636184,  'name' => 'Gareth Andrew Shadbolt'),
+        array('id' => 22960,   'name' => 'Gareth Stacey'),
+        array('id' => 68600,   'name' => 'Jonathan Tattershall'),
+        array('id' => 14346,   'name' => 'Dean Taylor'),
+        array('id' => 80713,   'name' => 'Paul Taylor'),
+        array('id' => 1062972, 'name' => 'Gareth Williams'),
+        array('id' => 670347,  'name' => 'Nicholas Wilson'),
+        array('id' => 26497,   'name' => 'Robert Yapp'),
+    );
 }
 
 /** Who has captained the Reserves. Marked on the squad cards. */
