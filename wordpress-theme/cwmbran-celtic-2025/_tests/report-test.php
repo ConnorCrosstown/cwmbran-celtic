@@ -101,7 +101,16 @@ check('and the two are not the same link', $men['report'] !== $res['report']);
 check('a bare date means the men', cc25_parse_match_slug('2026-07-28') === array('2026-07-28', 'mens'));
 check('a team suffix is read', cc25_parse_match_slug('2026-08-07-reserves') === array('2026-08-07', 'reserves'));
 check('the women are read too', cc25_parse_match_slug('2026-10-11-womens') === array('2026-10-11', 'womens'));
-check('an unknown team falls back to the men', cc25_parse_match_slug('2026-08-07-vets') === array('2026-08-07', 'mens'));
+// Every side in the registry must survive the round trip. This used to name the
+// Vets as its example of an unknown team, so the assertion went on passing for
+// the wrong reason once they had games of their own: a Vets report would have
+// been served the men's match instead of a 404.
+foreach (array_keys(cc25_fx_teams()) as $cc25_tk) {
+    check("$cc25_tk survives the slug round trip",
+        cc25_parse_match_slug(cc25_match_slug('2026-08-16', $cc25_tk)) === array('2026-08-16', $cc25_tk));
+}
+check('a team outside the registry falls back to the men',
+    cc25_parse_match_slug('2026-08-07-basketball') === array('2026-08-07', 'mens'));
 check('junk gives no date', cc25_parse_match_slug('nonsense') === array('', 'mens'));
 check('an empty value gives no date', cc25_parse_match_slug('') === array('', 'mens'));
 check('a half-written date is rejected', cc25_parse_match_slug('2026-08') === array('', 'mens'));

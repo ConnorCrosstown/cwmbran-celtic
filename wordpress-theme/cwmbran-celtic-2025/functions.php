@@ -1117,6 +1117,7 @@ function cc25_crest($feed, $name, $px) {
 function cc25_opp_crest_file($name) {
     $map = array(
         'Croesyceiliog' => 'croesyceiliog.png',
+        'Tata Steel United' => 'tata-steel-united.png',
         'Abercarn United' => 'abercarn-united.png',
         'Tredegar Town' => 'tredegar-town.png',
         'Chepstow Town' => 'chepstow-town.png',
@@ -1453,7 +1454,7 @@ function cc25_static_fixtures_static() {
             'title'  => "Men's Vets",
             'badge'  => array('O40', 'tk-team-v'),
             'list'   => array(
-                array('2026-08-16', 'Tata Steel United', true, 'Workwear Supermarket O40s Cup (R1)'),
+                array('2026-08-16', 'Tata Steel United', true, 'Workwear Supermarket O40s Cup (R1)', array(2, 2)),
             ),
         ),
     );
@@ -1993,6 +1994,62 @@ function cc25_merge_match_records($records, $static) {
 function cc25_season_matches_static() {
     return array(
         array(
+            'team' => 'vets',
+            'date' => '2026-08-16', 'time' => '14:00', 'opp' => 'Tata Steel United', 'home' => true, 'cc' => 2, 'oc' => 2,
+            'comp' => 'Workwear Supermarket O40s Cup', 'round' => 'Round 1',
+            // The printed report leaves attendance blank rather than recording a zero.
+            'venue' => 'Motazone Arena, Cwmbran', 'att' => 0,
+            // COMET match 108096213, cross-checked against the printed report. The API
+            // carries no officials for this game and the printed report does, which is
+            // where the referee comes from; shirts 2 and 6 are withheld profiles ("N/A",
+            // hideProfile) that the printed report names.
+            'ref' => 'Tom Wise', 'ar1' => '', 'ar2' => '',
+            'captain' => 'Dean Taylor', 'opp_captain' => 'Lee McLachlan',
+            'starters' => array(
+                array(1, 'Paul Taylor', 'GK'), array(2, 'Jason Jones'), array(3, 'Paul Scarfi'),
+                array(4, 'Dean Taylor'), array(6, 'Jonathan Lowndes'), array(7, 'Martyn Graham John Evans'),
+                array(8, 'Gareth Stacey'), array(9, 'David Fullagar'), array(10, 'Sean Matthews'),
+                array(11, 'Gareth Williams'), array(14, 'Michael Phillips'),
+            ),
+            'subs' => array(
+                array(5, 'Jonathan Tattershall'), array(12, 'Kieran Masterson'), array(15, 'Peter Scarfi'),
+                array(16, 'Ward Griffiths'), array(17, 'Richmond Rice'),
+            ),
+            'opp_starters' => array(
+                array(1, 'Damian John Turner', 'GK'), array(2, 'Michael James Lewis'), array(3, 'Matthew Hare'),
+                array(4, 'Simon Hanford'), array(5, 'Gavin Jeffries'), array(6, 'Lee McLachlan'),
+                array(7, 'Leon Murphy'), array(8, 'Dahi Al-Wadi'), array(10, 'Richard Williams'),
+                array(11, 'Matthew Johnson'), array(18, 'Anthony Cole'),
+            ),
+            'opp_subs' => array(
+                array(14, 'Andrew Terrance Cole'), array(20, 'Gavin Chappell'),
+            ),
+            // Deliberately empty, not forgotten. This report records no substitutions
+            // at all — the two benches are listed and the goals are timed, but who
+            // came on, when, and for whom is not in the record. Peter Scarfi and
+            // Gavin Chappell are known to have played because they scored; the rest
+            // of both benches cannot be told apart from unused substitutes, and
+            // guessing would read exactly as authoritative as the timed facts above.
+            'subs_made' => array(),
+            'opp_subs_made' => array(),
+            'goals' => array(
+                array('scorer' => 'Peter Scarfi',   'assist' => 'Gareth Stacey', 'min' => 51),
+                array('scorer' => 'David Fullagar', 'assist' => 'Peter Scarfi',  'min' => '90+3'),
+            ),
+            'opp_goals' => array(
+                array('scorer' => 'Gavin Chappell',   'assist' => 'Lee McLachlan',   'min' => 60),
+                array('scorer' => 'Richard Williams', 'assist' => 'Matthew Johnson', 'min' => 80),
+            ),
+            'cards' => array(),
+            'opp_cards' => array(),
+            'staff' => array(array('role' => 'Coach', 'name' => 'Kieran Masterson')),
+            'opp_staff' => array(array('role' => 'Team Manager', 'name' => 'Richard Williams')),
+            // Written from the official record only. Nobody's account of the game is
+            // in it, so nothing here is anybody's account of the game.
+            'report' => "The Vets began their Workwear Supermarket O40s Cup campaign with a point saved in the third minute of stoppage time, David Fullagar levelling at the Motazone Arena after Tata Steel United had twice been in front of them on the scoreboard.\n\nNothing separated the sides through a goalless first half. Six minutes after the interval Peter Scarfi put Celtic ahead from Gareth Stacey's pass, and the lead lasted nine minutes: Gavin Chappell equalised on the hour, set up by the Tata Steel captain Lee McLachlan. Richard Williams turned the tie around on 80 from Matthew Johnson's ball, and with the cup exit in sight Fullagar met a Scarfi pass in the 93rd minute to make it 2-2.\n\nBoth of Celtic's goals came from the same pair, and both of Tata Steel's from their substitute and their number ten. Neither referee Tom Wise nor the record shows a single card in the ninety-three minutes.\n\nDean Taylor captained the side, with Paul Taylor in goal.",
+            'report_by' => '',
+        ),
+        array(
             'team' => 'reserves',
             'date' => '2026-08-15', 'time' => '14:30', 'opp' => 'Croesyceiliog', 'home' => true, 'cc' => 1, 'oc' => 2,
             'comp' => 'Autocentre Gwent Premier Combination League', 'round' => 'Round 1',
@@ -2325,6 +2382,13 @@ function cc25_u18s_squad() {
  * appear in the feed; it is never shown on the page. Deliberately no 'no' or
  * 'pos': the Vets have no squad numbers on record and an invented position
  * would look exactly as authoritative as a real one.
+ *
+ * Names are the ones the team sheets use, not the fuller ones the registration
+ * list carries, because the squad and the match record are joined on the name —
+ * the same rule cc25_reserves_squad() follows, where all 25 match exactly. The
+ * registration numbers above are what makes that safe to do: they, not the
+ * spelling, are what identifies the player. Michael Phillips (31745) came from a
+ * team sheet rather than the registration list, which had never listed him.
  */
 function cc25_vets_squad() {
     return array(
@@ -2333,16 +2397,17 @@ function cc25_vets_squad() {
         array('id' => 1305026, 'name' => 'James Edwards'),
         array('id' => 25712,   'name' => 'Martyn Graham John Evans'),
         array('id' => 1104797, 'name' => 'Ben Felvud'),
-        array('id' => 34189,   'name' => 'David Michael Fullagar'),
+        array('id' => 34189,   'name' => 'David Fullagar'),
         array('id' => 1305030, 'name' => 'John Gibbs'),
         array('id' => 28662,   'name' => 'Ward Griffiths'),
         array('id' => 67242,   'name' => 'Matthew Holyfield'),
         array('id' => 36199,   'name' => 'Thomas Andrew James'),
-        array('id' => 1305024, 'name' => 'Jason Anthony Jones'),
+        array('id' => 1305024, 'name' => 'Jason Jones'),
         array('id' => 1304676, 'name' => 'Daniel Kendall'),
         array('id' => 1283920, 'name' => 'Jonathan Lowndes'),
         array('id' => 24145,   'name' => 'Kieran Masterson'),
         array('id' => 34193,   'name' => 'Sean Matthews'),
+        array('id' => 31745,   'name' => 'Michael Phillips'),
         array('id' => 14340,   'name' => 'Alexander Pritchard'),
         array('id' => 298471,  'name' => 'Andy Rees'),
         array('id' => 151731,  'name' => 'Richmond Rice'),
@@ -2413,6 +2478,18 @@ function cc25_player_stats($team = 'mens') {
         // A player counts an appearance if they started or actually came on (not an unused sub).
         $cc25_on = array();
         foreach (($m['subs_made'] ?? array()) as $sm) { $cc25_on[strtolower(trim($sm['on']))] = true; }
+        // A substitute who scored, assisted or was booked was plainly on the pitch,
+        // whether or not the change itself was recorded. Some reports list both
+        // benches and time every goal but never record the substitutions — the Vets'
+        // O40s Cup tie is one — and without this the man who came on and scored ends
+        // the season with a goal and no appearance to have scored it in. This only
+        // ever recovers an appearance the record already evidences; it never invents
+        // one for a bench player who did nothing on it.
+        foreach (($m['goals'] ?? array()) as $g) {
+            $cc25_on[strtolower(trim($g['scorer']))] = true;
+            if (!empty($g['assist'])) $cc25_on[strtolower(trim($g['assist']))] = true;
+        }
+        foreach (($m['cards'] ?? array()) as $c) { $cc25_on[strtolower(trim($c['player']))] = true; }
         foreach (($m['starters'] ?? array()) as $p) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; }
         foreach (($m['subs'] ?? array()) as $p) { if (isset($cc25_on[strtolower(trim($p[1]))])) { $k = $touch($s, $p[1]); if ($k) $s[$k]['apps']++; } }
         foreach (($m['goals'] ?? array()) as $g) {
@@ -2492,13 +2569,57 @@ function cc25_match_slug($date, $team = 'mens') {
     return $team === 'mens' || $team === '' ? $date : $date . '-' . $team;
 }
 
-/** Split a ?g= value back into [date, team]. */
+/**
+ * Split a ?g= value back into [date, team].
+ *
+ * The teams come from cc25_fx_teams() rather than a list written out here. A
+ * hardcoded three — mens, reserves, womens — meant any other side's report
+ * quietly resolved to the men's game instead of its own, which is a wrong page
+ * rather than a missing one. The pattern matches every key that registry can
+ * hold, digits and underscores included, so "u18s" and "womens_res" survive the
+ * round trip as well as "vets".
+ */
 function cc25_parse_match_slug($g) {
     $g = strtolower(trim((string) $g));
-    if (!preg_match('/^(\d{4}-\d{2}-\d{2})(?:-([a-z]+))?$/', $g, $mm)) return array('', 'mens');
-    $team = $mm[2] ?? 'mens';
-    if (!in_array($team, array('mens', 'reserves', 'womens'), true)) $team = 'mens';
+    if (!preg_match('/^(\d{4}-\d{2}-\d{2})(?:-([a-z][a-z0-9_]*))?$/', $g, $mm)) return array('', 'mens');
+    $team  = isset($mm[2]) && $mm[2] !== '' ? $mm[2] : 'mens';
+    $teams = function_exists('cc25_fx_teams') ? array_keys(cc25_fx_teams()) : array('mens', 'reserves', 'womens');
+    if (!in_array($team, $teams, true)) $team = 'mens';
     return array($mm[1], $team);
+}
+
+/**
+ * A match minute as it should read: "51", or "90+3" for stoppage time.
+ *
+ * intval() was doing this job, which is safe but lossy — it turned a 90+3rd
+ * minute equaliser into a 90th minute one. Anything that isn't a minute, or a
+ * minute plus stoppage time, still comes back as a plain integer, so this stays
+ * safe to print.
+ */
+function cc25_min_label($min) {
+    if (preg_match('/^\s*(\d{1,3})\s*\+\s*(\d{1,2})\s*$/', (string) $min, $mm)) {
+        return $mm[1] . '+' . $mm[2];
+    }
+    return (string) intval($min);
+}
+
+/** The characters a ?g= may legitimately contain, given the slug format above. */
+function cc25_clean_match_slug($g) {
+    return preg_replace('/[^0-9a-z_-]/', '', strtolower((string) $g));
+}
+
+/**
+ * The [date, team] this request's ?g= names, or ['', 'mens'] when there is none.
+ *
+ * One place, because the canonical URL, the share preview and the schema each
+ * used to strip ?g= down to digits and dashes and then ask for "that date". That
+ * threw the team away, so every non-men's report advertised a different game
+ * than the one on the page — the Reserves' Rogerstone tie described itself as
+ * the Croesyceiliog match, which was simply the newest game in the list.
+ */
+function cc25_request_match_slug() {
+    if (!isset($_GET['g'])) return array('', 'mens');
+    return cc25_parse_match_slug(cc25_clean_match_slug($_GET['g']));
 }
 /** One-line, factual summary of a match — used for share/meta descriptions. */
 function cc25_match_summary($m) {
@@ -2529,8 +2650,8 @@ function cc25_share_meta() {
     $slug = get_post_field('post_name', get_queried_object_id());
     switch ($slug) {
         case 'match-report':
-            $g = isset($_GET['g']) ? preg_replace('/[^0-9-]/', '', $_GET['g']) : '';
-            $m = cc25_get_match($g);
+            list($cc25_sg, $cc25_st) = cc25_request_match_slug();
+            $m = cc25_get_match($cc25_sg, $cc25_st);
             if ($m) {
                 $home = !empty($m['home']); $opp = $m['opp'];
                 $line = $home

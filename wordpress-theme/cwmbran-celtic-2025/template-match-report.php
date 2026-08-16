@@ -10,12 +10,12 @@ $cc25_home = home_url('/');
 // The team travels inside ?g= — "2026-08-07-reserves" — because the CDN's cache
 // key ignores every parameter but g, so a separate ?t= was dropped and served the
 // men's cached report. A bare date still means the men's first team.
-$cc25_raw = isset($_GET['g']) ? preg_replace('/[^0-9a-z-]/', '', strtolower($_GET['g'])) : '';
-list($cc25_g, $cc25_t) = cc25_parse_match_slug($cc25_raw);
-// Honour ?t= as well, for any link already shared in that form.
+list($cc25_g, $cc25_t) = cc25_request_match_slug();
+// Honour ?t= as well, for any link already shared in that form. The teams come
+// from the registry so a side added there needs no edit here.
 if (isset($_GET['t'])) {
-    $cc25_alt = preg_replace('/[^a-z]/', '', strtolower($_GET['t']));
-    if (in_array($cc25_alt, array('mens', 'reserves', 'womens'), true)) $cc25_t = $cc25_alt;
+    $cc25_alt = preg_replace('/[^a-z0-9_]/', '', strtolower($_GET['t']));
+    if (in_array($cc25_alt, array_keys(cc25_fx_teams()), true)) $cc25_t = $cc25_alt;
 }
 $m = cc25_get_match($cc25_g, $cc25_t);
 ?>
@@ -35,14 +35,17 @@ $m = cc25_get_match($cc25_g, $cc25_t);
   $cc25_events = function ($goals, $cards, $subs) {
       $ev = array();
       foreach ($goals as $g) { $ev[$g['scorer']][] = array('t' => 'goal', 'min' => $g['min'], 'pen' => !empty($g['pen'])); }
-      foreach ($cards as $c) { $ev[$c['player']][] = array('t' => (($c['type'] ?? 'y') === 'r' ? 'red' : 'yellow'), 'min' => intval($c['min'] ?? 0)); }
-      foreach ($subs as $s) { $ev[$s['off']][] = array('t' => 'off', 'min' => intval($s['min'])); }
+      // Minutes are carried through as written, stoppage time included, and made
+      // safe to print where they are printed — intval() here silently turned a
+      // 45+4 into a 45 before the chip ever saw it.
+      foreach ($cards as $c) { $ev[$c['player']][] = array('t' => (($c['type'] ?? 'y') === 'r' ? 'red' : 'yellow'), 'min' => $c['min'] ?? 0); }
+      foreach ($subs as $s) { $ev[$s['off']][] = array('t' => 'off', 'min' => $s['min']); }
       return $ev;
   };
   // Minute a bench player came on (name -> min), and who they replaced.
   $cc25_onmap = function ($subs) {
       $on = array();
-      foreach ($subs as $s) { $on[$s['on']] = array('min' => intval($s['min']), 'for' => $s['off']); }
+      foreach ($subs as $s) { $on[$s['on']] = array('min' => $s['min'], 'for' => $s['off']); }
       return $on;
   };
 
@@ -51,10 +54,10 @@ $m = cc25_get_match($cc25_g, $cc25_t);
       if (empty($ev[$name])) return '';
       $out = '';
       foreach ($ev[$name] as $e) {
-          if ($e['t'] === 'goal') $out .= '<span class="chip goal" title="Goal">&#9917;' . ($e['pen'] ? ' <em>P</em>' : '') . ' ' . intval($e['min']) . "&rsquo;</span>";
-          elseif ($e['t'] === 'yellow') $out .= '<span class="chip yc" title="Yellow card">' . intval($e['min']) . "&rsquo;</span>";
-          elseif ($e['t'] === 'red') $out .= '<span class="chip rc" title="Red card">' . intval($e['min']) . "&rsquo;</span>";
-          elseif ($e['t'] === 'off') $out .= '<span class="chip off" title="Substituted off">&darr; ' . intval($e['min']) . "&rsquo;</span>";
+          if ($e['t'] === 'goal') $out .= '<span class="chip goal" title="Goal">&#9917;' . ($e['pen'] ? ' <em>P</em>' : '') . ' ' . cc25_min_label($e['min']) . "&rsquo;</span>";
+          elseif ($e['t'] === 'yellow') $out .= '<span class="chip yc" title="Yellow card">' . cc25_min_label($e['min']) . "&rsquo;</span>";
+          elseif ($e['t'] === 'red') $out .= '<span class="chip rc" title="Red card">' . cc25_min_label($e['min']) . "&rsquo;</span>";
+          elseif ($e['t'] === 'off') $out .= '<span class="chip off" title="Substituted off">&darr; ' . cc25_min_label($e['min']) . "&rsquo;</span>";
       }
       return $out;
   };
@@ -95,10 +98,18 @@ $m = cc25_get_match($cc25_g, $cc25_t);
           foreach ($subs as $p) {
               $no = intval($p[0]); $nm = $p[1];
               $on = isset($onmap[$nm]) ? $onmap[$nm] : null;
-              echo '<li' . ($on ? '' : ' class="unused"') . '><span class="no">' . $no . '</span>' . $cc25_pname($nm, $is_own)
-                 . '<span class="evs">' . ($on
-                     ? '<span class="chip on" title="Came on">&uarr; ' . intval($on['min']) . "&rsquo;</span>"
-                     : '<span class="chip none">Unused</span>') . '</span></li>';
+              $chips = $cc25_chips($nm, $ev);
+              // "Unused" is a claim about the game, not a way of saying the record
+              // is silent. A substitute who scored plainly came on, whether or not
+              // the change was written down — and calling him unused contradicts
+              // the goal credited to him further up this same page. He is shown
+              // with his goal and without a minute, which is exactly what is known.
+              $played = $on || $chips !== '';
+              echo '<li' . ($played ? '' : ' class="unused"') . '><span class="no">' . $no . '</span>' . $cc25_pname($nm, $is_own)
+                 . '<span class="evs">'
+                 . ($on ? '<span class="chip on" title="Came on">&uarr; ' . cc25_min_label($on['min']) . "&rsquo;</span>" : '')
+                 . $chips
+                 . ($played ? '' : '<span class="chip none">Unused</span>') . '</span></li>';
           }
           echo '</ul>';
       }
@@ -140,7 +151,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
         <h2 class="mr-h">Goals</h2>
         <ul class="mr-goals">
           <?php foreach ($cc25_tl as $g): $cc25_who = $g['side'] === 'us' ? 'Cwmbran Celtic' : $m['opp']; ?>
-            <li class="mr-goal-<?php echo esc_attr($g['side']); ?>"><span class="mr-min"><?php echo esc_html($g['min']); ?>&rsquo;</span> <span class="mr-gball">&#9917;</span> <b><?php echo esc_html($g['scorer']); ?></b><?php echo !empty($g['pen']) ? ' <em>(pen)</em>' : ''; ?> <span class="mr-goal-team"><?php echo esc_html($cc25_who); ?></span><?php echo !empty($g['assist']) ? ' <span class="mr-assist">assist: ' . esc_html($g['assist']) . '</span>' : ''; ?></li>
+            <li class="mr-goal-<?php echo esc_attr($g['side']); ?>"><span class="mr-min"><?php echo cc25_min_label($g['min']); ?>&rsquo;</span> <span class="mr-gball">&#9917;</span> <b><?php echo esc_html($g['scorer']); ?></b><?php echo !empty($g['pen']) ? ' <em>(pen)</em>' : ''; ?> <span class="mr-goal-team"><?php echo esc_html($cc25_who); ?></span><?php echo !empty($g['assist']) ? ' <span class="mr-assist">assist: ' . esc_html($g['assist']) . '</span>' : ''; ?></li>
           <?php endforeach; ?>
         </ul>
       </div>
@@ -162,7 +173,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
       <div class="mr-block reveal">
         <h2 class="mr-h">Cards</h2>
         <ul class="mr-cards">
-          <?php foreach ($cc25_allcards as $c): ?><li><span class="mr-cardbox <?php echo $c['type'] === 'r' ? 'r' : 'y'; ?>"></span><span class="mr-min"><?php echo intval($c['min']); ?>&rsquo;</span> <b><?php echo esc_html($c['p']); ?></b> <span style="color:var(--muted)">&mdash; <?php echo esc_html($c['t']); ?></span><?php echo $c['reason'] ? ' <span class="mr-creason">(' . esc_html($c['reason']) . ')</span>' : ''; ?></li><?php endforeach; ?>
+          <?php foreach ($cc25_allcards as $c): ?><li><span class="mr-cardbox <?php echo $c['type'] === 'r' ? 'r' : 'y'; ?>"></span><span class="mr-min"><?php echo cc25_min_label($c['min']); ?>&rsquo;</span> <b><?php echo esc_html($c['p']); ?></b> <span style="color:var(--muted)">&mdash; <?php echo esc_html($c['t']); ?></span><?php echo $c['reason'] ? ' <span class="mr-creason">(' . esc_html($c['reason']) . ')</span>' : ''; ?></li><?php endforeach; ?>
         </ul>
       </div>
       <?php endif; ?>
@@ -178,7 +189,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
               if (empty($subs)) return;
               echo '<div class="mr-subcol"><div class="mr-subteam">' . $crest . '<span>' . esc_html($team) . '</span></div><ul class="mr-swaps">';
               foreach ($subs as $s) {
-                  echo '<li><span class="mr-min">' . intval($s['min']) . "&rsquo;</span> "
+                  echo '<li><span class="mr-min">' . cc25_min_label($s['min']) . "&rsquo;</span> "
                      . '<span class="on">&uarr; ' . esc_html($s['on']) . '</span> '
                      . '<span class="offlbl">for</span> <span class="off">' . esc_html($s['off']) . '</span></li>';
               }

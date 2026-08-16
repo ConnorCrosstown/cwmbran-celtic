@@ -111,18 +111,21 @@ check('known opponents are suggested', count($opps) > 20);
 check('TBC is not suggested as an opponent', !in_array('TBC', $opps, true));
 check('the suggestions are sorted', $opps === array_values(array_unique($opps)) && $opps[0] < $opps[count($opps) - 1]);
 /* Every suggested name should resolve to a badge, or the editor's hint lies.
- * Nineteen do not: the Under-18s and Vets arrived with the club's list of 10 Aug
+ * Eighteen do not: the Under-18s and Vets arrived with the club's list of 10 Aug
  * 2026, and the Women's Reserves and Women's U19s with the list of 11 Aug, and
  * most of their opponents have no artwork on file. Those rows show initials,
  * which is handled, and the fixture editor warns when a name has no badge.
  *
- * Listed explicitly rather than the check being relaxed, so a TWENTIETH
+ * Listed explicitly rather than the check being relaxed, so a NINETEENTH
  * badge-less opponent fails here and gets a decision instead of quietly showing
- * initials. Connor is collecting the missing artwork from the club. */
+ * initials. Connor is collecting the missing artwork from the club.
+ *
+ * Tata Steel United came off this list on 16 Aug 2026: the crest is on the FAW's
+ * own record for the game, which is where the rest of these can come from too. */
 $known_gaps = array(
     'Caerleon', 'Caldicot Town Dev', 'Coed Eva Athletic', 'Graig Villa Dino',
     'Llanyrafon', 'Monmouth Town', 'Ponthir',
-    'Riverside Rovers', 'Sifil', 'Tata Steel United',
+    'Riverside Rovers', 'Sifil',
     'Barry Town United', 'Briton Ferry Llansawel', 'Caerphilly Dragons',
     'Cardiff City', 'Cardiff Met', 'North Cardiff Cosmos',
     'Porth Harlequins BGC', 'Swansea City',

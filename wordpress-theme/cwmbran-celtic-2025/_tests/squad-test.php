@@ -159,10 +159,45 @@ check('every Vet has a registration number', count(array_filter($vids)) === coun
 check('no two Vets share a registration number', count($vids) === count(array_unique($vids)));
 check('registration numbers are integers', $vids === array_map('intval', $vids));
 
-/* The Vets are not in the match record, so they must not be picking up another
- * team's stats through a shared name. */
+/* The Vets are now in the match record, so the risk is no longer an empty table
+ * but a shared name pulling another side's numbers across: two Taylors and two
+ * Scarfis here, a Gareth Williams in the Vets and a Gareth Williams elsewhere.
+ * Every Vets stat must be traceable to a Vets team sheet. */
 $vstats = cc25_player_stats('vets');
-check('the Vets have no stats to accidentally show', $vstats === array());
+check('the Vets have stats once they have played', count($vstats) > 0);
+
+$vsheet = array();
+foreach (cc25_season_matches() as $vm) {
+    if (($vm['team'] ?? 'mens') !== 'vets') continue;
+    foreach (array_merge($vm['starters'] ?? array(), $vm['subs'] ?? array()) as $vp) {
+        $vsheet[strtolower(trim($vp[1]))] = true;
+    }
+}
+$vstray = array_diff(array_keys($vstats), array_keys($vsheet));
+check('no Vets stat comes from outside a Vets team sheet'
+      . ($vstray ? ' (stray: ' . implode(', ', $vstray) . ')' : ''), $vstray === array());
+
+/* Squad and match record are joined on the name, so a team sheet naming a player
+ * the squad list spells differently orphans his appearances silently — the page
+ * looks fine and the number is simply wrong. The Reserves' 25 match exactly and
+ * the Vets must too. This is what caught "M. Evans", and Michael Phillips, who
+ * played before the registration list had ever heard of him. */
+$vsheet_names = array();
+foreach (cc25_season_matches() as $vm) {
+    if (($vm['team'] ?? 'mens') !== 'vets') continue;
+    foreach (array_merge($vm['starters'] ?? array(), $vm['subs'] ?? array()) as $vp) $vsheet_names[$vp[1]] = true;
+}
+$vunknown = array_diff(array_keys($vsheet_names), $vnames);
+check('every Vet on a team sheet is in the squad list'
+      . ($vunknown ? ' (missing: ' . implode(', ', $vunknown) . ')' : ''), $vunknown === array());
+
+/* A goal nobody was on the pitch to score is the tell that the appearance rule
+ * has broken — the O40s Cup tie records no substitutions, so the substitute who
+ * scored is only counted through having scored. */
+foreach ($vstats as $vk => $vst) {
+    check("$vk has an appearance to go with their goals",
+          $vst['goals'] === 0 || $vst['apps'] > 0);
+}
 
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);

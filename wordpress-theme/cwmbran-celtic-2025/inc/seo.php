@@ -37,9 +37,12 @@ function cc25_seo_url() {
         if ($u) {
             // Match reports are distinct content at /match-report/?g=<date> — keep
             // the ?g so each report has its own canonical/og:url (not all collapsed
-            // onto the bare page).
+            // onto the bare page). Rebuilt from the parsed slug, so the team stays
+            // in it: stripping g to digits pointed every non-men's report's
+            // canonical at a different game.
             if (is_page() && get_post_field('post_name', get_queried_object_id()) === 'match-report' && !empty($_GET['g'])) {
-                $u = add_query_arg('g', preg_replace('/[^0-9-]/', '', $_GET['g']), $u);
+                list($cc25_cg, $cc25_ct) = cc25_request_match_slug();
+                if ($cc25_cg !== '') $u = add_query_arg('g', cc25_match_slug($cc25_cg, $cc25_ct), $u);
             }
             return $u;
         }
@@ -174,8 +177,8 @@ function cc25_seo_head() {
 
     // Match-report page: a SportsEvent with the final score + line-up context.
     if (is_page() && get_post_field('post_name', get_queried_object_id()) === 'match-report') {
-        $g = isset($_GET['g']) ? preg_replace('/[^0-9-]/', '', $_GET['g']) : '';
-        $m = cc25_get_match($g);
+        list($g, $gt) = cc25_request_match_slug();
+        $m = cc25_get_match($g, $gt);
         if ($m) {
             $home = !empty($m['home']); $opp = $m['opp'];
             $ct = array(

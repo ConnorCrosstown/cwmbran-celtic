@@ -108,7 +108,12 @@ function cc25_comet_person_name($p) {
     // shortName is only spelled out for the club's own players — COMET abbreviates
     // everyone else to "MANSON M.", because we have no detail access to their
     // squads. Fall back to name when it does.
-    $abbreviated = $short !== '' && preg_match('/(^|\s)\p{Lu}\.$/u', $short);
+    //
+    // COMET puts the initial on either side: "TATTERSHALL J." but also "M. EVANS".
+    // Matching only the trailing form let the leading one through unexpanded, so a
+    // Vets team sheet listed a man the club has played for years as "M. Evans" —
+    // a name no squad list or stats table could ever join him to.
+    $abbreviated = $short !== '' && preg_match('/(^|\s)\p{Lu}\.(\s|$)/u', $short);
     $source = ($short !== '' && !$abbreviated) ? $short : $full;
     if ($source === '') return '';
 
