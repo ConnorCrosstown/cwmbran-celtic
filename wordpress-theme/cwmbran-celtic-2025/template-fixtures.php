@@ -65,7 +65,9 @@ get_template_part('template-parts/site-header');
         $home = cc25_is_home($r);
         $cc = intval($home ? ($r['homeScore'] ?? 0) : ($r['awayScore'] ?? 0));
         $op = intval($home ? ($r['awayScore'] ?? 0) : ($r['homeScore'] ?? 0));
-        $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
+        $cc25_frec = cc25_find_match(cc25_date($r['date'] ?? 0, 'Y-m-d'), 'mens');
+        $cc25_fpens = $cc25_frec ? cc25_match_pens($cc25_frec) : null;
+        $wdl = cc25_wdl($cc, $op, $cc25_fpens);
         $mo = cc25_date($r['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
         $rurl = cc25_match_report_url(cc25_date($r['date'] ?? 0, 'Y-m-d'), 'mens'); /* men's results panel */ $rtag = $rurl ? 'a' : 'div'; ?>
         <?php $oppCrest = cc25_crest($feed, $ro['opponent'], 34); // Home team + its score on the left. ?>
@@ -76,8 +78,10 @@ get_template_part('template-parts/site-header');
             <span class="mscore"><?php echo ($home ? $cc : $op) . ' – ' . ($home ? $op : $cc); ?></span>
             <span class="mt right<?php echo $home ? '' : ' is-own'; ?>"><?php echo $home ? $oppCrest : cc25_own_crest(34); ?><span class="nm"><?php echo esc_html($home ? $ro['opponent'] : 'Cwmbran Celtic'); ?></span></span>
           </div>
-          <div><span class="res-badge <?php echo $wdl; ?>"><?php echo strtoupper($wdl); ?></span></div>
-          <div class="mmeta"><div class="comp"><?php echo esc_html($r['competition'] ?? ''); ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span></div>
+          <div><span class="res-badge <?php echo $wdl; ?>"><?php echo cc25_wdl_label($wdl, (bool) $cc25_fpens, true); ?></span></div>
+          <div class="mmeta"><div class="comp"><?php echo esc_html($r['competition'] ?? ''); ?><?php
+            $cc25_fpl = cc25_pens_line($cc25_frec ?: array());
+            echo $cc25_fpl !== '' ? ' <span class="pens">&middot; ' . esc_html($cc25_fpl) . '</span>' : ''; ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span></div>
         </<?php echo $rtag; ?>>
       <?php endforeach; else: ?>
         <p style="color:var(--muted);padding:24px 2px">No results yet — the season is about to kick off.</p>
@@ -122,12 +126,7 @@ get_template_part('template-parts/site-header');
     if ($cc25_k === 'mens') continue;                       // bespoke block above
     if (!isset($cc25_sf[$cc25_k])) continue;                // no fixture list yet
     $cc25_meta = cc25_fx_team_meta($cc25_k);
-    $cc25_squad = '';
-    if ($cc25_meta['squad_label'] !== '') {
-        $cc25_squad = $cc25_meta['squad_slugs']
-            ? cc25_page_url($cc25_meta['squad_slugs'], home_url('/'))
-            : cc25_reserves_url();
-    }
+    $cc25_squad = cc25_fx_squad_url($cc25_k);
     // Control-only PHP tags below sit at column 0: PHP eats the newline after a
     // closing tag, so leading whitespace here would be prepended to the next
     // line's output (unlike the indented control tags in the untouched Men's

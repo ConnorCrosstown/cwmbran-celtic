@@ -331,6 +331,9 @@ nav.main a:hover{color:var(--text)}nav.main a:hover::after,nav.main a.active::af
 .mmeta .ha{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.7rem;padding:3px 9px;border-radius:2px;display:inline-block;margin-top:4px}
 .ha.h{background:rgba(30,58,138,.13);background:color-mix(in srgb,var(--blue) 13%,transparent);color:var(--blue-500)}.ha.a{background:var(--surface-2);color:var(--muted);border:1px solid var(--hair)}
 .res-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:5px;font-family:var(--display);font-size:.8rem;color:#fff}
+/* The P on a badge decided by penalties. The badge is a fixed square, so this
+   rides in the corner rather than widening it and knocking the row out of line. */
+.res-badge sup{font-size:.5rem;line-height:1;margin-left:1px;top:-.4em;position:relative;opacity:.9}
 .res-badge.w{background:var(--win)}.res-badge.d{background:var(--draw)}.res-badge.l{background:var(--loss)}
 .scorers{grid-column:1/-1;font-size:.8rem;color:var(--muted);padding-top:8px;border-top:1px dashed var(--hair);margin-top:6px}
 .scorers b{color:var(--text)}
@@ -1204,6 +1207,11 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .mrfeat-teams .sc{font-family:var(--display);font-weight:800;font-size:2.3rem;line-height:1;color:#fff}
 .mrfeat-teams .sc i{color:var(--on-navy-dim);font-style:normal;margin:0 4px}
 .mrfeat-comp{font-size:.7rem;letter-spacing:.03em;color:var(--on-navy-dim);text-align:center}
+/* The shootout under the featured score, in the gold the site uses for a thing
+   that went our way. Explains the WIN (PENS) badge without opening the report. */
+.mrfeat-pens{font-family:var(--display);font-size:.74rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--gold);text-align:center;margin-top:6px}
+.mrfeat-rb sup{font-size:.7em;top:-.35em;position:relative;margin-left:1px}
 .mrfeat-body{padding:24px 26px;display:flex;flex-direction:column;justify-content:center}
 .mrfeat-body h3{font-size:1.35rem;margin:5px 0 8px;letter-spacing:-.01em}
 .mrfeat-scorers{font-size:.82rem;color:var(--gold-deep);font-weight:600;margin-bottom:10px}

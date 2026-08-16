@@ -267,14 +267,18 @@ if ($cc25_cards): $cc25_multi = count($cc25_cards) > 1; ?>
           $home = cc25_is_home($result);
           $cc = intval($home ? ($result['homeScore'] ?? 0) : ($result['awayScore'] ?? 0));
           $op = intval($home ? ($result['awayScore'] ?? 0) : ($result['homeScore'] ?? 0));
-          $wdl = $cc > $op ? 'w' : ($cc < $op ? 'l' : 'd');
+          $cc25_lrec = cc25_find_match(cc25_date($result['date'] ?? 0, 'Y-m-d'), 'mens');
+          $cc25_lpens = $cc25_lrec ? cc25_match_pens($cc25_lrec) : null;
+          $wdl = cc25_wdl($cc, $op, $cc25_lpens);
         ?>
           <div class="result">
             <div><?php echo cc25_own_crest(58); ?><div class="cn">Cwmbran<br>Celtic</div></div>
             <div class="sc"><?php echo $cc . '–' . $op; ?><small>Full Time</small></div>
             <div><?php echo cc25_crest($feed, $ro['opponent'], 58); ?><div class="cn"><?php echo esc_html($ro['opponent']); ?></div></div>
           </div>
-          <div class="result-foot"><span class="wdl <?php echo $wdl; ?>"><?php echo strtoupper($wdl); ?></span> <?php echo esc_html(cc25_date($result['date'] ?? 0)); ?><?php echo !empty($result['scorers']) ? ' · ' . esc_html($result['scorers']) : ''; ?></div>
+          <div class="result-foot"><span class="wdl <?php echo $wdl; ?>"><?php echo cc25_wdl_label($wdl, (bool) $cc25_lpens, true); ?></span> <?php echo esc_html(cc25_date($result['date'] ?? 0)); ?><?php echo !empty($result['scorers']) ? ' · ' . esc_html($result['scorers']) : ''; ?><?php
+            $cc25_lpl = cc25_pens_line($cc25_lrec ?: array());
+            echo $cc25_lpl !== '' ? ' · ' . esc_html($cc25_lpl) : ''; ?></div>
           <?php $cc25_rrl = cc25_match_report_url(cc25_date($result['date'] ?? 0, 'Y-m-d'), 'mens'); /* men's latest result */ if ($cc25_rrl): ?>
           <a class="panel-more" href="<?php echo esc_url($cc25_rrl); ?>">Full match report &amp; stats &rarr;</a>
           <?php endif; ?>
@@ -312,11 +316,12 @@ if ($cc25_reports):
     $rf   = $cc25_reports[0];
     $rfh  = !empty($rf['home']); $rfopp = $rf['opp'];
     $rfcc = intval($rf['cc']); $rfoc = intval($rf['oc']);
-    $rfwd = $rfcc > $rfoc ? 'w' : ($rfcc < $rfoc ? 'l' : 'd');
+    $rfpens = cc25_match_pens($rf);
+    $rfwd = cc25_wdl($rfcc, $rfoc, $rfpens);
     $rfurl = cc25_match_report_url($rf['date'], $rf['team'] ?? 'mens');
     $rfex  = wp_trim_words(wp_strip_all_tags($rf['report']), 40, ' …');
     $rfsc  = array();
-    foreach (($rf['goals'] ?? array()) as $g) { $rfsc[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . " " . intval($g['min']) . "'"; }
+    foreach (($rf['goals'] ?? array()) as $g) { $rfsc[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . " " . cc25_min_label($g['min']) . "'"; }
 ?>
 <section class="sec" style="padding-top:0" aria-label="Latest match report">
   <div class="wrap">
@@ -327,13 +332,18 @@ if ($cc25_reports):
 
     <a class="mrfeat reveal" href="<?php echo esc_url($rfurl); ?>">
       <div class="mrfeat-score">
-        <span class="mrfeat-rb <?php echo $rfwd; ?>"><?php echo $rfwd === 'w' ? 'WIN' : ($rfwd === 'l' ? 'LOSS' : 'DRAW'); ?></span>
+        <span class="mrfeat-rb <?php echo $rfwd; ?>"><?php echo cc25_wdl_label($rfwd, (bool) $rfpens); ?></span>
         <div class="mrfeat-teams">
           <span class="t"><?php echo $rfh ? cc25_own_crest(46) : cc25_res_crest($rfopp, 46); ?><b><?php echo esc_html($rfh ? 'Cwmbran Celtic' : $rfopp); ?></b></span>
           <span class="sc"><?php echo ($rfh ? $rfcc : $rfoc) . '<i>&ndash;</i>' . ($rfh ? $rfoc : $rfcc); ?></span>
           <span class="t"><?php echo $rfh ? cc25_res_crest($rfopp, 46) : cc25_own_crest(46); ?><b><?php echo esc_html($rfh ? $rfopp : 'Cwmbran Celtic'); ?></b></span>
         </div>
         <div class="mrfeat-comp"><?php echo esc_html($rf['comp']); ?> &middot; <?php echo esc_html(date('D j M Y', strtotime($rf['date']))); ?></div>
+        <?php // The shootout in full under the score, so "WIN (PENS)" beside a 2-2
+              // is explained on the card rather than only inside the report.
+              if ($rfpens): ?>
+        <div class="mrfeat-pens"><?php echo esc_html(cc25_pens_line($rf)); ?></div>
+        <?php endif; ?>
       </div>
       <div class="mrfeat-body">
         <div class="kick" style="color:var(--gold-deep)">Match Report</div>
@@ -349,11 +359,15 @@ if ($cc25_reports):
     <div class="mrfeat-more">
       <?php foreach (array_slice($cc25_reports, 1) as $rm):
         $mh = !empty($rm['home']); $mo = $rm['opp']; $mcc = intval($rm['cc']); $moc = intval($rm['oc']);
-        $mwd = $mcc > $moc ? 'w' : ($mcc < $moc ? 'l' : 'd'); $murl = cc25_match_report_url($rm['date'], $rm['team'] ?? 'mens'); ?>
+        $mpens = cc25_match_pens($rm);
+        $mwd = cc25_wdl($mcc, $moc, $mpens); $murl = cc25_match_report_url($rm['date'], $rm['team'] ?? 'mens'); ?>
       <a class="mrfeat-card" href="<?php echo esc_url($murl); ?>">
-        <span class="mrfeat-rb <?php echo $mwd; ?>"><?php echo strtoupper($mwd); ?></span>
+        <span class="mrfeat-rb <?php echo $mwd; ?>"><?php echo cc25_wdl_label($mwd, (bool) $mpens, true); ?></span>
         <span class="cx"><?php echo $mh ? cc25_own_crest(26) : cc25_res_crest($mo, 26); ?><?php echo cc25_res_crest($mh ? $mo : 'Cwmbran Celtic', 26); ?></span>
-        <span class="mx"><b><?php echo esc_html($mh ? "Cwmbran Celtic {$mcc}–{$moc} $mo" : "$mo {$moc}–{$mcc} Cwmbran Celtic"); ?></b><em><?php echo esc_html(date('j M Y', strtotime($rm['date']))); ?></em></span>
+        <span class="mx"><b><?php echo esc_html($mh ? "Cwmbran Celtic {$mcc}–{$moc} $mo" : "$mo {$moc}–{$mcc} Cwmbran Celtic"); ?><?php
+          // The card has room for the shootout only as a suffix, and it must have
+          // it: a W against a level score with nothing to explain it looks wrong.
+          echo $mpens ? esc_html(' (' . max($mpens[0], $mpens[1]) . '-' . min($mpens[0], $mpens[1]) . ' pens)') : ''; ?></b><em><?php echo esc_html(date('j M Y', strtotime($rm['date']))); ?></em></span>
       </a>
       <?php endforeach; ?>
     </div>

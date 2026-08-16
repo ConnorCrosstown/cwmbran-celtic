@@ -1565,7 +1565,11 @@ function cc25_render_static_results($team) {
         $opp  = cc25_opponent($r)['opponent'];
         $us   = intval($home ? $r['homeScore'] : $r['awayScore']);
         $them = intval($home ? $r['awayScore'] : $r['homeScore']);
-        $wdl  = $us > $them ? 'w' : ($us < $them ? 'l' : 'd');
+        // The shootout, when there was one, decides the badge as well as being
+        // spelled out beside the competition further down this row.
+        $rec  = cc25_find_match(cc25_date($r['date'], 'Y-m-d'), $team);
+        $pens = $rec ? cc25_match_pens($rec) : null;
+        $wdl  = cc25_wdl($us, $them, $pens);
         $mo = cc25_date($r['date'], 'F Y');
         if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
         $oc = cc25_res_crest($opp, 34);
@@ -1576,13 +1580,11 @@ function cc25_render_static_results($team) {
             . '<span class="mscore">' . intval($r['homeScore']) . ' &ndash; ' . intval($r['awayScore']) . '</span>'
             . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
             . '</div>'
-            . '<div><span class="res-badge ' . $wdl . '">' . strtoupper($wdl) . '</span></div>'
-            // A tie won on penalties is still a draw, so the badge stays D — but the
-            // row must not stop there, or the results page says the opposite of what
-            // happened. The shootout is read off the match record rather than the
-            // fixture row, so recording a result never has to know about it.
+            . '<div><span class="res-badge ' . $wdl . '">' . cc25_wdl_label($wdl, (bool) $pens, true) . '</span></div>'
+            // The shootout is read off the match record rather than the fixture row,
+            // so recording a result never has to know about it.
             . '<div class="mmeta"><div class="comp">' . esc_html($r['competition'] ?? '')
-            . (($cc25_pl = cc25_pens_line(cc25_find_match(cc25_date($r['date'], 'Y-m-d'), $team) ?: array())) !== ''
+            . (($cc25_pl = cc25_pens_line($rec ?: array())) !== ''
                 ? ' <span class="pens">&middot; ' . esc_html($cc25_pl) . '</span>' : '')
             . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>'
             . cc25_match_link_buttons(function_exists('cc25_match_links') ? cc25_match_links($team, cc25_date($r['date'], 'Y-m-d')) : array())
@@ -2685,6 +2687,37 @@ function cc25_match_pens($m) {
     if (!is_array($p) || count($p) < 2) return null;
     if ((int) $p[0] === 0 && (int) $p[1] === 0) return null;
     return array((int) $p[0], (int) $p[1]);
+}
+
+/**
+ * Win, draw or loss — with a shootout deciding a level score.
+ *
+ * A tie settled on penalties is officially a draw, and the site said so on every
+ * badge: the Vets went out of the Motazone having knocked Tata Steel United out
+ * of the cup and the front page called it a DRAW. Nobody reads a badge as a
+ * statement about competition regulations; they read it as who won.
+ *
+ * Safe to apply everywhere a badge is drawn, because a shootout cannot happen in
+ * a league game — so no league record can be changed by this.
+ *
+ * @return string 'w' | 'd' | 'l'
+ */
+function cc25_wdl($us, $them, $pens = null) {
+    $us = (int) $us; $them = (int) $them;
+    if ($us > $them) return 'w';
+    if ($us < $them) return 'l';
+    if (is_array($pens) && count($pens) >= 2 && (int) $pens[0] !== (int) $pens[1]) {
+        return (int) $pens[0] > (int) $pens[1] ? 'w' : 'l';
+    }
+    return 'd';
+}
+
+/** The badge's words. "(PENS)" is never dropped — a WIN beside a 2-2 has to say
+ *  how, or it reads as the scoreline being wrong. */
+function cc25_wdl_label($wdl, $on_pens = false, $short = false) {
+    if ($short) return strtoupper($wdl) . ($on_pens ? '<sup>P</sup>' : '');
+    $word = $wdl === 'w' ? 'WIN' : ($wdl === 'l' ? 'LOSS' : 'DRAW');
+    return $word . ($on_pens ? ' (PENS)' : '');
 }
 
 /** "Cwmbran Celtic won 4-3 on penalties", or '' when there was no shootout. */

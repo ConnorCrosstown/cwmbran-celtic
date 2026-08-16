@@ -131,6 +131,24 @@ check('the shootout is said in words', cc25_pens_line($pen) === 'Cwmbran Celtic 
 check('the summary carries the shootout', strpos(cc25_match_summary($pen), 'won 4-3 on penalties') !== false);
 check('the report does not call it a draw', stripos($pen['report'], 'point saved') === false);
 
+/* The badge follows the shootout. Every surface that draws one — the front page's
+ * featured card and its smaller cards, the results panels, the fixtures page —
+ * used to compute W/D/L from the ninety minutes alone, so the Vets' cup win was
+ * announced on the home page as a DRAW. */
+check('a shootout win is a win', cc25_wdl(2, 2, array(4, 3)) === 'w');
+check('a shootout loss is a loss', cc25_wdl(2, 2, array(3, 4)) === 'l');
+check('a level score with no shootout is a draw', cc25_wdl(2, 2, null) === 'd');
+check('a shootout never overturns a real win', cc25_wdl(3, 0, array(0, 5)) === 'w');
+check('nor a real defeat', cc25_wdl(0, 3, array(5, 0)) === 'l');
+check('the Vets tie now reads as a win', cc25_wdl(intval($pen['cc']), intval($pen['oc']), cc25_match_pens($pen)) === 'w');
+
+/* The badge has to say how it was won, or a WIN beside a 2-2 reads as a typo. */
+check('the long label names the shootout', cc25_wdl_label('w', true) === 'WIN (PENS)');
+check('the long label is plain without one', cc25_wdl_label('w', false) === 'WIN');
+check('a draw still reads DRAW', cc25_wdl_label('d', false) === 'DRAW');
+check('the short label marks penalties', cc25_wdl_label('w', true, true) === 'W<sup>P</sup>');
+check('the short label is bare without them', cc25_wdl_label('l', false, true) === 'L');
+
 /* A game that never went to penalties must not grow a shootout, and a lookup for
  * a game with no record must not borrow the newest one's. */
 $nopen = cc25_find_match('2026-07-28', 'mens');
