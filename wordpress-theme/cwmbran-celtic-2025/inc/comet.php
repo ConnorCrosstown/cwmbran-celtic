@@ -90,6 +90,21 @@ function cc25_comet_person_name($p) {
     $short = trim(preg_replace('/\s+/', ' ', (string) ($p['shortName'] ?? '')));
     $full  = trim(preg_replace('/\s+/', ' ', (string) ($p['name'] ?? '')));
 
+    // A player whose profile COMET withholds arrives as the literal "N/A" with
+    // hideProfile set — on the line-up AND on every event they are part of. It is
+    // a redaction, not a missing player: Croesyceiliog's 15 on 15 Aug 2026 is
+    // printed by name on the PDF and came on for Kenny Hurford on 77.
+    //
+    // The shirt number, not a blank, because the name is what the two lists are
+    // joined on: an empty one puts "came on for" against nobody, and marks that
+    // player Unused on the bench — a printed falsehood rather than a gap. Two
+    // redactions in the same side would also collapse into one blank; the numbers
+    // stay distinct.
+    if (cc25_comet_person_hidden($p)) {
+        $no = (int) ($p['shirtNumber'] ?? 0);
+        return $no ? 'No. ' . $no : '';
+    }
+
     // shortName is only spelled out for the club's own players — COMET abbreviates
     // everyone else to "MANSON M.", because we have no detail access to their
     // squads. Fall back to name when it does.
@@ -124,6 +139,22 @@ function cc25_comet_person_name($p) {
         $out[] = $w;
     }
     return trim(implode(' ', $out));
+}
+
+/**
+ * Whether COMET is withholding this person's identity.
+ *
+ * hideProfile is the flag, but it is trusted only alongside a placeholder name:
+ * the events payload sets hideProfile on thin player references that carry no
+ * name at all, and those are resolved from the line-up rather than redacted.
+ */
+function cc25_comet_person_hidden($p) {
+    $names = array((string) ($p['shortName'] ?? ''), (string) ($p['name'] ?? ''));
+    foreach ($names as $n) {
+        $n = strtolower(trim($n));
+        if ($n !== '' && $n !== 'n/a' && $n !== 'n.a.') return false;
+    }
+    return !empty($p['hideProfile']) && trim(implode('', $names)) !== '';
 }
 
 /** roleId => 'home'|'away', so an event can be attributed to a team. Events carry

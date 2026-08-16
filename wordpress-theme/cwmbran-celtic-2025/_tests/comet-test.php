@@ -115,6 +115,38 @@ check('the winner is credited to Payne', $r['opp_goals'][1]['scorer'] === 'Luc P
 check('no cards were shown', $r['cards'] === array() && $r['opp_cards'] === array());
 check('attendance was left blank', $r['att'] === 0);
 
+/* ---- a redacted opponent: Croesyceiliog at home, 15 Aug 2026 ----------------
+ * COMET withholds their 15's identity — "N/A" with hideProfile set, on the bench
+ * and on the substitution he was part of. The printed report names him, so the
+ * import must not claim he is called N/A, and must not lose the swap either. */
+
+$hidden = function ($p) { return cc25_comet_person_hidden($p); };
+check('a redacted person is spotted',
+      $hidden(array('name' => 'N/A', 'shortName' => 'N/A', 'hideProfile' => true)));
+check('a named person is not, whatever the flag says',
+      !$hidden(array('name' => 'HURFORD Kenny', 'shortName' => 'KENNY HURFORD', 'hideProfile' => true)));
+// The events payload flags thin references that carry no name at all. Those are
+// resolved from the line-up, so treating them as redactions would blank real players.
+check('a nameless reference is not a redaction', !$hidden(array('roleId' => 1, 'hideProfile' => true)));
+check('an empty person is not a redaction', !$hidden(array()));
+
+$c = cc25_comet_to_match(load('reserves-croesyceiliog'), 'reserves', 'Cwmbran Celtic Reserves');
+check('the Reserves are at home', $c['home'] === true);
+check('the score is 1-2 to them', $c['cc'] === 1 && $c['oc'] === 2);
+check('Sam Smith scored on 11', $c['goals'][0]['scorer'] === 'Sam Smith' && $c['goals'][0]['min'] === '11');
+
+// The redacted man, by shirt number rather than by a name COMET did not give.
+$bench15 = array_values(array_filter($c['opp_subs'], function ($p) { return $p[0] === 15; }));
+check('the redacted substitute keeps his place on the bench', count($bench15) === 1);
+check('...named by his number, not "N/a"', $bench15 && $bench15[0][1] === 'No. 15');
+
+$sw = array_values(array_filter($c['opp_subs_made'], function ($s) { return $s['min'] === '77'; }));
+check('his substitution survives the redaction', count($sw) === 1);
+check('...coming on for Kenny Hurford', $sw && $sw[0]['off'] === 'Kenny Hurford');
+// The join the report page makes between bench and substitution is by name, so
+// these two must agree or he is printed "Unused" having actually come on.
+check('bench and substitution agree on what to call him', $sw && $bench15 && $sw[0]['on'] === $bench15[0][1]);
+
 /* ---- degenerate input must not throw ---- */
 
 $empty = cc25_comet_to_match(array(), 'mens', 'Cwmbran Celtic');
