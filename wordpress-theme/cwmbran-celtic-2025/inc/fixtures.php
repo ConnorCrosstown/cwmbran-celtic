@@ -55,9 +55,31 @@ function cc25_fx_team_meta($key) {
         'womens_res' => array('squad_slugs' => array(), 'squad_label' => ''),
         'womens_u19' => array('squad_slugs' => array(), 'squad_label' => ''),
         'u18s'     => array('squad_slugs' => array(), 'squad_label' => ''),
-        'vets'     => array('squad_slugs' => array(), 'squad_label' => ''),
+        'vets'     => array('squad_slugs' => array(),                                 'squad_label' => "Men's Vets squad"),
     );
     return isset($meta[$key]) ? $meta[$key] : array('squad_slugs' => array(), 'squad_label' => '');
+}
+
+/**
+ * Where a team's squad button on the fixtures page points, or '' for a team
+ * with no squad page.
+ *
+ * Teams with their own URL helper go through it rather than through the slug
+ * lookup, because those helpers already answer the question the slug lookup
+ * gets wrong: where to send someone when the WP page hasn't been created. The
+ * generic lookup's answer is the home page, which reads as a broken link.
+ *
+ * This is also what keeps a team's button off another team's page. The rule
+ * used to be implicit in the template — a label with no slugs fell through to
+ * the Reserves — so the Reserves page was one empty array away from being any
+ * new team's squad link.
+ */
+function cc25_fx_squad_url($key) {
+    $meta = cc25_fx_team_meta($key);
+    if ($meta['squad_label'] === '') return '';
+    if ($key === 'reserves') return cc25_reserves_url();
+    if ($key === 'vets')     return cc25_vets_url();
+    return $meta['squad_slugs'] ? cc25_page_url($meta['squad_slugs'], home_url('/')) : '';
 }
 
 /** Escape text that is rendered inside an HTML element (a text node), not an

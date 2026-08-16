@@ -29,6 +29,7 @@ function get_page_by_path($s) {
     // can build the correct URLs for squad links.
     $squad_pages = array(
         'mens-team', 'mens-1st-team', 'ladies-team', 'ladies-1st-team', 'mens-reserves',
+        'mens-vets',
     );
     if (in_array($s, $squad_pages, true)) {
         return (object) array('ID' => 1, 'post_name' => $s);
@@ -94,14 +95,21 @@ foreach ($teams as $key => $label) {
 
 /* Teams must link to their own squad page, not another team's.
  * This was also copied along with league names in the historical bug.
- * u18s and vets are the victims — they were copied from womens and inherited
- * its squad link. So the assertion for u18s/vets is critical: they must
- * contain NONE of the other teams' squad URLs. */
+ * u18s and vets were the victims — they were copied from womens and inherited
+ * its squad link. So the assertion for them is critical: they must contain
+ * NONE of the other teams' squad URLs.
+ *
+ * The Vets have their own squad page now, which makes them the live case for
+ * the second half of that rule: they must reach their own page and only their
+ * own. Their link resolves through cc25_vets_url(), not the generic slug
+ * lookup, so it cannot land on the Reserves the way the old template's
+ * label-with-no-slugs fallback would have sent it. */
 $squad_urls = array(
     'mens'     => array('mens-team', 'mens-1st-team'),
     'reserves' => array('mens-reserves'),
     'womens'   => array('ladies-team', 'ladies-1st-team'),
-    // u18s and vets have no squad links in the template.
+    'vets'     => array('mens-vets'),
+    // u18s has no squad link in the template.
 );
 foreach ($teams as $key => $label) {
     $start = strpos($html, 'id="team-' . $key . '"');
