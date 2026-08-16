@@ -305,6 +305,16 @@ function cc25_comet_to_match($data, $team = 'mens', $ours = 'Cwmbran Celtic') {
     $venue = trim((string) ($facility['name'] ?? ''));
     if ($venue !== '' && !empty($facility['place'])) $venue .= ', ' . $facility['place'];
 
+    // A shootout is on the match, not in the events: the events list ends with a
+    // bare "Penalty shootout" phase carrying no kicks, so a cup tie decided this
+    // way reads as a plain draw unless these are read. 'pens' is [ours, theirs],
+    // and absent when the game never went to penalties.
+    $usRes   = $match[$us . 'TeamResult'] ?? array();
+    $themRes = $match[$them . 'TeamResult'] ?? array();
+    $pens = (isset($usRes['penalties']) || isset($themRes['penalties']))
+          ? array((int) ($usRes['penalties'] ?? 0), (int) ($themRes['penalties'] ?? 0))
+          : array();
+
     return array(
         'team'         => $team,
         'date'         => $ko ? $ko->format('Y-m-d') : '',
@@ -313,6 +323,7 @@ function cc25_comet_to_match($data, $team = 'mens', $ours = 'Cwmbran Celtic') {
         'home'         => $weAreHome,
         'cc'           => count($ev['goals'][$us]),
         'oc'           => count($ev['goals'][$them]),
+        'pens'         => $pens,
         'comp'         => (string) ($match['competition']['name'] ?? ''),
         'round'        => ($match['round'] ?? '') !== '' ? 'Round ' . $match['round'] : '',
         'venue'        => $venue,

@@ -97,6 +97,28 @@ check('the reserves URL uses no second parameter', strpos($res['report'], 't=') 
 check('the same date gives the men a bare date', strpos($men['report'], 'g=2026-08-07&') === false && strpos($men['report'], 'g=2026-08-07') !== false);
 check('and the two are not the same link', $men['report'] !== $res['report']);
 
+/* -- Penalty shootouts -------------------------------------------------------
+ * A cup tie settled on penalties reads as an ordinary draw everywhere unless the
+ * shootout is carried separately: COMET keeps it on the match rather than in the
+ * events, so the Vets' 2-2 hid a 4-3 win until someone at the game said so. */
+$pen = cc25_find_match('2026-08-16', 'vets');
+check('the Vets cup tie is on record', $pen !== null);
+check('its shootout is 4-3 to Celtic', cc25_match_pens($pen) === array(4, 3));
+check('the score after ninety is still a draw', intval($pen['cc']) === intval($pen['oc']));
+check('the shootout is said in words', cc25_pens_line($pen) === 'Cwmbran Celtic won 4-3 on penalties');
+check('the summary carries the shootout', strpos(cc25_match_summary($pen), 'won 4-3 on penalties') !== false);
+check('the report does not call it a draw', stripos($pen['report'], 'point saved') === false);
+
+/* A game that never went to penalties must not grow a shootout, and a lookup for
+ * a game with no record must not borrow the newest one's. */
+$nopen = cc25_find_match('2026-07-28', 'mens');
+check('an ordinary win has no shootout', cc25_match_pens($nopen) === null);
+check('and says nothing about penalties', cc25_pens_line($nopen) === '');
+check('a date with no record finds nothing', cc25_find_match('2001-01-01', 'vets') === null);
+check('a real date on the wrong team finds nothing', cc25_find_match('2026-08-16', 'mens') === null);
+check('an empty match is handled', cc25_pens_line(array()) === '' && cc25_match_pens(array()) === null);
+check('a 0-0 shootout is not a shootout', cc25_match_pens(array('pens' => array(0, 0))) === null);
+
 // Slug round-trip, including the backwards-compatible bare date.
 check('a bare date means the men', cc25_parse_match_slug('2026-07-28') === array('2026-07-28', 'mens'));
 check('a team suffix is read', cc25_parse_match_slug('2026-08-07-reserves') === array('2026-08-07', 'reserves'));

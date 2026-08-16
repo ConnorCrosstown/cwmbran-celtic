@@ -1577,7 +1577,14 @@ function cc25_render_static_results($team) {
             . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
             . '</div>'
             . '<div><span class="res-badge ' . $wdl . '">' . strtoupper($wdl) . '</span></div>'
-            . '<div class="mmeta"><div class="comp">' . esc_html($r['competition'] ?? '') . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>'
+            // A tie won on penalties is still a draw, so the badge stays D — but the
+            // row must not stop there, or the results page says the opposite of what
+            // happened. The shootout is read off the match record rather than the
+            // fixture row, so recording a result never has to know about it.
+            . '<div class="mmeta"><div class="comp">' . esc_html($r['competition'] ?? '')
+            . (($cc25_pl = cc25_pens_line(cc25_find_match(cc25_date($r['date'], 'Y-m-d'), $team) ?: array())) !== ''
+                ? ' <span class="pens">&middot; ' . esc_html($cc25_pl) . '</span>' : '')
+            . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>'
             . cc25_match_link_buttons(function_exists('cc25_match_links') ? cc25_match_links($team, cc25_date($r['date'], 'Y-m-d')) : array())
             . '</div>'
             . '</div>';
@@ -1996,6 +2003,11 @@ function cc25_season_matches_static() {
         array(
             'team' => 'vets',
             'date' => '2026-08-16', 'time' => '14:00', 'opp' => 'Tata Steel United', 'home' => true, 'cc' => 2, 'oc' => 2,
+            // 2-2 after ninety, won 4-3 on penalties. COMET keeps the shootout on
+            // the match (homeTeamResult.penalties, penaltyWin) and not in the events,
+            // where the phase is recorded but no kicks are — so a tie decided this
+            // way looks exactly like a draw to anything reading the events alone.
+            'pens' => array(4, 3),
             'comp' => 'Workwear Supermarket O40s Cup', 'round' => 'Round 1',
             // The printed report leaves attendance blank rather than recording a zero.
             'venue' => 'Motazone Arena, Cwmbran', 'att' => 0,
@@ -2046,7 +2058,7 @@ function cc25_season_matches_static() {
             'opp_staff' => array(array('role' => 'Team Manager', 'name' => 'Richard Williams')),
             // Written from the official record only. Nobody's account of the game is
             // in it, so nothing here is anybody's account of the game.
-            'report' => "The Vets began their Workwear Supermarket O40s Cup campaign with a point saved in the third minute of stoppage time, David Fullagar levelling at the Motazone Arena after Tata Steel United had twice been in front of them on the scoreboard.\n\nNothing separated the sides through a goalless first half. Six minutes after the interval Peter Scarfi put Celtic ahead from Gareth Stacey's pass, and the lead lasted nine minutes: Gavin Chappell equalised on the hour, set up by the Tata Steel captain Lee McLachlan. Richard Williams turned the tie around on 80 from Matthew Johnson's ball, and with the cup exit in sight Fullagar met a Scarfi pass in the 93rd minute to make it 2-2.\n\nBoth of Celtic's goals came from the same pair, and both of Tata Steel's from their substitute and their number ten. Neither referee Tom Wise nor the record shows a single card in the ninety-three minutes.\n\nDean Taylor captained the side, with Paul Taylor in goal.",
+            'report' => "The Vets are through to the second round of the Workwear Supermarket O40s Cup, and they got there the hard way — level in the third minute of stoppage time through David Fullagar, then 4-3 winners on penalties at the Motazone Arena.\n\nNothing separated the sides through a goalless first half. Six minutes after the interval Peter Scarfi put Celtic ahead from Gareth Stacey's pass, and the lead lasted nine minutes: Gavin Chappell equalised on the hour, set up by the Tata Steel captain Lee McLachlan. Richard Williams turned the tie around on 80 from Matthew Johnson's ball, and with the cup exit in sight Fullagar met a Scarfi pass in the 93rd minute to force the shootout.\n\nBoth of Celtic's goals came from the same pair, and both of Tata Steel's from their substitute and their number ten. Neither referee Tom Wise nor the record shows a single card in the ninety-three minutes.\n\nDean Taylor captained the side, with Paul Taylor in goal. The official record does not name the takers — that one is for whoever was behind the goal.",
             'report_by' => '',
         ),
         array(
@@ -2621,16 +2633,57 @@ function cc25_request_match_slug() {
     if (!isset($_GET['g'])) return array('', 'mens');
     return cc25_parse_match_slug(cc25_clean_match_slug($_GET['g']));
 }
+/**
+ * The match record for exactly this game, or null.
+ *
+ * cc25_get_match() is for the report page, where a bare or unknown ?g= should
+ * still show something, so it falls back to the most recent game. Anything asking
+ * "is there a record for this row?" needs the opposite answer, or a game with no
+ * record quietly borrows the newest one's details.
+ */
+function cc25_find_match($date, $team = 'mens') {
+    foreach (cc25_season_matches() as $m) {
+        if (($m['date'] ?? '') === $date && ($m['team'] ?? 'mens') === $team) return $m;
+    }
+    return null;
+}
+
+/**
+ * A match's penalty shootout as [ours, theirs], or null if there wasn't one.
+ *
+ * A cup tie settled on penalties is still officially a draw, so the score and the
+ * W/D/L badge stay as they were after ninety minutes. What must never happen is
+ * the site showing only that draw: the Vets went out of the Motazone having won
+ * the tie, and a bare 2-2 says the opposite of what happened.
+ */
+function cc25_match_pens($m) {
+    $p = $m['pens'] ?? array();
+    if (!is_array($p) || count($p) < 2) return null;
+    if ((int) $p[0] === 0 && (int) $p[1] === 0) return null;
+    return array((int) $p[0], (int) $p[1]);
+}
+
+/** "Cwmbran Celtic won 4-3 on penalties", or '' when there was no shootout. */
+function cc25_pens_line($m) {
+    $p = cc25_match_pens($m);
+    if (!$p) return '';
+    $weWon = $p[0] > $p[1];
+    return ($weWon ? 'Cwmbran Celtic' : ($m['opp'] ?? 'The visitors'))
+         . ' won ' . max($p[0], $p[1]) . '-' . min($p[0], $p[1]) . ' on penalties';
+}
+
 /** One-line, factual summary of a match — used for share/meta descriptions. */
 function cc25_match_summary($m) {
     $home = !empty($m['home']); $opp = $m['opp'];
     $line = $home
         ? 'Cwmbran Celtic ' . intval($m['cc']) . '-' . intval($m['oc']) . ' ' . $opp
         : $opp . ' ' . intval($m['oc']) . '-' . intval($m['cc']) . ' Cwmbran Celtic';
+    $pens = cc25_pens_line($m);
+    if ($pens !== '') $line .= ' (' . $pens . ')';
     $s = $line . ' — ' . $m['comp'] . (!empty($m['venue']) && $home ? ' at ' . $m['venue'] : '') . '.';
     $scorers = array();
     foreach (($m['goals'] ?? array()) as $g) {
-        $scorers[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . ' ' . intval($g['min']) . "'";
+        $scorers[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . ' ' . cc25_min_label($g['min']) . "'";
     }
     if ($scorers) {
         if (count($scorers) > 1) { $last = array_pop($scorers); $join = implode(', ', $scorers) . ' and ' . $last; }

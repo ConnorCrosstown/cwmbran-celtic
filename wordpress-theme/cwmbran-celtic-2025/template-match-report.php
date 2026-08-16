@@ -129,9 +129,18 @@ $m = cc25_get_match($cc25_g, $cc25_t);
     <h1 class="sr-only"><?php echo esc_html(($home ? ('Cwmbran Celtic ' . $cc . '–' . $oc . ' ' . $opp) : ($opp . ' ' . $oc . '–' . $cc . ' Cwmbran Celtic')) . ' — Match Report'); ?></h1>
     <div class="mr-score">
       <span class="mr-team"><?php echo $home ? cc25_own_crest(64) : $oppcrest; ?><span class="nm"><?php echo esc_html($home ? 'Cwmbran Celtic' : $opp); ?></span></span>
-      <span class="mr-sc"><?php echo ($home ? $cc : $oc) . ' &ndash; ' . ($home ? $oc : $cc); ?><small>Full Time</small></span>
+      <?php $cc25_pens = cc25_match_pens($m); ?>
+      <span class="mr-sc"><?php echo ($home ? $cc : $oc) . ' &ndash; ' . ($home ? $oc : $cc); ?><small><?php
+        echo $cc25_pens
+          ? 'Full Time &middot; ' . intval($home ? $cc25_pens[0] : $cc25_pens[1]) . '&ndash;' . intval($home ? $cc25_pens[1] : $cc25_pens[0]) . ' pens'
+          : 'Full Time'; ?></small></span>
       <span class="mr-team"><?php echo $home ? $oppcrest : cc25_own_crest(64); ?><span class="nm"><?php echo esc_html($home ? $opp : 'Cwmbran Celtic'); ?></span></span>
     </div>
+    <?php // Said in words as well as in the score line: "2-2" is the whole story of
+          // a league game and only half of a cup tie.
+          if ($cc25_pens): ?>
+      <div class="mr-pens"><?php echo esc_html(cc25_pens_line($m)); ?></div>
+    <?php endif; ?>
     <div class="mr-meta">&#9873; <?php echo esc_html($m['venue']); ?><?php if (!empty($m['time'])) echo ' &middot; KO ' . esc_html($m['time']); ?><?php if (!empty($m['att'])) echo ' &middot; Att ' . intval($m['att']); ?></div>
   </div>
 </div>

@@ -325,6 +325,9 @@ nav.main a:hover{color:var(--text)}nav.main a:hover::after,nav.main a.active::af
 .mvs{font-family:var(--display);color:var(--faint);font-size:.9rem;padding:0 2px}
 .mscore{font-family:var(--display);font-size:1.5rem;letter-spacing:.06em;padding:3px 15px;border-radius:3px;background:var(--navy-900);color:#fff}
 .mmeta{text-align:right;min-width:160px}.mmeta .comp{font-size:.75rem;color:var(--muted)}
+/* The shootout beside the competition — lifted out of the muted grey, because it
+   is the half of a cup result the score line cannot show. */
+.mmeta .comp .pens{color:var(--gold-deep);font-weight:600}
 .mmeta .ha{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:.7rem;padding:3px 9px;border-radius:2px;display:inline-block;margin-top:4px}
 .ha.h{background:rgba(30,58,138,.13);background:color-mix(in srgb,var(--blue) 13%,transparent);color:var(--blue-500)}.ha.a{background:var(--surface-2);color:var(--muted);border:1px solid var(--hair)}
 .res-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:5px;font-family:var(--display);font-size:.8rem;color:#fff}
@@ -1089,6 +1092,9 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .mr-sc{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,9vw,3.8rem);color:#fff;line-height:1;display:flex;flex-direction:column;align-items:center}
 .mr-sc small{font-family:var(--body);font-weight:400;text-transform:uppercase;letter-spacing:.1em;font-size:.6rem;color:var(--on-navy-dim);margin-top:8px}
 .mr-meta{color:var(--on-navy-dim);font-size:.85rem;letter-spacing:.02em;text-align:center;margin-top:4px}
+/* A shootout result, said in words under the score — the gold is the same one the
+   site uses for a thing that went our way, and it reads at a glance. */
+.mr-pens{color:var(--gold);font-family:"Oswald",sans-serif;font-weight:600;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-top:10px}
 .mr-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:34px;align-items:start}
 .mr-block{background:var(--surface);border:1px solid var(--hair);border-radius:11px;padding:24px 26px;box-shadow:var(--shadow-sm);margin-bottom:20px}
 .mr-h{font-size:1.3rem;margin:0 0 14px;letter-spacing:-.01em}
