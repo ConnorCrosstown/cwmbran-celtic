@@ -82,20 +82,42 @@ check('a TBC opponent is never offered', !array_filter($games, function ($l) { r
 check('no post-based report without WordPress', cc25_report_for('mens', '2026-07-28') === null);
 check('no programme without WordPress', cc25_programme_for_date('2026-07-28') === null);
 
-// But a game with a full match-centre report still offers one, because the two
-// kinds of report are one answer to the reader rather than two systems.
+// But a game with a full match-centre report still offers one, in its own slot.
 $has = cc25_match_links('mens', '2026-07-28');
-check('a match-centre report is still offered', strpos($has['report'], 'g=2026-07-28') !== false);
+check('a match-centre report is still offered', strpos($has['centre'], 'g=2026-07-28') !== false);
 
 // The team must travel INSIDE g. A separate parameter was silently dropped by the
 // CDN, whose cache key includes g and ignores everything else, so ?g=<date>&t=reserves
 // served the men's cached report. That is the bug these next checks exist for.
 $res = cc25_match_links('reserves', '2026-08-07');
 $men = cc25_match_links('mens', '2026-08-07');
-check('the reserves URL carries the team inside g', strpos($res['report'], 'g=2026-08-07-reserves') !== false);
-check('the reserves URL uses no second parameter', strpos($res['report'], 't=') === false);
-check('the same date gives the men a bare date', strpos($men['report'], 'g=2026-08-07&') === false && strpos($men['report'], 'g=2026-08-07') !== false);
-check('and the two are not the same link', $men['report'] !== $res['report']);
+check('the reserves URL carries the team inside g', strpos($res['centre'], 'g=2026-08-07-reserves') !== false);
+check('the reserves URL uses no second parameter', strpos($res['centre'], 't=') === false);
+check('the same date gives the men a bare date', strpos($men['centre'], 'g=2026-08-07&') === false && strpos($men['centre'], 'g=2026-08-07') !== false);
+check('and the two are not the same link', $men['centre'] !== $res['centre']);
+
+/* -- The article and the match centre are two destinations ---------------------
+ * They were one slot with the article winning, so publishing a news write-up hid
+ * that game's line-ups, stats and officials behind it — the results row could no
+ * longer reach the match centre at all. Both are offered when both exist. */
+$pair = cc25_match_link_buttons(array('report' => '/news/vets-win/', 'centre' => '/match-report/?g=x'));
+check('an article and the centre give two buttons', substr_count($pair, '<a ') === 2);
+check('the article keeps the plain name', strpos($pair, '>Match Report</a>') !== false);
+check('the centre is named for what it holds', strpos($pair, 'Line-ups &amp; Stats') !== false);
+check('the article link is present', strpos($pair, '/news/vets-win/') !== false);
+check('the centre link is present', strpos($pair, 'g=x') !== false);
+
+/* On its own the match centre IS the match report, and must not be renamed — two
+ * rows offering differently-named links to the same kind of page would read as
+ * two different things existing. */
+$only = cc25_match_link_buttons(array('centre' => '/match-report/?g=y'));
+check('the centre alone gives one button', substr_count($only, '<a ') === 1);
+check('and is called Match Report', strpos($only, '>Match Report</a>') !== false);
+check('not Line-ups & Stats', strpos($only, 'Line-ups') === false);
+
+/* Belt and braces: if the two ever resolve to the same URL, offer it once. */
+$same = cc25_match_link_buttons(array('report' => '/same/', 'centre' => '/same/'));
+check('the same URL twice gives one button', substr_count($same, '<a ') === 1);
 
 /* -- Penalty shootouts -------------------------------------------------------
  * A cup tie settled on penalties reads as an ordinary draw everywhere unless the
@@ -143,7 +165,7 @@ foreach (array('mens' => '2026-08-07', 'reserves' => '2026-08-07-reserves', 'wom
 
 // A game with nothing attached must render nothing at all.
 $none = cc25_match_links('womens', '2026-09-27');
-check('a game with no report offers none', $none['report'] === '' && $none['programme'] === '');
+check('a game with no report offers none', $none['report'] === '' && $none['centre'] === '' && $none['programme'] === '');
 check('empty links render no buttons', cc25_match_link_buttons($none) === '');
 check('a missing key renders no buttons', cc25_match_link_buttons(array()) === '');
 

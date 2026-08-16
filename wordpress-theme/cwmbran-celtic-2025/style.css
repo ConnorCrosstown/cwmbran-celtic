@@ -1097,6 +1097,14 @@ a.mrow{color:inherit;text-decoration:none;cursor:pointer}
 .mr-pens{color:var(--gold);font-family:"Oswald",sans-serif;font-weight:600;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-top:10px}
 .mr-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:34px;align-items:start}
 .mr-block{background:var(--surface);border:1px solid var(--hair);border-radius:11px;padding:24px 26px;box-shadow:var(--shadow-sm);margin-bottom:20px}
+/* The club's written account of this game, linked from the match centre. Styled
+   as a card rather than a link so it reads as a destination, not a footnote. */
+.mr-article{display:block;background:var(--surface);border:1px solid var(--hair);border-left:3px solid var(--gold);
+  border-radius:11px;padding:16px 22px;margin-bottom:20px;text-decoration:none;box-shadow:var(--shadow-sm);
+  transition:border-color .15s ease,transform .15s ease}
+.mr-article:hover,.mr-article:focus-visible{border-left-color:var(--gold-deep);transform:translateY(-1px)}
+.mr-article-eye{display:block;color:var(--muted);font-size:.72rem;letter-spacing:.1em;margin-bottom:4px}
+.mr-article-t{display:block;color:var(--ink);font-family:var(--display);font-size:1.05rem;font-weight:600;line-height:1.3}
 .mr-h{font-size:1.3rem;margin:0 0 14px;letter-spacing:-.01em}
 .mr-goals{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .mr-goals li{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -1664,6 +1672,11 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
 .mrh-vs{font-family:var(--display);font-size:1.2rem;color:rgba(255,255,255,.5);text-transform:uppercase}
 .mrh-meta{color:var(--on-navy-dim,#9fb0d6);font-size:.84rem;margin-top:14px}
 .mrh-facts{color:#eef2fb;font-size:.86rem;margin-top:8px}
+/* The way out of a written report and into the match centre. Sits inside the
+   navy score strip, so it is gold on navy rather than a body link. */
+.mrh-centre{display:inline-block;margin-top:14px;color:var(--gold);font-family:var(--display);text-transform:uppercase;
+  letter-spacing:.06em;font-size:.78rem;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(245,197,24,.4);padding-bottom:2px}
+.mrh-centre:hover,.mrh-centre:focus-visible{color:var(--gold-soft);border-bottom-color:var(--gold-soft)}
 .mrh-facts b{color:var(--gold);font-weight:600}
 @media(max-width:560px){
   .mrh{padding:18px 16px}

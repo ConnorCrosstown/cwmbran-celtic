@@ -149,6 +149,18 @@ $m = cc25_get_match($cc25_g, $cc25_t);
   <div class="wrap mr-wrap">
     <div class="mr-main">
       <?php
+      // The other half of the loop: when the club has written the game up as a
+      // news article, say so here. This page carries the record and that one
+      // carries the account of it, and a reader who found either should be able
+      // to reach the other.
+      $cc25_art = function_exists('cc25_report_for') ? cc25_report_for($m['team'] ?? 'mens', $m['date']) : null;
+      if ($cc25_art): ?>
+      <a class="mr-article reveal" href="<?php echo esc_url(get_permalink($cc25_art)); ?>">
+        <span class="mr-article-eye kick">Match Report</span>
+        <span class="mr-article-t"><?php echo esc_html(get_the_title($cc25_art)); ?> <span aria-hidden="true">&rarr;</span></span>
+      </a>
+      <?php endif; ?>
+      <?php
       // Both sides in one timeline, in the order they went in. Listing only our
       // goals reads fine for a 3-0 and loses four of them in a 2-4.
       $cc25_tl = array();

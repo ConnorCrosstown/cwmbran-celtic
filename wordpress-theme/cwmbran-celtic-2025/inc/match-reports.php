@@ -148,23 +148,26 @@ function cc25_report_game($post = null) {
 }
 
 /**
- * What a match has attached to it: a report and/or a programme.
+ * What a match has attached to it: a written report, the match centre, and/or a
+ * programme.
  *
  * Both the fixtures page and the results panels ask this, so "is there something
  * to click for this game" is answered in one place rather than three.
  *
- * @return array{report:string, programme:string} URLs, '' when absent
+ * 'report' and 'centre' are two different pages and both are offered when both
+ * exist. They used to be one slot with the article winning, which meant that
+ * publishing a news article about a game *hid* that game's line-ups, goal
+ * timeline, stats and officials — the article became the only way in, and the
+ * match centre could not be reached from the results row at all. A reader who
+ * wants the words and a reader who wants the numbers are not the same reader.
+ *
+ * @return array{report:string, centre:string, programme:string} URLs, '' when absent
  */
 function cc25_match_links($team, $ymd) {
-    $out = array('report' => '', 'programme' => '');
+    $out = array('report' => '', 'centre' => '', 'programme' => '');
     $r = function_exists('cc25_report_for') ? cc25_report_for($team, $ymd) : null;
-    if ($r) {
-        $out['report'] = get_permalink($r);
-    } elseif (function_exists('cc25_match_report_url')) {
-        // Falls back to the full match-centre report, so the two kinds of report
-        // are one answer to the reader rather than two systems.
-        $out['report'] = cc25_match_report_url($ymd, $team);
-    }
+    if ($r) $out['report'] = get_permalink($r);
+    if (function_exists('cc25_match_report_url')) $out['centre'] = cc25_match_report_url($ymd, $team);
     if (function_exists('cc25_programme_for_date')) {
         $p = cc25_programme_for_date($ymd);
         if ($p) $out['programme'] = cc25_programme_read_url($p->ID);

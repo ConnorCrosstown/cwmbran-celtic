@@ -1709,16 +1709,40 @@ function cc25_report_header($post = null) {
         if ($att !== '') $bits[] = '<b>Attendance</b> ' . esc_html(number_format((int) $att));
         $out .= '<div class="mrh-facts">' . implode(' &nbsp;&middot;&nbsp; ', $bits) . '</div>';
     }
+    // The way on to the numbers. Someone arriving on this article from Facebook
+    // used to reach the end of the words and stop; the line-ups, goal timeline,
+    // officials and season stats existed the whole time with nothing pointing at
+    // them. Only shown when that game actually has a match-centre record, so the
+    // link never leads somewhere that quietly serves a different game.
+    $centre = function_exists('cc25_match_report_url') ? cc25_match_report_url($ymd, $team) : '';
+    if ($centre !== '') {
+        $out .= '<a class="mrh-centre" href="' . esc_url($centre) . '">'
+              . 'Line-ups, goals and season stats <span aria-hidden="true">&rarr;</span></a>';
+    }
     $out .= '</div>';
     return $out;
 }
 
-/** "Match Report" / "Programme" buttons for a match row. Renders nothing when the
- *  game has neither, so a row never grows an empty gap. */
+/**
+ * "Match Report" / "Line-ups & Stats" / "Programme" buttons for a match row.
+ * Renders nothing when the game has none of them, so a row never grows an empty gap.
+ *
+ * The match centre is only called "Line-ups & Stats" when there is also a written
+ * report to tell it apart from. On its own it IS the match report, and two rows
+ * offering differently-named links to the same kind of page would read as two
+ * different things existing.
+ */
 function cc25_match_link_buttons($links) {
     $out = '';
-    if (!empty($links['report'])) {
-        $out .= '<a class="mtix btn btn-navy" href="' . esc_url($links['report']) . '">Match Report</a>';
+    $report = !empty($links['report']) ? $links['report'] : '';
+    $centre = !empty($links['centre']) ? $links['centre'] : '';
+    if ($report !== '') {
+        $out .= '<a class="mtix btn btn-navy" href="' . esc_url($report) . '">Match Report</a>';
+    }
+    if ($centre !== '' && $centre !== $report) {
+        $out .= $report === ''
+            ? '<a class="mtix btn btn-navy" href="' . esc_url($centre) . '">Match Report</a>'
+            : '<a class="mtix btn btn-outline" href="' . esc_url($centre) . '">Line-ups &amp; Stats</a>';
     }
     if (!empty($links['programme'])) {
         $out .= '<a class="mtix btn btn-outline" href="' . esc_url($links['programme']) . '">Programme</a>';
