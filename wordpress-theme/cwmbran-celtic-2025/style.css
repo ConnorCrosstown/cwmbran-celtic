@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.15.4
+Version: 0.15.5
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1813,3 +1813,44 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
   font-size:1.5rem;line-height:1;color:var(--gold);opacity:.92;
   text-shadow:0 2px 10px rgba(0,0,0,.5);font-variant-numeric:tabular-nums }
 .wpc-card.is-captain { box-shadow:0 0 0 2px var(--gold),var(--shadow-sm) }
+
+/* ---- The splash on a short screen -------------------------------------------
+ * The card was centred with no height limit and nothing to scroll, so anything
+ * taller than the viewport was cut off at BOTH ends at once. Measured on the
+ * live site rather than guessed: on a 375x667 phone the Music Shirts splash
+ * stood 766px tall and put its own close button 34px ABOVE the top of the
+ * screen, with "Maybe later" below the bottom of it and no way to reach either.
+ *
+ * The overlay scrolls, not the card, because .splash-launch needs its
+ * overflow:hidden to clip the carousel to the rounded corners.
+ *
+ * margin:auto rather than align-items:center is the whole trick: a centred flex
+ * item taller than its container overflows upwards, where no scrollbar can
+ * follow it. Auto margins centre the card while it fits and collapse to nothing
+ * when it doesn't, so it starts at the top — close button first — and scrolls.
+ * .splash is position:fixed inset:0, so it already tracks the dynamic viewport
+ * as Safari's toolbar collapses; no vh unit needs to be involved. */
+.splash{align-items:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.splash-card{margin:auto}
+
+/* Below 780px of height, stop it needing to scroll in the first place. The next
+ * home game goes first: it is the biggest block on the card at 167px, and it is
+ * repeated on the homepage directly behind the splash, so it is a duplicate
+ * rather than a loss. The two buttons then share a row instead of stacking
+ * full-width, which the max-width:480px rule above has them do.
+ *
+ * 780 and not 700 because the card runs to 774px on a narrow screen, where the
+ * band and Music Venue Trust lines both wrap to two: anything under about 815px
+ * of viewport would otherwise scroll. An iPhone 14 reports ~735px once Safari's
+ * toolbars are up, which a 700px rule sails straight past. It is safe at the top
+ * end because the card is shorter when it is not wrapping — 733px at a desktop
+ * width, which still clears an 800px laptop window with the block left in. */
+@media(max-height:780px){
+  .splash.is-launch .splash-next{display:none}
+  .splash.is-launch .splash-cta{flex-wrap:nowrap;gap:10px}
+  .splash.is-launch .splash-cta .btn{width:auto;flex:1 1 0;min-width:0;padding-left:12px;padding-right:12px;white-space:nowrap}
+  .splash.is-launch .splash-launch-body{padding:18px 20px 20px}
+  .splash.is-launch .splash-launch-bands{margin-bottom:8px}
+  .splash.is-launch .splash-launch-mvt{margin-bottom:12px}
+  .splash.is-launch .splash-later{margin-top:12px}
+}
