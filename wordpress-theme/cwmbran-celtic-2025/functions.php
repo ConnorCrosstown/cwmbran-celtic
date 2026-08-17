@@ -1416,7 +1416,7 @@ function cc25_static_fixtures_static() {
          * age group plays Sundays. Most of their opponents have no badge on file yet, so
          * those rows show initials until one is added. */
         'u18s' => array(
-            'league' => 'Gwent County Youth League',
+            'league' => 'Autocentre Gwent Premier Youth League – Div 1 South',
             'title'  => "Men's Under-18s",
             'badge'  => array('U18', 'tk-team-u'),
             'list'   => array(
@@ -2848,7 +2848,7 @@ function cc25_share_pages() {
         array(array('womens-under-19s'), 'page-squad-womens_u19.jpg',
             "The Cwmbran Celtic Women's Under-19s squad — players and squad numbers for the Adran U19s."),
         array(array('under-18s'), 'page-squad-u18s.jpg',
-            "The Cwmbran Celtic Men's Under-18s squad — players and squad numbers for the Gwent County Youth League."),
+            "The Cwmbran Celtic Men's Under-18s squad — players and squad numbers for the Autocentre Gwent Premier Youth League – Div 1 South."),
         array(array('mens-vets'), 'page-squad-vets.jpg',
             "The Cwmbran Celtic Men's Vets squad — the Over-40s side in the WVFA Over-40s."),
     );
