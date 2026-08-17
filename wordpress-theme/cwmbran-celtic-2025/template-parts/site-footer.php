@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) exit;
   <div class="wrap">
     <div class="ft-grid">
       <div>
-        <h3 style="display:flex;align-items:center;gap:11px"><?php echo cc25_own_crest(34); ?> Cwmbran Celtic AFC</h3>
+        <h3 style="display:flex;align-items:center;gap:11px"><?php echo cc25_own_crest(34); ?> Cwmbran Celtic FC</h3>
         <p class="about">Ardal League South East. Playing at Motazone Arena since 1924 — proudly representing the town of Cwmbran, home and away.</p>
       </div>
       <div><h3>Club</h3>
@@ -32,7 +32,7 @@ if (!defined('ABSPATH')) exit;
     </div>
     <?php echo cc25_featured_sponsor_html('strip'); ?>
     <div class="ft-bot">
-      <span>© <?php echo esc_html(date_i18n('Y')); ?> Cwmbran Celtic AFC</span>
+      <span>© <?php echo esc_html(date_i18n('Y')); ?> Cwmbran Celtic FC</span>
       <span>Fixtures &amp; table update automatically from allwalessport</span>
     </div>
   </div>

@@ -14,7 +14,10 @@ if (!defined('ABSPATH')) exit;
 /** Context-aware meta description. */
 function cc25_seo_desc() {
     if (is_front_page()) {
-        return 'Official website of Cwmbran Celtic AFC — fixtures, results, the live league table, news, tickets and away-day info for the Celts in the Ardal League South East.';
+        // No league is named here. The club runs seven sides across seven
+        // different competitions, so "the Celts in the Ardal League South East"
+        // described the men's first team and quietly mis-sold the other six.
+        return 'Official website of Cwmbran Celtic FC — fixtures, results, live league tables, news, tickets and away-day info for all seven Celts sides.';
     }
     $ov = cc25_share_meta();
     if ($ov && !empty($ov['desc'])) return $ov['desc'];
@@ -24,10 +27,12 @@ function cc25_seo_desc() {
     }
     if (is_page()) {
         $tt = wp_strip_all_tags(get_the_title());
-        if ($tt) return $tt . ' — Cwmbran Celtic AFC, Ardal League South East. Fixtures, results, news and tickets for the Celts.';
+        // Deliberately league-free: this fallback lands on any page without copy
+        // of its own, including the Vets' and the U19s'.
+        if ($tt) return $tt . ' — Cwmbran Celtic FC. Fixtures, results, news and tickets for the Celts.';
     }
     $t = get_bloginfo('description');
-    return $t ? $t : 'Cwmbran Celtic AFC — blue and yellow, since 1924.';
+    return $t ? $t : 'Cwmbran Celtic FC — blue and yellow, since 1924.';
 }
 
 /** Current canonical URL. */
@@ -65,7 +70,7 @@ function cc25_seo_org() {
     return array(
         '@type' => 'SportsTeam',
         '@id'   => home_url('/#club'),
-        'name'  => 'Cwmbran Celtic AFC',
+        'name'  => 'Cwmbran Celtic FC',
         'alternateName' => 'The Celts',
         'sport' => 'Association Football',
         'url'   => home_url('/'),
@@ -159,11 +164,11 @@ function cc25_seo_head() {
     }
     // og:image:alt describes the card, not the page — screen-reader users get
     // the headline from og:title either way.
-    $imgalt = 'Cwmbran Celtic AFC';
+    $imgalt = 'Cwmbran Celtic FC';
     echo "\n<!-- Cwmbran Celtic SEO -->\n";
     echo '<meta name="description" content="' . esc_attr($desc) . "\">\n";
     echo '<link rel="canonical" href="' . esc_url($url) . "\">\n";
-    echo '<meta property="og:site_name" content="Cwmbran Celtic AFC">' . "\n";
+    echo '<meta property="og:site_name" content="Cwmbran Celtic FC">' . "\n";
     echo '<meta property="og:type" content="' . esc_attr($type) . "\">\n";
     echo '<meta property="og:title" content="' . esc_attr($title) . "\">\n";
     echo '<meta property="og:description" content="' . esc_attr($desc) . "\">\n";
@@ -193,7 +198,7 @@ function cc25_seo_head() {
             'datePublished' => get_the_date('c'),
             'dateModified' => get_the_modified_date('c'),
             'author' => array('@type' => 'Person', 'name' => cc25_byline()),
-            'publisher' => array('@type' => 'Organization', 'name' => 'Cwmbran Celtic AFC', 'logo' => array('@type' => 'ImageObject', 'url' => cc25_club_logo())),
+            'publisher' => array('@type' => 'Organization', 'name' => 'Cwmbran Celtic FC', 'logo' => array('@type' => 'ImageObject', 'url' => cc25_club_logo())),
             'mainEntityOfPage' => $url,
             'description' => $desc,
         );
@@ -208,7 +213,7 @@ function cc25_seo_head() {
         if ($m) {
             $home = !empty($m['home']); $opp = $m['opp'];
             $ct = array(
-                array('@type' => 'SportsTeam', 'name' => 'Cwmbran Celtic AFC'),
+                array('@type' => 'SportsTeam', 'name' => 'Cwmbran Celtic FC'),
                 array('@type' => 'SportsTeam', 'name' => $opp),
             );
             cc25_jsonld(array(

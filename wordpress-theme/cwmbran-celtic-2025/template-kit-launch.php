@@ -39,14 +39,14 @@ $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.p
       <a class="btn btn-gold" href="<?php echo esc_url($k['shop_url']); ?>" target="_blank" rel="noopener">Pre-order your shirt &rarr;</a>
       <a class="btn btn-line" href="<?php echo esc_url($k['tickets_url']); ?>" target="_blank" rel="noopener">Season Tickets</a>
     </div>
-    <div class="kl-date">Cwmbran Celtic AFC &middot; <?php echo esc_html(date('j F Y', strtotime($k['date']))); ?></div>
+    <div class="kl-date">Cwmbran Celtic FC &middot; <?php echo esc_html(date('j F Y', strtotime($k['date']))); ?></div>
   </div>
 </div>
 
 <section class="band">
   <div class="wrap kl-wrap">
     <div class="kl-lede reveal">
-      <p>Cwmbran Celtic AFC has today announced a landmark shirt-sponsor partnership that unites two worlds built on the very same foundations: <b>grassroots football and grassroots music</b>. For the 2026/27 season, four of the UK's most-loved independent bands &mdash; <b>Super Furry Animals</b>, <b>Mogwai</b>, <b>Panic Shack</b> and <b>Loose Articles</b> &mdash; will feature across the front of the club's men's and women's first-team shirts.</p>
+      <p>Cwmbran Celtic FC has today announced a landmark shirt-sponsor partnership that unites two worlds built on the very same foundations: <b>grassroots football and grassroots music</b>. For the 2026/27 season, four of the UK's most-loved independent bands &mdash; <b>Super Furry Animals</b>, <b>Mogwai</b>, <b>Panic Shack</b> and <b>Loose Articles</b> &mdash; will feature across the front of the club's men's and women's first-team shirts.</p>
     </div>
     <div class="kl-body reveal">
       <p>Community, passion, and the amazing people who keep them both alive &mdash; that's what football and music at this level share. Most of the money raised through shirt sales goes directly towards supporting the club's many teams: six senior sides across the men's and women's sections, plus veterans, walking football and a full junior set-up for boys and girls. And <b>10% of the profit from every shirt</b> will be donated to <a href="<?php echo esc_url($k['mvt_url']); ?>" target="_blank" rel="noopener">Music Venue Trust</a>, the charity dedicated to protecting, securing and improving the UK's grassroots music venues.</p>

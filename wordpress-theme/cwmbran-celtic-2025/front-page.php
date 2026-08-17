@@ -167,9 +167,9 @@ if ($cc25_kllive && !$cc25_md): ?>
     // "Matchday at the Motazone Arena".
     $cc25_hero_fx   = $cc25_hg;
     $cc25_hero_comp = $cc25_hero_fx ? cc25_fixture_comp_label($cc25_hero_fx) : 'Ardal League South East'; ?>
-    <span class="hero-eyebrow kick"><span class="ln"></span> <?php echo $cc25_hero_fx ? 'Next Match &middot; ' . esc_html($cc25_hero_comp) : 'Cwmbran Celtic AFC &middot; ' . esc_html($cc25_hero_comp); ?></span>
+    <span class="hero-eyebrow kick"><span class="ln"></span> <?php echo $cc25_hero_fx ? 'Next Match &middot; ' . esc_html($cc25_hero_comp) : 'Cwmbran Celtic FC &middot; ' . esc_html($cc25_hero_comp); ?></span>
     <?php if ($cc25_hero_fx): ?>
-    <h1><span class="sr-only">Cwmbran Celtic AFC — </span>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
+    <h1><span class="sr-only">Cwmbran Celtic FC — </span>Matchday<br><span class="thin">at the Motazone Arena</span></h1>
     <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, live.</p>
     <div class="count" id="count" aria-label="Countdown to kick-off" data-ko="<?php echo intval(cc25_kickoff_ms($cc25_hero_fx)); ?>">
       <div class="u"><div class="n" id="cd-d">00</div><div class="l">Days</div></div>
@@ -181,7 +181,7 @@ if ($cc25_kllive && !$cc25_md): ?>
       <div class="u"><div class="n" id="cd-s">00</div><div class="l">Secs</div></div>
     </div>
     <?php else: ?>
-    <h1>Cwmbran Celtic AFC<br><span class="thin">The Celts &middot; Est. 1924</span></h1>
+    <h1>Cwmbran Celtic FC<br><span class="thin">The Celts &middot; Est. 1924</span></h1>
     <p class="hero-sub">Blue and yellow, since 1924. Follow the Celts through the <?php echo esc_html(cc25_season()); ?> season — every fixture, every result, and the road ahead.</p>
     <?php endif; ?>
   </div>

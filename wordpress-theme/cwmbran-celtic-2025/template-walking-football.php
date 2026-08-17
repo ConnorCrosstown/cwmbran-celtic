@@ -195,7 +195,7 @@ $cc25_tel   = preg_replace('/\s+/', '', $cc25_wf['phone']);
         <a class="btn btn-outline btn-block" href="<?php echo esc_url($cc25_wf['sponsorship']); ?>" target="_blank" rel="noopener">Sponsor the section</a>
       </div>
     </div>
-    <p class="spx-note reveal">Walking Football is part of Cwmbran Celtic AFC and runs its own site at <a href="<?php echo esc_url($cc25_wf['site']); ?>" target="_blank" rel="noopener">cwmbrancelticwalkingfootball.co.uk</a>.</p>
+    <p class="spx-note reveal">Walking Football is part of Cwmbran Celtic FC and runs its own site at <a href="<?php echo esc_url($cc25_wf['site']); ?>" target="_blank" rel="noopener">cwmbrancelticwalkingfootball.co.uk</a>.</p>
   </div>
 </section>
 <?php get_template_part('template-parts/site-footer'); ?>

@@ -2789,28 +2789,33 @@ function cc25_share_pages() {
     if ($flat !== null) return $flat;
 
     $rows = array(
+        /* No league named on the all-teams pages. The seven sides play in seven
+         * different competitions, so naming one described the men's first team
+         * and misdescribed the other six. */
         array(array('fixtures', 'fixtures-results', 'fixtures-and-results'), 'page-fixtures.jpg',
-            "Every Cwmbran Celtic fixture and result, plus the live Ardal League South East table — First Team, Reserves and Women's, with tickets for home games."),
+            'Every Cwmbran Celtic fixture and result across all seven teams, with live league tables and tickets for home games.'),
         array(array('news'), 'page-news.jpg',
-            'Match reports, transfer news, club announcements and everything else happening at Cwmbran Celtic AFC.'),
+            'Match reports, transfer news, club announcements and everything else happening at Cwmbran Celtic FC.'),
         array(array('teams'), 'page-teams.jpg',
             "All seven Cwmbran Celtic sides — Men's First Team and Reserves, Women's First Team, Reserves and Under-19s, Under-18s and Vets."),
         array(array('travel', 'travel-and-ground'), 'page-travel.jpg',
             'Getting to the Motazone Arena (Celtic Park), Cwmbran — directions, free parking and matchday info for home and visiting supporters.'),
+        /* template-away-days.php covers mens, reserves and womens only — three
+         * teams in three leagues — so this names the teams, not a league. */
         array(array('away-days'), 'page-away-days.jpg',
-            'Travel guides to every Ardal League South East away ground — addresses, postcodes and directions for following the Celts on the road.'),
+            "Travel guides to every away ground for the First Team, Reserves and Women's — addresses, postcodes and directions for following the Celts on the road."),
         array(array('the-celtic-bond', 'celtic-bond', 'bond'), 'page-celtic-bond.jpg',
-            'Join the Celtic Bond and help fund Cwmbran Celtic AFC — the club lottery with cash prizes every draw. Sign up and back the Celts.'),
+            'Join the Celtic Bond and help fund Cwmbran Celtic FC — the club lottery with cash prizes every draw. Sign up and back the Celts.'),
         array(array('bond-results'), 'page-bond-results.jpg',
             'Every Celtic Bond draw result — winning numbers and prize amounts, draw by draw.'),
         array(array('sponsors', 'sponsors-2'), 'page-sponsors.jpg',
-            'The businesses backing Cwmbran Celtic AFC. Meet the sponsors who keep the Celts on the pitch.'),
+            'The businesses backing Cwmbran Celtic FC. Meet the sponsors who keep the Celts on the pitch.'),
         array(array('sponsorship', 'sponsorship-opportunities'), 'page-sponsorship.jpg',
-            'Sponsor Cwmbran Celtic AFC — shirt, board, matchball and player sponsorship packages for local businesses in Torfaen and Gwent.'),
+            'Sponsor Cwmbran Celtic FC — shirt, board, matchball and player sponsorship packages for local businesses in Torfaen and Gwent.'),
         array(array('shop'), 'page-shop.jpg',
             'The official Cwmbran Celtic club shop — replica shirts, training wear, hoodies and accessories for seniors and juniors.'),
         array(array('contact'), 'page-contact.jpg',
-            'Get in touch with Cwmbran Celtic AFC — club contacts, the Motazone Arena address, and how to reach the committee.'),
+            'Get in touch with Cwmbran Celtic FC — club contacts, the Motazone Arena address, and how to reach the committee.'),
         array(array('hospitality'), 'page-hospitality.jpg',
             'Matchday hospitality at the Motazone Arena — packages for supporters, sponsors and groups at Cwmbran Celtic.'),
         array(array('galleries', 'gallery', 'photo-gallery'), 'page-gallery.jpg',
@@ -2826,7 +2831,7 @@ function cc25_share_pages() {
         array(array('2024-25-archive', '2023-24-archive', '2022-23-archive'), 'page-archive.jpg',
             'Cwmbran Celtic season results in full — every scoreline from the archive, season by season.'),
         array(array('club-history', 'club-documents', 'heritage', 'club'), 'page-club.jpg',
-            'Cwmbran Celtic AFC — founded 1924, Fraternitas in Ludus. Club history, heritage and official documents.'),
+            'Cwmbran Celtic FC — founded 1924, Fraternitas in Ludus. Club history, heritage and official documents.'),
         array(array('tickets'), 'page-tickets.jpg',
             'Tickets for Cwmbran Celtic home games at the Motazone Arena — book online before matchday.'),
 
@@ -2839,13 +2844,13 @@ function cc25_share_pages() {
         array(array('ladies', 'ladies-team', 'ladies-1st-team', 'womens', 'womens-team'), 'page-squad-womens.jpg',
             "The Cwmbran Celtic Women's First Team squad — players, positions and squad numbers for the Genero Adran South."),
         array(array('womens-reserves'), 'page-squad-womens_res.jpg',
-            "The Cwmbran Celtic Women's Reserves squad — players and squad numbers for the South Wales Women's & Girls League."),
+            "The Cwmbran Celtic Women's Reserves squad — players and squad numbers for the SWWGL Women's Development League."),
         array(array('womens-under-19s'), 'page-squad-womens_u19.jpg',
-            "The Cwmbran Celtic Women's Under-19s squad — players and squad numbers for the Genero Adran South U19."),
+            "The Cwmbran Celtic Women's Under-19s squad — players and squad numbers for the Adran U19s."),
         array(array('under-18s'), 'page-squad-u18s.jpg',
-            "The Cwmbran Celtic Men's Under-18s squad — players and squad numbers for the Gwent Premier Youth League."),
+            "The Cwmbran Celtic Men's Under-18s squad — players and squad numbers for the Gwent County Youth League."),
         array(array('mens-vets'), 'page-squad-vets.jpg',
-            "The Cwmbran Celtic Men's Vets squad — the Over-40s side in the WVFA Workware Supermarket O40s East."),
+            "The Cwmbran Celtic Men's Vets squad — the Over-40s side in the WVFA Over-40s."),
     );
 
     $flat = array();
