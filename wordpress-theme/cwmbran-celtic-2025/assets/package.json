@@ -1,0 +1,4 @@
+{
+  "type": "module",
+  "//": "Not a package. Present only so Node reads assets/*.js as ES modules when running _tests/reader-order-test.js. WordPress ignores it."
+}

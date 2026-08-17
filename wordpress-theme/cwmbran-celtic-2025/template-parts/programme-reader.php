@@ -13,8 +13,8 @@ $cc25_wrap  = cc25_programme_cover_wrap(get_the_ID()) ? '1' : '0';
 $cc25_vend  = get_stylesheet_directory_uri() . '/assets/vendor/pdfjs/';
 // Versioned by mtime like the rest of the theme's assets — these are imported by
 // URL from the reader, so wp_enqueue_script's versioning can't reach them.
-$cc25_pgv   = @filemtime(get_stylesheet_directory() . '/assets/programme-pages.mjs') ?: '1';
-$cc25_pages = get_stylesheet_directory_uri() . '/assets/programme-pages.mjs?ver=' . rawurlencode($cc25_pgv);
+$cc25_pgv   = @filemtime(get_stylesheet_directory() . '/assets/programme-pages.js') ?: '1';
+$cc25_pages = get_stylesheet_directory_uri() . '/assets/programme-pages.js?ver=' . rawurlencode($cc25_pgv);
 $cc25_cover = get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_attr(get_the_title())));
 ?>
 <div class="phero" style="min-height:auto">
@@ -34,8 +34,8 @@ $cc25_cover = get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_a
          aria-label="<?php echo esc_attr(get_the_title()); ?> — match day programme"
          data-pdf="<?php echo esc_url($cc25_pdf); ?>"
          data-pages="<?php echo esc_url($cc25_pages); ?>"
-         data-pdfjs="<?php echo esc_url($cc25_vend . 'pdf.min.mjs'); ?>"
-         data-worker="<?php echo esc_url($cc25_vend . 'pdf.worker.min.mjs'); ?>"
+         data-pdfjs="<?php echo esc_url($cc25_vend . 'pdf.min.js'); ?>"
+         data-worker="<?php echo esc_url($cc25_vend . 'pdf.worker.min.js'); ?>"
          data-cover-wrap="<?php echo esc_attr($cc25_wrap); ?>">
 
       <div class="prog-stage">

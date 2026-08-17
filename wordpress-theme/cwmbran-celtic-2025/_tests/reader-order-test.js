@@ -1,9 +1,9 @@
 /**
  * Assertions over the programme reading order. Run from the theme root:
- *   node _tests/reader-order-test.mjs
+ *   node _tests/reader-order-test.js
  * Imports the mapping directly — it carries no PDF.js dependency.
  */
-import { readingOrder, pageCount } from '../assets/programme-pages.mjs';
+import { readingOrder, pageCount } from '../assets/programme-pages.js';
 
 let failures = 0;
 function check(label, cond) {

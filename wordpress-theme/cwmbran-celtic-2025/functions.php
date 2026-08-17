@@ -44,8 +44,8 @@ add_action('wp_enqueue_scripts', function () {
     // The programme reader pulls in PDF.js, which is far too heavy to ship
     // site-wide — so it loads only on a programme that actually has a PDF.
     if (is_singular('post') && cc25_is_programme_post(get_queried_object())) {
-        $rv = @filemtime($dir . '/assets/programme-reader.mjs') ?: '0.1.0';
-        wp_enqueue_script('cc25-programme-reader', get_stylesheet_directory_uri() . '/assets/programme-reader.mjs', array(), $rv, true);
+        $rv = @filemtime($dir . '/assets/programme-reader.js') ?: '0.1.0';
+        wp_enqueue_script('cc25-programme-reader', get_stylesheet_directory_uri() . '/assets/programme-reader.js', array(), $rv, true);
     }
 }, 99);
 

@@ -4,7 +4,7 @@
  *
  * Desktop shows the landscape sheet whole, as the spread it was designed as.
  * A phone shows one A5 page at a time, because the spread's text is unreadable
- * at that width — see programme-pages.mjs for why the order isn't simply
+ * at that width — see programme-pages.js for why the order isn't simply
  * left-to-right.
  *
  * The markup already carries the cover image and a download link, so if this
