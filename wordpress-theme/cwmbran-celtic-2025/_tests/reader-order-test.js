@@ -95,5 +95,35 @@ check('inner sheets of a spread run 2..16 in order',
 check('no sheet but the cover appears twice in a spread',
     spread.filter(p => p.sheet !== 1).length === new Set(spread.filter(p => p.sheet !== 1).map(p => p.sheet)).size);
 
+/* ---- extra pages --------------------------------------------------------
+ * Pages the club adds to the digital programme that aren't in the printed PDF
+ * — a sponsor's advert, say. They belong at the END of the read, but the back
+ * cover has to stay the last thing anyone sees, so they go before it. */
+const extra1 = readingOrder(16, { landscape: true, coverWrap: true, extra: 1 });
+check('one extra page adds one to the count', extra1.length === 33);
+check('the extra page is not a sheet', extra1[31].sheet === null && extra1[31].extra === 0);
+check('the back cover is still last', at(extra1, 32) === '1L');
+check('the page before the extra is the last inner sheet', at(extra1, 30) === '16R');
+
+const extra2 = readingOrder(16, { landscape: true, coverWrap: true, extra: 2 });
+check('two extras add two', extra2.length === 34);
+check('extras keep their order', extra2[31].extra === 0 && extra2[32].extra === 1);
+check('the back cover is still last with two extras', at(extra2, 33) === '1L');
+
+// Without a wrap there is no back cover to protect: extras simply end the read.
+const noWrap = readingOrder(16, { landscape: true, coverWrap: false, extra: 1 });
+check('without a wrap an extra goes last', noWrap[noWrap.length - 1].extra === 0);
+
+// Portrait archives and spread view get them too.
+check('a portrait doc takes extras', readingOrder(12, { landscape: false, extra: 1 }).length === 13);
+check('a portrait extra goes last', readingOrder(12, { landscape: false, extra: 1 })[12].extra === 0);
+const spreadExtra = readingOrder(16, { landscape: true, coverWrap: true, whole: Array.from({ length: 15 }, (_, k) => k + 2), extra: 1 });
+check('a spread read takes extras before the back cover', spreadExtra.length === 18 && spreadExtra[16].extra === 0 && at(spreadExtra, 17) === '1L');
+
+check('no extras changes nothing', readingOrder(16, { landscape: true, coverWrap: true, extra: 0 }).length === 32);
+check('a rubbish extra count is ignored', readingOrder(16, { landscape: true, coverWrap: true, extra: -4 }).length === 32);
+check('extras still work when a sheet is whole',
+    readingOrder(16, { landscape: true, coverWrap: true, whole: [9], extra: 1 }).length === 32);
+
 console.log('\n' + (failures ? `${failures} FAILED` : 'All checks passed'));
 process.exit(failures ? 1 : 0);

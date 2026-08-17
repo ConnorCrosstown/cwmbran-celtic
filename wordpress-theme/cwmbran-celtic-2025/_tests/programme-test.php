@@ -40,6 +40,23 @@ check('null is not a PDF', cc25_is_pdf_url(null) === false);
 check('a directory named pdf is not a PDF', cc25_is_pdf_url('https://example.com/pdf/programme') === false);
 check('a query parameter mentioning pdf is not a PDF', cc25_is_pdf_url('https://heyzine.com/view?file=prog.pdf') === false);
 check('a host mentioning pdf is not a PDF', cc25_is_pdf_url('https://mypdf.com/programme') === false);
+/* ---- extra pages ---------------------------------------------------------
+ * Season advertising added to the digital programme. The table is keyed by the
+ * season label cc25_programme_season() produces, so a typo there means an
+ * advertiser silently gets nothing. */
+$cc25_extras = cc25_programme_extras_static();
+check('the extras table is keyed by season', (bool) preg_grep('~^\d{4}/\d{2}$~', array_keys($cc25_extras)) || $cc25_extras === array());
+foreach ($cc25_extras as $cc25_season => $cc25_list) {
+    check("season $cc25_season is a season label", (bool) preg_match('~^\d{4}/\d{2}$~', $cc25_season));
+    foreach ($cc25_list as $cc25_n => $cc25_e) {
+        check("$cc25_season extra $cc25_n names artwork", !empty($cc25_e['img']));
+        check("$cc25_season extra $cc25_n artwork is in the theme",
+            is_file(dirname(__DIR__) . '/assets/' . $cc25_e['img']));
+        check("$cc25_season extra $cc25_n has alt text", !empty($cc25_e['alt']));
+    }
+}
+check('the season label helper agrees with the table format',
+    (bool) preg_match('~^\d{4}/\d{2}$~', cc25_season_label_from_ts(mktime(0, 0, 0, 9, 1, 2026))));
 
 echo "\n" . ($failures ? count($failures) . " FAILED\n" : "All checks passed\n");
 exit($failures ? 1 : 0);

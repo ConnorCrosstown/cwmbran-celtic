@@ -80,6 +80,28 @@ async function boot(root) {
     const thumbs = root.querySelector('.prog-thumbs');
     const coverWrap = root.getAttribute('data-cover-wrap') === '1';
 
+    // Pages the club adds to the digital programme — season advertising that
+    // isn't in the printed PDF. Bad JSON must not cost anyone the programme.
+    let extras = [];
+    try {
+        const raw = JSON.parse(root.getAttribute('data-extras') || '[]');
+        if (Array.isArray(raw)) extras = raw.filter(e => e && e.src);
+    } catch (e) { extras = []; }
+
+    const images = new Map();
+    const extraImage = (k) => {
+        if (!images.has(k)) {
+            images.set(k, new Promise((resolve, reject) => {
+                const img = new Image();
+                img.decoding = 'async';
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error('extra page ' + k + ' failed to load'));
+                img.src = extras[k].src;
+            }));
+        }
+        return images.get(k);
+    };
+
     // Sheet 1 decides the shape of the whole document.
     const first = await doc.getPage(1);
     const box = first.getViewport({ scale: 1 });
@@ -192,7 +214,7 @@ async function boot(root) {
         } else {
             opts = { landscape: false };
         }
-        order = readingOrder(doc.numPages, opts);
+        order = readingOrder(doc.numPages, { ...opts, extra: extras.length });
         if (!order.length) throw new Error('programme has no pages');
         // Hold position across a rotation or a mode change rather than snapping
         // back to the cover.
@@ -205,6 +227,7 @@ async function boot(root) {
 
     async function draw() {
         const spot = order[i];
+        if (spot.extra != null) { await drawExtra(spot.extra); return; }
         const pg = await page(spot.sheet);
 
         // Fit the visible portion to the stage, at the device's pixel density so
@@ -221,6 +244,7 @@ async function boot(root) {
         const px = (showW * scale) * (base.height * scale);
         if (px > MAX_CANVAS_PX) scale *= Math.sqrt(MAX_CANVAS_PX / px);
 
+        canvas.setAttribute('aria-label', 'Programme page');
         const vp = pg.getViewport({ scale });
         canvas.width = Math.floor(spot.half ? vp.width / 2 : vp.width);
         canvas.height = Math.floor(vp.height);
@@ -247,7 +271,39 @@ async function boot(root) {
             throw e;
         }
         renderTask = null;
+        settle();
+    }
 
+    /**
+     * An extra page is artwork, not a PDF sheet, so it is drawn rather than
+     * rendered — but it is sized by the same rules, including the zoom, so it
+     * magnifies and pans like every other page.
+     */
+    async function drawExtra(k) {
+        const img = await extraImage(k);
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const avail = stage.clientWidth || w;
+        let scale = (avail / w) * dpr * zoom;
+
+        const px = (w * scale) * (h * scale);
+        if (px > MAX_CANVAS_PX) scale *= Math.sqrt(MAX_CANVAS_PX / px);
+
+        if (renderTask) { renderTask.cancel(); renderTask = null; }
+        canvas.width = Math.max(1, Math.floor(w * scale));
+        canvas.height = Math.max(1, Math.floor(h * scale));
+        canvas.style.width = Math.round(100 * zoom) + '%';
+        canvas.style.height = 'auto';
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.setAttribute('aria-label', extras[k].alt || 'Advertisement');
+        settle();
+    }
+
+    /** Everything that is true once a page — of either kind — is on screen. */
+    function settle() {
         label.textContent = `${i + 1} / ${order.length}`;
         prevB.disabled = i === 0;
         nextB.disabled = i === order.length - 1;
@@ -259,9 +315,11 @@ async function boot(root) {
         syncHash();
         markThumb();
 
-        // Warm the next sheet so the following turn doesn't wait on a fetch.
+        // Warm what comes next so the following turn doesn't wait on a fetch.
         const ahead = order[i + 1];
-        if (ahead) page(ahead.sheet).catch(() => {});
+        if (!ahead) return;
+        if (ahead.extra != null) extraImage(ahead.extra).catch(() => {});
+        else page(ahead.sheet).catch(() => {});
     }
 
     const redraw = () => draw().catch(fail.bind(null, root));
@@ -414,15 +472,23 @@ async function boot(root) {
             thumbs.appendChild(b);
 
             try {
-                const pg = await page(spot.sheet);
-                const base = pg.getViewport({ scale: 1 });
-                const showW = spot.half ? base.width / 2 : base.width;
-                const s = 150 / showW;
-                const vp = pg.getViewport({ scale: s });
-                c.width = Math.floor(spot.half ? vp.width / 2 : vp.width);
-                c.height = Math.floor(vp.height);
-                const off = spot.half === 'right' ? -Math.floor(vp.width / 2) : 0;
-                await pg.render({ canvas: c, viewport: vp, transform: off ? [1, 0, 0, 1, off, 0] : null }).promise;
+                if (spot.extra != null) {
+                    const img = await extraImage(spot.extra);
+                    const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+                    c.width = 150;
+                    c.height = Math.max(1, Math.round(150 * ih / iw));
+                    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                } else {
+                    const pg = await page(spot.sheet);
+                    const base = pg.getViewport({ scale: 1 });
+                    const showW = spot.half ? base.width / 2 : base.width;
+                    const s = 150 / showW;
+                    const vp = pg.getViewport({ scale: s });
+                    c.width = Math.floor(spot.half ? vp.width / 2 : vp.width);
+                    c.height = Math.floor(vp.height);
+                    const off = spot.half === 'right' ? -Math.floor(vp.width / 2) : 0;
+                    await pg.render({ canvas: c, viewport: vp, transform: off ? [1, 0, 0, 1, off, 0] : null }).promise;
+                }
             } catch (e) { /* a thumbnail is not worth failing the reader over */ }
         }
         thumbsBuilt = true;

@@ -67,6 +67,41 @@ function cc25_is_programme_post($post = null) {
 function cc25_programme_cover_wrap($id) {
     return get_post_meta($id, '_cc25_prog_nowrap', true) ? false : true;
 }
+
+/**
+ * Pages added to the DIGITAL programme that aren't in the printed PDF, listed
+ * per season because that is how they are sold — an advertiser books the
+ * season, not one match.
+ *
+ * They read at the end of the programme, ahead of the back cover. Artwork lives
+ * in assets/programme-extras/ and wants to be about 1600px on its long edge:
+ * that stays sharp at the reader's maximum zoom on a phone without making
+ * anyone download a print file.
+ */
+function cc25_programme_extras_static() {
+    return array(
+        '2026/27' => array(
+            array(
+                'img' => 'programme-extras/2026-27-glc-xmas.jpg',
+                'alt' => 'Goldie Lookin Chain, 18 and 19 December, Corn Exchange Newport',
+            ),
+        ),
+    );
+}
+
+/** The extra pages for one programme post, as absolute URLs. */
+function cc25_programme_extras($id) {
+    $all = cc25_programme_extras_static();
+    $season = cc25_programme_season($id);
+    if (empty($all[$season])) return array();
+    $base = get_stylesheet_directory_uri() . '/assets/';
+    $out = array();
+    foreach ($all[$season] as $e) {
+        if (empty($e['img'])) continue;
+        $out[] = array('src' => $base . $e['img'], 'alt' => isset($e['alt']) ? $e['alt'] : '');
+    }
+    return $out;
+}
 /** All programme posts grouped by season, newest season first. */
 function cc25_programmes_by_season() {
     $posts = get_posts(array(

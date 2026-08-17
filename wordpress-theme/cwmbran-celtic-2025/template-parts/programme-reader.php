@@ -16,6 +16,9 @@ $cc25_vend  = get_stylesheet_directory_uri() . '/assets/vendor/pdfjs/';
 $cc25_pgv   = @filemtime(get_stylesheet_directory() . '/assets/programme-pages.js') ?: '1';
 $cc25_pages = get_stylesheet_directory_uri() . '/assets/programme-pages.js?ver=' . rawurlencode($cc25_pgv);
 $cc25_cover = get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_attr(get_the_title())));
+// Season advertising that isn't in the printed PDF. JSON rather than a list of
+// attributes because each one carries alt text as well as a URL.
+$cc25_extras = cc25_programme_extras(get_the_ID());
 ?>
 <div class="phero" style="min-height:auto">
   <div class="bg"></div><div class="grain"></div>
@@ -36,7 +39,8 @@ $cc25_cover = get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_a
          data-pages="<?php echo esc_url($cc25_pages); ?>"
          data-pdfjs="<?php echo esc_url($cc25_vend . 'pdf.min.js'); ?>"
          data-worker="<?php echo esc_url($cc25_vend . 'pdf.worker.min.js'); ?>"
-         data-cover-wrap="<?php echo esc_attr($cc25_wrap); ?>">
+         data-cover-wrap="<?php echo esc_attr($cc25_wrap); ?>"
+         data-extras="<?php echo esc_attr(wp_json_encode($cc25_extras)); ?>">
 
       <div class="prog-stage">
         <?php // Shown until the first page paints, and left standing if it never does. ?>
