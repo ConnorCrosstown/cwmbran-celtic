@@ -1386,12 +1386,14 @@ function cc25_static_fixtures_static() {
                 array('2027-01-24', 'Porth Harlequins BGC', true, 'League'),
             ),
         ),
-        /* Women's U19s. New to the site with the club's list of 11 Aug 2026. Friday
-         * nights, so kick-off falls to the midweek default of 7:30pm — that time is
-         * ASSUMED, not confirmed by the club, and should become an explicit
-         * cc25_kickoff_overrides() entry once real times are known.
-         * The list covers the first half of the season only; it genuinely ends on
-         * 20 November. Five of these opponents have no crest and show initials. */
+        /* Women's U19s. New to the site with the club's list of 11 Aug 2026, and
+         * checked against the league's finalised Adran U19 schedule on 17 Aug —
+         * every date and venue here matches it. Kick-offs are no longer assumed:
+         * all eleven are now explicit cc25_kickoff_overrides_static() entries,
+         * which is where the one exception lives (Cardiff City away is 8:00pm).
+         * The list is the whole competition, not half of it — twelve clubs, a
+         * single round-robin, so it genuinely ends on 20 November.
+         * Five of these opponents have no crest and show initials. */
         'womens_u19' => array(
             'league' => 'Adran U19s',
             'title'  => "Women's Under-19s",

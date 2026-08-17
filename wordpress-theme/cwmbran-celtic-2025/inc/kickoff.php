@@ -96,6 +96,30 @@ function cc25_kickoff_overrides_static() {
         '2027-03-14|Taffs Well'           => '14:00',  // W Sun
         '2027-03-21|Pure Swansea'         => '14:00',  // W Sun
         '2027-04-04|Penybont'             => '14:00',  // W Sun
+
+        /* Women's U19s, from the league's finalised Adran U19 schedule of
+         * 17 Aug 2026. These were previously left to the midweek default, which
+         * happened to be right for ten of the eleven — but Cardiff City play
+         * their home games at 8:00pm, every one of them, and the default put
+         * our game there half an hour early. Listed in full rather than just
+         * the odd one out, so the times stay right if the default ever moves.
+         *
+         * The schedule's own dates for rounds 10 and 11 read 13.10 and 20.10.
+         * Both are Tuesdays, both fall BEFORE round 9 on 06.11, and the whole
+         * competition is otherwise a clean run of consecutive Fridays — so they
+         * are month typos for 13.11 and 20.11, which is what our list already
+         * says. Do not "correct" the fixtures to match the spreadsheet. */
+        '2026-09-11|Pontypridd United'    => '19:30',  // U19 Fri
+        '2026-09-18|Penybont'             => '19:30',  // U19 Fri
+        '2026-09-25|Briton Ferry Llansawel' => '19:30', // U19 Fri
+        '2026-10-02|Barry Town United'    => '19:30',  // U19 Fri
+        '2026-10-09|Taffs Well'           => '19:30',  // U19 Fri
+        '2026-10-16|Cardiff Met'          => '19:30',  // U19 Fri
+        '2026-10-23|Carmarthen Town'      => '19:30',  // U19 Fri
+        '2026-10-30|Cascade YC'           => '19:30',  // U19 Fri
+        '2026-11-06|Swansea City'         => '19:30',  // U19 Fri
+        '2026-11-13|Aberystwyth Town'     => '19:30',  // U19 Fri
+        '2026-11-20|Cardiff City'         => '20:00',  // U19 Fri — Cardiff City kick off at 8:00pm at home
     );
 }
 /** Default kick-off by ISO day-of-week (1=Mon .. 7=Sun). */
