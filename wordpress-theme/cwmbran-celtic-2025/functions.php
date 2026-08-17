@@ -2750,43 +2750,161 @@ function cc25_match_summary($m) {
     if (!empty($m['att'])) $s .= ' Att ' . intval($m['att']) . '.';
     return $s;
 }
+/** URL of a share card in assets/img/share/. Every card in there is 1200x630,
+ *  which is why cc25_seo_head() can state og:image:width/height without asking
+ *  the filesystem — see CC25_SHARE_W/H. */
+function cc25_share_img($file) {
+    return get_stylesheet_directory_uri() . '/assets/img/share/' . $file;
+}
+
+/** Every share card is cut to this. Facebook and WhatsApp only commit to the
+ *  big card layout when the dimensions are declared, so they always are. */
+define('CC25_SHARE_W', 1200);
+define('CC25_SHARE_H', 630);
+
+/** The share card for a team's match report, keyed exactly like cc25_fx_teams().
+ *  Each card carries that team's own league badge, which is the whole reason
+ *  one shared card for all seven sides was never good enough. */
+function cc25_share_match_img($team) {
+    $teams = array_keys(cc25_fx_teams());
+    $key = in_array($team, $teams, true) ? $team : 'mens';
+    return cc25_share_img('match-report-' . $key . '.jpg');
+}
+
 /**
- * Per-page share/meta overrides for our custom-template pages (keyed by slug),
- * so link previews describe the actual page instead of the generic site tagline.
- * Returns array('title'?=>..., 'desc'=>...) or null when there's no override.
+ * Share copy and card for every page that isn't a post, keyed by slug.
+ *
+ * A page can be reached by more than one slug — the site has carried
+ * 'sponsors' and 'sponsors-2' for years, and the squad pages answer to two or
+ * three names each — so slugs are listed as arrays and flattened once, rather
+ * than duplicating the copy per alias.
+ *
+ * Anything not listed falls through to cc25_share_meta()'s generic card, so a
+ * new page is never worse off than the old shared-hero behaviour.
+ */
+function cc25_share_pages() {
+    static $flat = null;
+    if ($flat !== null) return $flat;
+
+    $rows = array(
+        array(array('fixtures', 'fixtures-results', 'fixtures-and-results'), 'page-fixtures.jpg',
+            "Every Cwmbran Celtic fixture and result, plus the live Ardal League South East table — First Team, Reserves and Women's, with tickets for home games."),
+        array(array('news'), 'page-news.jpg',
+            'Match reports, transfer news, club announcements and everything else happening at Cwmbran Celtic AFC.'),
+        array(array('teams'), 'page-teams.jpg',
+            "All seven Cwmbran Celtic sides — Men's First Team and Reserves, Women's First Team, Reserves and Under-19s, Under-18s and Vets."),
+        array(array('travel', 'travel-and-ground'), 'page-travel.jpg',
+            'Getting to the Motazone Arena (Celtic Park), Cwmbran — directions, free parking and matchday info for home and visiting supporters.'),
+        array(array('away-days'), 'page-away-days.jpg',
+            'Travel guides to every Ardal League South East away ground — addresses, postcodes and directions for following the Celts on the road.'),
+        array(array('the-celtic-bond', 'celtic-bond', 'bond'), 'page-celtic-bond.jpg',
+            'Join the Celtic Bond and help fund Cwmbran Celtic AFC — the club lottery with cash prizes every draw. Sign up and back the Celts.'),
+        array(array('bond-results'), 'page-bond-results.jpg',
+            'Every Celtic Bond draw result — winning numbers and prize amounts, draw by draw.'),
+        array(array('sponsors', 'sponsors-2'), 'page-sponsors.jpg',
+            'The businesses backing Cwmbran Celtic AFC. Meet the sponsors who keep the Celts on the pitch.'),
+        array(array('sponsorship', 'sponsorship-opportunities'), 'page-sponsorship.jpg',
+            'Sponsor Cwmbran Celtic AFC — shirt, board, matchball and player sponsorship packages for local businesses in Torfaen and Gwent.'),
+        array(array('shop'), 'page-shop.jpg',
+            'The official Cwmbran Celtic club shop — replica shirts, training wear, hoodies and accessories for seniors and juniors.'),
+        array(array('contact'), 'page-contact.jpg',
+            'Get in touch with Cwmbran Celtic AFC — club contacts, the Motazone Arena address, and how to reach the committee.'),
+        array(array('hospitality'), 'page-hospitality.jpg',
+            'Matchday hospitality at the Motazone Arena — packages for supporters, sponsors and groups at Cwmbran Celtic.'),
+        array(array('galleries', 'gallery', 'photo-gallery'), 'page-gallery.jpg',
+            'Match photography from across the season — every Cwmbran Celtic gallery in one place.'),
+        array(array('juniors'), 'page-juniors.jpg',
+            'The Cwmbran Celtic junior section — age groups, training, and how to get your child playing for the Celts.'),
+        array(array('walking-football'), 'page-walking-football.jpg',
+            'Walking football at Cwmbran Celtic — a slower game, the same club. Sessions, times and how to join in.'),
+        array(array('programme', 'cwmbran-celtic-fc-match-day-programme-digital'), 'page-programme.jpg',
+            'Read the Cwmbran Celtic matchday programme online — line-ups, features and the story of the season, issue by issue.'),
+        array(array('2025-26-archive'), 'page-archive.jpg',
+            "Cwmbran Celtic's 2025-26 season results in full — every scoreline, with clickable match breakdowns."),
+        array(array('2024-25-archive', '2023-24-archive', '2022-23-archive'), 'page-archive.jpg',
+            'Cwmbran Celtic season results in full — every scoreline from the archive, season by season.'),
+        array(array('club-history', 'club-documents', 'heritage', 'club'), 'page-club.jpg',
+            'Cwmbran Celtic AFC — founded 1924, Fraternitas in Ludus. Club history, heritage and official documents.'),
+        array(array('tickets'), 'page-tickets.jpg',
+            'Tickets for Cwmbran Celtic home games at the Motazone Arena — book online before matchday.'),
+
+        /* Squad pages get the team's own card, so /mens-team/ never shares a
+         * graphic that reads "MATCH REPORT". */
+        array(array('mens', 'mens-team', 'mens-1st-team'), 'page-squad-mens.jpg',
+            "The Cwmbran Celtic Men's First Team squad — players, positions and squad numbers for the Ardal League South East campaign."),
+        array(array('mens-reserves'), 'page-squad-reserves.jpg',
+            "The Cwmbran Celtic Men's Reserves squad — players and squad numbers for the Gwent Premier Combination League."),
+        array(array('ladies', 'ladies-team', 'ladies-1st-team', 'womens', 'womens-team'), 'page-squad-womens.jpg',
+            "The Cwmbran Celtic Women's First Team squad — players, positions and squad numbers for the Genero Adran South."),
+        array(array('womens-reserves'), 'page-squad-womens_res.jpg',
+            "The Cwmbran Celtic Women's Reserves squad — players and squad numbers for the South Wales Women's & Girls League."),
+        array(array('womens-under-19s'), 'page-squad-womens_u19.jpg',
+            "The Cwmbran Celtic Women's Under-19s squad — players and squad numbers for the Genero Adran South U19."),
+        array(array('under-18s'), 'page-squad-u18s.jpg',
+            "The Cwmbran Celtic Men's Under-18s squad — players and squad numbers for the Gwent Premier Youth League."),
+        array(array('mens-vets'), 'page-squad-vets.jpg',
+            "The Cwmbran Celtic Men's Vets squad — the Over-40s side in the WVFA Workware Supermarket O40s East."),
+    );
+
+    $flat = array();
+    foreach ($rows as $row) {
+        list($slugs, $img, $desc) = $row;
+        foreach ($slugs as $s) $flat[$s] = array('img' => cc25_share_img($img), 'desc' => $desc);
+    }
+    return $flat;
+}
+
+/**
+ * Per-page share/meta overrides, so link previews describe and picture the
+ * actual page instead of the generic site tagline over one shared photo of the
+ * corner flag.
+ *
+ * Returns array('title'?, 'desc'?, 'img'?, 'type'?) — never null for a page,
+ * because a page with no entry still deserves a club card rather than the hero.
  */
 function cc25_share_meta() {
+    if (is_front_page()) {
+        return array('img' => cc25_share_img('page-home.jpg'));
+    }
     if (!is_page()) return null;
     $slug = get_post_field('post_name', get_queried_object_id());
+
     switch ($slug) {
         case 'match-report':
             list($cc25_sg, $cc25_st) = cc25_request_match_slug();
             $m = cc25_get_match($cc25_sg, $cc25_st);
+            /* The card follows the team, and the team comes off the match we
+             * actually resolved — not off the URL. A bare ?g=<date> means the
+             * men's game to cc25_request_match_slug(), but cc25_get_match()
+             * will still hand back a Vets or Women's fixture when that's the
+             * only game on the date, and the card has to agree with it. */
+            $img = cc25_share_match_img($m ? ($m['team'] ?? $cc25_st) : $cc25_st);
             if ($m) {
                 $home = !empty($m['home']); $opp = $m['opp'];
                 $line = $home
                     ? 'Cwmbran Celtic ' . intval($m['cc']) . '-' . intval($m['oc']) . ' ' . $opp
                     : $opp . ' ' . intval($m['oc']) . '-' . intval($m['cc']) . ' Cwmbran Celtic';
-                return array('title' => $line . ' | Match Report', 'desc' => cc25_match_summary($m), 'type' => 'article');
+                return array('title' => $line . ' | Match Report', 'desc' => cc25_match_summary($m), 'img' => $img, 'type' => 'article');
             }
-            return array('title' => 'Match Report | Cwmbran Celtic', 'desc' => 'Full match report, goals, stats and line-ups from the latest Cwmbran Celtic game.', 'type' => 'article');
-        case 'fixtures': case 'fixtures-results': case 'fixtures-and-results':
-            return array('desc' => "Every Cwmbran Celtic fixture and result, plus the live Ardal League South East table — First Team, Reserves and Women's, with tickets for home games.");
-        case 'travel-and-ground':
-            return array('desc' => 'Getting to the Motazone Arena (Celtic Park), Cwmbran — directions, free parking and matchday info for home and visiting supporters.');
-        case 'away-days':
-            return array('desc' => 'Travel guides to every Ardal League South East away ground — addresses, postcodes and directions for following the Celts on the road.');
-        case '2025-26-archive':
-            return array('desc' => "Cwmbran Celtic's 2025-26 season results in full — every scoreline, with clickable match breakdowns.");
-        case 'the-celtic-bond': case 'celtic-bond': case 'bond':
-            return array('desc' => 'Join the Celtic Bond and help fund Cwmbran Celtic AFC — the club lottery with cash prizes every draw. Sign up and back the Celts.');
+            return array('title' => 'Match Report | Cwmbran Celtic', 'desc' => 'Full match report, goals, stats and line-ups from the latest Cwmbran Celtic game.', 'img' => $img, 'type' => 'article');
+
         case 'music-shirts': case 'kit':
             return array(
                 'title' => 'Music Shirts 2026/27 | Cwmbran Celtic',
                 'desc'  => 'Super Furry Animals, Mogwai, Panic Shack and Loose Articles become shirt sponsors for Cwmbran Celtic — with 10% of every shirt going to Music Venue Trust. Pre-order the 2026/27 kit now.',
-                'img'   => get_stylesheet_directory_uri() . '/assets/img/kit/kit-sfa.jpg',
+                /* The kit shot, recut to 1200x630 — everything cc25_share_img()
+                 * hands back is that size, which is what lets the head state
+                 * og:image:width/height for any of them without checking. */
+                'img'   => cc25_share_img('page-music-shirts.jpg'),
                 'type'  => 'article',
             );
     }
-    return null;
+
+    $pages = cc25_share_pages();
+    if (isset($pages[$slug])) return $pages[$slug];
+
+    /* An unlisted page — a one-off, or one added since this table was written.
+     * It gets the club card and keeps whatever description cc25_seo_desc()
+     * builds from its title, which is still better than the corner flag. */
+    return array('img' => cc25_share_img('page-default.jpg'));
 }

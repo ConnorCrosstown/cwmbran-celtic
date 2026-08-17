@@ -131,7 +131,12 @@ function cc25_seo_head() {
     $desc = trim(wp_trim_words(cc25_seo_desc(), 26, '…'));   // ~155 chars for SERPs
     $url  = cc25_seo_url();
     $title = wp_get_document_title();
-    $img  = get_stylesheet_directory_uri() . '/assets/img/hero.jpg';
+    // Anything with no card of its own — an archive, a search page, a 404 — gets
+    // the club card. It used to get a photograph of the corner flag, which said
+    // nothing about the page and was the same on every link the club shared.
+    $img  = cc25_share_img('page-default.jpg');
+    $imgw = CC25_SHARE_W;
+    $imgh = CC25_SHARE_H;
     $type = 'website';
     // Page-specific share title (e.g. the match scoreline) where we have one.
     $ov = cc25_share_meta();
@@ -140,8 +145,21 @@ function cc25_seo_head() {
     if ($ov && !empty($ov['type']))  $type = $ov['type'];
     if (is_singular('post')) {
         $type = 'article';
-        if (has_post_thumbnail()) { $t = get_the_post_thumbnail_url(null, 'large'); if ($t) $img = $t; }
+        // A post's featured image is the best card it can have — it's the
+        // per-team match-report graphic on a report, the artwork on anything
+        // else. Without one it falls back to the news card, never the hero.
+        $src = has_post_thumbnail() ? wp_get_attachment_image_src(get_post_thumbnail_id(), 'large') : false;
+        if ($src && !empty($src[0])) {
+            $img  = $src[0];
+            $imgw = (int) $src[1];
+            $imgh = (int) $src[2];
+        } else {
+            $img = cc25_share_img('page-news.jpg');
+        }
     }
+    // og:image:alt describes the card, not the page — screen-reader users get
+    // the headline from og:title either way.
+    $imgalt = 'Cwmbran Celtic AFC';
     echo "\n<!-- Cwmbran Celtic SEO -->\n";
     echo '<meta name="description" content="' . esc_attr($desc) . "\">\n";
     echo '<link rel="canonical" href="' . esc_url($url) . "\">\n";
@@ -151,12 +169,20 @@ function cc25_seo_head() {
     echo '<meta property="og:description" content="' . esc_attr($desc) . "\">\n";
     echo '<meta property="og:url" content="' . esc_url($url) . "\">\n";
     echo '<meta property="og:image" content="' . esc_url($img) . "\">\n";
+    // Declared dimensions are what make Facebook and WhatsApp commit to the big
+    // card on first scrape instead of guessing, or rendering a thumbnail.
+    if ($imgw > 0 && $imgh > 0) {
+        echo '<meta property="og:image:width" content="' . intval($imgw) . "\">\n";
+        echo '<meta property="og:image:height" content="' . intval($imgh) . "\">\n";
+    }
+    echo '<meta property="og:image:alt" content="' . esc_attr($imgalt) . "\">\n";
     echo '<meta property="og:locale" content="en_GB">' . "\n";
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:site" content="@CwmbranCelticFC">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($title) . "\">\n";
     echo '<meta name="twitter:description" content="' . esc_attr($desc) . "\">\n";
     echo '<meta name="twitter:image" content="' . esc_url($img) . "\">\n";
+    echo '<meta name="twitter:image:alt" content="' . esc_attr($imgalt) . "\">\n";
 
     cc25_jsonld(array_merge(array('@context' => 'https://schema.org'), cc25_seo_org()));
 
