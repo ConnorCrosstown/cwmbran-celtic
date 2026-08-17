@@ -174,11 +174,25 @@ async function boot(root) {
 
     function rebuild(keepSheet) {
         const split = splitting();
-        order = readingOrder(doc.numPages, {
-            landscape: split,
-            coverWrap: split && coverWrap,
-            whole: split ? whole : [],
-        });
+        let opts;
+        if (!landscape) {
+            opts = { landscape: false };
+        } else if (split) {
+            opts = { landscape: true, coverWrap, whole };
+        } else if (coverWrap) {
+            // Shown as spreads, sheet 1 is still the outer wrap — so drawing it
+            // whole opens the programme on its own back cover, sitting to the
+            // left of the front one. Every sheet stays whole EXCEPT that wrap,
+            // which unwraps to a front cover first and a back cover last.
+            opts = {
+                landscape: true,
+                coverWrap: true,
+                whole: Array.from({ length: doc.numPages - 1 }, (_, k) => k + 2),
+            };
+        } else {
+            opts = { landscape: false };
+        }
+        order = readingOrder(doc.numPages, opts);
         if (!order.length) throw new Error('programme has no pages');
         // Hold position across a rotation or a mode change rather than snapping
         // back to the cover.

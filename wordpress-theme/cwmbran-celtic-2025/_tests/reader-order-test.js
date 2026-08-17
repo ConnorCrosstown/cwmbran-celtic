@@ -78,5 +78,22 @@ check('out-of-range whole sheets are ignored',
 check('whole has no effect on a portrait doc',
     readingOrder(12, { landscape: false, whole: [3] }).length === 12);
 
+/* ---- spread view still opens on the front cover -------------------------
+ * Shown as spreads (desktop, or the "Both pages" toggle), sheet 1 is still the
+ * outer wrap — so drawing it whole puts the BACK cover to the left of the front
+ * one, and the programme opens on its own back page. The reader asks for every
+ * sheet whole EXCEPT the wrap, which unwraps the cover without splitting
+ * anything else. */
+const spread = readingOrder(16, { landscape: true, coverWrap: true, whole: Array.from({ length: 15 }, (_, k) => k + 2) });
+check('a wrapped spread has one entry per sheet, plus the split cover', spread.length === 17);
+check('the spread opens on the front cover alone', at(spread, 0) === '1R');
+check('the spread ends on the back cover alone', at(spread, 16) === '1L');
+check('every inner sheet of a spread is whole',
+    spread.slice(1, 16).every(p => p.half === null));
+check('inner sheets of a spread run 2..16 in order',
+    spread.slice(1, 16).every((p, k) => p.sheet === k + 2));
+check('no sheet but the cover appears twice in a spread',
+    spread.filter(p => p.sheet !== 1).length === new Set(spread.filter(p => p.sheet !== 1).map(p => p.sheet)).size);
+
 console.log('\n' + (failures ? `${failures} FAILED` : 'All checks passed'));
 process.exit(failures ? 1 : 0);
