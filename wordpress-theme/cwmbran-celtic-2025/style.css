@@ -4,7 +4,7 @@ Theme URI: https://www.cwmbranceltic.com
 Description: Premium redesign for Cwmbran Celtic AFC. Child theme of Divi.
 Author: Cwmbran Celtic AFC
 Template: Divi
-Version: 0.17.0
+Version: 0.18.0
 */
 
 @font-face{font-family:"Oswald";font-style:normal;font-weight:200 700;font-display:swap;src:url("assets/fonts/oswald.woff2") format("woff2");}
@@ -1007,6 +1007,40 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .prog-hint{text-align:center;color:var(--muted);font-size:.8rem;margin:10px 0 0}
 .prog-dl{text-align:center;margin:22px 0 0}
 @media(max-width:900px){.prog-hint{font-size:.76rem}}
+
+/* Download progress. Only meaningful before the first paint, so it goes with
+   the fallback and disappears with it. */
+.prog-progress{width:min(280px,70%);height:4px;margin:14px auto 0;border-radius:3px;background:var(--hair-strong);overflow:hidden}
+.prog-progress-bar{display:block;width:0;height:100%;background:var(--blue-500);transition:width .2s linear}
+.prog-failed-msg{display:none;color:var(--text);font-size:.92rem;margin:10px 0 0}
+.prog-reader[data-failed] .prog-failed-msg{display:block}
+.prog-reader[data-failed] .prog-fallback-msg,
+.prog-reader[data-failed] .prog-progress{display:none}
+
+/* Zoom, spread, page picker, full screen. */
+.prog-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.prog-tool{min-height:38px;padding:0 14px;border-radius:19px;border:1px solid var(--hair-strong);background:var(--surface);color:var(--text);font:inherit;font-size:.82rem;cursor:pointer;transition:.18s}
+.prog-tool:hover:not(:disabled){border-color:var(--blue-500);color:var(--blue-500)}
+.prog-tool:disabled{opacity:.35;cursor:default}
+.prog-tool[aria-pressed="true"],.prog-tool[aria-expanded="true"]{background:var(--navy-800);border-color:var(--navy-800);color:#fff}
+.prog-zoom-in,.prog-zoom-out{width:38px;padding:0;font-size:1.1rem;line-height:1}
+
+/* Magnified, the stage becomes the viewport and the canvas overflows it. */
+.prog-reader[data-zoomed="1"] .prog-stage{overflow:auto;cursor:grab;align-items:flex-start;justify-content:flex-start;-webkit-overflow-scrolling:touch}
+.prog-reader[data-zoomed="1"] .prog-canvas{max-width:none}
+
+/* Full screen: the stage takes the height and the controls sit under it. */
+.prog-reader:fullscreen{background:var(--surface);padding:14px;display:flex;flex-direction:column;justify-content:center}
+.prog-reader:fullscreen .prog-stage{flex:1;min-height:0}
+.prog-reader:fullscreen .prog-canvas{max-height:100%;width:auto;margin:0 auto}
+.prog-reader[data-zoomed="1"]:fullscreen .prog-canvas{max-height:none;width:100%}
+
+.prog-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:14px;max-height:340px;overflow:auto;padding:4px}
+.prog-thumb{position:relative;padding:0;border:1px solid var(--hair);border-radius:6px;background:var(--surface);cursor:pointer;overflow:hidden;line-height:0}
+.prog-thumb canvas{width:100%;height:auto;display:block;background:#fff}
+.prog-thumb span{position:absolute;left:0;bottom:0;padding:1px 6px;font-size:.68rem;line-height:1.6;background:var(--navy-800);color:#fff;border-top-right-radius:6px}
+.prog-thumb[aria-current="true"]{border-color:var(--blue-500);box-shadow:0 0 0 2px var(--blue-500)}
+@media(max-width:600px){.prog-thumbs{grid-template-columns:repeat(auto-fill,minmax(74px,1fr))}}
 
 /* ---- Teams hub cards ---- */
 .team-sub{color:var(--muted);font-size:.82rem;letter-spacing:.02em;margin-top:-2px}

@@ -42,5 +42,41 @@ check('zero sheets gives an empty order', readingOrder(0, { landscape: true, cov
 check('a missing sheet count gives an empty order', readingOrder(undefined).length === 0);
 check('a negative sheet count gives an empty order', readingOrder(-3, { landscape: true }).length === 0);
 
+/* ---- sheets that must not be split -------------------------------------
+ * Some sheets are one full-width page, not two: the Ammanford programme's
+ * sheet 9 is a single fixtures-and-results grid running the width of the A4.
+ * Splitting it cuts the table in half down the middle. The reader detects
+ * these and passes them here; the order must show them whole. */
+const withWide = readingOrder(16, { landscape: true, coverWrap: true, whole: [9] });
+check('a whole sheet contributes one page, not two', withWide.length === 31);
+check('the whole sheet is not split', withWide.filter(p => p.sheet === 9).every(p => p.half === null));
+check('the whole sheet appears exactly once', withWide.filter(p => p.sheet === 9).length === 1);
+check('it still opens on the front cover', at(withWide, 0) === '1R');
+check('it still ends on the back cover', at(withWide, 30) === '1L');
+check('sheets either side are still split',
+    withWide.filter(p => p.sheet === 8).length === 2 && withWide.filter(p => p.sheet === 10).length === 2);
+check('reading order stays monotonic across a whole sheet', (() => {
+    const seq = withWide.slice(0, 30).map(p => p.sheet);   // drop the trailing back cover
+    for (let i = 1; i < seq.length; i++) if (seq[i] < seq[i - 1]) return false;
+    return true;
+})());
+check('pageCount agrees when a sheet is whole',
+    pageCount(16, { landscape: true, coverWrap: true, whole: [9] }) === 31);
+
+// The cover sheet is a wrap by definition; marking it whole must not strand
+// the back cover or produce a sheet that appears both whole and split.
+const wholeCover = readingOrder(6, { landscape: true, coverWrap: true, whole: [1] });
+check('a whole cover sheet appears once', wholeCover.filter(p => p.sheet === 1).length === 1);
+check('a whole cover sheet is unsplit', wholeCover.filter(p => p.sheet === 1)[0].half === null);
+check('a whole cover sheet still leads', wholeCover[0].sheet === 1);
+
+// Nothing marked, and rubbish marked, must both behave as before.
+check('an empty whole list changes nothing',
+    readingOrder(16, { landscape: true, coverWrap: true, whole: [] }).length === 32);
+check('out-of-range whole sheets are ignored',
+    readingOrder(16, { landscape: true, coverWrap: true, whole: [0, 99, -2] }).length === 32);
+check('whole has no effect on a portrait doc',
+    readingOrder(12, { landscape: false, whole: [3] }).length === 12);
+
 console.log('\n' + (failures ? `${failures} FAILED` : 'All checks passed'));
 process.exit(failures ? 1 : 0);

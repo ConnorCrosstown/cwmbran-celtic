@@ -43,6 +43,10 @@ $cc25_cover = get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_a
         <div class="prog-fallback">
           <?php if ($cc25_cover): ?><div class="prog-fallback-cover"><?php echo $cc25_cover; ?></div><?php endif; ?>
           <p class="prog-fallback-msg">Loading the programme&hellip;</p>
+          <?php // Fills as the PDF downloads. A programme is several megabytes;
+                // a bar that moves is the difference between waiting and leaving. ?>
+          <div class="prog-progress"><span class="prog-progress-bar"></span></div>
+          <p class="prog-failed-msg">The programme couldn&rsquo;t be shown here. You can still download it below.</p>
           <noscript><p class="prog-fallback-msg">Turn on JavaScript to read the programme here, or download it below.</p></noscript>
         </div>
         <canvas class="prog-canvas" aria-label="Programme page"></canvas>
@@ -54,7 +58,18 @@ $cc25_cover = get_the_post_thumbnail(get_the_ID(), 'large', array('alt' => esc_a
         <button class="prog-nav next" type="button" aria-label="Next page">&rsaquo;</button>
       </div>
 
-      <p class="prog-hint">Use the arrows, swipe, or the &larr; &rarr; keys to turn the page.</p>
+      <div class="prog-tools">
+        <button class="prog-tool prog-zoom-out" type="button" aria-label="Zoom out">&minus;</button>
+        <button class="prog-tool prog-zoom-in" type="button" aria-label="Zoom in">+</button>
+        <?php // Both pages at once, for a sheet whose table runs across the fold. ?>
+        <button class="prog-tool prog-spread" type="button" aria-pressed="false">Both pages</button>
+        <button class="prog-tool prog-thumbs-toggle" type="button" aria-expanded="false">All pages</button>
+        <button class="prog-tool prog-fs" type="button" aria-label="Full screen">Full screen</button>
+      </div>
+
+      <div class="prog-thumbs" hidden></div>
+
+      <p class="prog-hint">Arrows, swipe or &larr; &rarr; to turn the page. Pinch or double-tap to zoom.</p>
     </div>
 
     <p class="prog-dl">
