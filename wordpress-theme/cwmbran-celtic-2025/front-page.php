@@ -555,12 +555,12 @@ if ($cc25_reports):
     </div>
     <?php $cc25_main = cc25_sponsor_main(); ?>
     <div class="sponsor-main reveal">
-      <?php echo cc25_sponsor_logo($cc25_main['name'], $cc25_main['file'], isset($cc25_main['url']) ? $cc25_main['url'] : ''); ?>
+      <?php echo cc25_sponsor_logo($cc25_main['name'], $cc25_main['file'], $cc25_main['url']); ?>
     </div>
     <?php echo cc25_featured_sponsor_html('card'); ?>
     <div class="sponsor-wall reveal d1">
     <?php foreach (cc25_sponsors() as $s): ?>
-      <div class="sponsor-card"><?php echo cc25_sponsor_logo($s[0], $s[1], isset($s[2]) ? $s[2] : '', ' loading="lazy"'); ?></div>
+      <div class="sponsor-card"><?php echo cc25_sponsor_logo($s['name'], $s['file'], $s['url'], ' loading="lazy"'); ?></div>
     <?php endforeach; ?>
     </div>
   </div>

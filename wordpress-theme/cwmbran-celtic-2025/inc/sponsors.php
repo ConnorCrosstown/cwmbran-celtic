@@ -6,31 +6,53 @@
 if (!defined('ABSPATH')) exit;
 
 
-/* ---- Sponsors (current list — mirrors cwmbran-celtic-mailing-list/lib/Sponsors.js) ----
- * Each row: array(Name, banner file, website URL). A blank URL renders the logo
- * un-linked (used where a sponsor has no confirmed website). */
-function cc25_sponsor_main() { return array('name' => 'Motazone', 'file' => '_main-motazone.jpg', 'url' => 'https://motazone.net/'); }
+/* ---- Sponsors (current list — mirrors cwmbran-celtic-mailing-list/lib/Sponsors.js) --- */
+function cc25_sponsor_main() {
+    return array('name' => 'Motazone', 'slug' => 'motazone', 'file' => '_main-motazone.jpg',
+                 'url' => 'https://motazone.net/', 'dark' => false);
+}
+
+/* Each row: name, slug, banner file, website URL, and whether the banner is
+ * white-on-black. A blank URL renders the logo un-linked (used where a sponsor
+ * has no confirmed website). A dark banner gets a navy tile instead of the
+ * default white one, so it doesn't read as a black brick in the wall.
+ * SLUGS ARE PERMANENT — they key the click counts in inc/sponsor-clicks.php. */
 function cc25_sponsors() {
-    return array(
-        array('Gigantic', 'gigantic.jpg', 'https://www.gigantic.com/'),
-        array('Crosstown Concerts', 'crosstown-concerts.jpg', 'https://www.crosstownconcerts.com/'),
-        array("Dudley's Aluminium", 'dudleys.jpg', 'https://www.dudleys.uk.com/'),
-        array('Coaltown', 'coaltown.jpg', 'https://www.coaltowncoffee.co.uk/'),
-        array('SERi', 'seri.jpg', ''),
-        array('Diverse Vinyl', 'diverse-vinyl.jpg', 'https://www.diversevinyl.com/'),
-        array('Country Connect', 'country-connect.jpg', 'https://www.country-connect.co.uk/'),
-        array('Hornbeam', 'hornbeam.jpg', ''),
-        array('Hydro Group', 'hydro-group.jpg', ''),
-        array('CRE', 'cre.jpg', ''),
-        array('TOR Sports', 'tor.jpg', 'https://www.tor-sports.co.uk/'),
-        array('Avondale Vehicle Hire', 'avondale-vehicle-hire.png', 'https://www.avondalehire.co.uk/'),
-        array('Coffiology', 'coffiology.png', 'https://coffiology.com/'),
-        array('Coleg Gwent', 'coleg-gwent.png', 'https://www.coleggwent.ac.uk/'),
-        array('JW Stockwell', 'jw-stockwell.png', ''),
-        array('Peter Villars', 'peter-villars.png', 'https://www.facebook.com/p/Peter-Villars-Sportsground-Maintenance-100063177401237/'),
-        array('Blitz Media', 'blitz-media.jpg', 'https://www.blitzmedia.co.uk/'),
-        array('Le Pub', 'le-pub.jpg', 'https://www.lepublicspace.co.uk/'),
+    $rows = array(
+        array('Gigantic', 'gigantic', 'gigantic.jpg', 'https://www.gigantic.com/'),
+        array('Crosstown Concerts', 'crosstown-concerts', 'crosstown-concerts.jpg', 'https://www.crosstownconcerts.com/'),
+        array("Dudley's Aluminium", 'dudleys', 'dudleys.jpg', 'https://www.dudleys.uk.com/'),
+        array('Coaltown', 'coaltown', 'coaltown.jpg', 'https://www.coaltowncoffee.co.uk/'),
+        array('SERi', 'seri', 'seri.jpg', ''),
+        array('Diverse Vinyl', 'diverse-vinyl', 'diverse-vinyl.jpg', 'https://www.diversevinyl.com/'),
+        array('Country Connect', 'country-connect', 'country-connect.jpg', 'https://www.country-connect.co.uk/'),
+        array('Hornbeam', 'hornbeam', 'hornbeam.jpg', ''),
+        array('Hydro Group', 'hydro-group', 'hydro-group.jpg', ''),
+        array('CRE', 'cre', 'cre.jpg', ''),
+        array('TOR Sports', 'tor-sports', 'tor.jpg', 'https://www.tor-sports.co.uk/'),
+        array('Avondale Vehicle Hire', 'avondale-vehicle-hire', 'avondale-vehicle-hire.png', 'https://www.avondalehire.co.uk/'),
+        array('Coffiology', 'coffiology', 'coffiology.png', 'https://coffiology.com/'),
+        array('Coleg Gwent', 'coleg-gwent', 'coleg-gwent.png', 'https://www.coleggwent.ac.uk/'),
+        array('JW Stockwell', 'jw-stockwell', 'jw-stockwell.png', ''),
+        array('Peter Villars', 'peter-villars', 'peter-villars.png', 'https://www.facebook.com/p/Peter-Villars-Sportsground-Maintenance-100063177401237/'),
+        array('Blitz Media', 'blitz-media', 'blitz-media.jpg', 'https://www.blitzmedia.co.uk/'),
+        array('Le Pub', 'le-pub', 'le-pub.jpg', 'https://www.lepublicspace.co.uk/'),
     );
+    $out = array();
+    foreach ($rows as $r) {
+        $out[] = array('name' => $r[0], 'slug' => $r[1], 'file' => $r[2], 'url' => $r[3], 'dark' => false);
+    }
+    return $out;
+}
+
+/** The sponsor with this slug, or null. Searches the paid roster and the main
+ *  sponsor — not charity partners, who are never click-tracked. */
+function cc25_sponsor_by_slug($slug) {
+    if ($slug === '' || $slug === null) return null;
+    foreach (array_merge(array(cc25_sponsor_main()), cc25_sponsors()) as $r) {
+        if ($r['slug'] === $slug) return $r;
+    }
+    return null;
 }
 /** A random sponsor for the rotating "Featured Sponsor" spots — picked fresh on
  * each page load so every sponsor gets extra exposure over time. */
@@ -47,14 +69,14 @@ function cc25_featured_sponsor() {
 function cc25_featured_sponsor_html($variant = 'card') {
     $s = cc25_featured_sponsor();
     if (!$s) return '';
-    $logo = cc25_sponsor_logo($s[0], $s[1], isset($s[2]) ? $s[2] : '', ' loading="lazy"');
+    $logo = cc25_sponsor_logo($s['name'], $s['file'], $s['url'], ' loading="lazy"');
     if ($variant === 'strip') {
         return '<div class="ft-sponsor"><span class="ft-sponsor-eye kick">&#9733; Featured Sponsor</span>'
             . '<span class="ft-sponsor-logo">' . $logo . '</span></div>';
     }
     return '<div class="feat-sponsor reveal"><div class="feat-eye kick">&#9733; Featured Sponsor</div>'
         . '<div class="feat-logo">' . $logo . '</div>'
-        . '<div class="feat-txt"><strong>' . esc_html($s[0]) . '</strong> is proud to support Cwmbran Celtic.'
+        . '<div class="feat-txt"><strong>' . esc_html($s['name']) . '</strong> is proud to support Cwmbran Celtic.'
         . '<a href="' . esc_url(cc25_page_url('sponsorship', home_url('/'))) . '">Become a sponsor &rarr;</a></div></div>';
 }
 
