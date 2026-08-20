@@ -69,7 +69,7 @@ function cc25_featured_sponsor() {
 function cc25_featured_sponsor_html($variant = 'card') {
     $s = cc25_featured_sponsor();
     if (!$s) return '';
-    $logo = cc25_sponsor_logo($s['name'], $s['file'], $s['url'], ' loading="lazy"');
+    $logo = cc25_sponsor_logo($s['name'], $s['file'], cc25_sponsor_link($s), ' loading="lazy"');
     if ($variant === 'strip') {
         return '<div class="ft-sponsor"><span class="ft-sponsor-eye kick">&#9733; Featured Sponsor</span>'
             . '<span class="ft-sponsor-logo">' . $logo . '</span></div>';
@@ -92,9 +92,11 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
         . esc_attr($name) . ' (opens in a new tab)">' . $img . '</a>';
 }
 
-/** Where a sponsor's logo links to. Blank when they have no website. */
+/** Where a sponsor's logo links to — through /go/ so the click is counted.
+ *  Blank when they have no website, which renders the logo un-linked. */
 function cc25_sponsor_link($row) {
-    return isset($row['url']) ? $row['url'] : '';
+    if (empty($row['url']) || empty($row['slug'])) return '';
+    return function_exists('cc25_sponsor_click_url') ? cc25_sponsor_click_url($row['slug']) : $row['url'];
 }
 
 /* ---- The site-wide sponsor band --------------------------------------

@@ -92,6 +92,18 @@ check('a dark-bannered sponsor gets a dark tile', count(array_filter(cc25_sponso
     return !empty($r['dark']);
 })) === substr_count($band, 'cc-band-dark'));
 
+/* ---- Click tracking --------------------------------------------------- */
+check('a click URL is /go/ plus the slug', substr(cc25_sponsor_click_url('gigantic'), -12) === '/go/gigantic');
+check('sponsor logos link through /go/', strpos(cc25_sponsor_link(cc25_sponsor_by_slug('gigantic')), '/go/gigantic') !== false);
+check('a sponsor with no website still gets no link', cc25_sponsor_link(cc25_sponsor_by_slug('hornbeam')) === '');
+
+// Bots must not inflate the number the club quotes at renewal.
+check('googlebot is not counted', cc25_sponsor_is_bot('Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'));
+check('bingbot is not counted', cc25_sponsor_is_bot('Mozilla/5.0 (compatible; bingbot/2.0)'));
+check('curl is not counted', cc25_sponsor_is_bot('curl/8.4.0'));
+check('a real browser is counted', !cc25_sponsor_is_bot('Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15'));
+check('a blank user agent is not counted', cc25_sponsor_is_bot(''));
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";
