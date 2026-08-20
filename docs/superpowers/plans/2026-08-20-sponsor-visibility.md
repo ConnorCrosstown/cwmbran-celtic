@@ -411,7 +411,10 @@ Create `assets/sponsor-rotation.js`:
 export function rotationWindow(count, size, offset) {
     if (!count || count < 1) return [];
     const n = Math.min(size, count);
-    const start = ((Math.trunc(offset) % count) + count) % count;
+    // Math.max before the modulo, not the usual ((x % n) + n) % n: JS keeps the
+    // dividend's sign, so the double-modulo form maps offset -1 to count-1 and
+    // would contradict the negative-offset test above.
+    const start = Math.max(0, Math.trunc(offset)) % count;
     const out = [];
     for (let i = 0; i < n; i++) out.push((start + i) % count);
     return out;
