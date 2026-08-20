@@ -184,8 +184,8 @@ $m = cc25_get_match($cc25_g, $cc25_t);
         <div class="mr-report"><?php foreach (explode("\n\n", $m['report']) as $cc25_para) { echo '<p>' . esc_html(trim($cc25_para)) . '</p>'; } ?></div>
         <?php if (!empty($m['report_by'])): ?><p class="mr-byline">Match report by <b><?php echo esc_html($m['report_by']); ?></b></p><?php endif; ?>
       </div>
-      <?php echo cc25_sponsor_slot_html(isset($m['sponsor']) ? $m['sponsor'] : '', 'report'); ?>
       <?php endif; ?>
+      <?php echo cc25_sponsor_slot_html(isset($m['sponsor']) ? $m['sponsor'] : '', 'report'); ?>
 
       <?php
       $cc25_allcards = array();
