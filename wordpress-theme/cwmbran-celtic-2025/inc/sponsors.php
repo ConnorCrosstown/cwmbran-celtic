@@ -241,11 +241,23 @@ function cc25_ticker_items() {
     usort($rest, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
     $up = array_merge($seeded, array_slice($rest, 0, max(0, $cap - count($seeded))));
     usort($up, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
+    $sponsor = cc25_featured_sponsor();
+    $n = 0;
     foreach ($up as $f) {
         $match = $f['home']
             ? 'Cwmbran Celtic v ' . esc_html($f['opp'])
             : esc_html($f['opp']) . ' v Cwmbran Celtic';
         $out .= '<span class="tk-item"><em class="tk-team ' . $f['badge'][1] . '" title="' . esc_attr($f['title']) . '">' . esc_html($f['badge'][0]) . '</em><b class="tk-date">' . esc_html(cc25_date($f['ms'], 'D j M')) . '</b> ' . $match . ' <em class="tk-ha">' . ($f['home'] ? 'H' : 'A') . '</em></span>';
+
+        // One sponsor every fifth fixture. The ticker is for telling people what
+        // is coming up; the sponsor rides along rather than taking it over.
+        if ($sponsor && ++$n % 5 === 0) {
+            $link = cc25_sponsor_link($sponsor);
+            $name = '&#9733; Brought to you by ' . esc_html($sponsor['name']);
+            $out .= '<span class="tk-item tk-sponsor">' . ($link
+                ? '<a href="' . esc_url($link) . '" target="_blank" rel="noopener sponsored">' . $name . '</a>'
+                : $name) . '</span>';
+        }
     }
     return $out;
 }

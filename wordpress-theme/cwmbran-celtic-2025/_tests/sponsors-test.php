@@ -144,6 +144,21 @@ foreach (cc25_charity_partners() as $p) {
     check("partner '{$p['name']}' cannot fill a named slot", cc25_slot_sponsor($p['slug'])['slug'] !== $p['slug']);
 }
 
+/* ---- Ticker ----------------------------------------------------------- */
+$tk = cc25_ticker_items();
+// Sponsor items are placed every fifth fixture, so out of season there may be
+// none to place. Assert the placement only when there are enough fixtures —
+// otherwise this test fails every June for no reason.
+$tk_sponsors = substr_count($tk, 'tk-sponsor');
+$tk_fixtures = substr_count($tk, 'tk-item') - $tk_sponsors;
+if ($tk_fixtures >= 5) {
+    check('the ticker carries a sponsor item', $tk_sponsors > 0);
+    check('the ticker sponsor links through /go/', strpos($tk, '/go/') !== false);
+    check('fixtures outnumber sponsors in the ticker', $tk_fixtures > $tk_sponsors * 2);
+} else {
+    check('too few upcoming fixtures to place a sponsor (out of season)', true);
+}
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

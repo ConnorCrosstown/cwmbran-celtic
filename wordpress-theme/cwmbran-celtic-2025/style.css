@@ -1943,3 +1943,5 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
 .cc-slot-txt strong{color:var(--text)}
 .cc-slot-txt a{color:var(--blue-500);font-weight:600;white-space:nowrap}
 @media(max-width:600px){.cc-slot{gap:12px}.cc-slot-txt{font-size:.85rem}}
+.tk-sponsor,.tk-sponsor a{color:var(--gold);text-decoration:none}
+.tk-sponsor a:hover{text-decoration:underline}
