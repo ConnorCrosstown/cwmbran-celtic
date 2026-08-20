@@ -73,10 +73,15 @@ function cc25_sponsor_by_slug($slug) {
  *  the season. (The site-wide band is a different case — see
  *  assets/sponsor-band.js — because it needs genuine per-visitor variety and
  *  runs client-side precisely so caching can't freeze it.) */
-function cc25_featured_sponsor() {
+function cc25_featured_sponsor($seed = 0) {
     $all = cc25_sponsors();
     if (!$all) return null;
-    return $all[intval(date('z')) % count($all)];
+    // The seed varies the pick per caller — a post id, a match, a ticker slot —
+    // so two stories on the same day do not both name the same sponsor. Adding
+    // it to the day of the year rather than replacing it keeps the whole roster
+    // cycling over the season, and keeps every pick deterministic, which is what
+    // makes it safe to render into a full-page-cached page.
+    return $all[(intval(date('z')) + abs(intval($seed))) % count($all)];
 }
 
 /** Render the homepage "Featured Sponsor" card. */
@@ -202,16 +207,16 @@ function cc25_charity_partners_html() {
 /** The sponsor for a named slot: the explicit one if it still resolves, the
  *  rotation otherwise. Sponsors leave, and an old report naming one that has
  *  gone falls back rather than rendering a broken block. */
-function cc25_slot_sponsor($explicit = '') {
+function cc25_slot_sponsor($explicit = '', $seed = 0) {
     $named = cc25_sponsor_by_slug($explicit);
     if ($named) return $named;   // no website is fine — the logo just isn't a link
-    $rot = cc25_featured_sponsor();
+    $rot = cc25_featured_sponsor($seed);
     return $rot ?: null;
 }
 
 /** A named sponsor block. $context is 'story' or 'report' — wording only. */
-function cc25_sponsor_slot_html($explicit = '', $context = 'story') {
-    $s = cc25_slot_sponsor($explicit);
+function cc25_sponsor_slot_html($explicit = '', $context = 'story', $seed = 0) {
+    $s = cc25_slot_sponsor($explicit, $seed);
     if (!$s) return '';
     $sold  = cc25_sponsor_by_slug($explicit) !== null;
     $thing = $context === 'report' ? 'match report' : 'story';
@@ -269,7 +274,6 @@ function cc25_ticker_items() {
     usort($rest, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
     $up = array_merge($seeded, array_slice($rest, 0, max(0, $cap - count($seeded))));
     usort($up, function ($a, $b) { return $a['ms'] <=> $b['ms']; });
-    $sponsor = cc25_featured_sponsor();
     $n = 0;
     foreach ($up as $f) {
         $match = $f['home']
@@ -279,7 +283,7 @@ function cc25_ticker_items() {
 
         // One sponsor every fifth fixture. The ticker is for telling people what
         // is coming up; the sponsor rides along rather than taking it over.
-        if ($sponsor && ++$n % 5 === 0) {
+        if (++$n % 5 === 0 && ($sponsor = cc25_featured_sponsor(intdiv($n, 5)))) {
             $link = cc25_sponsor_link($sponsor);
             $name = '&#9733; Brought to you by ' . esc_html($sponsor['name']);
             $out .= '<span class="tk-item tk-sponsor">' . ($link

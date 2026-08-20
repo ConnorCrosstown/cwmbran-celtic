@@ -164,15 +164,21 @@ $tk_sponsors = substr_count($tk, 'tk-sponsor');
 $tk_fixtures = substr_count($tk, 'tk-item') - $tk_sponsors;
 if ($tk_fixtures >= 5) {
     check('the ticker carries a sponsor item', $tk_sponsors > 0);
-    $tk_sponsor = cc25_featured_sponsor();
-    check('the ticker names the rotating sponsor', strpos($tk, esc_html($tk_sponsor['name'])) !== false);
-    // Five roster sponsors ship without a website and render unlinked, so asserting
-    // a /go/ link unconditionally fails on the ~28% of days the rotation lands on
-    // one of them — with the code behaving exactly as specified.
+    // Each ticker mention is seeded on its slot number, so the mentions on one
+    // page are different sponsors rather than the same one three times.
+    $tk_sponsor = cc25_featured_sponsor(1);
+    check('the ticker names the first rotating sponsor', strpos($tk, esc_html($tk_sponsor['name'])) !== false);
+    preg_match_all('/Brought to you by ([^<]+)/', $tk, $tk_named);
+    check('the ticker mentions are different sponsors',
+        count($tk_named[1]) === count(array_unique($tk_named[1])));
+    // Five roster sponsors ship without a website and render unlinked, so a bare
+    // /go/ assertion would fail on the days the rotation lands on one of them —
+    // with the code behaving exactly as specified.
     if ($tk_sponsor['url'] !== '') {
         check('the ticker sponsor links through /go/', strpos($tk, '/go/' . $tk_sponsor['slug']) !== false);
     } else {
-        check('a sponsor with no website is named but not linked', strpos($tk, '/go/') === false);
+        check('a sponsor with no website is named but not linked',
+            strpos($tk, '/go/' . $tk_sponsor['slug']) === false);
     }
     check('fixtures outnumber sponsors in the ticker', $tk_fixtures > $tk_sponsors * 2);
 } else {

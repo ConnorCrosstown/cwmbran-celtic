@@ -32,9 +32,12 @@ if (cc25_is_programme_post(get_queried_object())) {
         <div class="art-hero photo"><div class="fill"></div><div class="gr"></div></div>
       <?php endif; ?>
       <div class="art-body prose"><?php the_content(); ?></div>
+      <?php // Seeded on the post id so two stories published the same day do not
+            // both name the same sponsor, while staying deterministic per post. ?>
       <?php echo cc25_sponsor_slot_html(
           (string) get_post_meta(get_the_ID(), '_cc25_sponsor', true),
-          (function_exists('cc25_is_report_post') && cc25_is_report_post()) ? 'report' : 'story'
+          (function_exists('cc25_is_report_post') && cc25_is_report_post()) ? 'report' : 'story',
+          (int) get_the_ID()
       ); ?>
       <?php // A written report shows the same gallery as the match centre does for that
       // game — one set of photos, keyed to the fixture, not two places to upload them.
