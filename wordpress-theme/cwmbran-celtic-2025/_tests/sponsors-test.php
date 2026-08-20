@@ -179,6 +179,24 @@ if ($tk_fixtures >= 5) {
     check('too few upcoming fixtures to place a sponsor (out of season)', true);
 }
 
+/* ---- The 2026/27 additions -------------------------------------------- */
+check('the paid roster is twenty-two', count(cc25_sponsors()) === 22);
+foreach (array('airbond', 'gmb-union', 'pc-wannell', 'range-after-care') as $new) {
+    check("$new is a paid sponsor", cc25_sponsor_by_slug($new) !== null);
+}
+// MVT is a partner the club supports, never a sponsor who pays it.
+check('MVT is not a paid sponsor', cc25_sponsor_by_slug('mvt') === null);
+$mvt = array_values(array_filter(cc25_charity_partners(), function ($p) { return $p['slug'] === 'mvt'; }));
+check('MVT is a charity partner', count($mvt) === 1);
+// The white-on-black banners: without the flag these render as black bricks on
+// the white sponsor card, which is the whole reason the flag exists.
+check('Range After Care is flagged dark', cc25_sponsor_by_slug('range-after-care')['dark'] === true);
+check('MVT is flagged dark', $mvt && $mvt[0]['dark'] === true);
+check('a dark sponsor gets the dark wall tile',
+    strpos(cc25_sponsor_card_html(cc25_sponsor_by_slug('range-after-care'), ''), 'sponsor-card-dark') !== false);
+check('the charity section gives MVT the dark tile',
+    strpos(cc25_charity_partners_html(), 'sponsor-card-dark') !== false);
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

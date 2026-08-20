@@ -37,10 +37,17 @@ function cc25_sponsors() {
         array('Peter Villars', 'peter-villars', 'peter-villars.png', 'https://www.facebook.com/p/Peter-Villars-Sportsground-Maintenance-100063177401237/'),
         array('Blitz Media', 'blitz-media', 'blitz-media.jpg', 'https://www.blitzmedia.co.uk/'),
         array('Le Pub', 'le-pub', 'le-pub.jpg', 'https://www.lepublicspace.co.uk/'),
+        // 2026/27 additions. A fifth element marks a white-on-black banner, which
+        // gets the navy tile rather than the default white one.
+        array('Airbond', 'airbond', 'airbond.jpg', ''),
+        array('GMB Union', 'gmb-union', 'gmb-union.jpg', 'https://www.gmb.org.uk/'),
+        array('PC Wannell', 'pc-wannell', 'pc-wannell.jpg', ''),
+        array('Range After Care', 'range-after-care', 'range-after-care.jpg', '', true),
     );
     $out = array();
     foreach ($rows as $r) {
-        $out[] = array('name' => $r[0], 'slug' => $r[1], 'file' => $r[2], 'url' => $r[3], 'dark' => false);
+        $out[] = array('name' => $r[0], 'slug' => $r[1], 'file' => $r[2], 'url' => $r[3],
+                       'dark' => !empty($r[4]));
     }
     return $out;
 }
@@ -160,7 +167,13 @@ function cc25_show_sponsor_band() {
  * kept out of the rotating band, the ticker and the named slots — paid
  * sponsors are not diluted by a partner the club supports. */
 function cc25_charity_partners() {
-    return array();
+    return array(
+        // The club gave 10% of the Music Shirts kit launch to MVT. A partner the
+        // club supports, not a sponsor who pays it — so deliberately not in the
+        // paid roster, the band, the ticker or the sellable slots.
+        array('name' => 'Music Venue Trust', 'slug' => 'mvt', 'file' => 'mvt.jpg',
+              'url' => 'https://musicvenuetrust.com/', 'dark' => true),
+    );
 }
 
 /** The charity-partner section for the sponsors page. Empty when there are none. */
