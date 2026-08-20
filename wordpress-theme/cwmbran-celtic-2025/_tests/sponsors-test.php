@@ -112,6 +112,22 @@ check('every kit-launch sponsor slug resolves to a roster sponsor', count(array_
     return cc25_sponsor_by_slug($sp['slug']) !== null;
 })) === count($kit_sponsors));
 
+/* ---- Sponsor click months (the arithmetic trap) ----------------------- */
+// strtotime("-$i month") overflows into the next month when the day-of-month
+// doesn't exist in the target month (e.g., Jan 31 minus 1 month becomes Feb 3).
+// The old code would collapse twelve distinct months into seven, silently
+// dropping November and September on years anchored to the 29th–31st.
+// Test at 2026-12-31 and 2026-03-31, which are the problem dates.
+$months_dec31 = cc25_sponsor_click_months(strtotime('2026-12-31'));
+check('2026-12-31 yields twelve months', count($months_dec31) === 12);
+check('2026-12-31 yields twelve distinct months', count(array_unique($months_dec31)) === 12);
+check('2026-12-31 months run newest-first (Dec→Jan)', $months_dec31[0] === '2026-12' && $months_dec31[11] === '2026-01');
+
+$months_mar31 = cc25_sponsor_click_months(strtotime('2026-03-31'));
+check('2026-03-31 yields twelve months', count($months_mar31) === 12);
+check('2026-03-31 yields twelve distinct months', count(array_unique($months_mar31)) === 12);
+check('2026-03-31 months run newest-first (Mar→Apr)', $months_mar31[0] === '2026-03' && $months_mar31[11] === '2025-04');
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

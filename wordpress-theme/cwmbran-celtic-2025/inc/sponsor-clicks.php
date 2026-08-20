@@ -94,6 +94,16 @@ function cc25_sponsor_is_bot($ua) {
 
 /* ---- Reporting -------------------------------------------------------- */
 
+/** The last twelve months, newest first, as 'YYYY-MM'. Anchored to the first
+ *  of each month: subtracting a month from the 31st overflows into the next
+ *  one, which silently collapsed the report to seven columns. */
+function cc25_sponsor_click_months($ts = null) {
+    $ts = $ts === null ? time() : $ts;
+    $out = array();
+    for ($i = 0; $i < 12; $i++) $out[] = date('Y-m', strtotime("first day of -$i month", $ts));
+    return $out;
+}
+
 add_action('admin_menu', function () {
     add_management_page('Sponsor clicks', 'Sponsor clicks', 'edit_others_posts', 'cc25-sponsor-clicks', 'cc25_sponsor_clicks_page');
 });
@@ -104,8 +114,7 @@ function cc25_sponsor_clicks_page() {
 
     // The last twelve months, newest first — the span a renewal conversation
     // covers.
-    $months = array();
-    for ($i = 0; $i < 12; $i++) $months[] = date('Y-m', strtotime("-$i month"));
+    $months = cc25_sponsor_click_months();
 
     echo '<div class="wrap"><h1>Sponsor clicks</h1>';
     echo '<p>Clicks on each sponsor&rsquo;s logo, counted at <code>/go/&lt;slug&gt;</code>. '
