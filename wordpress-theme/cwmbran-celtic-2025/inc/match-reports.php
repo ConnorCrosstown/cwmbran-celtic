@@ -19,7 +19,7 @@ function cc25_report_category() { return 'report'; }
 /* ---------------------------------------------------------------- editor UI */
 
 add_action('add_meta_boxes', function () {
-    add_meta_box('cc25_mr', 'Match report', 'cc25_mr_metabox', 'post', 'side', 'high');
+    add_meta_box('cc25_mr', 'Match report &amp; sponsor', 'cc25_mr_metabox', 'post', 'side', 'high');
 });
 
 function cc25_mr_metabox($post) {
@@ -46,14 +46,40 @@ function cc25_mr_metabox($post) {
     <p><label for="cc25mr_att"><strong>Attendance</strong></label><br>
       <input type="number" min="0" id="cc25mr_att" name="cc25_mr_attendance" value="<?php echo esc_attr($att); ?>" style="width:120px"></p>
 
+    <?php // Every post carries a sponsor block, not just match reports — a news
+          // story uses this field too. The main sponsor is offered alongside the
+          // roster so a slot can be sold to Motazone like any other.
+          $spx_choices = array_merge(array(cc25_sponsor_main()), cc25_sponsors()); ?>
     <p><label for="cc25mr_sponsor"><strong>Sponsored by</strong></label><br>
       <select id="cc25mr_sponsor" name="cc25_sponsor" style="width:100%">
-        <option value="">&mdash; not sold, rotate sponsors &mdash;</option>
-        <?php foreach (cc25_sponsors() as $s): ?>
-          <option value="<?php echo esc_attr($s['slug']); ?>"<?php selected($spon, $s['slug']); ?>><?php echo esc_html($s['name']); ?></option>
+        <option value="" data-banner="">&mdash; not sold, rotate sponsors &mdash;</option>
+        <?php foreach ($spx_choices as $s): ?>
+          <option value="<?php echo esc_attr($s['slug']); ?>"
+                  data-banner="<?php echo esc_url(cc25_sponsor_url($s['file'])); ?>"
+                  <?php selected($spon, $s['slug']); ?>><?php echo esc_html($s['name']); ?></option>
         <?php endforeach; ?>
       </select></p>
-    <p style="color:#666;font-size:11px;margin-top:-6px">Leave this alone unless the slot has been sold. Unsold, it shows a different sponsor each day by itself.</p>
+    <?php // The banner, not just the name — picking a sponsor is picking the image
+          // that will appear in the article, so show it. ?>
+    <p id="cc25mr_sponsor_preview" style="margin-top:-4px<?php echo $spon ? '' : ';display:none'; ?>">
+      <img src="" alt="" style="max-width:100%;height:auto;border:1px solid #dcdcde;border-radius:4px;background:#0a1f3c"></p>
+    <script>
+    (function () {
+        var sel = document.getElementById('cc25mr_sponsor');
+        var box = document.getElementById('cc25mr_sponsor_preview');
+        if (!sel || !box) return;
+        var img = box.querySelector('img');
+        function show() {
+            var src = sel.options[sel.selectedIndex].getAttribute('data-banner') || '';
+            img.src = src;
+            img.alt = src ? sel.options[sel.selectedIndex].text + ' banner' : '';
+            box.style.display = src ? '' : 'none';
+        }
+        sel.addEventListener('change', show);
+        show();
+    })();
+    </script>
+    <p style="color:#666;font-size:11px;margin-top:-6px">Leave this alone unless the slot has been sold &mdash; unsold, the post picks its own sponsor and a different post shows a different one. This field applies to <b>any</b> post, not just match reports.</p>
 
     <p style="color:#666;font-size:11px;margin:0">Set the category to <b>Report</b>, add a <b>Featured Image</b>, and write the report in the main editor. Photos go in as a normal gallery.</p>
     <?php
