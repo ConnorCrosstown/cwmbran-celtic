@@ -647,6 +647,7 @@ nav.main .current-menu-item>a::after,nav.main .current_page_item>a::after{transf
 .sponsor-main-lg img{max-width:min(620px,100%)}
 .sponsor-wall{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .sponsor-card{background:#fff;border:1px solid #e2e6ee;border-radius:6px;box-shadow:var(--shadow-sm);padding:22px;display:flex;align-items:center;justify-content:center;min-height:120px;transition:transform .2s,box-shadow .2s}
+.sponsor-card-dark{background:var(--navy-800,#12203c);border-color:var(--navy-700,#1b2f52)}
 .sponsor-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
 .sponsor-card img{max-width:100%;max-height:92px;width:auto;object-fit:contain}
 @media(max-width:820px){.sponsor-wall{grid-template-columns:1fr 1fr}}
@@ -941,9 +942,6 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .feat-txt{color:var(--muted);font-size:.95rem;max-width:360px}
 .feat-txt strong{color:var(--text)}
 .feat-txt a{color:var(--blue-500);font-weight:600;white-space:nowrap;margin-left:8px}
-.ft-sponsor{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;padding:18px 0 4px;margin-top:6px;border-top:1px solid rgba(255,255,255,.12)}
-.ft-sponsor-eye{color:var(--gold);letter-spacing:.12em;font-size:.68rem}
-.ft-sponsor-logo img{max-width:170px;height:auto;display:block;background:#fff;border-radius:6px;padding:7px 12px}
 /* ---- Site-wide sponsor band (template-parts/site-footer.php) ----
  * Every sponsor is in the markup; only .is-on is shown. assets/sponsor-band.js
  * moves that class along, so the band works without JS at the first six. */

@@ -24,11 +24,17 @@ function cc25_sponsor_click_url($slug) {
 
 add_action('init', function () {
     add_rewrite_rule('^go/([a-z0-9-]+)/?$', 'index.php?cc25_go=$matches[1]', 'top');
+});
 
+add_action('wp_loaded', function () {
     // The theme had no rewrite rules before this one, so the rules stored in the
     // database do not contain it and every sponsor link 404s until they are
     // rebuilt. Flushing on every load is expensive, so it happens once per
     // version — bump CC25_REWRITE_VERSION if the rule above ever changes.
+    //
+    // Flushed here rather than on init: the child theme's init callbacks run
+    // before the parent theme's, so flushing on init would rebuild the rules
+    // without whatever Divi (or a plugin hooking init later) registers after us.
     if (get_option('cc25_rewrite_version') !== CC25_REWRITE_VERSION) {
         flush_rewrite_rules();
         update_option('cc25_rewrite_version', CC25_REWRITE_VERSION, false);
@@ -119,7 +125,7 @@ function cc25_sponsor_clicks_page() {
     echo '<div class="wrap"><h1>Sponsor clicks</h1>';
     echo '<p>Clicks on each sponsor&rsquo;s logo, counted at <code>/go/&lt;slug&gt;</code>. '
        . 'Crawlers are excluded. Impressions are not counted &mdash; take those from analytics.</p>';
-    echo '<table class="widefat striped"><thead><tr><th>Sponsor</th><th>Total</th>';
+    echo '<table class="widefat striped"><thead><tr><th>Sponsor</th><th>All time</th>';
     foreach ($months as $m) echo '<th>' . esc_html(date('M y', strtotime($m . '-01'))) . '</th>';
     echo '</tr></thead><tbody>';
 

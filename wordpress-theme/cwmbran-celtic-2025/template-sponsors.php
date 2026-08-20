@@ -26,7 +26,7 @@ get_template_part('template-parts/site-header');
     <div class="sec-head reveal" style="margin-top:56px"><div><div class="sec-eye kick"><span class="ix">02</span><span class="ln"></span> Backing the Celts</div><h2>Sponsors &amp; Partners</h2></div></div>
     <div class="sponsor-wall reveal d1">
     <?php foreach (cc25_sponsors() as $s): ?>
-      <div class="sponsor-card"><?php echo cc25_sponsor_logo($s['name'], $s['file'], cc25_sponsor_link($s), ' loading="lazy"'); ?></div>
+      <?php echo cc25_sponsor_card_html($s, cc25_sponsor_link($s)); ?>
     <?php endforeach; ?>
     </div>
 

@@ -54,26 +54,29 @@ function cc25_sponsor_by_slug($slug) {
     }
     return null;
 }
-/** A random sponsor for the rotating "Featured Sponsor" spots — picked fresh on
- * each page load so every sponsor gets extra exposure over time. */
+/** The sponsor for the rotating "Featured Sponsor" spots and the ticker's
+ *  single-sponsor slot. Deterministic daily rotation — same sponsor all day,
+ *  and across every slot on the page — not a fresh random pick per load.
+ *  That matters because those slots render inside pages that get full-page
+ *  cached: a per-load random pick (mt_rand, what this used to be) gets
+ *  baked into the cached HTML by whichever visitor triggers the render and
+ *  is then served to everyone else until the cache expires, so it looks
+ *  random in development and is frozen in production. A pick keyed off the
+ *  day of the year avoids that trap and still cycles the whole roster over
+ *  the season. (The site-wide band is a different case — see
+ *  assets/sponsor-band.js — because it needs genuine per-visitor variety and
+ *  runs client-side precisely so caching can't freeze it.) */
 function cc25_featured_sponsor() {
     $all = cc25_sponsors();
     if (!$all) return null;
-    // Deterministic daily rotation — same sponsor all day and across every slot
-    // on the page, so the logo caches and full-page caching stays stable (was
-    // mt_rand, which changed per render and per slot).
     return $all[intval(date('z')) % count($all)];
 }
 
-/** Render a Featured Sponsor block. $variant: 'card' (homepage) or 'strip' (footer). */
-function cc25_featured_sponsor_html($variant = 'card') {
+/** Render the homepage "Featured Sponsor" card. */
+function cc25_featured_sponsor_html() {
     $s = cc25_featured_sponsor();
     if (!$s) return '';
     $logo = cc25_sponsor_logo($s['name'], $s['file'], cc25_sponsor_link($s), ' loading="lazy"');
-    if ($variant === 'strip') {
-        return '<div class="ft-sponsor"><span class="ft-sponsor-eye kick">&#9733; Featured Sponsor</span>'
-            . '<span class="ft-sponsor-logo">' . $logo . '</span></div>';
-    }
     return '<div class="feat-sponsor reveal"><div class="feat-eye kick">&#9733; Featured Sponsor</div>'
         . '<div class="feat-logo">' . $logo . '</div>'
         . '<div class="feat-txt"><strong>' . esc_html($s['name']) . '</strong> is proud to support Cwmbran Celtic.'
@@ -97,6 +100,17 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
 function cc25_sponsor_link($row) {
     if (empty($row['url']) || empty($row['slug'])) return '';
     return function_exists('cc25_sponsor_click_url') ? cc25_sponsor_click_url($row['slug']) : $row['url'];
+}
+
+/** One tile in the sponsor wall (home page + /sponsors, and the charity-partner
+ *  list below it). $url is the link to render — /go/<slug> for paid sponsors via
+ *  cc25_sponsor_link(), or the partner's own URL raw for charity partners, who
+ *  are never click-tracked and have no slug cc25_sponsor_by_slug() can resolve.
+ *  .sponsor-card is background:#fff like the footer tile, so a white-on-black
+ *  banner (dark => true) gets the navy tile instead of reading as a black brick. */
+function cc25_sponsor_card_html($row, $url) {
+    return '<div class="sponsor-card' . (!empty($row['dark']) ? ' sponsor-card-dark' : '') . '">'
+         . cc25_sponsor_logo($row['name'], $row['file'], $url, ' loading="lazy"') . '</div>';
 }
 
 /* ---- The site-wide sponsor band --------------------------------------
@@ -159,9 +173,10 @@ function cc25_charity_partners_html() {
          . '<p class="spx-lead reveal">Causes the club is proud to support.</p>'
          . '<div class="sponsor-wall reveal d1">';
     foreach ($partners as $p) {
-        $cls = !empty($p['dark']) ? ' sponsor-card-dark' : '';
-        $out .= '<div class="sponsor-card' . $cls . '">'
-              . cc25_sponsor_logo($p['name'], $p['file'], $p['url'], ' loading="lazy"') . '</div>';
+        // Partners link to their own URL, never through /go/ — they are not
+        // click-tracked, and cc25_sponsor_by_slug() cannot resolve a partner
+        // slug, so a /go/ link for one would 404.
+        $out .= cc25_sponsor_card_html($p, $p['url']);
     }
     return $out . '</div>';
 }

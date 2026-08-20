@@ -92,6 +92,17 @@ check('a dark-bannered sponsor gets a dark tile', count(array_filter(cc25_sponso
     return !empty($r['dark']);
 })) === substr_count($band, 'cc-band-dark'));
 
+/* ---- The sponsor wall tile (home page + /sponsors) -------------------- */
+// Non-tautological: build rows by hand rather than counting the live roster,
+// so this fails if cc25_sponsor_card_html() ever stops emitting the class —
+// distinct from the band assertion above, which only counts occurrences.
+$dark_row  = array('name' => 'Test Dark', 'slug' => 'test-dark', 'file' => 'x.png', 'dark' => true);
+$light_row = array('name' => 'Test Light', 'slug' => 'test-light', 'file' => 'x.png', 'dark' => false);
+check('a dark sponsor gets sponsor-card-dark on the wall',
+    strpos(cc25_sponsor_card_html($dark_row, ''), 'sponsor-card-dark') !== false);
+check('a non-dark sponsor does not get sponsor-card-dark on the wall',
+    strpos(cc25_sponsor_card_html($light_row, ''), 'sponsor-card-dark') === false);
+
 /* ---- Click tracking --------------------------------------------------- */
 check('a click URL is /go/ plus the slug', substr(cc25_sponsor_click_url('gigantic'), -12) === '/go/gigantic');
 check('sponsor logos link through /go/', strpos(cc25_sponsor_link(cc25_sponsor_by_slug('gigantic')), '/go/gigantic') !== false);

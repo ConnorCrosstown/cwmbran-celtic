@@ -62,6 +62,8 @@ $needed = array(
     'assets/programme-pages.js',
     'assets/vendor/pdfjs/pdf.min.js',
     'assets/vendor/pdfjs/pdf.worker.min.js',
+    'assets/sponsor-band.js',
+    'assets/sponsor-rotation.js',
 );
 foreach ($needed as $n) check("$n exists", is_file($root . '/' . $n));
 
