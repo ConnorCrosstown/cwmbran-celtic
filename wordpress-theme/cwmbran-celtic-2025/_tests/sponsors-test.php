@@ -104,6 +104,14 @@ check('curl is not counted', cc25_sponsor_is_bot('curl/8.4.0'));
 check('a real browser is counted', !cc25_sponsor_is_bot('Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15'));
 check('a blank user agent is not counted', cc25_sponsor_is_bot(''));
 
+// The Music Shirts page keeps its own sponsor list (campaign copy the roster
+// has no field for), which must not drift from the roster it duplicates —
+// an unresolvable slug there would silently fail to route through /go/.
+$kit_sponsors = cc25_kit_launch()['sponsors'];
+check('every kit-launch sponsor slug resolves to a roster sponsor', count(array_filter($kit_sponsors, function ($sp) {
+    return cc25_sponsor_by_slug($sp['slug']) !== null;
+})) === count($kit_sponsors));
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

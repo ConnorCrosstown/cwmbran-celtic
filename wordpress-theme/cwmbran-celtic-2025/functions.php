@@ -520,10 +520,10 @@ function cc25_kit_launch() {
         'action'      => array('sfa-hero.jpg', 'women-panic.jpg', 'fans-sfa.jpg'),
         // Featured sponsors — using the club's standard banners (assets/img/sponsor-banners/).
         'sponsors'    => array(
-            array('name' => 'Diverse Vinyl',      'img' => 'diverse-vinyl.jpg',      'url' => 'https://www.diversevinyl.com',      'desc' => 'Independent record shop · Newport'),
-            array('name' => 'Crosstown Concerts', 'img' => 'crosstown-concerts.jpg', 'url' => 'https://www.crosstownconcerts.com',  'desc' => 'Live music promoter'),
-            array('name' => 'Le Pub',             'img' => 'le-pub.jpg',             'url' => 'https://www.lepublicspace.co.uk',   'desc' => 'Grassroots music venue · Newport'),
-            array('name' => 'Gigantic',           'img' => 'gigantic.jpg',           'url' => 'https://www.gigantic.com',          'desc' => 'Independent ticketing'),
+            array('name' => 'Diverse Vinyl',      'slug' => 'diverse-vinyl',      'img' => 'diverse-vinyl.jpg',      'url' => 'https://www.diversevinyl.com',      'desc' => 'Independent record shop · Newport'),
+            array('name' => 'Crosstown Concerts', 'slug' => 'crosstown-concerts', 'img' => 'crosstown-concerts.jpg', 'url' => 'https://www.crosstownconcerts.com',  'desc' => 'Live music promoter'),
+            array('name' => 'Le Pub',             'slug' => 'le-pub',             'img' => 'le-pub.jpg',             'url' => 'https://www.lepublicspace.co.uk',   'desc' => 'Grassroots music venue · Newport'),
+            array('name' => 'Gigantic',           'slug' => 'gigantic',           'img' => 'gigantic.jpg',           'url' => 'https://www.gigantic.com',          'desc' => 'Independent ticketing'),
         ),
         'bands' => array(
             array('n' => 'Super Furry Animals', 'meta' => 'Cardiff · formed 1993',

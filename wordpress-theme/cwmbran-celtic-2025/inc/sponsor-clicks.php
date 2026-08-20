@@ -49,9 +49,12 @@ add_action('template_redirect', function () {
     // whitelist; without that this is an open redirect with the club's domain
     // on the front of it.
     if (!$sponsor || empty($sponsor['url'])) {
+        global $wp_query;
+        $wp_query->set_404();
         status_header(404);
         nocache_headers();
-        include get_query_template('404');
+        $tpl = get_query_template('404');
+        if ($tpl) include $tpl;
         exit;
     }
 
