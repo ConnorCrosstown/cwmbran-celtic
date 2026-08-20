@@ -60,6 +60,25 @@ check('the main sponsor resolves by slug', cc25_sponsor_by_slug('motazone')['nam
 check('an unknown slug resolves to null', cc25_sponsor_by_slug('no-such-sponsor') === null);
 check('an empty slug resolves to null', cc25_sponsor_by_slug('') === null);
 
+/* ---- Charity partners ------------------------------------------------ */
+$partners = cc25_charity_partners();
+check('charity partners are rows in the same shape', count(array_filter($partners, function ($r) {
+    return isset($r['name'], $r['slug'], $r['file'], $r['url'], $r['dark']);
+})) === count($partners));
+$paid_slugs = array_column(cc25_sponsors(), 'slug');
+foreach ($partners as $p) {
+    check("partner '{$p['name']}' is not in the paid roster", !in_array($p['slug'], $paid_slugs, true));
+}
+check('with no partners the section renders nothing', $partners ? true : cc25_charity_partners_html() === '');
+if ($partners) {
+    $html = cc25_charity_partners_html();
+    check('the partner section says partner, not sponsored', stripos($html, 'Charity Partner') !== false
+        && stripos($html, 'Sponsored by') === false);
+    check('the partner section names each partner', count(array_filter($partners, function ($p) use ($html) {
+        return strpos($html, esc_attr($p['name'])) !== false;
+    })) === count($partners));
+}
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

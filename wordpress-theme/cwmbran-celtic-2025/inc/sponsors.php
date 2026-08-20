@@ -92,6 +92,32 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
         . esc_attr($name) . ' (opens in a new tab)">' . $img . '</a>';
 }
 
+/* ---- Charity partners ------------------------------------------------
+ * Organisations the club supports, rather than sponsors who pay the club.
+ * They are listed on the sponsors page in their own right and are deliberately
+ * kept out of the rotating band, the ticker and the named slots — paid
+ * sponsors are not diluted by a partner the club supports. */
+function cc25_charity_partners() {
+    return array();
+}
+
+/** The charity-partner section for the sponsors page. Empty when there are none. */
+function cc25_charity_partners_html() {
+    $partners = cc25_charity_partners();
+    if (!$partners) return '';
+    $out = '<div class="sec-head reveal" style="margin-top:56px"><div>'
+         . '<div class="sec-eye kick"><span class="ix">03</span><span class="ln"></span> Giving something back</div>'
+         . '<h2>Charity Partners</h2></div></div>'
+         . '<p class="spx-lead reveal">Causes the club is proud to support.</p>'
+         . '<div class="sponsor-wall reveal d1">';
+    foreach ($partners as $p) {
+        $cls = !empty($p['dark']) ? ' sponsor-card-dark' : '';
+        $out .= '<div class="sponsor-card' . $cls . '">'
+              . cc25_sponsor_logo($p['name'], $p['file'], $p['url'], ' loading="lazy"') . '</div>';
+    }
+    return $out . '</div>';
+}
+
 /** Match-ticker items: upcoming fixtures across every team, with M/W/Res badges.
  *  Fixtures only — the ticker used to lead with the last four Men's First Team
  *  results, which read as the headline news when what it is for is telling people

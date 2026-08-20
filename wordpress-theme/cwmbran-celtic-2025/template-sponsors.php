@@ -30,6 +30,8 @@ get_template_part('template-parts/site-header');
     <?php endforeach; ?>
     </div>
 
+    <?php echo cc25_charity_partners_html(); ?>
+
     <div class="cta reveal" style="margin-top:60px">
       <div class="grain"></div>
       <div>
