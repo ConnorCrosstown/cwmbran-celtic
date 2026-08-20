@@ -188,13 +188,7 @@ function cc25_sponsor_slot_html($explicit = '', $context = 'story') {
     $sold  = cc25_sponsor_by_slug($explicit) !== null;
     $thing = $context === 'report' ? 'match report' : 'story';
     $lead  = $sold ? 'Sponsored by' : 'Brought to you by';
-    $link  = cc25_sponsor_link($s);
-    $img   = '<img src="' . esc_url(cc25_sponsor_url($s['file'])) . '" alt="' . esc_attr($s['name'])
-           . '" width="1058" height="282" loading="lazy">';
-    $logo  = $link
-        ? '<a href="' . esc_url($link) . '" target="_blank" rel="noopener sponsored" aria-label="'
-          . esc_attr($s['name']) . ' (opens in a new tab)">' . $img . '</a>'
-        : $img;
+    $logo  = cc25_sponsor_logo($s['name'], $s['file'], cc25_sponsor_link($s), ' loading="lazy"');
 
     return '<aside class="cc-slot' . (!empty($s['dark']) ? ' cc-slot-dark' : '') . '">'
          . '<div class="cc-slot-eye kick">' . esc_html($lead) . '</div>'
