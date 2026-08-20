@@ -91,3 +91,36 @@ function cc25_sponsor_is_bot($ua) {
     if ($ua === '' || $ua === null) return true;   // no agent, no human
     return (bool) preg_match('/bot|crawl|spider|slurp|curl|wget|headless|preview|facebookexternalhit|python-requests/i', $ua);
 }
+
+/* ---- Reporting -------------------------------------------------------- */
+
+add_action('admin_menu', function () {
+    add_management_page('Sponsor clicks', 'Sponsor clicks', 'edit_others_posts', 'cc25-sponsor-clicks', 'cc25_sponsor_clicks_page');
+});
+
+function cc25_sponsor_clicks_page() {
+    $clicks = cc25_sponsor_clicks();
+    $rows   = array_merge(array(cc25_sponsor_main()), cc25_sponsors());
+
+    // The last twelve months, newest first — the span a renewal conversation
+    // covers.
+    $months = array();
+    for ($i = 0; $i < 12; $i++) $months[] = date('Y-m', strtotime("-$i month"));
+
+    echo '<div class="wrap"><h1>Sponsor clicks</h1>';
+    echo '<p>Clicks on each sponsor&rsquo;s logo, counted at <code>/go/&lt;slug&gt;</code>. '
+       . 'Crawlers are excluded. Impressions are not counted &mdash; take those from analytics.</p>';
+    echo '<table class="widefat striped"><thead><tr><th>Sponsor</th><th>Total</th>';
+    foreach ($months as $m) echo '<th>' . esc_html(date('M y', strtotime($m . '-01'))) . '</th>';
+    echo '</tr></thead><tbody>';
+
+    foreach ($rows as $r) {
+        $mine  = isset($clicks[$r['slug']]) ? $clicks[$r['slug']] : array();
+        $total = array_sum($mine);
+        echo '<tr><td><strong>' . esc_html($r['name']) . '</strong><br><code>' . esc_html($r['slug']) . '</code></td>';
+        echo '<td><strong>' . (int) $total . '</strong></td>';
+        foreach ($months as $m) echo '<td>' . (isset($mine[$m]) ? (int) $mine[$m] : 0) . '</td>';
+        echo '</tr>';
+    }
+    echo '</tbody></table></div>';
+}
