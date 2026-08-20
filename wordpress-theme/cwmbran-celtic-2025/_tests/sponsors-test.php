@@ -79,6 +79,19 @@ if ($partners) {
     })) === count($partners));
 }
 
+/* ---- The site-wide band ---------------------------------------------- */
+$band = cc25_sponsor_band_html(6);
+check('the band renders every sponsor, not just the visible six', count(cc25_sponsors()) === substr_count($band, 'cc-band-item'));
+check('the band declares its window size', strpos($band, 'data-window="6"') !== false);
+check('exactly six items start visible', substr_count($band, 'cc-band-item is-on') === 6);
+check('the six visible items carry a real src', substr_count($band, '<img src=') === 6);
+check('the rest carry data-src so they cost nothing until shown',
+    substr_count($band, 'data-src=') === count(cc25_sponsors()) - 6);
+check('the band links to the full sponsor list', strpos($band, 'All sponsors') !== false);
+check('a dark-bannered sponsor gets a dark tile', count(array_filter(cc25_sponsors(), function ($r) {
+    return !empty($r['dark']);
+})) === substr_count($band, 'cc-band-dark'));
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

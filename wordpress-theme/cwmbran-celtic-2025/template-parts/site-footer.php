@@ -30,7 +30,7 @@ if (!defined('ABSPATH')) exit;
         <a href="https://twitter.com/CwmbranCelticFC" target="_blank" rel="noopener">X / Twitter</a>
       </div>
     </div>
-    <?php echo cc25_featured_sponsor_html('strip'); ?>
+    <?php echo cc25_show_sponsor_band() ? cc25_sponsor_band_html(6) : ''; ?>
     <div class="ft-bot">
       <span>© <?php echo esc_html(date_i18n('Y')); ?> Cwmbran Celtic FC</span>
       <span>Fixtures &amp; table update automatically from allwalessport</span>

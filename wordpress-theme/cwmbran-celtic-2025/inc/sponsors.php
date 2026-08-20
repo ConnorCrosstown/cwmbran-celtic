@@ -92,6 +92,52 @@ function cc25_sponsor_logo($name, $file, $url, $img_extra = '') {
         . esc_attr($name) . ' (opens in a new tab)">' . $img . '</a>';
 }
 
+/** Where a sponsor's logo links to. Blank when they have no website. */
+function cc25_sponsor_link($row) {
+    return isset($row['url']) ? $row['url'] : '';
+}
+
+/* ---- The site-wide sponsor band --------------------------------------
+ * Every sponsor is rendered into the page as a real anchor and CSS shows a
+ * window of them; assets/sponsor-band.js picks a random window per page load
+ * and cycles it. Rendering the lot rather than the visible few is deliberate:
+ * it is what makes the rotation immune to full-page caching, and it leaves
+ * every sponsor a crawlable link on every page of the site.
+ * Only the visible window carries a real src — the rest wait on data-src. */
+function cc25_sponsor_band_html($window = 6) {
+    $rows = cc25_sponsors();
+    if (!$rows) return '';
+    $window = max(1, min((int) $window, count($rows)));
+
+    $items = '';
+    foreach ($rows as $i => $r) {
+        $on   = $i < $window;
+        $src  = esc_url(cc25_sponsor_url($r['file']));
+        $img  = '<img ' . ($on ? 'src="' . $src . '"' : 'data-src="' . $src . '"')
+              . ' alt="' . esc_attr($r['name']) . '" width="1058" height="282" loading="lazy">';
+        $link = cc25_sponsor_link($r);
+        $body = $link
+            ? '<a href="' . esc_url($link) . '" target="_blank" rel="noopener sponsored" aria-label="'
+              . esc_attr($r['name']) . ' (opens in a new tab)">' . $img . '</a>'
+            : $img;
+        $items .= '<div class="cc-band-item' . ($on ? ' is-on' : '')
+                . (!empty($r['dark']) ? ' cc-band-dark' : '') . '">' . $body . '</div>';
+    }
+
+    return '<div class="cc-band" data-window="' . (int) $window . '">'
+         . '<div class="cc-band-head"><span class="kick">Proudly supported by</span>'
+         . '<a class="cc-band-all" href="' . esc_url(cc25_page_url('sponsors', home_url('/'))) . '">All sponsors &rarr;</a>'
+         . '</div><div class="cc-band-strip">' . $items . '</div></div>';
+}
+
+/** True where the band should render. The home page and the sponsors page
+ *  already show the full wall; a band there is the same logos twice within a
+ *  screen of each other. */
+function cc25_show_sponsor_band() {
+    if (!function_exists('is_front_page')) return true; // CLI tests
+    return !is_front_page() && !is_page_template('template-sponsors.php');
+}
+
 /* ---- Charity partners ------------------------------------------------
  * Organisations the club supports, rather than sponsors who pay the club.
  * They are listed on the sponsors page in their own right and are deliberately

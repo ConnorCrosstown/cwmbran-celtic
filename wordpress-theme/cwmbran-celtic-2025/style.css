@@ -944,6 +944,22 @@ nav.main .cc25-nav .menu-item-has-children>a::before{content:"\25BE";position:ab
 .ft-sponsor{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;padding:18px 0 4px;margin-top:6px;border-top:1px solid rgba(255,255,255,.12)}
 .ft-sponsor-eye{color:var(--gold);letter-spacing:.12em;font-size:.68rem}
 .ft-sponsor-logo img{max-width:170px;height:auto;display:block;background:#fff;border-radius:6px;padding:7px 12px}
+/* ---- Site-wide sponsor band (template-parts/site-footer.php) ----
+ * Every sponsor is in the markup; only .is-on is shown. assets/sponsor-band.js
+ * moves that class along, so the band works without JS at the first six. */
+.cc-band{padding:20px 0 6px;margin-top:8px;border-top:1px solid rgba(255,255,255,.12)}
+.cc-band-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:14px}
+.cc-band-head .kick{color:var(--gold);letter-spacing:.12em;font-size:.68rem}
+.cc-band-all{color:#fff;opacity:.72;font-size:.78rem;white-space:nowrap;text-decoration:none}
+.cc-band-all:hover{opacity:1}
+.cc-band-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:center}
+.cc-band-item{display:none}
+.cc-band-item.is-on{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:6px;padding:8px 10px;min-height:52px;transition:opacity .45s}
+.cc-band-item.is-on.is-fading{opacity:0}
+.cc-band-dark.is-on{background:var(--navy-800,#12203c)}
+.cc-band-item img{max-width:100%;max-height:38px;width:auto;height:auto;object-fit:contain;display:block}
+@media(max-width:900px){.cc-band-strip{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.cc-band-strip{grid-template-columns:repeat(2,1fr)}}
 /* Homepage latest-gallery feature */
 .galcard{display:grid;grid-template-columns:1.35fr 1fr;gap:0;background:var(--surface);border:1px solid var(--hair);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);transition:.2s;text-decoration:none}
 .galcard:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
