@@ -27,6 +27,7 @@ function cc25_mr_metabox($post) {
     $sel  = get_post_meta($post->ID, '_cc25_mr_game', true);
     $sc   = get_post_meta($post->ID, '_cc25_mr_scorers', true);
     $att  = get_post_meta($post->ID, '_cc25_mr_attendance', true);
+    $spon = get_post_meta($post->ID, '_cc25_sponsor', true);
     $games = cc25_mr_recent_games();
     ?>
     <p><label for="cc25mr_game"><strong>Which game?</strong></label><br>
@@ -44,6 +45,16 @@ function cc25_mr_metabox($post) {
              placeholder="Wood; Berry (pen); Griffiths"></p>
     <p><label for="cc25mr_att"><strong>Attendance</strong></label><br>
       <input type="number" min="0" id="cc25mr_att" name="cc25_mr_attendance" value="<?php echo esc_attr($att); ?>" style="width:120px"></p>
+
+    <p><label for="cc25mr_sponsor"><strong>Sponsored by</strong></label><br>
+      <select id="cc25mr_sponsor" name="cc25_sponsor" style="width:100%">
+        <option value="">&mdash; not sold, rotate sponsors &mdash;</option>
+        <?php foreach (cc25_sponsors() as $s): ?>
+          <option value="<?php echo esc_attr($s['slug']); ?>"<?php selected($spon, $s['slug']); ?>><?php echo esc_html($s['name']); ?></option>
+        <?php endforeach; ?>
+      </select></p>
+    <p style="color:#666;font-size:11px;margin-top:-6px">Leave this alone unless the slot has been sold. Unsold, it shows a different sponsor each day by itself.</p>
+
     <p style="color:#666;font-size:11px;margin:0">Set the category to <b>Report</b>, add a <b>Featured Image</b>, and write the report in the main editor. Photos go in as a normal gallery.</p>
     <?php
 }
@@ -89,6 +100,11 @@ add_action('save_post_post', function ($id) {
     update_post_meta($id, '_cc25_mr_scorers', sanitize_text_field(wp_unslash($_POST['cc25_mr_scorers'] ?? '')));
     $att = $_POST['cc25_mr_attendance'] ?? '';
     update_post_meta($id, '_cc25_mr_attendance', $att === '' ? '' : (string) max(0, (int) $att));
+    // Only accept a slug we actually offered, so a stale form cannot attach a
+    // sponsor who no longer exists.
+    $spon = sanitize_text_field(wp_unslash($_POST['cc25_sponsor'] ?? ''));
+    if ($spon !== '' && !cc25_sponsor_by_slug($spon)) $spon = '';
+    update_post_meta($id, '_cc25_sponsor', $spon);
 });
 
 /* ----------------------------------------------------- keeping prose on-brand

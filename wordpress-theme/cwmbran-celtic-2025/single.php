@@ -32,6 +32,10 @@ if (cc25_is_programme_post(get_queried_object())) {
         <div class="art-hero photo"><div class="fill"></div><div class="gr"></div></div>
       <?php endif; ?>
       <div class="art-body prose"><?php the_content(); ?></div>
+      <?php echo cc25_sponsor_slot_html(
+          (string) get_post_meta(get_the_ID(), '_cc25_sponsor', true),
+          (function_exists('cc25_is_report_post') && cc25_is_report_post()) ? 'report' : 'story'
+      ); ?>
       <?php // A written report shows the same gallery as the match centre does for that
       // game — one set of photos, keyed to the fixture, not two places to upload them.
       if (function_exists('cc25_report_game') && function_exists('cc25_match_gallery_html')) {

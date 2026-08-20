@@ -128,6 +128,22 @@ check('2026-03-31 yields twelve months', count($months_mar31) === 12);
 check('2026-03-31 yields twelve distinct months', count(array_unique($months_mar31)) === 12);
 check('2026-03-31 months run newest-first (Mar→Apr)', $months_mar31[0] === '2026-03' && $months_mar31[11] === '2025-04');
 
+/* ---- Named slots ------------------------------------------------------ */
+check('an explicit slug wins', cc25_slot_sponsor('coaltown')['slug'] === 'coaltown');
+check('an unsold slot falls back to the rotation', cc25_slot_sponsor('') !== null);
+// Sponsors leave. An old report naming one must not render a broken block.
+check('a slug that no longer exists falls back rather than breaking',
+    cc25_slot_sponsor('a-sponsor-who-left') !== null);
+check('a sold slot says sponsored by', strpos(cc25_sponsor_slot_html('coaltown', 'report'), 'Sponsored by') !== false);
+check('a sold slot names the sponsor', strpos(cc25_sponsor_slot_html('coaltown', 'report'), 'Coaltown') !== false);
+check('an unsold slot says brought to you by', strpos(cc25_sponsor_slot_html('', 'story'), 'Brought to you by') !== false);
+check('a report slot names the report', strpos(cc25_sponsor_slot_html('coaltown', 'report'), 'match report') !== false);
+check('a slot links through /go/', strpos(cc25_sponsor_slot_html('coaltown', 'story'), '/go/coaltown') !== false);
+// Charity partners are never sold as a slot.
+foreach (cc25_charity_partners() as $p) {
+    check("partner '{$p['name']}' cannot fill a named slot", cc25_slot_sponsor($p['slug'])['slug'] !== $p['slug']);
+}
+
 echo "\n";
 if ($failures) { echo count($failures) . " FAILED\n"; exit(1); }
 echo "all passed\n";

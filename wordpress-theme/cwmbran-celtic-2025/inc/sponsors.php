@@ -166,6 +166,46 @@ function cc25_charity_partners_html() {
     return $out . '</div>';
 }
 
+/* ---- Named slots ------------------------------------------------------
+ * A slot can be sold to one sponsor for one story or one match; when it isn't
+ * sold it carries the daily rotation instead, so it never renders empty and
+ * the club never has to fill it. */
+
+/** The sponsor for a named slot: the explicit one if it still resolves, the
+ *  rotation otherwise. Sponsors leave, and an old report naming one that has
+ *  gone falls back rather than rendering a broken block. */
+function cc25_slot_sponsor($explicit = '') {
+    $named = cc25_sponsor_by_slug($explicit);
+    if ($named) return $named;   // no website is fine — the logo just isn't a link
+    $rot = cc25_featured_sponsor();
+    return $rot ?: null;
+}
+
+/** A named sponsor block. $context is 'story' or 'report' — wording only. */
+function cc25_sponsor_slot_html($explicit = '', $context = 'story') {
+    $s = cc25_slot_sponsor($explicit);
+    if (!$s) return '';
+    $sold  = cc25_sponsor_by_slug($explicit) !== null;
+    $thing = $context === 'report' ? 'match report' : 'story';
+    $lead  = $sold ? 'Sponsored by' : 'Brought to you by';
+    $link  = cc25_sponsor_link($s);
+    $img   = '<img src="' . esc_url(cc25_sponsor_url($s['file'])) . '" alt="' . esc_attr($s['name'])
+           . '" width="1058" height="282" loading="lazy">';
+    $logo  = $link
+        ? '<a href="' . esc_url($link) . '" target="_blank" rel="noopener sponsored" aria-label="'
+          . esc_attr($s['name']) . ' (opens in a new tab)">' . $img . '</a>'
+        : $img;
+
+    return '<aside class="cc-slot' . (!empty($s['dark']) ? ' cc-slot-dark' : '') . '">'
+         . '<div class="cc-slot-eye kick">' . esc_html($lead) . '</div>'
+         . '<div class="cc-slot-logo">' . $logo . '</div>'
+         . '<div class="cc-slot-txt">This ' . esc_html($thing) . ' is '
+         . ($sold ? 'sponsored by' : 'brought to you by') . ' <strong>'
+         . esc_html($s['name']) . '</strong>. <a href="'
+         . esc_url(cc25_page_url('sponsorship', home_url('/'))) . '">Sponsor the Celts &rarr;</a></div>'
+         . '</aside>';
+}
+
 /** Match-ticker items: upcoming fixtures across every team, with M/W/Res badges.
  *  Fixtures only — the ticker used to lead with the last four Men's First Team
  *  results, which read as the headline news when what it is for is telling people

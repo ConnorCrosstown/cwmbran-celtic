@@ -1931,3 +1931,15 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
   .splash.is-launch .splash-launch-mvt{margin-bottom:12px}
   .splash.is-launch .splash-later{margin-top:12px}
 }
+
+/* ---- Named sponsor slot (single.php, template-match-report.php) ---- */
+.cc-slot{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--hair);
+  border-left:3px solid var(--gold);border-radius:10px;padding:16px 20px;margin:26px 0;box-shadow:var(--shadow-sm)}
+.cc-slot-eye{color:var(--gold-deep);letter-spacing:.12em;font-size:.68rem;flex:none}
+.cc-slot-logo{flex:none;max-width:190px}
+.cc-slot-logo img{max-width:100%;height:auto;display:block}
+.cc-slot-dark .cc-slot-logo{background:var(--navy-800,#12203c);border-radius:6px;padding:6px 10px}
+.cc-slot-txt{color:var(--muted);font-size:.9rem;flex:1;min-width:200px}
+.cc-slot-txt strong{color:var(--text)}
+.cc-slot-txt a{color:var(--blue-500);font-weight:600;white-space:nowrap}
+@media(max-width:600px){.cc-slot{gap:12px}.cc-slot-txt{font-size:.85rem}}
