@@ -23,6 +23,9 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('cc25', get_stylesheet_uri(), array(), $cssv);
     wp_enqueue_script('cc25-js', get_stylesheet_directory_uri() . '/assets/premium.js', array(), $jsv, true);
 
+    $bv = @filemtime($dir . '/assets/sponsor-band.js') ?: '0.1.0';
+    wp_enqueue_script('cc25-sponsor-band', get_stylesheet_directory_uri() . '/assets/sponsor-band.js', array(), $bv, true);
+
     // Bespoke templates render their own full premium design, so drop Divi's
     // assets on them to stop it fighting + shed unused render-blocking weight.
     // Regular pages (which may hold Divi-built content) keep Divi's styles.
@@ -49,9 +52,10 @@ add_action('wp_enqueue_scripts', function () {
     }
 }, 99);
 
-/** PDF.js 6 ships ESM only, so the reader has to load as a module. */
+/** PDF.js 6 ships ESM only, so the reader has to load as a module; the sponsor
+ *  band imports its rotation maths, so it does too. */
 add_filter('script_loader_tag', function ($tag, $handle) {
-    if ($handle !== 'cc25-programme-reader') return $tag;
+    if ($handle !== 'cc25-programme-reader' && $handle !== 'cc25-sponsor-band') return $tag;
     return str_replace('<script ', '<script type="module" ', $tag);
 }, 10, 2);
 
