@@ -14,6 +14,44 @@ foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
 
+/**
+ * Does this page actually render SportsPress?
+ *
+ * The plugin holds four seasons of history and cannot simply go, but it renders
+ * on three archive pages out of fifty-one while loading its assets on all of
+ * them (audit RED-3).
+ *
+ * Decided from the CONTENT, never a list of page slugs: an allow-list would go
+ * stale the moment somebody publishes next season's archive, and the failure
+ * would be an unstyled league table nobody spots until a supporter mentions it.
+ *
+ * FAILS SAFE in every direction. No post to inspect, an admin screen, a feed, a
+ * SportsPress post type of any kind — all keep the assets. It only strips them
+ * when it can read a page's content and finds nothing of SportsPress's in it.
+ *
+ * @return bool true whenever the assets must stay
+ */
+function cc25_page_uses_sportspress() {
+    if (is_admin() || is_feed()) return true;
+
+    $post = get_queried_object();
+    if (!($post instanceof WP_Post)) return true;   // archives, 404s, anything unknown
+
+    // A SportsPress match, club, player or league table has its own templates.
+    if (strpos((string) $post->post_type, 'sp_') === 0) return true;
+
+    $content = (string) $post->post_content;
+    if ($content === '') return true;               // built by a page builder we cannot read
+
+    // Both the shortcode form and the block form, because the club's archives
+    // were built across several WordPress versions.
+    return (bool) preg_match(
+        '/\[(sp_|league_table|event_(list|blocks|calendar)|player_(list|gallery)|team_|staff_|tournament_bracket|countdown)'
+        . '|wp:sportspress|sp-template/i',
+        $content
+    );
+}
+
 add_action('wp_enqueue_scripts', function () {
     // Version by file mtime so edits auto-bust the browser/CDN cache (was pinned
     // to a hardcoded version, so changes never reached returning visitors).
@@ -21,6 +59,11 @@ add_action('wp_enqueue_scripts', function () {
     $cssv = @filemtime($dir . '/style.css') ?: '0.1.0';
     $jsv  = @filemtime($dir . '/assets/premium.js') ?: '0.1.0';
     wp_enqueue_style('cc25', get_stylesheet_uri(), array(), $cssv);
+    // Divi enqueues the CHILD theme's style.css itself, under 'divi-style', so
+    // every page carried two identical <link> tags for the same 160 KB file
+    // (audit RED-5). Ours is kept because it is the one this theme controls —
+    // the version stamp above is what makes an edit reach returning visitors.
+    wp_dequeue_style('divi-style');
     wp_enqueue_script('cc25-js', get_stylesheet_directory_uri() . '/assets/premium.js', array(), $jsv, true);
 
     $bv = @filemtime($dir . '/assets/sponsor-band.js') ?: '0.1.0';
@@ -33,7 +76,7 @@ add_action('wp_enqueue_scripts', function () {
         || is_search() || is_page_template('template-fixtures.php')
         || is_page_template('template-kit-launch.php') || is_page_template('template-match-report.php');
     if ($bespoke) {
-        foreach (array('divi-style', 'et-builder-modules-style', 'et-builder-modules-global-animations',
+        foreach (array('et-builder-modules-style', 'et-builder-modules-global-animations',
                        'et-shortcodes-css', 'et-shortcodes-responsive-css', 'magnific-popup',
                        'et-gb-fonts', 'divi-fonts') as $h) {
             wp_dequeue_style($h);   // no-op if the handle isn't present
@@ -42,6 +85,61 @@ add_action('wp_enqueue_scripts', function () {
                        'magnific-popup', 'fitvids') as $h) {
             wp_dequeue_script($h);
         }
+    }
+
+    /*
+     * ⚠️ OPEN ITEM — audit RED-4. The list above is stale and mostly misses.
+     *
+     * Divi 4.27 serves its CSS through dynamic assets under handles that did not
+     * exist when this was written: divi-dynamic-critical (182 KB, INLINE, and the
+     * single biggest reason every page carries a ~180 KB HTML floor),
+     * divi-style-parent, and et-divi-dynamic-tb-<ids> named per Theme Builder
+     * template. So Divi's payload is still on the homepage despite this code.
+     *
+     * It has NOT been fixed here, deliberately. The body class carries
+     * et-tb-has-header and et-tb-has-footer and the markup has et-l--header /
+     * et-l--footer wrappers, which means Divi Theme Builder supplies the header
+     * and footer on every page. Dropping Divi's stylesheet may therefore take the
+     * site header and footer with it, and that cannot be settled from the source
+     * — it needs someone loading a page with the CSS removed and looking.
+     *
+     * To finish it: dump $wp_styles->queue on a bespoke template for the real
+     * handles, dequeue by PREFIX (the tb- ids change), and check the header,
+     * footer and a Divi-built news post before shipping.
+     */
+
+    /*
+     * SportsPress ships four stylesheets, jquery.dataTables (81 KB), its own
+     * script and a Google Fonts request for Roboto with Cyrillic, Greek and
+     * Vietnamese subsets — on all 51 pages. It renders on three: the 2022-23,
+     * 2023-24 and 2024-25 archives. Everywhere else that is pure overhead.
+     *
+     * Gated on the CONTENT rather than a list of slugs, so next season's archive
+     * keeps working without anyone remembering this exists. Fails safe: anything
+     * it cannot read keeps the assets.
+     */
+    if (!cc25_page_uses_sportspress()) {
+        foreach (array('sportspress', 'sportspress-icons', 'sportspress-style',
+                       'sportspress-style-ltr', 'sportspress-style-rtl',
+                       'sportspress-general', 'jquery-datatables') as $h) {
+            wp_dequeue_style($h);
+        }
+        foreach (array('sportspress', 'jquery-datatables', 'sportspress-countdown') as $h) {
+            wp_dequeue_script($h);
+        }
+    }
+
+    /*
+     * dashicons is WordPress's ADMIN icon font (59 KB) and has no business on the
+     * public site — but the admin bar uses it, so logged-in editors keep it.
+     *
+     * jQuery Migrate patches jQuery APIs removed before 2016. Nothing here needs
+     * it. If something ever does look wrong after a release, this is the first
+     * line to put back.
+     */
+    if (!is_user_logged_in()) {
+        wp_dequeue_style('dashicons');
+        wp_deregister_script('jquery-migrate');
     }
 
     // The programme reader pulls in PDF.js, which is far too heavy to ship
