@@ -1569,6 +1569,10 @@ function cc25_render_static_fixtures($list, $team = 'mens') {
         } else {
             $tix = '';
         }
+        // The programme goes up before the game, so it belongs on the fixture and
+        // not only on the result. Same helper the results rows use, so a match
+        // offers the identical link either side of kick-off.
+        $prog = cc25_fixture_programme_button($team, date('Y-m-d', $rd));
         echo '<div class="mrow mrow-res reveal">'
             . '<div class="mdate"><div class="d">' . date('d', $rd) . '</div><div class="m">' . date('M', $rd) . '</div><div class="day">' . date('D', $rd) . '</div></div>'
             . '<div class="mteams">'
@@ -1576,7 +1580,7 @@ function cc25_render_static_fixtures($list, $team = 'mens') {
             . '<span class="mvs">vs</span>'
             . '<span class="mt right' . ($home ? '' : ' is-own') . '">' . ($home ? $oc : cc25_own_crest(34)) . '<span class="nm">' . esc_html($home ? $opp : 'Cwmbran Celtic') . '</span></span>'
             . '</div>'
-            . '<div class="mmeta"><div class="comp">' . esc_html($comp) . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>' . $tix . '</div>'
+            . '<div class="mmeta"><div class="comp">' . esc_html($comp) . '</div><span class="ha ' . ($home ? 'h' : 'a') . '">' . ($home ? 'Home' : 'Away') . '</span>' . $tix . $prog . '</div>'
             . '</div>';
     }
 }
@@ -1780,6 +1784,20 @@ function cc25_match_link_buttons($links) {
         $out .= '<a class="mtix btn btn-outline" href="' . esc_url($links['programme']) . '">Programme</a>';
     }
     return $out;
+}
+
+/**
+ * Programme button for a fixture row.
+ *
+ * The programme link ONLY. cc25_match_links also resolves report and
+ * match-centre links, and those belong on a result. Passing the whole array
+ * through would put a "Match Report" button on a game nobody has kicked off yet
+ * the moment a fixture shares its date with a recorded match.
+ */
+function cc25_fixture_programme_button($team, $ymd) {
+    if (!function_exists('cc25_match_links')) return '';
+    $links = cc25_match_links($team, $ymd);
+    return cc25_match_link_buttons(array('programme' => isset($links['programme']) ? $links['programme'] : ''));
 }
 
 function cc25_team_items($list, $team) {
