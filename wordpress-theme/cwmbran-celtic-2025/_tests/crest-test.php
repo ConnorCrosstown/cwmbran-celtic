@@ -18,7 +18,7 @@
 // This file ships inside the theme zip and must never execute over HTTP.
 if (PHP_SAPI !== 'cli') exit;
 
-function add_action() {} function add_filter() {}
+function add_action() {} function add_filter() {} function remove_action() {}
 function get_transient() { return false; } function set_transient() {}
 function date_i18n($fmt, $ts = null) { return date($fmt, $ts === null ? time() : $ts); }
 function esc_url($u) { return htmlspecialchars((string) $u, ENT_QUOTES); }

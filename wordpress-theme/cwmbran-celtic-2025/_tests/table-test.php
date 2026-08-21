@@ -12,7 +12,7 @@
 // This file ships inside the theme zip and must never execute over HTTP.
 if (PHP_SAPI !== 'cli') exit;
 
-function add_action() {} function add_filter() {}
+function add_action() {} function add_filter() {} function remove_action() {}
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
 require __DIR__ . '/../inc/hardening.php';
 

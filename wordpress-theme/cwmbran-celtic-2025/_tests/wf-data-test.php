@@ -10,7 +10,7 @@
 // It defines ABSPATH and requires functions.php, bypassing its exit guard.
 if (PHP_SAPI !== 'cli') exit;
 
-function add_action() {}
+function add_action() {} function remove_action() {}
 function add_filter() {}
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
 require __DIR__ . '/../functions.php';

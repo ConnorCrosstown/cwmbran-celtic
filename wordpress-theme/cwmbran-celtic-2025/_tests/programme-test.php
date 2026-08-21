@@ -9,7 +9,7 @@
 // This file ships inside the theme zip and must never execute over HTTP.
 if (PHP_SAPI !== 'cli') exit;
 
-function add_action() {}
+function add_action() {} function remove_action() {}
 function add_filter() {}
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
 require __DIR__ . '/../functions.php';
