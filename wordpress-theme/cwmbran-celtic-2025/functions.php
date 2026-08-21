@@ -1110,8 +1110,32 @@ function cc25_crest($feed, $name, $px) {
         return '<span class="crest" style="' . esc_attr($style . ';background:' . $bg) . '">'
             . esc_html($c['initials'] ?? mb_substr($name, 0, 2)) . '</span>';
     }
-    return '<span class="crest" style="' . esc_attr($style) . '">'
-        . esc_html(mb_strtoupper(mb_substr((string) $name, 0, 2))) . '</span>';
+    // The feed only carries crests for clubs in the Ardal SE fixtures, so a cup
+    // opponent — Newport Corinthians in the Welsh Cup, say — resolves to nothing
+    // here even when the club HAS their artwork bundled. cc25_res_crest() has
+    // always consulted that bundled set; this resolver never did, so 30 crests
+    // in assets/img/opponents/ were invisible to the home page.
+    $file = function_exists('cc25_opp_crest_file') ? cc25_opp_crest_file($name) : '';
+    if ($file) {
+        return '<img class="crest" style="' . esc_attr($style) . '" src="'
+            . esc_url(get_stylesheet_directory_uri() . '/assets/img/opponents/' . $file)
+            . '" alt="' . esc_attr($name) . '" loading="lazy">';
+    }
+
+    // Last resort: initials. This MUST carry its own background — .crest sets
+    // color:#fff and no background of its own, so a bare span rendered white on
+    // the white match card and read as no crest at all. Hue derived from the
+    // name so a club keeps the same colour everywhere it appears.
+    $hue = 0;
+    foreach (str_split(strtolower((string) $name)) as $ch) $hue = ($hue * 31 + ord($ch)) % 360;
+    $bg = 'radial-gradient(120% 120% at 30% 20%,hsl(' . $hue . ',45%,40%),hsl(' . $hue . ',45%,22%))';
+    $ini = '';
+    foreach (preg_split('/\s+/', trim((string) $name)) as $w) {
+        if ($w !== '') $ini .= mb_substr($w, 0, 1);
+    }
+    if ($ini === '') $ini = mb_substr((string) $name, 0, 2);
+    return '<span class="crest" style="' . esc_attr($style . ';background:' . $bg) . '">'
+        . esc_html(mb_strtoupper(mb_substr($ini, 0, 3))) . '</span>';
 }
 
 /** Reserve-fixture opponent crest from the theme's bundled set, else a monogram.
