@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Cwmbran Celtic Live Feed
  * Description: Pulls fixtures, results and league table from the Cwmbran Celtic data feed and renders them via shortcodes.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Requires PHP: 7.4
  */
 
@@ -13,6 +13,7 @@ define('CCF_DIR', plugin_dir_path(__FILE__));
 define('CCF_URL', plugin_dir_url(__FILE__));
 
 require_once CCF_DIR . 'includes/class-ccf-client.php';
+require_once CCF_DIR . 'includes/class-ccf-rest.php';
 require_once CCF_DIR . 'includes/class-ccf-render.php';
 require_once CCF_DIR . 'includes/class-ccf-shortcodes.php';
 require_once CCF_DIR . 'includes/class-ccf-admin.php';
@@ -42,6 +43,22 @@ register_deactivation_hook(__FILE__, function () {
 add_action('wp_enqueue_scripts', function () {
     wp_register_style('ccf', CCF_URL . 'assets/ccf.css', [], '1.0.1');
 });
+
+/*
+ * The table hydrator, loaded only on a page that actually renders a table. The
+ * theme says so by printing data-ccf-table, and asks for the script by calling
+ * ccf_enqueue_table_script() — see CCF_Rest for why the page cannot simply trust
+ * its own HTML.
+ */
+function ccf_enqueue_table_script() {
+    if (!function_exists('wp_enqueue_script')) return;
+    wp_enqueue_script('ccf-table', CCF_URL . 'assets/ccf-table.js', [], '1.1.0', true);
+    wp_localize_script('ccf-table', 'CCF_TABLE', [
+        'endpoint' => esc_url_raw(rest_url(CCF_Rest::NS . '/table')),
+    ]);
+}
+
+CCF_Rest::register();
 
 CCF_Shortcodes::register();
 CCF_Admin::register();

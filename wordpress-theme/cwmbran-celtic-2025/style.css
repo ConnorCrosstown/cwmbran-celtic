@@ -1943,3 +1943,8 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
 @media(max-width:600px){.cc-slot{gap:12px}.cc-slot-txt{font-size:.85rem}}
 .tk-sponsor,.tk-sponsor a{color:var(--gold);text-decoration:none}
 .tk-sponsor a:hover{text-decoration:underline}
+
+/* A table-wrap with no rows yet: hide the empty grid, show the message in its
+   place. The hydrator clears is-empty once it has rows. */
+.table-wrap.is-empty .tscroll,.table-wrap.is-empty .zone{display:none}
+.table-wrap:not(.is-empty) .lt-empty{display:none}

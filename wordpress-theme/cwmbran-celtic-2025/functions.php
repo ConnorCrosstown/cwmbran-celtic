@@ -2911,6 +2911,71 @@ function cc25_parse_match_slug($g) {
  * minute plus stoppage time, still comes back as a plain integer, so this stays
  * safe to print.
  */
+/* -------------------------------------------------------------------------
+ * The league table: one renderer, three callers.
+ *
+ * The fixtures page and the home page render this server-side, and the feed
+ * plugin's /table endpoint renders it again for a page the CDN cached weeks ago
+ * (s-maxage on this site is thirty days). All three go through the function
+ * below, so a hydrated table cannot quietly drift from a rendered one.
+ * ---------------------------------------------------------------------- */
+
+/** The <tr> rows of a league table, or '' when there are none. */
+function cc25_table_rows_html($feed, $rows) {
+    if (!is_array($rows) || !$rows) return '';
+    $out = '';
+    foreach ($rows as $row) {
+        $club = (string) ($row['club'] ?? '');
+        $own  = strpos($club, 'Cwmbran Celtic') !== false;
+        $gd   = intval($row['gd'] ?? 0);
+        $out .= '<tr' . ($own ? ' class="own"' : '') . '>'
+              . '<td class="pos">' . intval($row['position'] ?? 0) . '</td>'
+              . '<td class="club">' . cc25_crest($feed, $club, 26) . ' ' . esc_html($club) . '</td>'
+              . '<td>' . intval($row['played'] ?? 0) . '</td>'
+              . '<td>' . intval($row['won'] ?? 0) . '</td>'
+              . '<td>' . intval($row['drawn'] ?? 0) . '</td>'
+              . '<td>' . intval($row['lost'] ?? 0) . '</td>'
+              . '<td>' . ($gd > 0 ? '+' : '') . $gd . '</td>'
+              . '<td class="pts">' . intval($row['points'] ?? 0) . '</td>'
+              . '</tr>';
+    }
+    return $out;
+}
+
+// The endpoint renders through the theme, not through a copy of it.
+add_filter('ccf_table_rows_html', function ($html, $team, $rows, $feed) {
+    return cc25_table_rows_html($feed, $rows);
+}, 10, 4);
+
+/**
+ * Where the table's data came from and when — 'fresh', 'last-good' or 'none'.
+ *
+ * Degrades to a truthful nothing when the feed plugin is absent, so the theme
+ * still renders without it.
+ */
+function cc25_table_meta() {
+    if (!class_exists('CCF_Client') || !method_exists('CCF_Client', 'feed_meta')) {
+        return array('source' => 'none', 'fetched' => 0, 'stale' => false, 'label' => '');
+    }
+    $m = CCF_Client::feed_meta();
+    $m['label'] = !empty($m['fetched']) && class_exists('CCF_Rest')
+        ? CCF_Rest::label((int) $m['fetched']) : '';
+    return $m;
+}
+
+/**
+ * What to say when there is no table to show.
+ *
+ * These are different situations and used to share one sentence. Telling a
+ * visitor in November that the season has not started because a feed is down is
+ * worse than admitting the table is missing.
+ */
+function cc25_table_empty_message($source) {
+    return $source === 'none'
+        ? 'The league table will appear here once the season is underway.'
+        : 'The league table is temporarily unavailable — it will be back shortly.';
+}
+
 function cc25_min_label($min) {
     $min = trim((string) $min);
     if ($min === '') return '';

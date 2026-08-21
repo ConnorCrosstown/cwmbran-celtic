@@ -12,6 +12,9 @@ $upcoming = cc25_upcoming($feed, $team, 30);
 // newest first.
 $results  = cc25_results($feed, $team);
 $table    = cc25_table($feed, $team);
+// The CDN holds anonymous HTML for thirty days, so this page can outlive its own
+// standings. The script re-asks a no-store endpoint and swaps the rows if needed.
+if (function_exists('ccf_enqueue_table_script')) ccf_enqueue_table_script();
 
 // Fixture lists live in cc25_static_fixtures() (functions.php) so the home-page
 // match ticker and this page stay in sync. Men's Reserves + Women's are NOT in
@@ -95,33 +98,22 @@ get_template_part('template-parts/site-header');
     </div>
 
     <div class="panel" id="table">
-      <?php if ($table): ?>
-      <div class="table-wrap reveal">
+      <?php $cc25_tmeta = cc25_table_meta(); ?>
+      <div class="table-wrap reveal<?php echo $table ? '' : ' is-empty'; ?>" data-ccf-table="<?php echo esc_attr($team); ?>">
         <div class="tscroll">
           <table class="lt tnum">
             <caption class="sr-only">Ardal League South East table — position, club, played, won, drawn, lost, goal difference, points</caption>
             <thead><tr><th scope="col">#</th><th scope="col" class="club">Club</th><th scope="col"><abbr title="Played">P</abbr></th><th scope="col"><abbr title="Won">W</abbr></th><th scope="col"><abbr title="Drawn">D</abbr></th><th scope="col"><abbr title="Lost">L</abbr></th><th scope="col"><abbr title="Goal difference">GD</abbr></th><th scope="col"><abbr title="Points">Pts</abbr></th></tr></thead>
-            <tbody>
-            <?php foreach ($table as $row): $own = strpos((string) ($row['club'] ?? ''), 'Cwmbran Celtic') !== false; $gd = intval($row['gd'] ?? 0); ?>
-              <tr<?php echo $own ? ' class="own"' : ''; ?>>
-                <td class="pos"><?php echo intval($row['position'] ?? 0); ?></td>
-                <td class="club"><?php echo cc25_crest($feed, $row['club'] ?? '', 26); ?> <?php echo esc_html($row['club'] ?? ''); ?></td>
-                <td><?php echo intval($row['played'] ?? 0); ?></td>
-                <td><?php echo intval($row['won'] ?? 0); ?></td>
-                <td><?php echo intval($row['drawn'] ?? 0); ?></td>
-                <td><?php echo intval($row['lost'] ?? 0); ?></td>
-                <td><?php echo ($gd > 0 ? '+' : '') . $gd; ?></td>
-                <td class="pts"><?php echo intval($row['points'] ?? 0); ?></td>
-              </tr>
-            <?php endforeach; ?>
-            </tbody>
+            <tbody><?php echo cc25_table_rows_html($feed, $table); ?></tbody>
           </table>
         </div>
-        <div class="zone"><span><i style="background:var(--gold)"></i> Cwmbran Celtic</span><span style="margin-left:auto;color:var(--faint)">Live from allwalessport · updated hourly</span></div>
+        <div class="zone"><span><i style="background:var(--gold)"></i> Cwmbran Celtic</span><span style="margin-left:auto;color:var(--faint)">Live from allwalessport &middot; <span data-ccf-updated><?php
+          echo $cc25_tmeta['label']
+             ? esc_html(($cc25_tmeta['stale'] ? 'last updated ' : 'updated ') . $cc25_tmeta['label'])
+             : 'updated hourly'; ?></span></span></div>
+        <p class="lt-empty" data-ccf-empty style="color:var(--muted);padding:24px 2px"<?php echo $table ? ' hidden' : ''; ?>><?php
+          echo esc_html(cc25_table_empty_message($cc25_tmeta['source'])); ?></p>
       </div>
-      <?php else: ?>
-        <p style="color:var(--muted);padding:24px 2px">The league table will appear here once the season is underway.</p>
-      <?php endif; ?>
     </div>
 
   </div>

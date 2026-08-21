@@ -10,6 +10,9 @@ $next     = cc25_next_fixture($feed, $team);
 $result   = cc25_latest_result($feed, $team);
 $upcoming = cc25_upcoming($feed, $team, 4);
 $table    = cc25_table($feed, $team);
+// See template-fixtures.php: the CDN can serve this page long after the table
+// stopped being true, so it re-checks client-side.
+if ($table && function_exists('ccf_enqueue_table_script')) ccf_enqueue_table_script();
 get_template_part('template-parts/site-header');
 ?>
 
@@ -412,30 +415,15 @@ if ($cc25_reports):
       <div><div class="sec-eye kick"><span class="ix">01</span><span class="ln"></span> The Table</div><h2>Ardal League South East</h2></div>
       <a class="viewall" href="<?php echo esc_url(cc25_page_url('fixtures', home_url('/'))); ?>">Full table &amp; results →</a>
     </div>
-    <div class="table-wrap reveal d1">
+    <div class="table-wrap reveal d1" data-ccf-table="<?php echo esc_attr($team); ?>">
       <div class="tscroll">
         <table class="lt tnum">
           <caption class="sr-only">Ardal League South East table — position, club, played, won, drawn, lost, goal difference, points</caption>
           <thead><tr><th scope="col">#</th><th scope="col" class="club">Club</th><th scope="col"><abbr title="Played">P</abbr></th><th scope="col"><abbr title="Won">W</abbr></th><th scope="col"><abbr title="Drawn">D</abbr></th><th scope="col"><abbr title="Lost">L</abbr></th><th scope="col"><abbr title="Goal difference">GD</abbr></th><th scope="col"><abbr title="Points">Pts</abbr></th></tr></thead>
-          <tbody>
-          <?php foreach ($table as $row):
-            $own = strpos((string) ($row['club'] ?? ''), 'Cwmbran Celtic') !== false;
-            $gd = intval($row['gd'] ?? 0);
-          ?>
-            <tr<?php echo $own ? ' class="own"' : ''; ?>>
-              <td class="pos"><?php echo intval($row['position'] ?? 0); ?></td>
-              <td class="club"><?php echo cc25_crest($feed, $row['club'] ?? '', 26); ?> <?php echo esc_html($row['club'] ?? ''); ?></td>
-              <td><?php echo intval($row['played'] ?? 0); ?></td>
-              <td><?php echo intval($row['won'] ?? 0); ?></td>
-              <td><?php echo intval($row['drawn'] ?? 0); ?></td>
-              <td><?php echo intval($row['lost'] ?? 0); ?></td>
-              <td><?php echo ($gd > 0 ? '+' : '') . $gd; ?></td>
-              <td class="pts"><?php echo intval($row['points'] ?? 0); ?></td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
+          <tbody><?php echo cc25_table_rows_html($feed, $table); ?></tbody>
         </table>
       </div>
+    </div>
     </div>
   </div>
 </section>
