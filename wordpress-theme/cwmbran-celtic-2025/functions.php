@@ -584,6 +584,13 @@ function cc25_kit_launch() {
     return array(
         'enabled'     => true,                // LIVE — splash/banner/nav appear at live_from (UK time).
         'live_from'   => '2026-07-31 12:00',  // Friday 31 July 2026, 12:00 noon UK.
+        // When the HOMEPAGE feature retires itself. The shirts stay on sale and
+        // /music-shirts/ stays in the menu — this is only the block at the top of
+        // the home page, which had no end date at all and so sat above the
+        // season's results for as long as nobody remembered to take it down
+        // (audit UX-4). Blank means "until enabled is switched off", the old
+        // behaviour.
+        'promo_until' => '2026-09-30 23:59',
         'slug'        => 'music-shirts',
         'eyebrow'     => 'Music Shirts · 2026/27',
         'headline'    => 'Four bands. One club. Grassroots music and sport together.',
@@ -665,6 +672,23 @@ function cc25_kit_launch_live() {
     if (empty($k['enabled'])) return false;
     if (empty($k['live_from'])) return true;
     return time() >= cc25_kit_launch_ts();
+}
+
+/**
+ * True while the Music Shirts still get their FEATURE slot on the home page.
+ *
+ * Separate from cc25_kit_launch_live() on purpose. That one governs the menu and
+ * the header button, which should last as long as the shirts are on sale; this
+ * one governs the homepage block, which is a launch campaign and should stand
+ * down on its own. A campaign with a start date and no end date is one somebody
+ * has to remember, and three weeks after launch it was still above the results.
+ */
+function cc25_kit_promo_live() {
+    if (!cc25_kit_launch_live()) return false;
+    $k = cc25_kit_launch();
+    if (empty($k['promo_until'])) return true;
+    $until = strtotime($k['promo_until'] . ' Europe/London');
+    return $until <= 0 || time() <= $until;
 }
 
 /** True during the pre-launch window: enabled, an embargo is set, and we're
@@ -1181,6 +1205,32 @@ function cc25_feed() {
     if (!class_exists('CCF_Client')) return $cache = array();
     $f = CCF_Client::get_feed();
     return $cache = (is_array($f) ? $f : array());
+}
+
+/**
+ * ` width="W" height="H"` for a bundled image, or '' when it cannot be read.
+ *
+ * Not decoration: without them the browser does not know how tall an image will
+ * be until it arrives, so the page reflows around it as it loads and whatever
+ * you were about to tap moves. The crest helpers already avoid this by setting
+ * an inline width and height, which is why the fixtures page — 243 images — has
+ * effectively no layout shift; the homepage kit shots were the ones missing it
+ * (audit PERF-6).
+ *
+ * Read from the file rather than typed into the data beside it, so re-exporting
+ * artwork at a new size can never leave a stale number behind. Results are
+ * memoised, and a handful of getimagesize calls on a page is nothing next to a
+ * visible reflow.
+ *
+ * @param string $rel path under assets/img/, e.g. 'kit/kit-sfa.webp'
+ */
+function cc25_img_dims($rel) {
+    static $cache = array();
+    if (isset($cache[$rel])) return $cache[$rel];
+    $path = get_stylesheet_directory() . '/assets/img/' . ltrim($rel, '/');
+    $size = @getimagesize($path);
+    if (!$size || empty($size[0]) || empty($size[1])) return $cache[$rel] = '';
+    return $cache[$rel] = ' width="' . intval($size[0]) . '" height="' . intval($size[1]) . '"';
 }
 
 function cc25_club_logo() {

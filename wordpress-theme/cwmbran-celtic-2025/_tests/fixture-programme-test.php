@@ -90,5 +90,17 @@ $bare = ob_get_clean();
 check('a fixture with no programme renders no button', strpos($bare, 'Programme') === false);
 check('and still renders as a fixture row', strpos($bare, 'class="mrow') !== false);
 
+/* ---- The men's results panel (audit FIX-5) ---- */
+
+// It was the only results panel that could not carry a Programme button: the
+// whole row was an <a> to the match report, and a link inside a link is invalid
+// HTML. The template now renders a div and uses the shared button helper, so the
+// guard is that the markup never goes back to being a row-wide anchor.
+$tpl = file_get_contents(__DIR__ . '/../template-fixtures.php');
+check('the men\'s results row is not a whole-row link',
+    strpos($tpl, '$rtag') === false);
+check('and it renders the shared match-link buttons',
+    strpos($tpl, "cc25_match_link_buttons(function_exists('cc25_match_links') ? cc25_match_links('mens'") !== false);
+
 echo "\n" . (count($failures) ? count($failures) . " FAILURE(S)\n" : "All checks passed\n");
 exit(count($failures) ? 1 : 0);

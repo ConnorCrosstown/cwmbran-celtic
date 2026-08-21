@@ -217,8 +217,22 @@
     b.addEventListener('click',function(){switchTeam(b.getAttribute('data-team'));});
   });
   if(document.querySelector('.teamsel button[data-team]')){
-    var _h=(location.hash||'').replace('#','');
-    if(_h)switchTeam(_h);   // deep-link e.g. /fixtures/#womens
+    // Deep link, e.g. /fixtures/#womens_u19 from the main menu.
+    var fromHash=function(scroll){
+      var h=(location.hash||'').replace('#','');
+      if(!h)return;
+      switchTeam(h);
+      // Arriving from another page the browser scrolls to the anchor itself, but
+      // a same-page hash change does not, so the panel would swap out of sight.
+      var w=scroll&&document.getElementById('team-'+h);
+      if(w)w.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+    fromHash(false);
+    // Without this the menu is dead once you are already on the fixtures page:
+    // changing only the hash never reloads the document, so the switcher above
+    // ran once on load and never again, and Women's Reserves and Women's U19s —
+    // whose menu items are the only way to reach them — did nothing at all.
+    window.addEventListener('hashchange',function(){fromHash(true);});
   }
 
   // Player-card lightbox (Men's team page): click a card to enlarge.

@@ -9,6 +9,17 @@
  */
 if (!defined('ABSPATH')) exit;
 
+/**
+ * WordPress emits its own canonical, and this file emits one too, so every page
+ * carried two (audit FIX-4). They agree on most pages, which is why nobody
+ * noticed — but a match report deliberately canonicalises to its own ?g= URL so
+ * each game is a distinct page, and there core's competing tag defeats the whole
+ * point. Faced with two canonicals a search engine may honour neither.
+ *
+ * Ours wins because it is the one that knows about match reports.
+ */
+remove_action('wp_head', 'rel_canonical');
+
 /* ============================ SEO / AEO ===================================== */
 
 /** Context-aware meta description. */

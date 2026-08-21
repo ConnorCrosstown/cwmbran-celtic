@@ -69,9 +69,14 @@ get_template_part('template-parts/site-header');
         $cc25_fpens = $cc25_frec ? cc25_match_pens($cc25_frec) : null;
         $wdl = cc25_wdl($cc, $op, $cc25_fpens);
         $mo = cc25_date($r['date'] ?? 0, 'F Y'); if ($mo !== $lm) { $lm = $mo; echo '<div class="monthlab">' . esc_html($mo) . '</div>'; }
-        $rurl = cc25_match_report_url(cc25_date($r['date'] ?? 0, 'Y-m-d'), 'mens'); /* men's results panel */ $rtag = $rurl ? 'a' : 'div'; ?>
+        /* The row used to be one big <a> to the match report. That made it
+           impossible to put a link INSIDE it — an anchor within an anchor is
+           invalid — so the men's results were the only ones on the site that
+           could not offer a Programme button (audit FIX-5). It is a plain div
+           now, with the same buttons every other team's results already use. */
+        $cc25_fymd = cc25_date($r['date'] ?? 0, 'Y-m-d'); ?>
         <?php $oppCrest = cc25_crest($feed, $ro['opponent'], 34); // Home team + its score on the left. ?>
-        <<?php echo $rtag; ?> class="mrow reveal"<?php echo $rurl ? ' href="' . esc_url($rurl) . '"' : ''; ?>>
+        <div class="mrow reveal">
           <div class="mdate"><div class="d"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'd')); ?></div><div class="m"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'M')); ?></div><div class="day"><?php echo esc_html(cc25_date($r['date'] ?? 0, 'D')); ?></div></div>
           <div class="mteams">
             <span class="mt<?php echo $home ? ' is-own' : ''; ?>"><?php echo $home ? cc25_own_crest(34) : $oppCrest; ?><span class="nm"><?php echo esc_html($home ? 'Cwmbran Celtic' : $ro['opponent']); ?></span></span>
@@ -81,8 +86,9 @@ get_template_part('template-parts/site-header');
           <div><span class="res-badge <?php echo $wdl; ?>"><?php echo cc25_wdl_label($wdl, (bool) $cc25_fpens, true); ?></span></div>
           <div class="mmeta"><div class="comp"><?php echo esc_html($r['competition'] ?? ''); ?><?php
             $cc25_fpl = cc25_pens_line($cc25_frec ?: array());
-            echo $cc25_fpl !== '' ? ' <span class="pens">&middot; ' . esc_html($cc25_fpl) . '</span>' : ''; ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span></div>
-        </<?php echo $rtag; ?>>
+            echo $cc25_fpl !== '' ? ' <span class="pens">&middot; ' . esc_html($cc25_fpl) . '</span>' : ''; ?></div><span class="ha <?php echo $home ? 'h' : 'a'; ?>"><?php echo $home ? 'Home' : 'Away'; ?></span><?php
+            echo cc25_match_link_buttons(function_exists('cc25_match_links') ? cc25_match_links('mens', $cc25_fymd) : array()); ?></div>
+        </div>
       <?php endforeach; else: ?>
         <p style="color:var(--muted);padding:24px 2px">No results yet — the season is about to kick off.</p>
       <?php endif; ?>

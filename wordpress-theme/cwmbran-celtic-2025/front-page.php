@@ -43,7 +43,7 @@ if ($cc25_kllive && !$cc25_md): ?>
       <div class="splash-track">
         <?php foreach ($cc25_kl['shirts'] as $s): ?>
         <div class="splash-slide">
-          <img src="<?php echo esc_url($cc25_kbase . $s['img']); ?>" alt="<?php echo esc_attr($s['band'] . ' — ' . $s['label']); ?> shirt" loading="lazy">
+          <img src="<?php echo esc_url($cc25_kbase . $s['img']); ?>" alt="<?php echo esc_attr($s['band'] . ' — ' . $s['label']); ?> shirt" loading="lazy"<?php echo cc25_img_dims('kit/' . $s['img']); ?>>
           <span class="splash-slide-cap"><b><?php echo esc_html($s['band']); ?></b> &middot; <?php echo esc_html($s['label']); ?></span>
         </div>
         <?php endforeach; ?>
@@ -235,25 +235,9 @@ if ($cc25_cards): $cc25_multi = count($cc25_cards) > 1; ?>
 <div class="league-strip">
   <div class="wrap">
     <span class="ll">Proud members of</span>
-    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/img/league-logos.jpg'); ?>" alt="Ardal League South East &amp; Genero Adran South" loading="lazy">
+    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/img/league-logos.jpg'); ?>" alt="Ardal League South East &amp; Genero Adran South" loading="lazy"<?php echo cc25_img_dims('league-logos.jpg'); ?>>
   </div>
 </div>
-
-<?php if ($cc25_kllive): ?>
-<section class="sec" style="padding-top:40px;padding-bottom:0" aria-label="Music Shirts launch">
-  <div class="wrap">
-    <div class="kl-banner reveal">
-      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-sfa.webp'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"></div>
-      <div class="kl-banner-body">
-        <div class="kl-banner-eye kick">New for 2026/27 &middot; Just launched</div>
-        <h2>The Music Shirts are here</h2>
-        <p>Super Furry Animals, Mogwai, Panic Shack &amp; Loose Articles &mdash; on the shirt. 10% of every sale to <a class="kl-inlink" href="<?php echo esc_url($cc25_kl['mvt_url']); ?>" target="_blank" rel="noopener">Music Venue Trust</a>.</p>
-        <a class="kl-banner-cta" href="<?php echo esc_url($cc25_klurl); ?>">Read the story &amp; see all the shirts &rarr;</a>
-      </div>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
 
 <section class="sec" style="padding-top:48px" aria-label="This season">
   <div class="wrap">
@@ -308,6 +292,24 @@ if ($cc25_cards): $cc25_multi = count($cc25_cards) > 1; ?>
     </div>
   </div>
 </section>
+
+<?php // Sits BELOW the season summary, and stands itself down on the date in
+// cc25_kit_launch()['promo_until'] — see cc25_kit_promo_live() (audit UX-4).
+if (cc25_kit_promo_live()): ?>
+<section class="sec" style="padding-top:40px;padding-bottom:0" aria-label="Music Shirts launch">
+  <div class="wrap">
+    <div class="kl-banner reveal">
+      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-sfa.webp'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"<?php echo cc25_img_dims('kit/kit-sfa.webp'); ?>></div>
+      <div class="kl-banner-body">
+        <div class="kl-banner-eye kick">New for 2026/27</div>
+        <h2>The Music Shirts are here</h2>
+        <p>Super Furry Animals, Mogwai, Panic Shack &amp; Loose Articles &mdash; on the shirt. 10% of every sale to <a class="kl-inlink" href="<?php echo esc_url($cc25_kl['mvt_url']); ?>" target="_blank" rel="noopener">Music Venue Trust</a>.</p>
+        <a class="kl-banner-cta" href="<?php echo esc_url($cc25_klurl); ?>">Read the story &amp; see all the shirts &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php
 // Latest match report(s) — highlighted from the games that have a written report.
