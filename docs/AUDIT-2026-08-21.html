@@ -1,0 +1,853 @@
+<title>Celtic Site Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  :root{
+    --paper:#f7f6f2;
+    --card:#fffefb;
+    --ink:#12182a;
+    --ink-soft:#2b3450;
+    --muted:#5c6478;
+    --rule:#e2ded2;
+    --rule-strong:#cdc7b6;
+    --gold:#c8891a;
+    --gold-bright:#e0a52a;
+    --navy:#1c3f6e;
+    --sev-crit:#a4242c;
+    --sev-high:#a35418;
+    --sev-med:#3c6382;
+    --sev-win:#2f6b48;
+    --sev-crit-bg:#f6e3e2;
+    --sev-high-bg:#f8e8da;
+    --sev-med-bg:#e3edf3;
+    --sev-win-bg:#e2eee7;
+    --shadow:0 1px 2px rgba(18,24,42,.06), 0 8px 24px -18px rgba(18,24,42,.5);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#101420;
+      --card:#161c2b;
+      --ink:#eceaf2;
+      --ink-soft:#c6cad8;
+      --muted:#939bb0;
+      --rule:#262d3f;
+      --rule-strong:#39415a;
+      --gold:#e0a52a;
+      --gold-bright:#f0bb46;
+      --navy:#7ea8d8;
+      --sev-crit:#f08a8a;
+      --sev-high:#e6a663;
+      --sev-med:#8ab8d8;
+      --sev-win:#7fc39b;
+      --sev-crit-bg:#2e1a1c;
+      --sev-high-bg:#2e2318;
+      --sev-med-bg:#17252f;
+      --sev-win-bg:#16261e;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#101420;
+    --card:#161c2b;
+    --ink:#eceaf2;
+    --ink-soft:#c6cad8;
+    --muted:#939bb0;
+    --rule:#262d3f;
+    --rule-strong:#39415a;
+    --gold:#e0a52a;
+    --gold-bright:#f0bb46;
+    --navy:#7ea8d8;
+    --sev-crit:#f08a8a;
+    --sev-high:#e6a663;
+    --sev-med:#8ab8d8;
+    --sev-win:#7fc39b;
+    --sev-crit-bg:#2e1a1c;
+    --sev-high-bg:#2e2318;
+    --sev-med-bg:#17252f;
+    --sev-win-bg:#16261e;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px 96px}
+
+  /* ---------- masthead ---------- */
+  .mast{
+    border-bottom:3px solid var(--ink);
+    padding:56px 0 22px;
+    margin-bottom:0;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);font-weight:500;margin:0 0 14px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule-strong)}
+  h1{
+    font-family:"Oswald",Impact,sans-serif;
+    font-weight:500;
+    font-size:clamp(2.4rem,7vw,4.1rem);
+    line-height:.98;
+    letter-spacing:-.01em;
+    text-transform:uppercase;
+    margin:0 0 18px;
+    text-wrap:balance;
+  }
+  h1 .thin{display:block;font-weight:300;color:var(--muted);font-size:.42em;letter-spacing:.04em;margin-top:14px;text-transform:none;line-height:1.4}
+  .standfirst{font-size:1.06rem;color:var(--ink-soft);max-width:64ch;margin:0}
+
+  /* ---------- scoreboard ---------- */
+  .board{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+    margin:34px 0 8px;
+  }
+  .board div{background:var(--card);padding:18px 16px}
+  .board .n{
+    font-family:"Oswald",sans-serif;font-weight:500;
+    font-size:2.15rem;line-height:1;
+    font-variant-numeric:tabular-nums;
+    display:block;margin-bottom:6px;
+  }
+  .board .l{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);line-height:1.4;display:block}
+  .n-crit{color:var(--sev-crit)} .n-gold{color:var(--gold)} .n-win{color:var(--sev-win)} .n-ink{color:var(--ink)}
+  .board-note{font-size:13px;color:var(--muted);margin:0 0 44px;font-style:italic}
+
+  /* ---------- sections ---------- */
+  section{margin:0 0 60px;scroll-margin-top:20px}
+  h2{
+    font-family:"Oswald",sans-serif;font-weight:500;text-transform:uppercase;
+    font-size:1.6rem;letter-spacing:.005em;margin:0 0 6px;
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  }
+  h2 .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+    letter-spacing:.1em;color:var(--gold);text-transform:uppercase;
+  }
+  .sec-intro{color:var(--muted);margin:0 0 26px;max-width:70ch;font-size:.97rem}
+  .sec-rule{height:2px;background:var(--ink);margin:0 0 26px}
+
+  /* ---------- findings ---------- */
+  .find{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-left:5px solid var(--rule-strong);
+    padding:20px 22px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .find.crit{border-left-color:var(--sev-crit)}
+  .find.high{border-left-color:var(--sev-high)}
+  .find.med{border-left-color:var(--sev-med)}
+  .find.win{border-left-color:var(--sev-win)}
+
+  .fhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .fid{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+    color:var(--muted);letter-spacing:.06em;
+    border:1px solid var(--rule-strong);padding:2px 7px;border-radius:2px;
+    white-space:nowrap;
+  }
+  .ftitle{
+    font-family:"Oswald",sans-serif;font-weight:500;font-size:1.16rem;
+    line-height:1.25;margin:0;flex:1 1 320px;letter-spacing:.005em;
+  }
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
+    letter-spacing:.11em;text-transform:uppercase;
+    padding:3px 9px;border-radius:100px;white-space:nowrap;
+  }
+  .chip.crit{background:var(--sev-crit-bg);color:var(--sev-crit)}
+  .chip.high{background:var(--sev-high-bg);color:var(--sev-high)}
+  .chip.med{background:var(--sev-med-bg);color:var(--sev-med)}
+  .chip.win{background:var(--sev-win-bg);color:var(--sev-win)}
+
+  .find p{margin:0 0 10px}
+  .find p:last-child{margin-bottom:0}
+  .ev{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;line-height:1.65;
+    background:var(--paper);
+    border:1px solid var(--rule);
+    padding:11px 13px;
+    margin:12px 0;
+    overflow-x:auto;
+    color:var(--ink-soft);
+    white-space:pre;
+  }
+  .fix{
+    font-size:.94rem;
+    border-top:1px dashed var(--rule-strong);
+    padding-top:11px;margin-top:13px;
+  }
+  .fix b{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--gold);
+    display:block;margin-bottom:4px;
+  }
+  code{
+    font-family:"IBM Plex Mono",monospace;font-size:.87em;
+    background:var(--paper);border:1px solid var(--rule);
+    padding:1px 5px;border-radius:2px;word-break:break-word;
+  }
+  .find .ev code{background:none;border:none;padding:0}
+
+  /* ---------- plan ---------- */
+  .plan{counter-reset:step;list-style:none;padding:0;margin:0}
+  .plan li{
+    counter-increment:step;
+    display:grid;grid-template-columns:52px 1fr;gap:18px;
+    padding:18px 0;border-bottom:1px solid var(--rule);
+    align-items:start;
+  }
+  .plan li:first-child{border-top:1px solid var(--rule)}
+  .plan li::before{
+    content:counter(step,decimal-leading-zero);
+    font-family:"Oswald",sans-serif;font-weight:500;font-size:1.5rem;
+    color:var(--gold);font-variant-numeric:tabular-nums;line-height:1.1;
+  }
+  .plan h3{font-family:"Oswald",sans-serif;font-weight:500;font-size:1.06rem;margin:0 0 5px;text-transform:uppercase;letter-spacing:.01em}
+  .plan p{margin:0;color:var(--ink-soft);font-size:.95rem}
+  .plan .refs{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.03em}
+
+  /* ---------- tables ---------- */
+  .tw{overflow-x:auto;border:1px solid var(--rule);background:var(--card);margin:18px 0}
+  table{border-collapse:collapse;width:100%;min-width:460px;font-size:.9rem}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--rule)}
+  th{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:var(--paper);
+  }
+  tr:last-child td{border-bottom:none}
+  td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .good{color:var(--sev-win);font-weight:500}
+
+  /* ---------- misc ---------- */
+  .note{
+    border-left:3px solid var(--gold);
+    padding:2px 0 2px 16px;margin:24px 0;
+    color:var(--ink-soft);font-size:.95rem;
+  }
+  footer{border-top:2px solid var(--ink);padding-top:20px;margin-top:70px;color:var(--muted);font-size:.87rem}
+  footer p{margin:0 0 6px}
+  a{color:var(--navy);text-decoration-thickness:1px;text-underline-offset:2px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  @media (max-width:560px){
+    .plan li{grid-template-columns:38px 1fr;gap:12px}
+    .find{padding:16px 15px}
+    .wrap{padding:0 16px 70px}
+  }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Cwmbran Celtic AFC &middot; cwmbranceltic.com &middot; 21 August 2026</p>
+  <h1>Full Site Audit
+    <span class="thin">Front end, back end, and everything still running that no longer needs to.</span>
+  </h1>
+  <p class="standfirst">Thirty-two findings from a sweep of the live site, the <code>cwmbran-celtic-2025</code> theme, the feed plugin and the Vercel app. Every number below was measured, not estimated. The security section is the one to read first.</p>
+</header>
+
+<div class="board">
+  <div><span class="n n-crit">4</span><span class="l">Security findings<br>act this week</span></div>
+  <div><span class="n n-gold">10</span><span class="l">Redundant systems<br>still loading</span></div>
+  <div><span class="n n-win">10.6<span style="font-size:.5em"> MB</span></span><span class="l">Image weight<br>removable</span></div>
+  <div><span class="n n-ink">2.72<span style="font-size:.5em"> MB</span></span><span class="l">Crests on one<br>fixtures page</span></div>
+  <div><span class="n n-ink">51</span><span class="l">Pages carrying<br>unused plugins</span></div>
+</div>
+<p class="board-note">Measured against the live site on 21 Aug 2026. The live theme is v0.18.0 &mdash; v0.19.0 to v0.20.5 are built but not yet uploaded, so a few front-end findings may already be fixed in the pending zip.</p>
+
+<!-- ================= SECURITY ================= -->
+<section id="security">
+  <h2>Security <span class="tag">4 findings &middot; fix first</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">These are not theoretical. The combination in SEC&#8209;1 is the specific pattern automated WordPress attacks look for, and the site currently presents all three halves of it.</p>
+
+  <div class="find crit">
+    <div class="fhead">
+      <span class="fid">SEC-1</span>
+      <h3 class="ftitle">An account called <code>admin</code> is publicly discoverable, and XML-RPC will let an attacker guess its password hundreds of times per request</h3>
+      <span class="chip crit">Critical</span>
+    </div>
+    <p>Three separate weaknesses that are minor alone and serious together. The username is discoverable, the login can be attacked in bulk, and bulk attacks bypass the per-request rate limiting that normally protects <code>wp-login.php</code>.</p>
+    <div class="ev">GET /wp-json/wp/v2/users        → 200, lists 2 users: "admin", "Malcolm Jarrett"
+GET /?author=1                  → 301 to /author/admin/
+POST /xmlrpc.php system.listMethods
+    → system.multicall
+      wp.getUsersBlogs
+      metaWeblog.getUsersBlogs
+      blogger.getUsersBlogs</div>
+    <p><code>system.multicall</code> wrapped around <code>wp.getUsersBlogs</code> is the standard amplified credential-stuffing technique: several hundred password attempts inside a single HTTP request, so login-attempt limiters that count requests never trigger.</p>
+    <div class="fix"><b>Fix</b>Disable XML-RPC entirely (<code>add_filter('xmlrpc_enabled','__return_false')</code> plus a server-level block on the file &mdash; the filter alone still allows the endpoint to be reached). Create a new administrator under a non-obvious name, move content ownership to it, and delete <code>admin</code>. Restrict <code>/wp-json/wp/v2/users</code> to logged-in requests. Add a login-attempt limiter.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">SEC-2</span>
+      <h3 class="ftitle">The site can be used as a weapon against other people</h3>
+      <span class="chip high">High</span>
+    </div>
+    <p>The same XML-RPC endpoint exposes <code>pingback.ping</code>. That method makes the server fetch any URL an anonymous caller names, which turns the site into a traffic reflector against a third party and lets an outsider probe hosts the server can reach but the public cannot.</p>
+    <p>This matters reputationally as much as technically: the club's server showing up in someone else's attack logs is a hosting-provider conversation nobody wants.</p>
+    <div class="fix"><b>Fix</b>Same fix as SEC-1 &mdash; turning XML-RPC off closes this too. Nothing on the site uses it; it exists for desktop blogging clients and the Jetpack app.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">SEC-3</span>
+      <h3 class="ftitle">Exact software versions are advertised in the page source</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <div class="ev">&lt;meta name="generator" content="WordPress 7.0.4"&gt;
+&lt;meta name="generator" content="SportsPress 2.7.31"&gt;
+&lt;link rel="EditURI" href="https://www.cwmbranceltic.com/xmlrpc.php?rsd"&gt;</div>
+    <p>Scanners use these to shortlist targets: when a vulnerability lands in a given plugin version, sites publishing that version get hit first. The RSD link also advertises the XML-RPC endpoint from SEC-1.</p>
+    <div class="fix"><b>Fix</b>Four <code>remove_action</code> lines in <code>inc/hardening.php</code>, which already exists for exactly this kind of thing but currently only handles capabilities.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">SEC-4</span>
+      <h3 class="ftitle">No security response headers at all</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p>No <code>Strict-Transport-Security</code>, <code>X-Content-Type-Options</code>, <code>Referrer-Policy</code>, <code>X-Frame-Options</code> or <code>Permissions-Policy</code>. None of these is urgent on its own; together they are the baseline any security review will ask for, and they cost one filter or a Bunny CDN edge rule.</p>
+    <div class="fix"><b>Fix</b>Add them at the CDN edge rather than in PHP, so they apply to static assets too.</div>
+  </div>
+</section>
+
+<!-- ================= REDUNDANT SYSTEMS ================= -->
+<section id="redundant">
+  <h2>Redundant systems <span class="tag">10 findings &middot; your hunch was right</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">You suspected there was dead weight on the back end. There is more than expected, and one item is an entire second website.</p>
+
+  <div class="find crit">
+    <div class="fhead">
+      <span class="fid">RED-1</span>
+      <h3 class="ftitle">A complete duplicate of the club website is live on Vercel, and it invites Google to index it</h3>
+      <span class="chip crit">Critical</span>
+    </div>
+    <p><code>cwmbran-celtic.vercel.app</code> still serves the original Next.js build &mdash; around twenty pages including home, teams, news, tickets, players, sponsors, shop, programme, gallery and away-days. It duplicates the real site almost page for page. Only one route on it is actually used: <code>/api/feed</code>, which the WordPress feed plugin fetches.</p>
+    <div class="ev">GET https://cwmbran-celtic.vercel.app/          → 200, 65 KB, full homepage
+GET https://cwmbran-celtic.vercel.app/robots.txt
+    User-Agent: *
+    Allow: /                          ← crawlable
+    Sitemap: .../sitemap.xml          ← and advertised
+no &lt;meta name="robots" content="noindex"&gt; anywhere</div>
+    <p>So there are two public "official" Cwmbran Celtic websites competing for the same search results, and the wrong one is fully open to crawlers. Anyone who finds it sees fixtures and news that are no longer being maintained.</p>
+    <div class="fix"><b>Fix</b>Keep the deployment (the feed depends on it), but make it invisible: <code>Disallow: /</code> in robots.txt, an <code>X-Robots-Tag: noindex</code> header in <code>next.config.ts</code>, and ideally remove the page routes so only <code>/api/feed</code> remains. Then request removal of any indexed URLs in Search Console.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">RED-2</span>
+      <h3 class="ftitle">WP Event Manager holds zero events and loads on all 51 pages</h3>
+      <span class="chip win">Quick win</span>
+    </div>
+    <div class="ev">GET /wp-json/wp/v2/event_listing?per_page=1  → X-WP-Total: 0
+
+Loaded on every page regardless:
+  frontend.min.css          149 KB
+  wpem-grid.min.css, fonts/style.css, jquery-ui.css, timepicker.css
+  common.min.js, jquery-ui core.min.js, jquery.timepicker.min.js</div>
+    <p>Not a single event has ever been created. The plugin is pure overhead &mdash; roughly 200 KB of CSS and JavaScript, plus a jQuery UI dependency, on every page view.</p>
+    <div class="fix"><b>Fix</b>Deactivate and delete. Nothing references it. This is the single cleanest win in the audit.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">RED-3</span>
+      <h3 class="ftitle">SportsPress runs sitewide but is only used on three archive pages</h3>
+      <span class="chip high">High</span>
+    </div>
+    <p>SportsPress registers nine content types (Matches, Clubs, Players, Staff, Calendars, League Tables, Player Lists&hellip;) &mdash; a complete parallel football system alongside the one the theme now renders itself from the feed. It is genuinely still in use, but only by the historical archives:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Page</th><th>SportsPress markup</th><th>HTML size</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>/2022-23-archive/</td><td class="num">307 refs</td><td class="num">708 KB</td><td>In use</td></tr>
+        <tr><td>/2023-24-archive/</td><td class="num">69 refs</td><td class="num">285 KB</td><td>In use</td></tr>
+        <tr><td>/2024-25-archive/</td><td class="num">70 refs</td><td class="num">286 KB</td><td>In use</td></tr>
+        <tr><td>The other 48 pages</td><td class="num">0 rendered</td><td class="num">&mdash;</td><td class="good">Assets only</td></tr>
+      </tbody>
+    </table></div>
+    <p>Those 48 pages still pay for four stylesheets, <code>jquery.dataTables.min.js</code> (81 KB), <code>sportspress.js</code>, and a Google Fonts request for Roboto with Cyrillic, Greek and Vietnamese subsets &mdash; for a typeface the design never uses.</p>
+    <div class="fix"><b>Fix</b>Don't remove the plugin &mdash; it holds four seasons of history. Dequeue its assets on any page that isn't one of the archives: one small function beside the existing Divi dequeue in <code>functions.php</code>. Longer term, decide whether those archives are worth migrating so it can go entirely.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">RED-4</span>
+      <h3 class="ftitle">The Divi dequeue in <code>functions.php</code> isn't working &mdash; it names handles Divi no longer uses</h3>
+      <span class="chip high">High</span>
+    </div>
+    <p>The theme deliberately strips Divi's assets on bespoke templates so its own design isn't fighting them. On the homepage, which is in that list, Divi's payload is all still present:</p>
+    <div class="ev">divi-dynamic-critical-inline-css   182,745 bytes  (inline, render-blocking)
+divi-style-parent-inline-inline     26,746 bytes  (inline)
+et-divi-dynamic-tb-1866-tb-2581-1353.css        (external)
+divi-style-css                                  (still enqueued despite being
+                                                 named in the dequeue list)</div>
+    <p>Divi 4.27's dynamic-assets system emits handles that didn't exist when the dequeue list was written, so the list mostly misses. That 182 KB of inline CSS is the single biggest reason every page's HTML has a ~180 KB floor.</p>
+    <div class="fix"><b>Fix</b>Re-derive the handle list from what Divi 4.27 actually enqueues (dump <code>$wp_styles-&gt;queue</code> on a bespoke template), and add a guard so a future Divi update that renames them again is visible rather than silent.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">RED-5</span>
+      <h3 class="ftitle">The theme stylesheet is downloaded twice on every page</h3>
+      <span class="chip win">Quick win</span>
+    </div>
+    <div class="ev">&lt;link id='divi-style-css' href='.../cwmbran-celtic-2025/style.css?ver=1787323458'&gt;
+&lt;link id='cc25-css'     href='.../cwmbran-celtic-2025/style.css?ver=1787323458'&gt;</div>
+    <p>Divi enqueues the child theme's <code>style.css</code> automatically, and <code>functions.php</code> enqueues the same file again under its own handle. 160 KB of CSS parsed twice. The browser will reuse the cached bytes, but it still parses both link tags.</p>
+    <div class="fix"><b>Fix</b>Drop the <code>cc25</code> enqueue and rely on Divi's, or keep <code>cc25</code> and dequeue <code>divi-style</code> &mdash; but only after RED-4, since right now that dequeue doesn't fire.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">RED-6</span>
+      <h3 class="ftitle">A whole season of fixtures lives in PHP source rather than the admin screen built for it</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p>There are 132 fixtures hardcoded in <code>functions.php</code>, and a <code>cc25_fixture</code> admin post type that exists to replace them:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Team</th><th>Hardcoded fixtures</th></tr></thead>
+      <tbody>
+        <tr><td>Men's First Team</td><td class="num">33</td></tr>
+        <tr><td>Men's Under-18s</td><td class="num">28</td></tr>
+        <tr><td>Men's Reserves</td><td class="num">27</td></tr>
+        <tr><td>Women's Reserves</td><td class="num">18</td></tr>
+        <tr><td>Women's First Team</td><td class="num">14</td></tr>
+        <tr><td>Women's Under-19s</td><td class="num">11</td></tr>
+        <tr><td>Men's Vets</td><td class="num">1</td></tr>
+      </tbody>
+    </table></div>
+    <p>Every rearranged kick-off currently means editing PHP, rebuilding the zip and uploading a theme. The admin UI to avoid that is already written and shipping &mdash; it is just not being used, which means the effort spent building it is not being repaid.</p>
+    <div class="fix"><b>Fix</b>Run <em>Fixtures &rarr; Import from theme</em> once per team, verify, then delete the hardcoded arrays. Do it a team at a time, and read FIX-1 first &mdash; the merge rule makes a half-done migration dangerous.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">RED-7</span>
+      <h3 class="ftitle">The feed plugin ships three shortcodes and a renderer nothing calls</h3>
+      <span class="chip win">Quick win</span>
+    </div>
+    <p><code>cc_fixtures</code>, <code>cc_results</code> and <code>cc_table</code> plus <code>class-ccf-render.php</code> (~110 lines) are unused &mdash; the theme renders everything itself from <code>cc25_feed()</code>. The plugin's <code>ccf.css</code> is still enqueued on all 51 pages to style markup that is never produced.</p>
+    <div class="fix"><b>Fix</b>Delete the shortcode and render classes, or at minimum only enqueue <code>ccf.css</code> when a shortcode has actually run.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">RED-8</span>
+      <h3 class="ftitle">Two more content types with no content behind them</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p><strong>Guest Authors</strong> &mdash; 0 records. The theme already has its own "Written by" byline override (<code>_cc25_byline</code>), which does the same job without needing a login for the writer. Whichever plugin registers <code>guest-author</code> is redundant.</p>
+    <p><strong>Divi Projects</strong> &mdash; 3 records, almost certainly leftover demo content from the original Divi install.</p>
+    <div class="fix"><b>Fix</b>Check what the three Projects are, then remove both. Confirm nothing links to them before deleting.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">RED-9</span>
+      <h3 class="ftitle">Two gallery systems, doing different jobs, with no stated boundary</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p><strong>Simply Gallery Block</strong> holds 77 galleries and is what <code>/galleries/</code> actually uses. <strong>The theme's own <code>cc25_gallery</code></strong> type is for match photography keyed to a specific game, so it can appear on both the written report and the COMET match centre. Not strictly duplicated &mdash; but nothing records which to use when, so the next person to add photos will guess.</p>
+    <div class="fix"><b>Fix</b>Not code. Write down the rule: match photos go in the theme's match gallery, everything else in Simply Gallery. One paragraph in the club documents.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">RED-10</span>
+      <h3 class="ftitle">Three dead functions in the theme</h3>
+      <span class="chip med">Low</span>
+    </div>
+    <div class="ev">cc25_latest_programme()    inc/programmes.php:120   no callers
+cc25_report_category()    inc/match-reports.php:17 no callers — reports are
+                                                   found by meta key, not category
+cc25_fx_migrated_teams()  inc/fixtures.php:378     called only by its own test</div>
+    <p>For a theme with 250 functions, three dead ones is a good result &mdash; worth noting mainly because each is a small false trail for whoever reads the code next.</p>
+    <div class="fix"><b>Fix</b>Delete all three, and the test that exists only to exercise the third.</div>
+  </div>
+</section>
+
+<!-- ================= PERFORMANCE ================= -->
+<section id="performance">
+  <h2>Performance <span class="tag">6 findings &middot; biggest measurable win</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">One finding here dwarfs the rest, and it is entirely under your control &mdash; no plugin decisions, no Divi, no hosting.</p>
+
+  <div class="find crit">
+    <div class="fhead">
+      <span class="fid">PERF-1</span>
+      <h3 class="ftitle">Opponent crests are up to 480&nbsp;px and 248&nbsp;KB each, to be displayed at 26&ndash;46&nbsp;px</h3>
+      <span class="chip crit">Critical</span>
+    </div>
+    <p>The fixtures page renders 243 crest images. Every one is served at full artwork resolution and scaled down in the browser.</p>
+    <div class="ev">/fixtures/  51 unique images  →  2.72 MB   (rendered at 26–46 px)
+
+rogerstone.png        480×480    248 KB
+cwmbran-town.png      420×420    240 KB
+brecon-corries.png    249×256    148 KB
+cardiff-corries.png   316×316    133 KB
+cascade-yc.png        316×316    128 KB</div>
+    <p>I re-encoded the full set at 128&nbsp;px WebP (four times the largest display size, so still crisp on a retina screen) to get a real number rather than an estimate:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Folder</th><th>Files</th><th>Now</th><th>After</th><th>Saved</th></tr></thead>
+      <tbody>
+        <tr><td>opponents (crests)</td><td class="num">30</td><td class="num">2.30 MB</td><td class="num">177 KB</td><td class="num good">&minus;92%</td></tr>
+        <tr><td>kit</td><td class="num">21</td><td class="num">5.61 MB</td><td class="num">1.18 MB</td><td class="num good">&minus;79%</td></tr>
+        <tr><td>player-cards</td><td class="num">25</td><td class="num">3.67 MB</td><td class="num">892 KB</td><td class="num good">&minus;76%</td></tr>
+        <tr><td>sponsor-banners</td><td class="num">24</td><td class="num">1.04 MB</td><td class="num">233 KB</td><td class="num good">&minus;78%</td></tr>
+        <tr><td>shop &amp; sponsors</td><td class="num">13</td><td class="num">0.56 MB</td><td class="num">137 KB</td><td class="num good">&minus;76%</td></tr>
+        <tr><td><strong>Total</strong></td><td class="num"><strong>113</strong></td><td class="num"><strong>13.2 MB</strong></td><td class="num"><strong>2.6 MB</strong></td><td class="num good"><strong>&minus;10.6 MB</strong></td></tr>
+      </tbody>
+    </table></div>
+    <p>There is a second benefit that you feel personally: the theme zip drops from 20&nbsp;MB to around 9&nbsp;MB, which makes every release upload roughly twice as fast.</p>
+    <div class="fix"><b>Fix</b>A build script that resizes and converts on the way into the zip, so nobody has to remember. Keep the originals in the repo, ship the optimised copies. Two duplicates to clean up while you're in there: <code>cwmbran-town.png</code> (240 KB) and <code>cwmbran-town.jpg</code> (12 KB) are the same club.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">PERF-2</span>
+      <h3 class="ftitle">Browser caching is switched off for every static asset</h3>
+      <span class="chip high">High</span>
+    </div>
+    <div class="ev">GET /wp-content/themes/cwmbran-celtic-2025/style.css
+    cache-control: public, max-age=0, s-maxage=2592000
+                             ↑ browser: never    ↑ CDN: 30 days</div>
+    <p>Bunny CDN caches for thirty days, but <code>max-age=0</code> tells the visitor's browser to keep nothing. Every repeat visit re-validates all 74 assets &mdash; on a phone on mobile data at a ground, that is the difference between instant and sluggish.</p>
+    <p>The theme already version-stamps its assets by file modification time, so a long cache is completely safe: changing a file changes its URL.</p>
+    <div class="fix"><b>Fix</b>An edge rule for <code>/wp-content/themes/</code> and <code>/wp-includes/</code> setting <code>max-age=31536000, immutable</code>. Leave HTML as it is.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">PERF-3</span>
+      <h3 class="ftitle">Every page carries a ~180&nbsp;KB HTML floor before any of its own content</h3>
+      <span class="chip high">High</span>
+    </div>
+    <div class="ev">Homepage HTML                 347,782 bytes  (59 KB gzipped)
+  inline CSS                  226,017 bytes  ← 65% of the document
+  inline JS                    25,117 bytes
+17 stylesheets · 16 scripts · 3.45 MB of assets · 74 requests</div>
+    <p>Gzip means the transfer is a reasonable 59&nbsp;KB, so this is not a bandwidth problem &mdash; it is a main-thread problem. The browser still has to parse a quarter of a megabyte of CSS before it can paint, on every page, most of it Divi's (RED-4).</p>
+    <div class="fix"><b>Fix</b>Mostly falls out of RED-2, RED-3 and RED-4. Fix those and re-measure before doing anything more invasive.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">PERF-4</span>
+      <h3 class="ftitle">Two Google Fonts families load that the design never uses</h3>
+      <span class="chip win">Quick win</span>
+    </div>
+    <div class="ev">Roboto 400,500 · cyrillic, cyrillic-ext, greek, greek-ext,
+                   latin-ext, vietnamese                    ← SportsPress
+Open Sans 300–800 + every italic · cyrillic, greek,
+                   hebrew, latin-ext, vietnamese     58 KB  ← Divi</div>
+    <p>The theme correctly self-hosts its real typefaces &mdash; Oswald and Inter, 70&nbsp;KB together, with <code>font-display: swap</code>. That is exactly right. These two extra families are plugin baggage, in scripts the club will never publish in.</p>
+    <div class="fix"><b>Fix</b>Both disappear with RED-3 and RED-4. If Divi's has to stay, restrict it to <code>latin</code> and the two weights actually rendered.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">PERF-5</span>
+      <h3 class="ftitle">Admin-only and legacy scripts on public pages</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <p><code>dashicons.min.css</code> (59&nbsp;KB) is WordPress's admin icon font and is loading on the public site. <code>jquery-migrate.min.js</code> is a compatibility shim for jQuery code written before 2016. Analytics accounts for 445&nbsp;KB via <code>gtag.js</code> &mdash; correctly async and non-blocking, and a single property, so no double-counting, but worth knowing it is the largest single script on the site.</p>
+    <div class="fix"><b>Fix</b>Dequeue dashicons for logged-out visitors. Test with jQuery Migrate disabled &mdash; if nothing breaks, leave it off.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">PERF-6</span>
+      <h3 class="ftitle">Six homepage images have no intrinsic size</h3>
+      <span class="chip med">Low</span>
+    </div>
+    <p>Worth stating precisely because it is <em>much</em> smaller than it first looks. Of 243 images on the fixtures page, every single one carries explicit dimensions &mdash; the crest helpers set inline width and height, which is exactly right. Only the four kit shots and two others on the homepage lack them.</p>
+    <div class="fix"><b>Fix</b>Add <code>width</code> and <code>height</code> to the kit images in the Music Shirts template. Small, but it removes a visible jump on a slow connection.</div>
+  </div>
+</section>
+
+<!-- ================= CORRECTNESS ================= -->
+<section id="correctness">
+  <h2>Correctness &amp; traps <span class="tag">5 findings</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">Things that are wrong, or that will go wrong quietly the next time somebody touches them.</p>
+
+  <div class="find crit">
+    <div class="fhead">
+      <span class="fid">FIX-1</span>
+      <h3 class="ftitle">Adding one fixture in the admin silently deletes that team's entire published season</h3>
+      <span class="chip crit">Critical</span>
+    </div>
+    <p>The merge between admin fixture records and the hardcoded lists replaces per team, not per game:</p>
+    <div class="ev">function cc25_fx_merge_lists($static, $rows) {
+    foreach ($static as $team =&gt; $data) {
+        if (!empty($rows[$team])) $static[$team]['list'] = $rows[$team];
+    }                              ↑ one record replaces the WHOLE list
+    return $static;
+}</div>
+    <p>So if somebody adds a single rearranged Reserves game through the admin screen, the other 26 Reserves fixtures vanish from the website. Nothing errors, nothing warns; the page just renders one fixture and looks fine. This is the most dangerous behaviour in the codebase because the failure is invisible and the action that triggers it is one a volunteer would reasonably take.</p>
+    <div class="fix"><b>Fix</b>Merge by game key (<code>team|date|opponent</code>) so a record overrides its own fixture and nothing else, or refuse to substitute unless the team is marked fully migrated. The importer is already idempotent and safe, so the migration path itself is sound &mdash; it is only this merge rule that is wrong.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">FIX-2</span>
+      <h3 class="ftitle">Two menu items do nothing when you're already on the fixtures page</h3>
+      <span class="chip high">High</span>
+    </div>
+    <p>The Women's Reserves and Women's Under-19s menu items link to <code>/fixtures/#womens_res</code> and <code>#womens_u19</code>. Arriving fresh, that works &mdash; the switcher reads the hash on load. But a same-page hash change does not reload the document, and there is no <code>hashchange</code> listener:</p>
+    <div class="ev">assets/premium.js:219
+  if (document.querySelector('.teamsel button[data-team]')) {
+      var _h = (location.hash || '').replace('#','');
+      if (_h) switchTeam(_h);     // runs once, on load only
+  }</div>
+    <p>So from <code>/fixtures/#womens</code>, clicking "Women's Under-19s" in the menu changes the URL and nothing else. Two of the seven teams are effectively unreachable from the menu once you're on the page.</p>
+    <div class="fix"><b>Fix</b>Add a <code>hashchange</code> listener calling the same <code>switchTeam</code>, and scroll the section into view.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">FIX-3</span>
+      <h3 class="ftitle">robots.txt still carries the previous agency's settings and no sitemap</h3>
+      <span class="chip high">High</span>
+    </div>
+    <div class="ev"># Installed by Nettl
+
+User-agent: *
+Crawl-delay: 300      ← 5 minutes between requests
+                      ← and no Sitemap: line at all
+
+/sitemap.xml         → 301
+/sitemap_index.xml   → 404
+/wp-sitemap.xml      → 200  (works, but nothing points at it)</div>
+    <p>Google ignores <code>Crawl-delay</code>, but Bing and others honour it. At five minutes a page, crawling the site's ~230 URLs takes about nineteen hours &mdash; so a Saturday result may not be indexed until Sunday night. There is a working sitemap, but robots.txt never mentions it.</p>
+    <div class="fix"><b>Fix</b>Remove the <code>Crawl-delay</code> line and add <code>Sitemap: https://www.cwmbranceltic.com/wp-sitemap.xml</code>. Two lines, and probably the highest-value-per-keystroke fix in the whole audit.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">FIX-4</span>
+      <h3 class="ftitle">Every page has two canonical tags</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <div class="ev">&lt;link rel="canonical" href="https://www.cwmbranceltic.com/"&gt;    ← inc/seo.php:170
+&lt;link rel="canonical" href="https://www.cwmbranceltic.com/" /&gt;  ← WordPress core</div>
+    <p>They agree on the homepage, so nothing is broken today. But the theme sets a deliberately different canonical on match-report pages so each game gets its own URL &mdash; and on those pages a second, competing tag from core defeats the point. Search engines faced with two canonicals may disregard both.</p>
+    <div class="fix"><b>Fix</b>One line: <code>remove_action('wp_head','rel_canonical')</code> in <code>inc/seo.php</code>, since the theme is emitting its own.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">FIX-5</span>
+      <h3 class="ftitle">Men's results rows can't show a programme link</h3>
+      <span class="chip med">Low</span>
+    </div>
+    <p>Carried over from this week's work. Every other team's results rows can show a Programme button; the men's cannot, because that row is itself a single <code>&lt;a&gt;</code> to the match report and a link inside a link is invalid HTML.</p>
+    <div class="fix"><b>Fix</b>Move the men's results panel onto the shared <code>cc25_render_static_results</code> renderer, which already handles this properly. Costs the whole-row click, gains consistency and the missing button.</div>
+  </div>
+</section>
+
+<!-- ================= UI / UX ================= -->
+<section id="ux">
+  <h2>Interface &amp; content <span class="tag">7 findings &middot; plus what to keep</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">The design itself is in good shape &mdash; proper skip link, a single <code>&lt;main&gt;</code>, sensible heading order, alt text on all 297 images checked, and self-hosted fonts. These are the rough edges around it.</p>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">UX-1</span>
+      <h3 class="ftitle">The site's most important button has three different names on one page</h3>
+      <span class="chip high">High</span>
+    </div>
+    <div class="ev">Homepage call-to-action buttons:
+  "Buy Matchday Ticket"
+  "Buy a Matchday Ticket"
+  "Buy Tickets"          (and again in the main menu)</div>
+    <p>Three labels for one action, within a single screenful. Selling tickets is what the homepage is for; the label should be identical everywhere so it becomes something people recognise rather than read. "Fixtures" and "Travel &amp; Ground" also each appear three times.</p>
+    <div class="fix"><b>Fix</b>Pick one &mdash; <em>Buy Tickets</em> &mdash; and use it without exception. Then look at whether three Fixtures links and three Travel links earn their place, or whether repetition is diluting them.</div>
+  </div>
+
+  <div class="find high">
+    <div class="fhead">
+      <span class="fid">UX-2</span>
+      <h3 class="ftitle">Page URLs record a history of duplicates</h3>
+      <span class="chip high">High</span>
+    </div>
+    <div class="ev">/sponsors-2/                                    ← "-2" means /sponsors/
+/coleg-gwent-4/                                 ←  is taken by an orphan
+/cwmbran-walking-football-2/
+/cwmbran-celtic-fc-match-day-programme-digital/ ← 45 characters
+/ladies-team/                                   ← copy says "Women's" everywhere</div>
+    <p>The numeric suffixes mean older pages with the good slugs still exist somewhere, unlinked. They are ugly in search results and when shared, and <code>/ladies-team/</code> contradicts the "Women's First Team" wording used consistently everywhere else on the site &mdash; the sort of inconsistency people notice.</p>
+    <div class="fix"><b>Fix</b>Find and delete the orphans, free the slugs, rename the live pages, and add 301 redirects from the old URLs. Do it in one sitting so nothing is left half-renamed.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">UX-3</span>
+      <h3 class="ftitle">Four menu entries duplicate their own parent or sibling</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <div class="ev">Fixtures &amp; Results  →  /fixtures/        ┐ parent and first child,
+  Current Season     →  /fixtures/        ┘ same destination
+Club                 →  /club-history/    ┐
+  Club History       →  /club-history/    ┘
+Sponsors             →  /sponsors-2/      ┐
+  Our Sponsors       →  /sponsors-2/      ┘
+Music Shirts appears twice (top level, and under Club Shop)</div>
+    <p>36 menu items across seven groups is already a lot to scan; four of them lead somewhere the visitor can already get to from the item directly above.</p>
+    <div class="fix"><b>Fix</b>Make the three parents non-linking labels, and drop one of the two Music Shirts entries. Also worth settling the archive labelling: "2025-26 Season" sits alongside "2024-25 Archive" in the same group.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">UX-4</span>
+      <h3 class="ftitle">A merchandise campaign occupies the top of the homepage, three weeks after launch</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <div class="ev">Homepage section order:
+  1. The Music Shirts are here      ← launched 30 July
+  2. This season at a glance
+  3. Match Reports
+  4. Latest News</div>
+    <p>The shirts led the homepage for launch, which was right. Three weeks on and with the season underway, results and news sit below a merch push, and the retirement is manual &mdash; someone has to remember to set <code>enabled =&gt; false</code>. Nothing will move it on its own.</p>
+    <div class="fix"><b>Fix</b>Demote it below "This season at a glance" now, and give the launch block an end date the way it already has a start date, so campaigns retire themselves.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">UX-5</span>
+      <h3 class="ftitle">The cookie banner injects headings into the page outline</h3>
+      <span class="chip med">Low</span>
+    </div>
+    <p>"Cookie Consent" and "Cookie Preferences" appear as <code>&lt;h2&gt;</code> elements inside <code>&lt;main&gt;</code>, so a screen-reader user navigating by heading finds them among the club's actual content, and they appear in the document outline search engines read.</p>
+    <div class="fix"><b>Fix</b>A plugin setting if it has one; otherwise move the banner outside <code>&lt;main&gt;</code> or demote the headings.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">UX-6</span>
+      <h3 class="ftitle">The stylesheet grows by appending, and now overrides itself</h3>
+      <span class="chip med">Medium</span>
+    </div>
+    <div class="ev">156 KB · 1,945 lines · 1,195 selectors · 88 media queries · 33 !important
+
+Section headings tell the story:
+  /* ===== THEME OVERRIDES (must stay last) ===== */
+  /* ---- Iteration: tighter gaps, aligned news, league strip ---- */
+  /* ---- Music Shirts v2 ---- */   /* ---- Music Shirts v3 ---- */
+  /* ---- Music Shirts v4 ---- */   /* ---- Music Shirts v5 ---- */
+
+nav.main a       defined 5 times
+nav.main a::after  5 ×      .crest, .panel, .reveal, footer.ft   4 × each</div>
+    <p>Each new feature has been added as a fresh block at the end that overrides what came before, rather than editing it. It works, but the cost compounds: changing the nav now means finding which of five rules wins, and "must stay last" is a constraint no file should have to carry.</p>
+    <div class="fix"><b>Fix</b>Not urgent, and not a rewrite. Next time you touch the nav or the Music Shirts styles, consolidate that component's rules into one place and delete the superseded blocks. There is also dead CSS to remove &mdash; a "Squad grid (SportsPress players)" section for a grid the theme now renders itself.</div>
+  </div>
+
+  <div class="find med">
+    <div class="fhead">
+      <span class="fid">UX-7</span>
+      <h3 class="ftitle"><code>functions.php</code> is 2,963 lines doing everything</h3>
+      <span class="chip med">Low</span>
+    </div>
+    <p>The <code>inc/</code> directory shows the right instinct &mdash; fixtures, sponsors, people, SEO, programmes, COMET and more are all properly separated. But the main file still holds asset loading, the feed helpers, crest resolution, fixture and results rendering, the kit launch data, season match records and 132 hardcoded fixtures.</p>
+    <div class="fix"><b>Fix</b>Move the obvious blocks out as you touch them &mdash; crests, rendering, kit launch. No big refactor; just stop adding to it.</div>
+  </div>
+
+  <div class="find win">
+    <div class="fhead">
+      <span class="fid">UX-8</span>
+      <h3 class="ftitle">What's genuinely good, and worth not breaking</h3>
+      <span class="chip win">Keep</span>
+    </div>
+    <p>Worth recording so it survives the next round of changes: alt text on every image checked; a working skip link; one <code>&lt;main&gt;</code>; heading order that never skips a level; <code>lang="en-GB"</code>; self-hosted Oswald and Inter with <code>font-display: swap</code>; 24 of 28 theme images lazy-loaded; assets version-stamped by modification time; structured data emitting <code>SportsTeam</code> plus a <code>SportsEvent</code> per fixture; the crest helpers setting explicit dimensions so the fixtures page has effectively no layout shift; a health-check screen; and 692 tests across 17 files, all passing.</p>
+    <p>The feed plugin deserves a specific mention: it refuses to overwrite good cached data with an empty response, and holds 26 hours of cache so a missed cron still serves last-known-good. That is a careful piece of engineering.</p>
+  </div>
+</section>
+
+<!-- ================= PLAN ================= -->
+<section id="plan">
+  <h2>What I'd do, in order <span class="tag">and why that order</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">Ordered by risk removed per hour spent. The first four are an afternoon between them.</p>
+
+  <ol class="plan">
+    <li>
+      <h3>Close the login attack path</h3>
+      <p>Disable XML-RPC, retire the <code>admin</code> account, lock down user enumeration. Nothing else on this list matters if someone gets in.</p>
+      <p class="refs">SEC-1 · SEC-2 · SEC-3</p>
+    </li>
+    <li>
+      <h3>Two lines in robots.txt</h3>
+      <p>Delete <code>Crawl-delay: 300</code>, add the sitemap. Highest value per keystroke on the list, and it has been costing you indexing speed since the previous agency set it.</p>
+      <p class="refs">FIX-3</p>
+    </li>
+    <li>
+      <h3>Hide the Vercel duplicate from search engines</h3>
+      <p>A robots change and a <code>noindex</code> header. Leave the deployment alone &mdash; the feed needs it.</p>
+      <p class="refs">RED-1</p>
+    </li>
+    <li>
+      <h3>Delete WP Event Manager</h3>
+      <p>Zero events, ~200 KB per page. No migration, no risk, immediate gain.</p>
+      <p class="refs">RED-2</p>
+    </li>
+    <li>
+      <h3>Fix the fixture merge before anyone migrates another team</h3>
+      <p>This is a data-loss bug waiting for a volunteer to trigger it, and the fix is small. Do it before RED-6, not after.</p>
+      <p class="refs">FIX-1</p>
+    </li>
+    <li>
+      <h3>Optimise the images and add a build step</h3>
+      <p>10.6 MB off the site and 11 MB off every zip you upload. The build step is what stops it regressing.</p>
+      <p class="refs">PERF-1</p>
+    </li>
+    <li>
+      <h3>Turn on browser caching, fix the Divi dequeue, drop SportsPress assets off non-archive pages</h3>
+      <p>Three changes to the same area. Measure the homepage before and after so the effect is on record.</p>
+      <p class="refs">PERF-2 · RED-3 · RED-4 · RED-5</p>
+    </li>
+    <li>
+      <h3>Tidy the front end</h3>
+      <p>One ticket label, the duplicate menu items, the <code>-2</code> and <code>-4</code> slugs with redirects, demote the Music Shirts block, add the <code>hashchange</code> listener.</p>
+      <p class="refs">UX-1 · UX-2 · UX-3 · UX-4 · FIX-2</p>
+    </li>
+    <li>
+      <h3>Migrate the fixtures into the admin, one team at a time</h3>
+      <p>Only after step 5. Ends the edit-PHP-and-upload-a-zip cycle for rearranged games, which is the change that most improves week-to-week life.</p>
+      <p class="refs">RED-6</p>
+    </li>
+  </ol>
+
+  <p class="note">Two things to settle that aren't code: whether the four seasons of SportsPress archives are worth migrating so the plugin can go entirely, and where match photos belong now that there are two gallery systems. Both are decisions, not tasks.</p>
+</section>
+
+<footer>
+  <p><strong>Method.</strong> Live site crawled 21 August 2026 &mdash; 36 pages fetched and measured, 74 homepage assets weighed individually, response headers and the REST API inspected. Theme source read at commit <code>698204f</code> on <code>feat/share-cards</code>: 9,814 lines of PHP across 44 files, 250 functions cross-referenced for callers, 156 KB of CSS and six JavaScript files reviewed. Image savings measured by actually re-encoding the files, not estimated.</p>
+  <p><strong>Not covered.</strong> No visual or device testing &mdash; the browser profile was locked by another session, so the interface findings come from rendered markup and template source rather than screenshots. Colour contrast and real-device mobile layout are worth a separate pass. The live site is running theme v0.18.0; v0.19.0 through v0.20.5 are built and waiting to be uploaded.</p>
+</footer>
+
+</div>
