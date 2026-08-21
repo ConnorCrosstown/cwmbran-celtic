@@ -43,6 +43,14 @@ const nextConfig: NextConfig = {
             ].join('; '),
           },
           {
+            // Belt and braces with robots.ts: robots.txt asks a crawler not to
+            // fetch, this tells one that fetched anyway not to index — and it
+            // reaches pages already in an index, which robots.txt cannot.
+            // See src/app/robots.ts for why this deployment is hidden.
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+          {
             key: 'X-Frame-Options',
             value: 'DENY',
           },
