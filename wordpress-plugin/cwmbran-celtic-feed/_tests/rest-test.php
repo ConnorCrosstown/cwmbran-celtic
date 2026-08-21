@@ -9,6 +9,8 @@
  * regardless. The payload builder is kept free of WP_REST plumbing so that
  * contract can be pinned here.
  */
+// This file ships inside the plugin zip and must never execute over HTTP.
+if (PHP_SAPI !== 'cli') exit;
 require __DIR__ . '/wp-stubs.php';
 require __DIR__ . '/../includes/class-ccf-client.php';
 CCF_Client::$clock = 'ccf_test_now';

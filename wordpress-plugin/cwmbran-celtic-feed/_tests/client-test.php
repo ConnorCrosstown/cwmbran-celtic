@@ -9,6 +9,8 @@
  * that never refetches because only cron may populate it, and no record of when
  * the data was last known good.
  */
+// This file ships inside the plugin zip and must never execute over HTTP.
+if (PHP_SAPI !== 'cli') exit;
 require __DIR__ . '/wp-stubs.php';
 require __DIR__ . '/../includes/class-ccf-client.php';
 CCF_Client::$clock = 'ccf_test_now';   // drive the client off the test clock
