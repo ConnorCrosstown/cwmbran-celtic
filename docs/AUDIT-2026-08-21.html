@@ -273,7 +273,59 @@
   <div><span class="n n-ink">2.72<span style="font-size:.5em"> MB</span></span><span class="l">Crests on one<br>fixtures page</span></div>
   <div><span class="n n-ink">51</span><span class="l">Pages carrying<br>unused plugins</span></div>
 </div>
-<p class="board-note">Measured against the live site on 21 Aug 2026. The live theme is v0.18.0 &mdash; v0.19.0 to v0.20.5 are built but not yet uploaded, so a few front-end findings may already be fixed in the pending zip.</p>
+<p class="board-note">Measured against the live site on 21 Aug 2026. The live theme is v0.18.0 &mdash; v0.19.0 to v0.21.0 are built but not yet uploaded, so a few front-end findings may already be fixed in the pending zip.</p>
+
+<section id="status" style="margin-top:8px">
+  <h2>Where this stands <span class="tag">updated 21 Aug, after the fix pass</span></h2>
+  <div class="sec-rule"></div>
+  <p class="sec-intro">Everything code could close is closed and committed on <code>feat/share-cards</code>, ending at v0.21.0. The rest needs either a WordPress login, a CDN setting, or a browser.</p>
+
+  <div class="stat">
+    <div>
+      <h3><span class="dot" style="background:var(--sev-win)"></span>Done &amp; committed</h3>
+      <ul>
+        <li><b>SEC-1&#8203;/2&#8203;/3</b>XML-RPC off, user enumeration closed, generator meta stripped</li>
+        <li><b>RED-1</b>Vercel app noindexed, sitemap deleted</li>
+        <li><b>RED-3</b>SportsPress assets gated on page content</li>
+        <li><b>RED-5</b>Duplicate <code>style.css</code> dequeued</li>
+        <li><b>RED-7</b>Feed CSS loads only when a shortcode runs</li>
+        <li><b>RED-10</b>Three dead functions removed</li>
+        <li><b>PERF-1</b>Artwork to WebP: 13.2&nbsp;MB &rarr; 3.0&nbsp;MB, zip 17&nbsp;MB &rarr; 7.2&nbsp;MB</li>
+        <li><b>PERF-5</b>dashicons and jQuery Migrate off the front end</li>
+        <li><b>PERF-6</b>Intrinsic sizes on the homepage images</li>
+        <li><b>FIX-1</b>Fixture merge is per game &mdash; migration now safe</li>
+        <li><b>FIX-2</b><code>hashchange</code> on the team switcher</li>
+        <li><b>FIX-4</b>One canonical per page</li>
+        <li><b>FIX-5</b>Programme button on men's results</li>
+        <li><b>UX-1</b>One ticket label everywhere</li>
+        <li><b>UX-4</b>Music Shirts demoted, retires 30 Sep</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="dot" style="background:var(--sev-crit)"></span>Needs you &mdash; no code can do it</h3>
+      <ul>
+        <li><b>SEC-1</b><strong>Delete the account called <code>admin</code>.</strong> Make a new administrator under a different name first, reassign its content, then remove it. This is the one that matters.</li>
+        <li><b>FIX-3</b>Delete the physical <code>/robots.txt</code> on the server. The theme now generates a correct one, but a real file on disk wins and WordPress is never asked.</li>
+        <li><b>RED-2</b>Deactivate and delete WP Event Manager (0 events, ~200&nbsp;KB per page).</li>
+        <li><b>RED-8</b>Remove the Guest Authors plugin (0 records) and check the 3 Divi Projects.</li>
+        <li><b>PERF-2</b>Bunny CDN edge rule: <code>max-age=31536000, immutable</code> for <code>/wp-content/themes/</code> and <code>/wp-includes/</code>.</li>
+        <li><b>SEC-4</b>Security headers at the same edge rule.</li>
+        <li><b>UX-2&#8203;/3</b>Free the <code>-2</code> and <code>-4</code> slugs with redirects; drop the four duplicate menu entries.</li>
+        <li><b>RED-6</b>Fixtures &rarr; Import from theme, a team at a time. Safe now FIX-1 has shipped.</li>
+        <li>Deploy the Vercel change, and upload <code>cwmbran-celtic-2025-v0.21.0.zip</code>.</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="dot" style="background:var(--sev-high)"></span>Deliberately left</h3>
+      <ul>
+        <li><b>RED-4</b><strong>The Divi dequeue.</strong> Its handle list is stale, so 182&nbsp;KB of inline CSS still ships on every page &mdash; but the body class carries <code>et-tb-has-header</code> and <code>et-tb-has-footer</code>, meaning Divi Theme Builder supplies the header and footer. Removing its stylesheet may take those with it, and no amount of reading the source settles that. It needs someone loading a page with the CSS off and looking. The reasoning is written into <code>functions.php</code> at the spot.</li>
+        <li><b>UX-5&#8203;/6&#8203;/7</b>Cookie-banner headings, the append-only stylesheet, the size of <code>functions.php</code> &mdash; all real, none urgent, and all better done alongside the next feature that touches them.</li>
+        <li><b>RED-9</b>The two gallery systems need a written rule, not a code change.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">One correction worth recording: the first attempt at PERF-5 called <code>wp_deregister_script('jquery-migrate')</code>, which would have taken jQuery off the site entirely &mdash; the <code>jquery</code> handle depends on it, and an unsatisfiable dependency makes WordPress print nothing. It now edits the dependency list instead, and three tests guard the dangerous call coming back.</p>
+</section>
 
 <!-- ================= SECURITY ================= -->
 <section id="security">
