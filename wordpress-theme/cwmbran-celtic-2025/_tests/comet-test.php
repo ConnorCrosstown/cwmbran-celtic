@@ -115,6 +115,35 @@ check('the winner is credited to Payne', $r['opp_goals'][1]['scorer'] === 'Luc P
 check('no cards were shown', $r['cards'] === array() && $r['opp_cards'] === array());
 check('attendance was left blank', $r['att'] === 0);
 
+/* ---- a card shown AFTER the whistle: Rogerstone at home, 21 Aug 2026 --------
+ * Both Rogerstone yellows carry matchPhase AFTER_THE_MATCH and no minute at all
+ * — minute, minuteFull and displayMinute are each null. Floored to an integer
+ * that reads as a booking in the opening seconds, which is not what happened;
+ * COMET's own printed report prints "AM". */
+
+$l = cc25_comet_to_match(load('reserves-rogerstone-league'), 'reserves', 'Cwmbran Celtic Reserves');
+check('the Reserves are at home', $l['home'] === true);
+check('the score is 0-1 to them', $l['cc'] === 0 && $l['oc'] === 1);
+check('the league competition is read', stripos($l['comp'], 'Gwent Premier Combination League') !== false);
+check('Bowen scored on 71', $l['opp_goals'][0]['scorer'] === 'Sebastian Bowen' && $l['opp_goals'][0]['min'] === '71');
+check('the assist is credited to Butler', $l['opp_goals'][0]['assist'] === 'Daniel Fraser Lewis Butler');
+check('Celtic did not score', $l['goals'] === array());
+check('Celtic were not booked', $l['cards'] === array());
+check('both after-match cards are kept', count($l['opp_cards']) === 2);
+check('an after-match card is not minute zero', $l['opp_cards'][0]['min'] !== '0' && $l['opp_cards'][0]['min'] !== 0);
+check('an after-match card is labelled AM', $l['opp_cards'][0]['min'] === 'AM');
+check('the second after-match card too', $l['opp_cards'][1]['min'] === 'AM');
+check('three Celtic substitutions', count($l['subs_made']) === 3);
+check('Madge came on for Smith on 71', $l['subs_made'][1]['on'] === 'Daniel Madge'
+      && $l['subs_made'][1]['off'] === 'Sam Smith' && $l['subs_made'][1]['min'] === '71');
+
+/* cc25_min_label() renders the minute AND its mark, so a label that is not a
+ * minute can say so without a stray apostrophe after it. */
+check('a plain minute keeps its apostrophe', cc25_min_label('71') === "71\xe2\x80\x99");
+check('stoppage time keeps its apostrophe', cc25_min_label('90+3') === "90+3\xe2\x80\x99");
+check('an after-match label takes no apostrophe', cc25_min_label('AM') === 'AM');
+check('an empty minute renders as nothing', cc25_min_label('') === '');
+
 /* ---- a redacted opponent: Croesyceiliog at home, 15 Aug 2026 ----------------
  * COMET withholds their 15's identity — "N/A" with hideProfile set, on the bench
  * and on the substitution he was part of. The printed report names him, so the

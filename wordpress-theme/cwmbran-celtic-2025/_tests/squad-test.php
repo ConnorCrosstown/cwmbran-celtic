@@ -109,8 +109,9 @@ if ($drift) echo '        drifted: ' . implode(', ', $drift) . "\n";
  * this is the check that notices. */
 check('Daniel Madge is credited with his goal',
       isset($stats['daniel madge']) && $stats['daniel madge']['goals'] === 1);
-// Two appearances: off the bench at Rogerstone, then starting v Croesyceiliog.
-check('...and both his appearances', isset($stats['daniel madge']) && $stats['daniel madge']['apps'] === 2);
+// Three appearances: off the bench at Rogerstone in the cup, starting v
+// Croesyceiliog, then off the bench again in the league game with Rogerstone.
+check('...and all three of his appearances', isset($stats['daniel madge']) && $stats['daniel madge']['apps'] === 3);
 
 /* An unused substitute should have no appearance rather than a phantom one. */
 check('a named but unused substitute has no appearance',
