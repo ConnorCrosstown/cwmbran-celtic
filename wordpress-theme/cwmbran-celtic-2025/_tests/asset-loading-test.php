@@ -95,5 +95,18 @@ $GLOBALS['cc25_t_feed'] = true;
 check('a feed keeps it', cc25_page_uses_sportspress());
 $GLOBALS['cc25_t_feed'] = false;
 
+/* ---- jQuery Migrate: HOW it is removed matters ---- */
+
+// The 'jquery' handle is an empty shim depending on 'jquery-core' and
+// 'jquery-migrate'. Deregistering jquery-migrate leaves that dependency
+// unsatisfiable, so WordPress prints no jQuery at all and every plugin that
+// expects it breaks. The first version of this change did exactly that, so the
+// source is checked for the dangerous call.
+$fn = file_get_contents(__DIR__ . '/../functions.php');
+check('jquery-migrate is not deregistered', strpos($fn, "wp_deregister_script('jquery-migrate')") === false);
+check('it is removed from jquery\'s deps instead',
+    strpos($fn, "array_diff((array) \$jquery->deps, array('jquery-migrate'))") !== false);
+check('and only on the front end', strpos($fn, "if (is_admin() || empty(\$scripts->registered['jquery'])) return;") !== false);
+
 echo "\n" . (count($failures) ? count($failures) . " FAILURE(S)\n" : "All checks passed\n");
 exit(count($failures) ? 1 : 0);

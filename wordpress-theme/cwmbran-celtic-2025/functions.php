@@ -132,14 +132,9 @@ add_action('wp_enqueue_scripts', function () {
     /*
      * dashicons is WordPress's ADMIN icon font (59 KB) and has no business on the
      * public site — but the admin bar uses it, so logged-in editors keep it.
-     *
-     * jQuery Migrate patches jQuery APIs removed before 2016. Nothing here needs
-     * it. If something ever does look wrong after a release, this is the first
-     * line to put back.
      */
     if (!is_user_logged_in()) {
         wp_dequeue_style('dashicons');
-        wp_deregister_script('jquery-migrate');
     }
 
     // The programme reader pulls in PDF.js, which is far too heavy to ship
@@ -149,6 +144,27 @@ add_action('wp_enqueue_scripts', function () {
         wp_enqueue_script('cc25-programme-reader', get_stylesheet_directory_uri() . '/assets/programme-reader.js', array(), $rv, true);
     }
 }, 99);
+
+/**
+ * jQuery Migrate off on the front end.
+ *
+ * It patches jQuery APIs removed before 2016 and nothing here needs it.
+ *
+ * Done by editing jquery's DEPENDENCIES, not by deregistering the handle. The
+ * 'jquery' handle is an empty shim that depends on 'jquery-core' and
+ * 'jquery-migrate'; deregister one of those and WordPress finds 'jquery' has an
+ * unsatisfiable dependency and prints NOTHING — taking jQuery itself off the
+ * page along with every plugin that expects it. The first version of this fix
+ * did exactly that.
+ *
+ * If anything ever looks wrong after a release, this is the first thing to
+ * comment out.
+ */
+add_action('wp_default_scripts', function ($scripts) {
+    if (is_admin() || empty($scripts->registered['jquery'])) return;
+    $jquery = $scripts->registered['jquery'];
+    $jquery->deps = array_values(array_diff((array) $jquery->deps, array('jquery-migrate')));
+});
 
 /** PDF.js 6 ships ESM only, so the reader has to load as a module; the sponsor
  *  band imports its rotation maths, so it does too. */
