@@ -44,7 +44,13 @@ check('no postponements are derived from posts', cc25_fx_hidden_from_posts() ===
 check('the 22 Aug kick-off is still 2:00pm', cc25_kickoff_time('2026-08-22', 'Newport Corinthians', 6) === '14:00');
 check('the postponed Risca game is still hidden', cc25_fixture_hidden('Risca United', '2026-08-22') === true);
 
-/* ---- The per-team substitution rule ---- */
+/* ---- The per-GAME merge rule ----
+ *
+ * This block used to assert per-TEAM substitution: one record replaced a team's
+ * whole list, so a record for 3 Oct made an unrelated 12 Sep fixture disappear.
+ * The 2026-08-21 audit found that deleting live seasons, so the first check below
+ * now asserts what it was always meant to — the record's game is published —
+ * without also asserting that the rest of the season is destroyed. */
 
 $static = array(
     'mens'     => array('list' => array(array('2026-09-12', 'Chepstow Town', false, 'League'))),
@@ -53,7 +59,9 @@ $static = array(
 );
 $rows = array('mens' => array(array('2026-10-03', 'Caldicot Town', true, 'League')));
 $merged = cc25_fx_merge_lists($static, $rows);
-check('a migrated team uses its records', $merged['mens']['list'][0][1] === 'Caldicot Town');
+$mens = array_map(function ($r) { return $r[1]; }, $merged['mens']['list']);
+check('a migrated team uses its records', in_array('Caldicot Town', $mens, true));
+check('and the record does not delete an unrelated fixture', in_array('Chepstow Town', $mens, true));
 check('an unmigrated team keeps its whole list', $merged['reserves']['list'][0][1] === 'Tredegar Town');
 check('a second unmigrated team is untouched', $merged['womens']['list'][0][1] === 'Llanrumney United');
 check('no team is dropped by the merge', count($merged) === 3);

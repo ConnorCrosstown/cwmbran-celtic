@@ -402,9 +402,51 @@ function cc25_fx_to_row($f) {
  */
 function cc25_fx_merge_lists($static, $rows) {
     foreach ($static as $team => $data) {
-        if (!empty($rows[$team])) $static[$team]['list'] = $rows[$team];
+        if (empty($rows[$team]) || !is_array($rows[$team])) continue;
+        $list = (isset($data['list']) && is_array($data['list'])) ? array_values($data['list']) : array();
+        foreach ($rows[$team] as $record) {
+            $at = cc25_fx_match_row($list, $record);
+            if ($at === null) $list[] = $record;
+            else              $list[$at] = $record;
+        }
+        // Ascending by date, the order the hardcoded lists are already written in
+        // and the one cc25_render_static_fixtures walks to place its month labels.
+        // cc25_static_results re-sorts newest-first for itself.
+        usort($list, function ($a, $b) { return strcmp((string) ($a[0] ?? ''), (string) ($b[0] ?? '')); });
+        $static[$team]['list'] = $list;
     }
     return $static;
+}
+
+/**
+ * Where in $list an admin record belongs, or null for a game not in the list.
+ *
+ * "The same game" is the same opponent at the same venue on the same date —
+ * opponent alone is not enough, because a league season plays everyone twice,
+ * and date alone is not enough, because two teams can be out on one Saturday.
+ *
+ * A record whose date has MOVED still has to find its original row, or the site
+ * would show the game twice: once on the old date from the hardcoded list and
+ * once on the new one. So a near miss counts, using the same ten-day tolerance
+ * cc25_fixture_hidden and cc25_results already apply to a re-dated game. Beyond
+ * ten days it is treated as a genuinely different fixture, which is that rule's
+ * existing meaning, not a new one invented here.
+ */
+function cc25_fx_match_row($list, $record) {
+    $date = (string) ($record[0] ?? '');
+    $opp  = cc25_norm_team($record[1] ?? '');
+    $home = !empty($record[2]);
+    $near = null;
+
+    foreach ($list as $i => $row) {
+        if (cc25_norm_team($row[1] ?? '') !== $opp) continue;
+        if (!empty($row[2]) !== $home) continue;
+        if ((string) ($row[0] ?? '') === $date) return $i;      // exact game
+        $a = strtotime((string) ($row[0] ?? ''));
+        $b = strtotime($date);
+        if ($near === null && $a && $b && abs($a - $b) <= 10 * 86400) $near = $i;
+    }
+    return $near;
 }
 
 /** Confirmed kick-offs from the admin, as date|opponent => HH:MM. Merged over
