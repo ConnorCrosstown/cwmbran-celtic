@@ -55,8 +55,12 @@ check('our own crest is untouched',
 
 // The bug: a cup opponent absent from the feed but present in the bundled set.
 $np = cc25_crest($feed, 'Newport Corinthians', 60);
+// Asserted without the file extension on purpose: what matters is that the club
+// resolves to ITS bundled crest, not what format that crest happens to be in.
+// Pinning ".png" here is what broke this check when the artwork moved to WebP;
+// _tests/bundled-images-test.php owns the format rule and the file's existence.
 check('a cup opponent falls back to the bundled crest',
-    strpos($np, 'assets/img/opponents/newport-corinthians.png') !== false);
+    strpos($np, 'assets/img/opponents/newport-corinthians.') !== false);
 check('and renders as a real image, not a badge', strpos($np, '<img') === 0);
 
 // Every bundled crest must now be reachable from the home page's resolver,

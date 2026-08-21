@@ -243,7 +243,7 @@ if ($cc25_cards): $cc25_multi = count($cc25_cards) > 1; ?>
 <section class="sec" style="padding-top:40px;padding-bottom:0" aria-label="Music Shirts launch">
   <div class="wrap">
     <div class="kl-banner reveal">
-      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-sfa.jpg'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"></div>
+      <div class="kl-banner-img"><img src="<?php echo esc_url($cc25_kbase . 'kit-sfa.webp'); ?>" alt="Cwmbran Celtic 2026/27 Music Shirts" loading="lazy"></div>
       <div class="kl-banner-body">
         <div class="kl-banner-eye kick">New for 2026/27 &middot; Just launched</div>
         <h2>The Music Shirts are here</h2>

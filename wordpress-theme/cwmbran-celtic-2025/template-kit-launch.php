@@ -29,7 +29,7 @@ $mvt_logo_uri = get_stylesheet_directory_uri() . '/assets/img/mvt-logo.png';
 $mvt_has_logo = file_exists(get_stylesheet_directory() . '/assets/img/mvt-logo.png');
 ?>
 <div class="phero kl-hero">
-  <div class="bg" style="background-image:linear-gradient(175deg,rgba(9,17,32,.78),rgba(9,17,32,.94) 78%),url('<?php echo esc_url($kbase . 'sfa-hero.jpg'); ?>');background-size:cover;background-position:center 22%"></div><div class="grain"></div><div class="ghost">MUSIC&nbsp;SHIRTS</div>
+  <div class="bg" style="background-image:linear-gradient(175deg,rgba(9,17,32,.78),rgba(9,17,32,.94) 78%),url('<?php echo esc_url($kbase . 'sfa-hero.webp'); ?>');background-size:cover;background-position:center 22%"></div><div class="grain"></div><div class="ghost">MUSIC&nbsp;SHIRTS</div>
   <div class="phero-in">
     <div class="crumbs"><a href="<?php echo esc_url($home); ?>">Home</a> / <a href="<?php echo esc_url(cc25_page_url('news', $home)); ?>" style="color:var(--on-navy-dim)">News</a> / <span style="color:#fff">Music Shirts</span></div>
     <div class="kl-eye kick"><?php echo esc_html($k['eyebrow']); ?></div>

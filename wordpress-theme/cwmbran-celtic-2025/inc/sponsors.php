@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) exit;
 
 /* ---- Sponsors (current list — mirrors cwmbran-celtic-mailing-list/lib/Sponsors.js) --- */
 function cc25_sponsor_main() {
-    return array('name' => 'Motazone', 'slug' => 'motazone', 'file' => '_main-motazone.jpg',
+    return array('name' => 'Motazone', 'slug' => 'motazone', 'file' => '_main-motazone.webp',
                  'url' => 'https://motazone.net/', 'dark' => false);
 }
 
@@ -19,30 +19,30 @@ function cc25_sponsor_main() {
  * SLUGS ARE PERMANENT — they key the click counts in inc/sponsor-clicks.php. */
 function cc25_sponsors() {
     $rows = array(
-        array('Gigantic', 'gigantic', 'gigantic.jpg', 'https://www.gigantic.com/'),
-        array('Crosstown Concerts', 'crosstown-concerts', 'crosstown-concerts.jpg', 'https://www.crosstownconcerts.com/'),
-        array("Dudley's Aluminium", 'dudleys', 'dudleys.jpg', 'https://www.dudleys.uk.com/'),
-        array('Coaltown', 'coaltown', 'coaltown.jpg', 'https://www.coaltowncoffee.co.uk/'),
-        array('SERi', 'seri', 'seri.jpg', ''),
-        array('Diverse Vinyl', 'diverse-vinyl', 'diverse-vinyl.jpg', 'https://www.diversevinyl.com/'),
-        array('Country Connect', 'country-connect', 'country-connect.jpg', 'https://www.country-connect.co.uk/'),
-        array('Hornbeam', 'hornbeam', 'hornbeam.jpg', ''),
-        array('Hydro Group', 'hydro-group', 'hydro-group.jpg', ''),
-        array('CRE', 'cre', 'cre.jpg', ''),
-        array('TOR Sports', 'tor-sports', 'tor.jpg', 'https://www.tor-sports.co.uk/'),
-        array('Avondale Vehicle Hire', 'avondale-vehicle-hire', 'avondale-vehicle-hire.png', 'https://www.avondalehire.co.uk/'),
-        array('Coffiology', 'coffiology', 'coffiology.png', 'https://coffiology.com/'),
-        array('Coleg Gwent', 'coleg-gwent', 'coleg-gwent.png', 'https://www.coleggwent.ac.uk/'),
-        array('JW Stockwell', 'jw-stockwell', 'jw-stockwell.png', ''),
-        array('Peter Villars', 'peter-villars', 'peter-villars.png', 'https://www.facebook.com/p/Peter-Villars-Sportsground-Maintenance-100063177401237/'),
-        array('Blitz Media', 'blitz-media', 'blitz-media.jpg', 'https://www.blitzmedia.co.uk/'),
-        array('Le Pub', 'le-pub', 'le-pub.jpg', 'https://www.lepublicspace.co.uk/'),
+        array('Gigantic', 'gigantic', 'gigantic.webp', 'https://www.gigantic.com/'),
+        array('Crosstown Concerts', 'crosstown-concerts', 'crosstown-concerts.webp', 'https://www.crosstownconcerts.com/'),
+        array("Dudley's Aluminium", 'dudleys', 'dudleys.webp', 'https://www.dudleys.uk.com/'),
+        array('Coaltown', 'coaltown', 'coaltown.webp', 'https://www.coaltowncoffee.co.uk/'),
+        array('SERi', 'seri', 'seri.webp', ''),
+        array('Diverse Vinyl', 'diverse-vinyl', 'diverse-vinyl.webp', 'https://www.diversevinyl.com/'),
+        array('Country Connect', 'country-connect', 'country-connect.webp', 'https://www.country-connect.co.uk/'),
+        array('Hornbeam', 'hornbeam', 'hornbeam.webp', ''),
+        array('Hydro Group', 'hydro-group', 'hydro-group.webp', ''),
+        array('CRE', 'cre', 'cre.webp', ''),
+        array('TOR Sports', 'tor-sports', 'tor.webp', 'https://www.tor-sports.co.uk/'),
+        array('Avondale Vehicle Hire', 'avondale-vehicle-hire', 'avondale-vehicle-hire.webp', 'https://www.avondalehire.co.uk/'),
+        array('Coffiology', 'coffiology', 'coffiology.webp', 'https://coffiology.com/'),
+        array('Coleg Gwent', 'coleg-gwent', 'coleg-gwent.webp', 'https://www.coleggwent.ac.uk/'),
+        array('JW Stockwell', 'jw-stockwell', 'jw-stockwell.webp', ''),
+        array('Peter Villars', 'peter-villars', 'peter-villars.webp', 'https://www.facebook.com/p/Peter-Villars-Sportsground-Maintenance-100063177401237/'),
+        array('Blitz Media', 'blitz-media', 'blitz-media.webp', 'https://www.blitzmedia.co.uk/'),
+        array('Le Pub', 'le-pub', 'le-pub.webp', 'https://www.lepublicspace.co.uk/'),
         // 2026/27 additions. A fifth element marks a white-on-black banner, which
         // gets the navy tile rather than the default white one.
-        array('Airbond', 'airbond', 'airbond.jpg', ''),
-        array('GMB Union', 'gmb-union', 'gmb-union.jpg', 'https://www.gmb.org.uk/'),
-        array('PC Wannell', 'pc-wannell', 'pc-wannell.jpg', ''),
-        array('Range After Care', 'range-after-care', 'range-after-care.jpg', '', true),
+        array('Airbond', 'airbond', 'airbond.webp', ''),
+        array('GMB Union', 'gmb-union', 'gmb-union.webp', 'https://www.gmb.org.uk/'),
+        array('PC Wannell', 'pc-wannell', 'pc-wannell.webp', ''),
+        array('Range After Care', 'range-after-care', 'range-after-care.webp', '', true),
     );
     $out = array();
     foreach ($rows as $r) {
@@ -176,7 +176,7 @@ function cc25_charity_partners() {
         // The club gave 10% of the Music Shirts kit launch to MVT. A partner the
         // club supports, not a sponsor who pays it — so deliberately not in the
         // paid roster, the band, the ticker or the sellable slots.
-        array('name' => 'Music Venue Trust', 'slug' => 'mvt', 'file' => 'mvt.jpg',
+        array('name' => 'Music Venue Trust', 'slug' => 'mvt', 'file' => 'mvt.webp',
               'url' => 'https://musicvenuetrust.com/', 'dark' => true),
     );
 }

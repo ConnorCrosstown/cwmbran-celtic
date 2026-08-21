@@ -74,7 +74,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
       if (!$is_own || empty($cc25_stats[$k])) return '<span class="pn">' . $safe . '</span>';
       $st = $cc25_stats[$k];
       $slug = cc25_player_card_slug($nm);
-      $card = $slug ? $cc25_cardbase . $slug . '.jpg' : '';
+      $card = $slug ? $cc25_cardbase . $slug . '.webp' : '';
       return '<button type="button" class="pn plname" data-name="' . esc_attr($nm) . '"'
            . ' data-apps="' . intval($st['apps']) . '" data-goals="' . intval($st['goals']) . '" data-assists="' . intval($st['assists']) . '"'
            . ' data-yellows="' . intval($st['yellows']) . '" data-reds="' . intval($st['reds']) . '"'

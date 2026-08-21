@@ -435,14 +435,14 @@ function cc25_shop_featured() {
     $s = 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/cwmbran-celtic-fc-seniors/';
     $j = 'https://www.tor-sports.co.uk/club-shops/cwmbran-celtic-fc/cwmbran-celtic-fc-juniors/';
     return array(
-        array('name' => 'Gilet',                  'range' => 'Seniors', 'price' => '£50', 'was' => '', 'img' => 'gilet.jpg',              'url' => $s . 'cwmbran-celtic-fc-gilet'),
-        array('name' => 'Blue Full-Zip Hoodie',   'range' => 'Seniors', 'price' => '£38', 'was' => '', 'img' => 'blue-hoodie.jpg',        'url' => $s . 'cwmbran-celtic-fc-blue-full-zip-hoodie'),
-        array('name' => 'Navy 1/4 Zip',           'range' => 'Seniors', 'price' => '£31', 'was' => '', 'img' => 'navy-quarter-zip.jpg',   'url' => $s . 'cwmbran-celtic-fc-navy-14-zip'),
-        array('name' => 'Backpack',               'range' => 'Seniors', 'price' => '£28', 'was' => '', 'img' => 'backpack.jpg',           'url' => $s . 'cwmbran-celtic-fc-backpack'),
-        array('name' => 'Junior Navy Hoodie',     'range' => 'Juniors', 'price' => '£22.40', 'was' => '£32', 'img' => 'junior-navy-hoodie.jpg', 'url' => $j . 'cwmbran-celtic-fc-junior-navy-full-zip-hoodie'),
-        array('name' => 'Essential Yellow Tee',   'range' => 'Seniors', 'price' => '£20', 'was' => '', 'img' => 'yellow-tee.jpg',         'url' => $s . 'cwmbran-celtic-fc-essential-yellow-tee'),
-        array('name' => 'Junior Blue Polo',       'range' => 'Juniors', 'price' => '£16', 'was' => '', 'img' => 'junior-blue-polo.jpg',   'url' => $j . 'cwmbran-celtic-fc-junior-blue-polo-shirt'),
-        array('name' => 'Cap',                    'range' => 'Seniors', 'price' => '£12', 'was' => '', 'img' => 'cap.jpg',                'url' => $s . 'cwmbran-celtic-fc-cap'),
+        array('name' => 'Gilet',                  'range' => 'Seniors', 'price' => '£50', 'was' => '', 'img' => 'gilet.webp',              'url' => $s . 'cwmbran-celtic-fc-gilet'),
+        array('name' => 'Blue Full-Zip Hoodie',   'range' => 'Seniors', 'price' => '£38', 'was' => '', 'img' => 'blue-hoodie.webp',        'url' => $s . 'cwmbran-celtic-fc-blue-full-zip-hoodie'),
+        array('name' => 'Navy 1/4 Zip',           'range' => 'Seniors', 'price' => '£31', 'was' => '', 'img' => 'navy-quarter-zip.webp',   'url' => $s . 'cwmbran-celtic-fc-navy-14-zip'),
+        array('name' => 'Backpack',               'range' => 'Seniors', 'price' => '£28', 'was' => '', 'img' => 'backpack.webp',           'url' => $s . 'cwmbran-celtic-fc-backpack'),
+        array('name' => 'Junior Navy Hoodie',     'range' => 'Juniors', 'price' => '£22.40', 'was' => '£32', 'img' => 'junior-navy-hoodie.webp', 'url' => $j . 'cwmbran-celtic-fc-junior-navy-full-zip-hoodie'),
+        array('name' => 'Essential Yellow Tee',   'range' => 'Seniors', 'price' => '£20', 'was' => '', 'img' => 'yellow-tee.webp',         'url' => $s . 'cwmbran-celtic-fc-essential-yellow-tee'),
+        array('name' => 'Junior Blue Polo',       'range' => 'Juniors', 'price' => '£16', 'was' => '', 'img' => 'junior-blue-polo.webp',   'url' => $j . 'cwmbran-celtic-fc-junior-blue-polo-shirt'),
+        array('name' => 'Cap',                    'range' => 'Seniors', 'price' => '£12', 'was' => '', 'img' => 'cap.webp',                'url' => $s . 'cwmbran-celtic-fc-cap'),
     );
 }
 
@@ -497,33 +497,33 @@ function cc25_kit_launch() {
         // The four shirts, SFA first (the focus). img = file in assets/img/kit/.
         // img = the card render (full kit). front/back = high-res product shots shown in the click-to-enlarge lightbox.
         'shirts'      => array(
-            array('band' => 'Super Furry Animals', 'img' => 'kit-sfa.jpg',   'front' => 'hr-sfa-front.png',    'back' => 'hr-sfa-back.png',    'label' => "Men's Home",   'origin' => 'Cardiff · Welsh legends',
+            array('band' => 'Super Furry Animals', 'img' => 'kit-sfa.webp',   'front' => 'hr-sfa-front.webp',    'back' => 'hr-sfa-back.webp',    'label' => "Men's Home",   'origin' => 'Cardiff · Welsh legends',
                   'blurb' => "One of Wales' most celebrated and inventive bands lead the line on our men's home shirt — no strangers to a football kit, having graced an iconic Cardiff City shirt back in 1999."),
-            array('band' => 'Mogwai',              'img' => 'kit-away.jpg',   'front' => 'hr-mogwai-front.png', 'back' => 'hr-mogwai-back.png', 'label' => "Men's Away",   'origin' => 'Glasgow post-rock',
+            array('band' => 'Mogwai',              'img' => 'kit-away.webp',   'front' => 'hr-mogwai-front.webp', 'back' => 'hr-mogwai-back.webp', 'label' => "Men's Away",   'origin' => 'Glasgow post-rock',
                   'blurb' => "Glasgow post-rock institution and lifelong Celtic fans, Mogwai take pride of place on our men's away shirt — the green-and-white hoops they grew up with."),
-            array('band' => 'Panic Shack',         'img' => 'kit-home.jpg',   'front' => 'hr-panic-front.png',  'back' => 'hr-panic-back.png',  'label' => "Women's Home", 'origin' => 'Cardiff punk',
+            array('band' => 'Panic Shack',         'img' => 'kit-home.webp',   'front' => 'hr-panic-front.webp',  'back' => 'hr-panic-back.webp',  'label' => "Women's Home", 'origin' => 'Cardiff punk',
                   'blurb' => "Cardiff punk favourites Panic Shack front our women's home shirt — one of the sharpest, funniest new voices in Welsh guitar music."),
-            array('band' => 'Loose Articles',      'img' => 'kit-third.jpg',  'front' => 'hr-loose-front.png',  'back' => 'hr-loose-back.png',  'label' => "Women's Away", 'origin' => 'Manchester punk',
+            array('band' => 'Loose Articles',      'img' => 'kit-third.webp',  'front' => 'hr-loose-front.webp',  'back' => 'hr-loose-back.webp',  'label' => "Women's Away", 'origin' => 'Manchester punk',
                   'blurb' => "Manchester punks Loose Articles lead our women's away shirt — all wit, attitude and energy, and proper football fans (their drummer's mum lives in Cwmbran!)."),
         ),
         // Goalkeeper kits — one per band. img = file in assets/img/kit/.
         // Set keepers_soon => false once the GK kits are ready to pre-order.
         'keepers_soon' => true,
         'keepers'     => array(
-            array('band' => 'Super Furry Animals', 'img' => 'gk-sfa.jpg',    'label' => 'Goalkeeper', 'origin' => 'Pink · Cardiff'),
-            array('band' => 'Loose Articles',      'img' => 'gk-loose.jpg',  'label' => 'Goalkeeper', 'origin' => 'Grey · Manchester'),
-            array('band' => 'Panic Shack',         'img' => 'gk-panic.jpg',  'label' => 'Goalkeeper', 'origin' => 'Pink & purple · Cardiff'),
-            array('band' => 'Mogwai',              'img' => 'gk-mogwai.jpg', 'label' => 'Goalkeeper', 'origin' => 'Grey · Glasgow'),
+            array('band' => 'Super Furry Animals', 'img' => 'gk-sfa.webp',    'label' => 'Goalkeeper', 'origin' => 'Pink · Cardiff'),
+            array('band' => 'Loose Articles',      'img' => 'gk-loose.webp',  'label' => 'Goalkeeper', 'origin' => 'Grey · Manchester'),
+            array('band' => 'Panic Shack',         'img' => 'gk-panic.webp',  'label' => 'Goalkeeper', 'origin' => 'Pink & purple · Cardiff'),
+            array('band' => 'Mogwai',              'img' => 'gk-mogwai.webp', 'label' => 'Goalkeeper', 'origin' => 'Grey · Glasgow'),
         ),
         // Matchday photos of the Music Shirts in action (files in assets/img/kit/):
         // men's SFA celebration, the women's team in Panic Shack, and fans in SFA.
-        'action'      => array('sfa-hero.jpg', 'women-panic.jpg', 'fans-sfa.jpg'),
+        'action'      => array('sfa-hero.webp', 'women-panic.webp', 'fans-sfa.webp'),
         // Featured sponsors — using the club's standard banners (assets/img/sponsor-banners/).
         'sponsors'    => array(
-            array('name' => 'Diverse Vinyl',      'slug' => 'diverse-vinyl',      'img' => 'diverse-vinyl.jpg',      'url' => 'https://www.diversevinyl.com',      'desc' => 'Independent record shop · Newport'),
-            array('name' => 'Crosstown Concerts', 'slug' => 'crosstown-concerts', 'img' => 'crosstown-concerts.jpg', 'url' => 'https://www.crosstownconcerts.com',  'desc' => 'Live music promoter'),
-            array('name' => 'Le Pub',             'slug' => 'le-pub',             'img' => 'le-pub.jpg',             'url' => 'https://www.lepublicspace.co.uk',   'desc' => 'Grassroots music venue · Newport'),
-            array('name' => 'Gigantic',           'slug' => 'gigantic',           'img' => 'gigantic.jpg',           'url' => 'https://www.gigantic.com',          'desc' => 'Independent ticketing'),
+            array('name' => 'Diverse Vinyl',      'slug' => 'diverse-vinyl',      'img' => 'diverse-vinyl.webp',      'url' => 'https://www.diversevinyl.com',      'desc' => 'Independent record shop · Newport'),
+            array('name' => 'Crosstown Concerts', 'slug' => 'crosstown-concerts', 'img' => 'crosstown-concerts.webp', 'url' => 'https://www.crosstownconcerts.com',  'desc' => 'Live music promoter'),
+            array('name' => 'Le Pub',             'slug' => 'le-pub',             'img' => 'le-pub.webp',             'url' => 'https://www.lepublicspace.co.uk',   'desc' => 'Grassroots music venue · Newport'),
+            array('name' => 'Gigantic',           'slug' => 'gigantic',           'img' => 'gigantic.webp',           'url' => 'https://www.gigantic.com',          'desc' => 'Independent ticketing'),
         ),
         'bands' => array(
             array('n' => 'Super Furry Animals', 'meta' => 'Cardiff · formed 1993',
@@ -1144,38 +1144,38 @@ function cc25_crest($feed, $name, $px) {
  * the image in assets/img/opponents/ and add a line to the map. */
 function cc25_opp_crest_file($name) {
     $map = array(
-        'Croesyceiliog' => 'croesyceiliog.png',
-        'Tata Steel United' => 'tata-steel-united.png',
-        'Abercarn United' => 'abercarn-united.png',
-        'Tredegar Town' => 'tredegar-town.png',
-        'Chepstow Town' => 'chepstow-town.png',
-        'Cwmbran Town' => 'cwmbran-town.png',
-        'New Inn' => 'new-inn.png',
-        'Undy' => 'undy.png',
-        'Newport Corinthians' => 'newport-corinthians.png',
-        'Lliswerry' => 'lliswerry.png',
-        'Blaenavon Blues' => 'blaenavon-blues.png',
-        'Rogerstone' => 'rogerstone.png',
-        'Abertillery Excelsiors' => 'abertillery-excelsiors.png',
-        'Abertillery Bluebirds' => 'abertillery-bluebirds.png',
+        'Croesyceiliog' => 'croesyceiliog.webp',
+        'Tata Steel United' => 'tata-steel-united.webp',
+        'Abercarn United' => 'abercarn-united.webp',
+        'Tredegar Town' => 'tredegar-town.webp',
+        'Chepstow Town' => 'chepstow-town.webp',
+        'Cwmbran Town' => 'cwmbran-town.webp',
+        'New Inn' => 'new-inn.webp',
+        'Undy' => 'undy.webp',
+        'Newport Corinthians' => 'newport-corinthians.webp',
+        'Lliswerry' => 'lliswerry.webp',
+        'Blaenavon Blues' => 'blaenavon-blues.webp',
+        'Rogerstone' => 'rogerstone.webp',
+        'Abertillery Excelsiors' => 'abertillery-excelsiors.webp',
+        'Abertillery Bluebirds' => 'abertillery-bluebirds.webp',
         // Women's — Genero Adran South opponents.
-        'Pontypridd United' => 'pontypridd-united.png',
-        'Carmarthen Town' => 'carmarthen-town.png',
-        'Taffs Well' => 'taffs-well.png',
-        'Llanrumney United' => 'llanrumney-united.png',
-        'Cascade YC' => 'cascade-yc.png',
-        'Penybont' => 'penybont.png',
-        'Pure Swansea' => 'pure-swansea.png',
+        'Pontypridd United' => 'pontypridd-united.webp',
+        'Carmarthen Town' => 'carmarthen-town.webp',
+        'Taffs Well' => 'taffs-well.webp',
+        'Llanrumney United' => 'llanrumney-united.webp',
+        'Cascade YC' => 'cascade-yc.webp',
+        'Penybont' => 'penybont.webp',
+        'Pure Swansea' => 'pure-swansea.webp',
         // Men's First Team opponents (also cover Reserves).
-        'Abergavenny Town' => 'abergavenny-town.png',
-        'Risca United' => 'risca-united.png',
-        'Goytre' => 'goytre.png',
-        'Caldicot Town' => 'caldicot-town.jpg',
-        'Brecon Corries' => 'brecon-corries.png',
-        'Cardiff Corinthians' => 'cardiff-corries.png',
-        'Penygraig United' => 'penygraig-united.png',
+        'Abergavenny Town' => 'abergavenny-town.webp',
+        'Risca United' => 'risca-united.webp',
+        'Goytre' => 'goytre.webp',
+        'Caldicot Town' => 'caldicot-town.webp',
+        'Brecon Corries' => 'brecon-corries.webp',
+        'Cardiff Corinthians' => 'cardiff-corries.webp',
+        'Penygraig United' => 'penygraig-united.webp',
         // Women's U19s — Adran U19s. Already had artwork on the Next.js side.
-        'Aberystwyth Town' => 'aberystwyth-town.png',
+        'Aberystwyth Town' => 'aberystwyth-town.webp',
     );
     if (isset($map[$name])) return $map[$name];
     // Tolerate "FC"/"AFC" and spacing drift (e.g. "Undy FC" -> undy.png) so the
