@@ -54,10 +54,10 @@ $m = cc25_get_match($cc25_g, $cc25_t);
       if (empty($ev[$name])) return '';
       $out = '';
       foreach ($ev[$name] as $e) {
-          if ($e['t'] === 'goal') $out .= '<span class="chip goal" title="Goal">&#9917;' . ($e['pen'] ? ' <em>P</em>' : '') . ' ' . cc25_min_label($e['min']) . "&rsquo;</span>";
-          elseif ($e['t'] === 'yellow') $out .= '<span class="chip yc" title="Yellow card">' . cc25_min_label($e['min']) . "&rsquo;</span>";
-          elseif ($e['t'] === 'red') $out .= '<span class="chip rc" title="Red card">' . cc25_min_label($e['min']) . "&rsquo;</span>";
-          elseif ($e['t'] === 'off') $out .= '<span class="chip off" title="Substituted off">&darr; ' . cc25_min_label($e['min']) . "&rsquo;</span>";
+          if ($e['t'] === 'goal') $out .= '<span class="chip goal" title="Goal">&#9917;' . ($e['pen'] ? ' <em>P</em>' : '') . ' ' . cc25_min_label($e['min']) . "</span>";
+          elseif ($e['t'] === 'yellow') $out .= '<span class="chip yc" title="Yellow card">' . cc25_min_label($e['min']) . "</span>";
+          elseif ($e['t'] === 'red') $out .= '<span class="chip rc" title="Red card">' . cc25_min_label($e['min']) . "</span>";
+          elseif ($e['t'] === 'off') $out .= '<span class="chip off" title="Substituted off">&darr; ' . cc25_min_label($e['min']) . "</span>";
       }
       return $out;
   };
@@ -107,7 +107,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
               $played = $on || $chips !== '';
               echo '<li' . ($played ? '' : ' class="unused"') . '><span class="no">' . $no . '</span>' . $cc25_pname($nm, $is_own)
                  . '<span class="evs">'
-                 . ($on ? '<span class="chip on" title="Came on">&uarr; ' . cc25_min_label($on['min']) . "&rsquo;</span>" : '')
+                 . ($on ? '<span class="chip on" title="Came on">&uarr; ' . cc25_min_label($on['min']) . "</span>" : '')
                  . $chips
                  . ($played ? '' : '<span class="chip none">Unused</span>') . '</span></li>';
           }
@@ -172,7 +172,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
         <h2 class="mr-h">Goals</h2>
         <ul class="mr-goals">
           <?php foreach ($cc25_tl as $g): $cc25_who = $g['side'] === 'us' ? 'Cwmbran Celtic' : $m['opp']; ?>
-            <li class="mr-goal-<?php echo esc_attr($g['side']); ?>"><span class="mr-min"><?php echo cc25_min_label($g['min']); ?>&rsquo;</span> <span class="mr-gball">&#9917;</span> <b><?php echo esc_html($g['scorer']); ?></b><?php echo !empty($g['pen']) ? ' <em>(pen)</em>' : ''; ?> <span class="mr-goal-team"><?php echo esc_html($cc25_who); ?></span><?php echo !empty($g['assist']) ? ' <span class="mr-assist">assist: ' . esc_html($g['assist']) . '</span>' : ''; ?></li>
+            <li class="mr-goal-<?php echo esc_attr($g['side']); ?>"><span class="mr-min"><?php echo cc25_min_label($g['min']); ?></span> <span class="mr-gball">&#9917;</span> <b><?php echo esc_html($g['scorer']); ?></b><?php echo !empty($g['pen']) ? ' <em>(pen)</em>' : ''; ?> <span class="mr-goal-team"><?php echo esc_html($cc25_who); ?></span><?php echo !empty($g['assist']) ? ' <span class="mr-assist">assist: ' . esc_html($g['assist']) . '</span>' : ''; ?></li>
           <?php endforeach; ?>
         </ul>
       </div>
@@ -196,7 +196,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
       <div class="mr-block reveal">
         <h2 class="mr-h">Cards</h2>
         <ul class="mr-cards">
-          <?php foreach ($cc25_allcards as $c): ?><li><span class="mr-cardbox <?php echo $c['type'] === 'r' ? 'r' : 'y'; ?>"></span><span class="mr-min"><?php echo cc25_min_label($c['min']); ?>&rsquo;</span> <b><?php echo esc_html($c['p']); ?></b> <span style="color:var(--muted)">&mdash; <?php echo esc_html($c['t']); ?></span><?php echo $c['reason'] ? ' <span class="mr-creason">(' . esc_html($c['reason']) . ')</span>' : ''; ?></li><?php endforeach; ?>
+          <?php foreach ($cc25_allcards as $c): ?><li><span class="mr-cardbox <?php echo $c['type'] === 'r' ? 'r' : 'y'; ?>"></span><span class="mr-min"><?php echo cc25_min_label($c['min']); ?></span> <b><?php echo esc_html($c['p']); ?></b> <span style="color:var(--muted)">&mdash; <?php echo esc_html($c['t']); ?></span><?php echo $c['reason'] ? ' <span class="mr-creason">(' . esc_html($c['reason']) . ')</span>' : ''; ?></li><?php endforeach; ?>
         </ul>
       </div>
       <?php endif; ?>
@@ -212,7 +212,7 @@ $m = cc25_get_match($cc25_g, $cc25_t);
               if (empty($subs)) return;
               echo '<div class="mr-subcol"><div class="mr-subteam">' . $crest . '<span>' . esc_html($team) . '</span></div><ul class="mr-swaps">';
               foreach ($subs as $s) {
-                  echo '<li><span class="mr-min">' . cc25_min_label($s['min']) . "&rsquo;</span> "
+                  echo '<li><span class="mr-min">' . cc25_min_label($s['min']) . "</span> "
                      . '<span class="on">&uarr; ' . esc_html($s['on']) . '</span> '
                      . '<span class="offlbl">for</span> <span class="off">' . esc_html($s['off']) . '</span></li>';
               }

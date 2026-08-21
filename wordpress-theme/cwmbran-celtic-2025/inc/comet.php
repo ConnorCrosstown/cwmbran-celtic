@@ -245,9 +245,18 @@ function cc25_comet_events($events, $sides) {
         $p2   = $e['player2'] ?? array();
         $side = $sides[(int) ($p1['roleId'] ?? 0)] ?? null;
         if (!$side) continue;
-        $min = $e['minuteFull'] ?? $e['minute'] ?? 0;
+        // Not every event has a minute. A booking after the whistle arrives with
+        // minute, minuteFull and displayMinute all null and matchPhase
+        // AFTER_THE_MATCH; COMET's own report prints "AM" for it. Flooring that to
+        // an integer would publish a caution in the opening seconds of the game.
+        $min  = $e['minuteFull'] ?? $e['minute'] ?? null;
         $stop = (int) ($e['stoppageTime'] ?? 0);
-        $label = $stop > 0 ? ($min . '+' . $stop) : (string) (int) $min;
+        $phase = strtoupper((string) ($e['matchPhase']['fcdName'] ?? ''));
+        if ($min === null || $min === '') {
+            $label = $phase === 'AFTER_THE_MATCH' ? 'AM' : '';
+        } else {
+            $label = $stop > 0 ? ($min . '+' . $stop) : (string) (int) $min;
+        }
 
         if ($type === 'GOAL' || $type === 'PENALTY_GOAL') {
             $out['goals'][$side][] = array(

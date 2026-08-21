@@ -1491,7 +1491,7 @@ function cc25_static_fixtures_static() {
             'list'   => array(
                 array('2026-08-07', 'Rogerstone', false, 'Gwent Premier Cup R1', array(1, 2)),
                 array('2026-08-15', 'Croesyceiliog', true, 'League', array(1, 2)),
-                array('2026-08-21', 'Rogerstone', true, 'League'),
+                array('2026-08-21', 'Rogerstone', true, 'League', array(0, 1)),
                 array('2026-08-29', 'Abercarn United', false, 'League'),
                 array('2026-09-05', 'Tredegar Town', false, 'League'),
                 // Chepstow swapped round by the club's list of 12 Aug 2026:
@@ -2239,6 +2239,71 @@ function cc25_merge_match_records($records, $static) {
 function cc25_season_matches_static() {
     return array(
         array(
+            'team' => 'reserves',
+            'date' => '2026-08-21', 'time' => '18:30', 'opp' => 'Rogerstone', 'home' => true, 'cc' => 0, 'oc' => 1,
+            'comp' => 'Autocentre Gwent Premier Combination League', 'round' => 'Round 2',
+            'venue' => 'Motazone Arena, Cwmbran', 'att' => 0,
+            // COMET match 108116564, imported and cross-checked against the printed
+            // report. As before the API carries no officials, so the referee is off
+            // the PDF; the card reasons are too, the events carrying no reason field.
+            'ref' => 'Jamie Collins', 'ar1' => '', 'ar2' => '',
+            'captain' => 'Jamie Pring', 'opp_captain' => 'Ryan Cook',
+            'starters' => array(
+                array(1, 'Jamie Pring', 'GK'), array(2, 'Bailey Goodall'),
+                array(3, 'Brooklyn Lee'), array(5, 'Jamie Williams'), array(6, 'Evan Prosser'),
+                array(7, 'Sam Smith'), array(8, 'Joe Barber'), array(9, 'Jack Prosser'),
+                array(10, 'Cam Williams'), array(11, 'Daniel Camaj'), array(16, 'Jacob Cook'),
+            ),
+            'subs' => array(
+                array(4, 'Rhys Jones'), array(14, 'Tobias Williams-Dunne'),
+                array(15, 'Jack Shepard'), array(17, 'Harri Pritchard'), array(18, 'Daniel Madge'),
+            ),
+            'opp_starters' => array(
+                array(1, 'Jacob George Steven', 'GK'), array(29, 'Alexander Pritchard'),
+                array(30, 'Rhys Butler'), array(31, 'Ryan Cook'), array(42, 'Benjamin Allcock'),
+                array(49, 'Sebastian Bowen'), array(53, 'Samuel Julian Ethan Cody'),
+                array(62, 'Olly John Howard'), array(67, 'Connor Morgan'),
+                array(68, 'Oliver Smith'), array(98, 'Joshua Beachus'),
+            ),
+            'opp_subs' => array(
+                array(6, 'Matthew Louis Coombes'), array(12, 'Jack Butler'),
+                array(15, 'Daniel Fraser Lewis Butler'), array(61, 'Luca Knapp'),
+            ),
+            'subs_made' => array(
+                array('min' => 61, 'off' => 'Cam Williams', 'on' => 'Rhys Jones'),
+                array('min' => 71, 'off' => 'Sam Smith',    'on' => 'Daniel Madge'),
+                array('min' => 83, 'off' => 'Brooklyn Lee', 'on' => 'Harri Pritchard'),
+            ),
+            // Jack Butler came on on 80 and went off again on 85.
+            'opp_subs_made' => array(
+                array('min' => 54, 'off' => 'Alexander Pritchard',      'on' => 'Daniel Fraser Lewis Butler'),
+                array('min' => 80, 'off' => 'Connor Morgan',            'on' => 'Luca Knapp'),
+                array('min' => 80, 'off' => 'Samuel Julian Ethan Cody', 'on' => 'Jack Butler'),
+                array('min' => 85, 'off' => 'Jack Butler',              'on' => 'Matthew Louis Coombes'),
+            ),
+            'goals' => array(),
+            'opp_goals' => array(
+                array('scorer' => 'Sebastian Bowen', 'assist' => 'Daniel Fraser Lewis Butler', 'min' => 71),
+            ),
+            'cards' => array(),
+            // Both shown after the final whistle: COMET records them with matchPhase
+            // AFTER_THE_MATCH and no minute at all, and prints "AM" on its own report.
+            'opp_cards' => array(
+                array('min' => 'AM', 'player' => 'Oliver Smith', 'type' => 'y', 'reason' => 'Unsporting behaviour'),
+                array('min' => 'AM', 'player' => 'Ryan Cook',    'type' => 'y', 'reason' => 'Unsporting behaviour'),
+            ),
+            'staff' => array(
+                array('role' => 'Coach', 'name' => 'Matt Hewkins'),
+                array('role' => 'Coach', 'name' => 'Jack Shepard'),
+                array('role' => 'Coach', 'name' => 'Jacob Pritchard'),
+            ),
+            'opp_staff' => array(),
+            // From the official COMET record and the printed report. No eyewitness
+            // detail — that is for whoever was at the Motazone to add.
+            'report' => "Rogerstone completed a fortnight's double over the Reserves at the Motazone Arena, a Sebastian Bowen goal on 71 minutes the only thing between the sides.\n\nThe two had met in the Combination Cup two weeks earlier, Rogerstone taking that one in stoppage time. This was tighter and lower scoring: goalless at the break, and still goalless when Jacob Pritchard went to his bench on 61, Rhys Jones on for Cam Williams. Ten minutes later Bowen finished a Daniel Butler pass, and Celtic's own change at that same minute — Daniel Madge for Sam Smith — could not answer it. Harri Pritchard replaced Brooklyn Lee on 83.\n\nIt leaves the Reserves without a win from their opening three, and this was the first of those three in which they did not score. Jamie Pring captained the side from goal.\n\nReferee Jamie Collins got through the ninety without a card. Both of his cautions came afterwards, to Rogerstone's Oliver Smith and Ryan Cook once the whistle had gone.",
+            'report_by' => '',
+        ),
+        array(
             'team' => 'vets',
             'date' => '2026-08-16', 'time' => '14:00', 'opp' => 'Tata Steel United', 'home' => true, 'cc' => 2, 'oc' => 2,
             // 2-2 after ninety, won 4-3 on penalties. COMET keeps the shootout on
@@ -2847,10 +2912,17 @@ function cc25_parse_match_slug($g) {
  * safe to print.
  */
 function cc25_min_label($min) {
-    if (preg_match('/^\s*(\d{1,3})\s*\+\s*(\d{1,2})\s*$/', (string) $min, $mm)) {
-        return $mm[1] . '+' . $mm[2];
+    $min = trim((string) $min);
+    if ($min === '') return '';
+    if (preg_match('/^(\d{1,3})\s*\+\s*(\d{1,2})$/', $min, $mm)) {
+        return $mm[1] . '+' . $mm[2] . '’';
     }
-    return (string) intval($min);
+    if (preg_match('/^\d{1,3}$/', $min)) return $min . '’';
+    // Not a minute but a phase marker — COMET prints AM for a card shown after
+    // the whistle, and it takes no apostrophe. Letters only, so nothing from the
+    // feed can reach the page as markup.
+    if (preg_match('/^[A-Za-z]{1,3}$/', $min)) return strtoupper($min);
+    return '';
 }
 
 /** The characters a ?g= may legitimately contain, given the slug format above. */
@@ -2952,7 +3024,7 @@ function cc25_match_summary($m) {
     $s = $line . ' — ' . $m['comp'] . (!empty($m['venue']) && $home ? ' at ' . $m['venue'] : '') . '.';
     $scorers = array();
     foreach (($m['goals'] ?? array()) as $g) {
-        $scorers[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . ' ' . cc25_min_label($g['min']) . "'";
+        $scorers[] = $g['scorer'] . (!empty($g['pen']) ? ' (pen)' : '') . ' ' . cc25_min_label($g['min']);
     }
     if ($scorers) {
         if (count($scorers) > 1) { $last = array_pop($scorers); $join = implode(', ', $scorers) . ' and ' . $last; }

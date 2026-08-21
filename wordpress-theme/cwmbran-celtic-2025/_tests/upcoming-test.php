@@ -137,8 +137,12 @@ $merged = cc25_results(array('results' => array(array(
     'homeAway' => 'A', 'homeTeam' => 'Rogerstone', 'awayTeam' => 'Cwmbran Celtic',
     'homeScore' => 2, 'awayScore' => 1, 'team' => 'reserves',
 ))), 'reserves');
+// Match on the DATE as well as the opponent: the Reserves play Rogerstone twice,
+// away in the cup on 7 Aug and at home in the league on 21 Aug, so counting every
+// Rogerstone fixture would fail without anything being duplicated.
 $rogerstone = array_filter($merged, function ($f) {
-    return cc25_norm_team(cc25_opponent($f)['opponent']) === cc25_norm_team('Rogerstone');
+    return cc25_norm_team(cc25_opponent($f)['opponent']) === cc25_norm_team('Rogerstone')
+        && gmdate('Y-m-d', (int) round(((int) ($f['date'] ?? 0)) / 1000)) === '2026-08-07';
 });
 check('a result the feed already has is not duplicated', count($rogerstone) === 1);
 
