@@ -29,8 +29,18 @@ register_deactivation_hook(__FILE__, function () {
     wp_clear_scheduled_hook('ccf_hourly_refresh');
 });
 
+/*
+ * Registered, not enqueued. This stylesheet exists solely to lay out the markup
+ * CCF_Render produces for the three shortcodes below — and the theme renders
+ * fixtures, results and tables itself from cc25_feed(), so on this site those
+ * shortcodes are used nowhere. It was still being fetched on all 51 pages to
+ * style markup that never appeared (audit RED-7).
+ *
+ * The shortcodes now enqueue it when one of them actually runs. They are kept
+ * rather than deleted so a page that does use one still works.
+ */
 add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_style('ccf', CCF_URL . 'assets/ccf.css', [], '1.0.0');
+    wp_register_style('ccf', CCF_URL . 'assets/ccf.css', [], '1.0.1');
 });
 
 CCF_Shortcodes::register();

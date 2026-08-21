@@ -30,7 +30,6 @@ function check($label, $cond) {
 /* ---- Cutover: with no WordPress, nothing changes ---- */
 
 check('no WordPress means no fixture records', cc25_fx_posts() === array());
-check('and no team counts as migrated', cc25_fx_migrated_teams() === array());
 check('fixtures fall back to the hand-maintained lists',
       cc25_static_fixtures() === cc25_static_fixtures_static());
 check('kick-offs fall back to the hand-maintained map',

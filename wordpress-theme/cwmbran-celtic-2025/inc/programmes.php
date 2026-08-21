@@ -117,11 +117,6 @@ function cc25_programmes_by_season() {
     uksort($by, function ($a, $b) { return intval($b) <=> intval($a); });
     return $by;
 }
-function cc25_latest_programme() {
-    $p = get_posts(array('post_type' => 'post', 'post_status' => 'publish', 'numberposts' => 1,
-        'category_name' => cc25_programme_category(), 'orderby' => 'date', 'order' => 'DESC'));
-    return $p ? $p[0] : null;
-}
 
 /**
  * "Written by" byline override — lets one publisher credit the real author of a

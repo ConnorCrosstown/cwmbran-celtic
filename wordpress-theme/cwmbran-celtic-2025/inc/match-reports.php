@@ -14,8 +14,6 @@
  */
 if (!defined('ABSPATH')) exit;
 
-function cc25_report_category() { return 'report'; }
-
 /* ---------------------------------------------------------------- editor UI */
 
 add_action('add_meta_boxes', function () {

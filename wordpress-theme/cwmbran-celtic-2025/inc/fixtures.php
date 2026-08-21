@@ -373,14 +373,6 @@ function cc25_fx_posts() {
     return $cache = $out;
 }
 
-/** Which teams have been migrated. Per team, so a half-done migration never
- *  shows a partial season — an unmigrated team keeps its hardcoded list whole. */
-function cc25_fx_migrated_teams() {
-    $teams = array();
-    foreach (cc25_fx_posts() as $f) $teams[$f['team']] = true;
-    return $teams;
-}
-
 /** A fixture post as a hand-maintained row: [date, opponent, home, comp, score?]. */
 function cc25_fx_to_row($f) {
     $row = array($f['date'], $f['opponent'], $f['home'], $f['comp']);
