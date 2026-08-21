@@ -78,3 +78,46 @@ export function readingOrder(sheets, opts = {}) {
 export function pageCount(sheets, opts = {}) {
     return readingOrder(sheets, opts).length;
 }
+
+/**
+ * Fraction of the window height a page may occupy at fit. Leaves room for the
+ * page counter and tool row, which sit under the stage.
+ */
+export const FIT_HEIGHT = 0.78;
+
+/**
+ * How wide to display a page, as a percentage of the stage, at a given zoom.
+ *
+ * Fit used to mean fit-to-WIDTH only, and that is what made some pages tower
+ * over the rest. A landscape spread — two A5 pages side by side — is about 1.41
+ * wide to 1 tall, so at full stage width it is only ~0.7 of that width tall and
+ * sits on screen comfortably. A single PORTRAIT page is the inverse: at full
+ * width it becomes ~1.41 times the stage width tall, roughly double the spread,
+ * and runs off the bottom of the screen. The pages that land in that case are
+ * the front cover (sheet 1 is the outer wrap, so the front is drawn on its own)
+ * and the season advert pages, which are standalone artwork.
+ *
+ * So cap on height as well and let whichever binds first win. Full screen
+ * already fitted to height; this gives the ordinary view the same treatment.
+ *
+ * Returned as a WIDTH percentage rather than applied as a max-height because
+ * the canvas keeps `height: auto`: clamping the height while the width stayed
+ * at 100% would pin one axis and not the other, squashing the page instead of
+ * scaling it.
+ *
+ * Zoom multiplies the result, so magnifying still overflows the stage on
+ * purpose — that is what the scroll-to-pan behaviour is for.
+ */
+export function fitPercent(pageW, pageH, stageW, windowH, zoom = 1) {
+    // Anything missing or nonsensical falls back to the old fit-to-width, which
+    // is never wrong, only sometimes tall.
+    if (!(pageW > 0) || !(pageH > 0) || !(stageW > 0) || !(windowH > 0)) {
+        return 100 * zoom;
+    }
+    // A floor so a short window (a phone held sideways) cannot shrink the page
+    // to something unreadable in the name of making it fit.
+    const budget = Math.max(240, windowH * FIT_HEIGHT);
+    const widthThatFitsHeight = budget * (pageW / pageH);
+    const pct = Math.min(100, (widthThatFitsHeight / stageW) * 100);
+    return pct * zoom;
+}

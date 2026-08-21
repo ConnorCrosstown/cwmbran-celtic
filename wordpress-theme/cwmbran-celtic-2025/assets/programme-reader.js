@@ -21,6 +21,8 @@
  * reader spent its first months live, showing "Loading the programme…" forever.
  * See _tests/module-assets-test.php.
  */
+import { fitPercent } from './programme-pages.js';
+
 /** Phones read single pages; from tablet up there's room for the spread. */
 const SPLIT_UP_TO = 900;
 /** Zoom stops. 1 is fit-to-width; the rest are for reading small print. */
@@ -248,7 +250,10 @@ async function boot(root) {
         const vp = pg.getViewport({ scale });
         canvas.width = Math.floor(spot.half ? vp.width / 2 : vp.width);
         canvas.height = Math.floor(vp.height);
-        canvas.style.width = Math.round(100 * zoom) + '%';
+        // Fit the window, not just the width — see fitPercent(). The canvas is
+        // still rendered at full width's resolution, so displaying it narrower
+        // costs a little memory and loses no sharpness.
+        canvas.style.width = Math.round(fitPercent(showW, base.height, avail, window.innerHeight, zoom)) + '%';
         canvas.style.height = 'auto';
 
         if (renderTask) renderTask.cancel();
@@ -293,7 +298,9 @@ async function boot(root) {
         if (renderTask) { renderTask.cancel(); renderTask = null; }
         canvas.width = Math.max(1, Math.floor(w * scale));
         canvas.height = Math.max(1, Math.floor(h * scale));
-        canvas.style.width = Math.round(100 * zoom) + '%';
+        // Same fit-the-window treatment as a PDF page. The season advert pages
+        // are exactly the standalone artwork that used to tower over the rest.
+        canvas.style.width = Math.round(fitPercent(w, h, avail, window.innerHeight, zoom)) + '%';
         canvas.style.height = 'auto';
         ctx.fillStyle = '#fff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);

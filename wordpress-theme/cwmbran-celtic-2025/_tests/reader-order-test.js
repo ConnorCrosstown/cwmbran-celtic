@@ -3,7 +3,7 @@
  *   node _tests/reader-order-test.js
  * Imports the mapping directly — it carries no PDF.js dependency.
  */
-import { readingOrder, pageCount } from '../assets/programme-pages.js';
+import { readingOrder, pageCount, fitPercent } from '../assets/programme-pages.js';
 
 let failures = 0;
 function check(label, cond) {
@@ -124,6 +124,43 @@ check('no extras changes nothing', readingOrder(16, { landscape: true, coverWrap
 check('a rubbish extra count is ignored', readingOrder(16, { landscape: true, coverWrap: true, extra: -4 }).length === 32);
 check('extras still work when a sheet is whole',
     readingOrder(16, { landscape: true, coverWrap: true, whole: [9], extra: 1 }).length === 32);
+
+
+/* ---- Fitting a page to the window, not just to the width ----------------
+ * The bug: fit meant fit-to-WIDTH only, so a single portrait page — the front
+ * cover, and the season advert pages — rendered about twice the height of a
+ * landscape spread and ran off the bottom of the screen. */
+
+// A landscape spread is ~1.41 wide to 1 tall; width still binds, so it barely moves.
+check('a landscape spread is left essentially at full width',
+    Math.round(fitPercent(1000, 707, 1000, 900)) >= 99);
+
+// A single portrait page is the inverse and is what used to tower.
+check('a portrait page is cut down so it fits the window',
+    Math.round(fitPercent(707, 1000, 1000, 900)) === 50);
+
+check('the portrait page now fits inside the height budget', (() => {
+    const pct = fitPercent(707, 1000, 1000, 900) / 100;
+    const shownW = 1000 * pct;
+    const shownH = shownW * (1000 / 707);
+    return shownH <= 900 * 0.78 + 1;
+})());
+
+// Phones show single portrait pages already, and want fit-to-width to read.
+check('a phone is left alone', Math.round(fitPercent(707, 1000, 360, 800)) === 100);
+
+// Zoom must still magnify past the stage — that is what panning is for.
+check('zoom still overflows the stage', fitPercent(1000, 707, 1000, 900, 2) > 100);
+check('zoom scales the fitted width, not the full width',
+    Math.abs(fitPercent(707, 1000, 1000, 900, 2) - 2 * fitPercent(707, 1000, 1000, 900)) < 0.001);
+
+// Never worse than the old behaviour when something is missing.
+check('missing measurements fall back to fit-to-width', fitPercent(0, 0, 0, 0) === 100);
+check('a zero window falls back rather than dividing by it', fitPercent(707, 1000, 1000, 0) === 100);
+
+// A short window must not shrink the page to nothing.
+check('a very short window is floored, not obeyed blindly',
+    fitPercent(707, 1000, 1000, 100) > fitPercent(707, 1000, 1000, 1) * 0 + 16);
 
 console.log('\n' + (failures ? `${failures} FAILED` : 'All checks passed'));
 process.exit(failures ? 1 : 0);
