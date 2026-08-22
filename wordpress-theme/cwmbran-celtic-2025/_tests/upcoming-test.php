@@ -38,6 +38,11 @@ function up_fx($ymd, $opp, $home) {
     );
 }
 
+// Pin the clock. Every assertion below is about a real Saturday and the real
+// fixture list around it, so without this the suite goes red the day those games
+// are played — which it duly did on 22 Aug 2026.
+$GLOBALS['cc25_test_now_ms'] = (new DateTime('2026-08-08 09:00:00', new DateTimeZone('Europe/London')))->getTimestamp() * 1000;
+
 // The real situation on 8 August 2026: the feed still lists Risca at home on
 // 22 August, which the FAW has postponed, and the Welsh Cup tie that took the
 // date is only in our own list.

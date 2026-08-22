@@ -26,6 +26,53 @@ const CC25_COMET_BASE = 'https://api-faw.analyticom.de/api/live';
 // public match pages read.
 const CC25_COMET_KEY = 'ME8w7FdYVJQQJZJp7QwaDy8MRdrspAVqDcrxBeJ3';
 
+/* ------------------------------------------------------- the report as a file */
+
+/**
+ * The COMET match id out of an uploaded report PDF.
+ *
+ * The club already downloads this file after every game and its name carries the
+ * id — match_108116564_20260821_230036.pdf — so uploading it is the shortest path
+ * from "we played" to a report on the site.
+ *
+ * The file itself is only ever read, never stored: wp-content/uploads is public,
+ * and the report is a full team sheet with every player's name and number on it.
+ *
+ * Deliberately does NOT read the text inside. COMET's PDFs use subsetted fonts
+ * with ToUnicode maps, so pulling the referee out means a real text extractor —
+ * see the note at the top of this file about the parser that was written and
+ * thrown away. The officials stay a typed field.
+ *
+ * @param array|null $file one entry from $_FILES
+ * @return array ['id' => string, 'error' => string]
+ */
+function cc25_comet_pdf_upload_id($file) {
+    $none = array('id' => '', 'error' => '');
+    if (!is_array($file)) return $none;
+
+    $err = isset($file['error']) ? (int) $file['error'] : UPLOAD_ERR_NO_FILE;
+    // Nobody chose a file. That is the normal case on almost every save.
+    if ($err === UPLOAD_ERR_NO_FILE) return $none;
+    if ($err !== UPLOAD_ERR_OK) {
+        return array('id' => '', 'error' => 'The PDF did not finish uploading — try again.');
+    }
+    if ((int) ($file['size'] ?? 0) > 12 * 1024 * 1024) {
+        return array('id' => '', 'error' => 'That file is far larger than a COMET report — nothing was read.');
+    }
+    // Check what it IS, not what it is called.
+    $tmp = (string) ($file['tmp_name'] ?? '');
+    $head = ($tmp !== '' && is_readable($tmp)) ? (string) file_get_contents($tmp, false, null, 0, 5) : '';
+    if (strncmp($head, '%PDF-', 5) !== 0) {
+        return array('id' => '', 'error' => 'That does not look like a PDF, so it was ignored.');
+    }
+    $id = cc25_comet_id_from_filename((string) ($file['name'] ?? ''));
+    if ($id === '') {
+        return array('id' => '', 'error' => 'No match id in that filename. Download the report from COMET again, '
+                                          . 'or type the id in yourself.');
+    }
+    return array('id' => $id, 'error' => '');
+}
+
 /* ------------------------------------------------------------------- fetching */
 
 /** One COMET endpoint as an array, or null. Cached for a day — a played match
@@ -370,6 +417,14 @@ function cc25_comet_to_match($data, $team = 'mens', $ours = 'Cwmbran Celtic') {
  * doesn't carry — the match officials — plus the words, which are nobody's job
  * but the club's.
  */
+// Without this the browser posts the file's NAME and no file: WordPress's editor
+// form is not multipart until something says so.
+add_action('post_edit_form_tag', function ($post) {
+    if (defined('CC25_FX_CPT') && isset($post->post_type) && $post->post_type === CC25_FX_CPT) {
+        echo ' enctype="multipart/form-data"';
+    }
+});
+
 add_action('add_meta_boxes', function () {
     if (!defined('CC25_FX_CPT')) return;
     add_meta_box('cc25_fx_report', 'Match report', 'cc25_fx_report_metabox', CC25_FX_CPT, 'normal', 'default');
@@ -385,7 +440,14 @@ function cc25_fx_report_metabox($post) {
       <input type="text" id="cc25fx_comet" name="cc25_fx_comet_id" value="<?php echo esc_attr($g('comet_id')); ?>" style="max-width:260px">
       <span style="color:#666;font-size:12px">&nbsp;It&rsquo;s in the filename of the report you download &mdash; <code>match_<strong>107656065</strong>_20260808.pdf</code>. Pasting the whole filename works too.</span>
     </p>
-    <p><label><input type="checkbox" name="cc25_fx_comet_go" value="1"> <strong>Fetch the line-ups, goals, cards and substitutions from COMET when I save</strong></label></p>
+    <p style="background:#f6f7f7;border:1px solid #dcdcde;border-radius:4px;padding:12px 14px;margin:12px 0">
+      <label for="cc25fx_pdf"><strong>&hellip;or just drop the COMET report in</strong></label><br>
+      <input type="file" id="cc25fx_pdf" name="cc25_fx_comet_pdf" accept="application/pdf,.pdf"><br>
+      <span style="color:#666;font-size:12px">The id is read from the filename and the match imported when you save &mdash;
+      you don&rsquo;t need to fill anything in above. The file is read and discarded, never stored on the site.</span>
+    </p>
+    <p><label><input type="checkbox" name="cc25_fx_comet_go" value="1"> <strong>Fetch the line-ups, goals, cards and substitutions from COMET when I save</strong></label>
+      <span style="color:#666;font-size:12px">&nbsp;(not needed if you uploaded the PDF)</span></p>
     <?php // Offered only after a refusal, so it can't be ticked out of habit.
     if (get_transient('cc25_comet_offer_' . $post->ID)): ?>
       <p style="background:#fcf9e8;border-left:4px solid #dba617;padding:10px 14px">
@@ -427,6 +489,16 @@ function cc25_fx_report_metabox($post) {
 
     <p><label for="cc25fx_report"><strong>The report</strong></label><br>
       <span style="color:#666;font-size:12px">Everything above is the bare facts. This is the bit only someone who was there can write.</span></p>
+    <?php if (is_array($data)): ?>
+      <p style="background:#f6f7f7;border:1px solid #dcdcde;border-radius:4px;padding:10px 14px">
+        <label><input type="checkbox" name="cc25_fx_report_draft" value="1">
+          <strong>Draft it from the record when I save</strong></label>
+        <span style="color:#666;font-size:12px">&nbsp;Writes the score, the goals, the changes and the officials into the box
+        &mdash; a starting point, not a report. It cannot know how the game felt.</span><br>
+        <label style="margin-left:24px;color:#666;font-size:12px"><input type="checkbox" name="cc25_fx_report_draft_over" value="1">
+          Replace what is already there</label>
+      </p>
+    <?php endif; ?>
     <?php wp_editor($g('report'), 'cc25fx_report', array('textarea_name' => 'cc25_fx_report', 'textarea_rows' => 12, 'media_buttons' => false)); ?>
     <p><label>Words by<br><input type="text" name="cc25_fx_report_by" value="<?php echo esc_attr($g('report_by')); ?>" style="max-width:320px"></label></p>
     <p style="border-top:1px solid #dcdcde;padding-top:14px;margin-top:18px">
@@ -436,30 +508,20 @@ function cc25_fx_report_metabox($post) {
     <?php
 }
 
-add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'), function ($id) {
-    if (!isset($_POST['cc25_fx_report_nonce']) || !wp_verify_nonce($_POST['cc25_fx_report_nonce'], 'cc25_fx_report_save')) return;
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-    if (!current_user_can('edit_post', $id)) return;
-
-    // Accept a bare id or the whole PDF filename.
-    $raw = trim((string) wp_unslash($_POST['cc25_fx_comet_id'] ?? ''));
-    $cid = cc25_comet_id_from_filename($raw);
-    update_post_meta($id, '_cc25_fx_comet_id', $cid);
-
-    foreach (array('ref', 'ar1', 'ar2', 'report_by') as $k) {
-        update_post_meta($id, '_cc25_fx_' . $k, sanitize_text_field(wp_unslash($_POST['cc25_fx_' . $k] ?? '')));
-    }
-    $att = $_POST['cc25_fx_att'] ?? '';
-    update_post_meta($id, '_cc25_fx_att', $att === '' ? '' : (string) max(0, (int) $att));
-    update_post_meta($id, '_cc25_fx_report', wp_kses_post(wp_unslash($_POST['cc25_fx_report'] ?? '')));
-
-    if (empty($_POST['cc25_fx_comet_go']) || $cid === '') return;
+/**
+ * Pull one match from COMET onto a fixture. Returns true if it landed.
+ *
+ * Lifted out of the save handler so that handler can carry on afterwards — a
+ * draft of the words is written from whatever this leaves behind, and an early
+ * return would have skipped it.
+ */
+function cc25_fx_import_comet($id, $cid, $force = false) {
     $team = get_post_meta($id, '_cc25_fx_team', true) ?: 'mens';
     $ours = 'Cwmbran Celtic' . ($team === 'reserves' ? ' Reserves' : ($team === 'womens' ? ' Women' : ''));
     $fetched = cc25_comet_fetch($cid);
     if (!$fetched) {
         set_transient('cc25_comet_notice_' . $id, 'COMET did not answer for id ' . $cid . '. Check the id and try again.', 60);
-        return;
+        return false;
     }
     $match = cc25_comet_to_match($fetched, $team, $ours);
 
@@ -471,11 +533,11 @@ add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'
     // changed its own identity. So the id has to agree with the fixture it is
     // being saved onto, unless someone says otherwise on purpose.
     $mismatch = cc25_comet_mismatch($id, $match);
-    if ($mismatch && empty($_POST['cc25_fx_comet_force'])) {
+    if ($mismatch && !$force) {
         set_transient('cc25_comet_notice_' . $id, 'Not imported — ' . $mismatch
             . ' Check the match id, or tick "import it anyway" if this fixture really is that game.', 120);
         set_transient('cc25_comet_offer_' . $id, 1, 120);
-        return;
+        return false;
     }
 
     update_post_meta($id, '_cc25_fx_comet_data', wp_json_encode($match));
@@ -497,6 +559,44 @@ add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'
         $match['home'] ? $match['opp'] : 'Cwmbran Celtic',
         count($match['starters']), count($match['goals']) + count($match['opp_goals'])
     ), 60);
+    return true;
+}
+
+add_action('save_post_' . (defined('CC25_FX_CPT') ? CC25_FX_CPT : 'cc25_fixture'), function ($id) {
+    if (!isset($_POST['cc25_fx_report_nonce']) || !wp_verify_nonce($_POST['cc25_fx_report_nonce'], 'cc25_fx_report_save')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $id)) return;
+
+    // Accept a bare id or the whole PDF filename.
+    $raw = trim((string) wp_unslash($_POST['cc25_fx_comet_id'] ?? ''));
+    $cid = cc25_comet_id_from_filename($raw);
+
+    // A dropped report names its own match, so uploading it is the whole job.
+    // The file is read for its name and its first five bytes and then let go —
+    // it is never written into wp-content/uploads, which is public.
+    $up = cc25_comet_pdf_upload_id(isset($_FILES['cc25_fx_comet_pdf']) ? $_FILES['cc25_fx_comet_pdf'] : null);
+    if ($up['error'] !== '') set_transient('cc25_comet_notice_' . $id, $up['error'], 90);
+    $from_pdf = $up['id'] !== '';
+    if ($from_pdf) $cid = $up['id'];
+
+    update_post_meta($id, '_cc25_fx_comet_id', $cid);
+
+    foreach (array('ref', 'ar1', 'ar2', 'report_by') as $k) {
+        update_post_meta($id, '_cc25_fx_' . $k, sanitize_text_field(wp_unslash($_POST['cc25_fx_' . $k] ?? '')));
+    }
+    $att = $_POST['cc25_fx_att'] ?? '';
+    update_post_meta($id, '_cc25_fx_att', $att === '' ? '' : (string) max(0, (int) $att));
+    update_post_meta($id, '_cc25_fx_report', wp_kses_post(wp_unslash($_POST['cc25_fx_report'] ?? '')));
+
+    // Uploading the PDF is itself the instruction to import; the tickbox is for
+    // someone typing an id.
+    if (($from_pdf || !empty($_POST['cc25_fx_comet_go'])) && $cid !== '') {
+        cc25_fx_import_comet($id, $cid, !empty($_POST['cc25_fx_comet_force']));
+    }
+
+    if (!empty($_POST['cc25_fx_report_draft'])) {
+        cc25_fx_write_report_draft($id, !empty($_POST['cc25_fx_report_draft_over']));
+    }
 }, 20);
 
 add_action('admin_notices', function () {

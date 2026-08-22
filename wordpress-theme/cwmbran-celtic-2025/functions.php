@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'sponsor-clicks', 'people', 'gallery', 'tickets') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'report-draft', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'sponsor-clicks', 'people', 'gallery', 'tickets') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -2042,6 +2042,20 @@ function cc25_results($feed, $team = 'mens') {
 }
 
 /** Upcoming fixtures (future first); if none are future, soonest available. */
+/**
+ * Now, in milliseconds — the one clock the fixture logic reads.
+ *
+ * A seam, because "what is the next game" is entirely a question about today, and
+ * a test that pins a real Saturday to real fixtures otherwise stops being true the
+ * moment that Saturday passes. _tests/upcoming-test.php did exactly that: written
+ * around 8 Aug 2026, it went red of its own accord on the 22nd, when the Welsh Cup
+ * tie it calls "the next home game" became yesterday's.
+ */
+function cc25_now_ms() {
+    if (isset($GLOBALS['cc25_test_now_ms'])) return (float) $GLOBALS['cc25_test_now_ms'];
+    return round(microtime(true) * 1000);
+}
+
 function cc25_upcoming($feed, $team = 'mens', $n = 5) {
     $fx = cc25_team_items($feed['fixtures'] ?? array(), $team);
     // Drop any postponed/called-off fixtures so the "next game" is the real one.
@@ -2052,7 +2066,7 @@ function cc25_upcoming($feed, $team = 'mens', $n = 5) {
         $opp = $home ? ($f['awayTeam'] ?? '') : ($f['homeTeam'] ?? '');
         return !cc25_fixture_hidden($opp, $ymd);
     }));
-    $now = round(microtime(true) * 1000);
+    $now = cc25_now_ms();
     // A fixture stays "upcoming" until ~2h after its real KICK-OFF (i.e. through
     // the match), not its stored noon date — so today's game remains the "next
     // game" right up to and during kick-off instead of flipping at midday.
