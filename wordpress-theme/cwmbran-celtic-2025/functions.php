@@ -1434,7 +1434,14 @@ function cc25_static_fixtures() {
     if (function_exists('cc25_fx_posts')) {
         foreach (cc25_fx_posts() as $f) $rows[$f['team']][] = cc25_fx_to_row($f);
     }
-    return cc25_fx_merge_lists(cc25_static_fixtures_static(), $rows);
+    // Filtered so a test can supply its own season. Without that, anything
+    // asserting "the next home game is X" is really asserting that X has not been
+    // played yet, and goes red the week it is — which upcoming-test.php did twice
+    // in a day: once when 22 August arrived, once when its score was recorded.
+    $all = cc25_fx_merge_lists(cc25_static_fixtures_static(), $rows);
+    // Guarded: this file is loaded by CLI tests with no WordPress present, which is
+    // the same reason cc25_feed() and cc25_comet_get() check before they call.
+    return function_exists('apply_filters') ? apply_filters('cc25_static_fixtures', $all) : $all;
 }
 
 /** The hand-maintained lists, kept as the fallback described above. */
@@ -1453,7 +1460,7 @@ function cc25_static_fixtures_static() {
                 array('2026-08-14', 'Abergavenny Town', false, 'League'),
                 // 22 Aug league game v Risca United postponed — Welsh Cup QR2 (v
                 // Newport Corinthians) takes the slot. Risca to be rearranged.
-                array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2'),
+                array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2', array(1, 2)),
                 array('2026-08-29', 'Cardiff Corinthians', true, 'League Cup R1'),
                 array('2026-09-05', 'Penygraig United', true, 'Amateur Trophy R1'),
                 array('2026-09-05', 'Goytre', true, 'League'),           // POSTPONED — the Amateur Trophy R1 tie has the date. Still hidden; needs rearranging.
@@ -2252,6 +2259,76 @@ function cc25_merge_match_records($records, $static) {
 /** The hand-written reports, kept as the fallback described above. */
 function cc25_season_matches_static() {
     return array(
+        array(
+            'team' => 'mens',
+            'date' => '2026-08-22', 'time' => '14:00', 'opp' => 'Newport Corinthians', 'home' => true, 'cc' => 1, 'oc' => 2,
+            'comp' => 'FAW Welsh Cup', 'round' => 'Second Qualifying Round',
+            'venue' => 'Motazone Arena, Cwmbran', 'att' => 105,
+            // COMET match 108462550, cross-checked against the printed report. The
+            // referee is off the PDF as usual. Jayden Ward's 78th minute is a
+            // PENALTY event, which the import used to drop — see cc25_comet_events().
+            'ref' => 'Jason Lewis', 'ar1' => '', 'ar2' => '',
+            'captain' => 'Terry Obeng', 'opp_captain' => 'Nathan Perkins',
+            'starters' => array(
+                array(1, 'Jamie Pring', 'GK'), array(2, 'Arthur Furness'),
+                array(3, 'Kian Saunders'), array(4, 'Charlie Donovan'), array(5, 'Terry Obeng'),
+                array(6, 'Louis Cochrane'), array(7, 'Cameron Dean'),
+                array(8, 'Jonathan Invernizzi'), array(9, 'Rhys Thomas'),
+                array(10, 'Finlay Wood'), array(11, 'Munya Mabwe'),
+            ),
+            'subs' => array(
+                array(13, 'Lewis Watkins', 'GK'), array(12, 'Elliott Hewings'),
+                array(14, 'Joe Barber'), array(15, 'Cameron Jenkins'),
+                array(16, 'Gabriel Howells'), array(17, 'Daniel Camaj'),
+            ),
+            'opp_starters' => array(
+                array(1, 'Jack Jones', 'GK'), array(2, 'Joseph Law'), array(3, 'Declan Beckett'),
+                array(4, 'Luc Noble'), array(5, 'Benjamin Mccoy-Hontebeyrie'),
+                array(7, 'Samuel Beckett'), array(9, 'Lewis Brown'), array(10, 'Mccauley Cox'),
+                array(11, 'Jayden Ward'), array(14, 'Joshua Seal'), array(16, 'Nathan Perkins'),
+            ),
+            'opp_subs' => array(
+                array(8, 'Christian O\'Donnell'), array(12, 'Tyler Phillips'),
+                array(15, 'Adam Helman Ali'), array(19, 'Louis Brown'),
+            ),
+            'subs_made' => array(
+                array('min' => 52, 'off' => 'Jamie Pring', 'on' => 'Lewis Watkins'),
+                array('min' => 62, 'off' => 'Rhys Thomas', 'on' => 'Daniel Camaj'),
+            ),
+            'opp_subs_made' => array(
+                array('min' => 55, 'off' => 'Mccauley Cox',    'on' => 'Christian O\'Donnell'),
+                array('min' => 55, 'off' => 'Joshua Seal',     'on' => 'Louis Brown'),
+                array('min' => 70, 'off' => 'Declan Beckett',  'on' => 'Tyler Phillips'),
+                array('min' => 80, 'off' => 'Samuel Beckett',  'on' => 'Adam Helman Ali'),
+            ),
+            'goals' => array(
+                array('scorer' => 'Arthur Furness', 'assist' => 'Munya Mabwe', 'min' => 86),
+            ),
+            'opp_goals' => array(
+                array('scorer' => 'Jayden Ward', 'assist' => '', 'min' => 78, 'pen' => true),
+                array('scorer' => 'Jayden Ward', 'assist' => '', 'min' => 80),
+            ),
+            'cards' => array(),
+            'opp_cards' => array(
+                array('min' => 65, 'player' => 'Luc Noble', 'type' => 'y', 'reason' => 'Unsporting behaviour'),
+            ),
+            'staff' => array(
+                array('role' => 'First Team Manager', 'name' => 'Stephen Muir'),
+                array('role' => 'First Team Manager', 'name' => 'Sam Lewis'),
+                array('role' => 'First Team Assistant Manager', 'name' => 'Conor James'),
+                array('role' => 'First Aider', 'name' => 'Martin Ingram'),
+            ),
+            'opp_staff' => array(
+                array('role' => 'First Team Manager', 'name' => 'Ben Jake Davies'),
+                array('role' => 'Coach', 'name' => 'David Lewis'),
+                array('role' => 'Coach', 'name' => 'Joe Cranton'),
+                array('role' => 'Coach', 'name' => 'Shaun Collins'),
+            ),
+            // From the official record and the printed report. No eyewitness detail
+            // — that is for whoever was at the Motazone to add.
+            'report' => "The Welsh Cup run ended at the second qualifying round, Newport Corinthians scoring twice in three minutes to take a tie that had given nothing away for seventy-eight of them.\n\nA crowd of 105 watched an afternoon of very little until Jayden Ward stepped up on 78 and scored from the spot. Two minutes later he had his second and the tie, and what had been level all afternoon was suddenly beyond Celtic.\n\nThere was still a Celtic goal in it. Arthur Furness pulled one back on 86, finishing a Munya Mabwe pass, but the four minutes left were not enough.\n\nTerry Obeng captained the side. Jamie Pring, who had kept goal for the Reserves the evening before, started and was replaced by Lewis Watkins on 52; Daniel Camaj came on for Rhys Thomas ten minutes later. Referee Jason Lewis gave one booking all afternoon, to Newport's Luc Noble on 65.\n\nThe two sides meet again at the Motazone in the league on 19 September.",
+            'report_by' => '',
+        ),
         array(
             'team' => 'reserves',
             'date' => '2026-08-21', 'time' => '18:30', 'opp' => 'Rogerstone', 'home' => true, 'cc' => 0, 'oc' => 1,

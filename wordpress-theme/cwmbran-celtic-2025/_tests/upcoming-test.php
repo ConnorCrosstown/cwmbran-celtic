@@ -13,7 +13,14 @@
 // This file ships inside the theme zip and must never execute over HTTP.
 if (PHP_SAPI !== 'cli') exit;
 
-function add_action() {} function add_filter() {} function remove_action() {}
+function add_action() {} function remove_action() {}
+$GLOBALS['wp_filters'] = array();
+function add_filter($tag, $cb, $prio = 10, $args = 1) { $GLOBALS['wp_filters'][$tag][] = $cb; return true; }
+function apply_filters($tag, $value) {
+    $args = array_slice(func_get_args(), 1);
+    foreach ($GLOBALS['wp_filters'][$tag] ?? array() as $cb) { $args[0] = call_user_func_array($cb, $args); }
+    return $args[0];
+}
 function get_transient() { return false; } function set_transient() {}
 function date_i18n($fmt, $ts = null) { return date($fmt, $ts === null ? time() : $ts); }
 if (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');
@@ -38,6 +45,23 @@ function up_fx($ymd, $opp, $home) {
     );
 }
 
+// Pin BOTH the clock and the season. Every assertion below is about a particular
+// Saturday and the fixtures around it, so reading either from real life makes the
+// test a statement about today rather than about the code — it went red twice in
+// one day on 22 Aug 2026, first when the date arrived and again when the cup tie's
+// score was recorded.
+// Only the men's list is pinned; every other team keeps the real season, which is
+// what the results assertions further down are about.
+add_filter('cc25_static_fixtures', function ($all) {
+    $all['mens']['list'] = array(
+        array('2026-08-14', 'Abergavenny Town', false, 'League'),
+        // Risca postponed; the Welsh Cup tie takes the date and is in our list only.
+        array('2026-08-22', 'Newport Corinthians', true, 'Welsh Cup QR2'),
+        array('2026-09-12', 'Chepstow Town', false, 'League'),
+        array('2026-09-19', 'Newport Corinthians', true, 'League'),
+    );
+    return $all;
+});
 // Pin the clock. Every assertion below is about a real Saturday and the real
 // fixture list around it, so without this the suite goes red the day those games
 // are played — which it duly did on 22 Aug 2026.

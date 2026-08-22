@@ -115,6 +115,42 @@ check('the winner is credited to Payne', $r['opp_goals'][1]['scorer'] === 'Luc P
 check('no cards were shown', $r['cards'] === array() && $r['opp_cards'] === array());
 check('attendance was left blank', $r['att'] === 0);
 
+/* ---- a PENALTY is a goal, and the score is not ours to count ----------------
+ * Welsh Cup QR2 at home to Newport Corinthians, 22 Aug 2026, lost 1-2. Jayden
+ * Ward scored twice: a penalty on 78 and a goal on 80. COMET calls the first one
+ * eventType PENALTY — not PENALTY_GOAL, which is what the import used to look for
+ * — so it was dropped, and because the scoreline was COUNTED FROM THE EVENTS the
+ * game came out 1-1. A wrong scoreline is the one error nobody catches by eye,
+ * because it looks like a result. The score now comes from COMET's own
+ * homeTeamResult/awayTeamResult, and counting is only the fallback. */
+
+$c = cc25_comet_to_match(load('mens-corinthians'), 'mens');
+check('the cup tie is at home', $c['home'] === true);
+check('against Newport Corinthians', strpos($c['opp'], 'Newport Corinthians') === 0);
+check('THE SCORE IS 1-2, not 1-1', $c['cc'] === 1 && $c['oc'] === 2);
+check('both of their goals are kept', count($c['opp_goals']) === 2);
+check('the penalty on 78 is one of them',
+      $c['opp_goals'][0]['min'] === '78' && $c['opp_goals'][0]['scorer'] === 'Jayden Ward');
+check('and is marked as a penalty', $c['opp_goals'][0]['pen'] === true);
+check('the second is not marked as one',
+      $c['opp_goals'][1]['min'] === '80' && $c['opp_goals'][1]['pen'] === false);
+check('our goal is Furness on 86', count($c['goals']) === 1
+      && $c['goals'][0]['scorer'] === 'Arthur Furness' && $c['goals'][0]['min'] === '86');
+check('set up by Mabwe', $c['goals'][0]['assist'] === 'Munya Mabwe');
+check('the attendance is read', $c['att'] === 105);
+check('the competition is the Welsh Cup', stripos($c['comp'], 'Welsh Cup') !== false);
+check('the keeper change is kept', $c['subs_made'][0]['off'] === 'Jamie Pring'
+      && $c['subs_made'][0]['on'] === 'Lewis Watkins' && $c['subs_made'][0]['min'] === '52');
+
+// Defence in depth: even if COMET invents a goal type we have never seen, the
+// scoreline must still be right, because it is not derived from the events.
+$mangled = load('mens-corinthians');
+foreach ($mangled['events'] as $i => $e) {
+    if (($e['eventType']['fcdName'] ?? '') === 'GOAL') $mangled['events'][$i]['eventType']['fcdName'] = 'GOAL_SOMETHING_NEW';
+}
+$mg = cc25_comet_to_match($mangled, 'mens');
+check('an unknown goal type does not corrupt the score', $mg['cc'] === 1 && $mg['oc'] === 2);
+
 /* ---- a card shown AFTER the whistle: Rogerstone at home, 21 Aug 2026 --------
  * Both Rogerstone yellows carry matchPhase AFTER_THE_MATCH and no minute at all
  * — minute, minuteFull and displayMinute are each null. Floored to an integer

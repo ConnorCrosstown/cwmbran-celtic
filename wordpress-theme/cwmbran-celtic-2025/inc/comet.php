@@ -305,12 +305,16 @@ function cc25_comet_events($events, $sides) {
             $label = $stop > 0 ? ($min . '+' . $stop) : (string) (int) $min;
         }
 
-        if ($type === 'GOAL' || $type === 'PENALTY_GOAL') {
+        // COMET's scored penalty is eventType PENALTY. It was written here as
+        // PENALTY_GOAL, which COMET does not use, so Jayden Ward's 78th minute for
+        // Newport Corinthians on 22 Aug 2026 vanished from the report — and took
+        // the scoreline with it. Both spellings are accepted now.
+        if ($type === 'GOAL' || $type === 'PENALTY' || $type === 'PENALTY_GOAL') {
             $out['goals'][$side][] = array(
                 'min'    => $label,
                 'scorer' => cc25_comet_person_name($p1),
                 'assist' => cc25_comet_person_name($p2),
-                'pen'    => $type === 'PENALTY_GOAL',
+                'pen'    => $type !== 'GOAL',
             );
         } elseif ($type === 'YELLOW' || $type === 'RED' || $type === 'SECOND_YELLOW') {
             $out['cards'][$side][] = array(
@@ -329,6 +333,19 @@ function cc25_comet_events($events, $sides) {
         }
     }
     return $out;
+}
+
+/**
+ * One side's goals: what COMET says, falling back to what we can see.
+ *
+ * `current` is the live/final score and is present on a played match. Counting
+ * the goal events is only for a record that has no result on it at all.
+ */
+function cc25_comet_score($result, $goals) {
+    if (is_array($result) && isset($result['current']) && is_numeric($result['current'])) {
+        return (int) $result['current'];
+    }
+    return count((array) $goals);
 }
 
 /**
@@ -377,8 +394,12 @@ function cc25_comet_to_match($data, $team = 'mens', $ours = 'Cwmbran Celtic') {
         'time'         => $ko ? $ko->format('H:i') : '',
         'opp'          => $weAreHome ? $awayName : $homeName,
         'home'         => $weAreHome,
-        'cc'           => count($ev['goals'][$us]),
-        'oc'           => count($ev['goals'][$them]),
+        // From COMET's own result, never counted from the events. Counting made
+        // the scoreline only as complete as our list of event types — miss one
+        // and the site publishes the wrong result, which is the single error a
+        // reader cannot spot, because a wrong score still looks like a score.
+        'cc'           => cc25_comet_score($usRes, $ev['goals'][$us]),
+        'oc'           => cc25_comet_score($themRes, $ev['goals'][$them]),
         'pens'         => $pens,
         'comp'         => (string) ($match['competition']['name'] ?? ''),
         'round'        => ($match['round'] ?? '') !== '' ? 'Round ' . $match['round'] : '',
