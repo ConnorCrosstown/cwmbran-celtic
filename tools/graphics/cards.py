@@ -292,9 +292,22 @@ def build(fx, size, middle, kicker, sub, extra_line=None):
     SLOT_H = 250 if not story else 270
     PAD = 46 if not story else 52
 
-    mf = black((72 if middle == 'V' else 150) if not story else (84 if middle == 'V' else 176))
+    mf_size = (72 if middle == 'V' else 150) if not story else (84 if middle == 'V' else 176)
+    mf = black(mf_size)
     mb = d.textbbox((0, 0), middle, font=mf)
     mid_w, mid_h = mb[2] - mb[0], mb[3] - mb[1]
+
+    # Every pixel of the middle comes off the badges, and a two-digit score is
+    # nearly twice as wide as a one-digit one: at a flat size "10-10" left each
+    # badge 195px where "2-1" leaves 295, so the crests visibly shrank on exactly
+    # the scorelines nobody would think to check. Cap the middle so the slots never
+    # fall below the height the badges are drawn at. Every score up to 9-9 measures
+    # 250px and is well inside this, so no existing card moves.
+    cap = row_w - 2 * PAD - 2 * SLOT_H
+    if mid_w > cap:
+        mf = black(max(40, int(mf_size * cap / mid_w)))
+        mb = d.textbbox((0, 0), middle, font=mf)
+        mid_w, mid_h = mb[2] - mb[0], mb[3] - mb[1]
 
     slot_w = (row_w - mid_w - 2 * PAD) / 2
     us_im = crest(THEME + 'club-logo.webp', SLOT_H, slot_w)

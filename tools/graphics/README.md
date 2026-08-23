@@ -22,11 +22,24 @@ Rerun both commands after any fixture, kick-off or crest change.
 
 Every possible scoreline for every Men's First Team fixture, at half time and full
 time, in both Instagram sizes — so whoever is posting picks a card rather than making
-one. 144 per game, 3,888 in all, about 100 seconds to run.
+one.
+
+Scorelines run **0-0 to 10-10**: 121 a game, 484 cards, and about 31,000 across every
+fixture — roughly 8 GB and a quarter of an hour to build the lot. The ceiling used to
+be 5, which covers virtually every result and leaves you stuck on the night it does
+not, which is exactly the night nobody wants to be opening a design tool. Set
+`CCFC_MAX_GOALS` to build a smaller set.
+
+A two-digit score is nearly twice as wide as a one-digit one, and the middle of the
+card is drawn between the two badges — so `10-10` at a flat size left each badge 195px
+where `2-1` leaves 295, shrinking the crests on exactly the scorelines nobody thinks
+to check. The middle is capped so the badge slots never fall below the height the
+badges are drawn at. Everything up to 9-9 measures the same 250px and is untouched.
 
     python3 scores.py                # all 27 men's first-team fixtures
+    CCFC_MAX_GOALS=5 python3 scores.py   # a smaller ceiling
     python3 scores.py reserves       # another team; 'all' for every team
-    python3 scores.py 2026-08-22     # one game (matches date, opponent or filename)
+    python3 scores.py 2026-08-22     # one game, ANY team (date, opponent or filename)
     python3 audit.py                 # measure the geometry; --all for every scoreline
 
 Output:

@@ -7,6 +7,7 @@ Instagram sizes — so whoever is posting picks the right card instead of making
 144 per game.
 
     python3 scores.py            # every men's first-team fixture
+    CCFC_MAX_GOALS=5 python3 scores.py   # a smaller set, if ever needed
     python3 scores.py 2026-08-14 # one game
     python3 scores.py reserves   # another team
     python3 scores.py all        # every team
@@ -31,7 +32,10 @@ import sys
 
 from cards import FEED, STORY, HERE, build as build_card
 
-MAX_GOALS = 5                      # 0-0 through 5-5
+# 0-0 through 10-10. Five used to be the ceiling, which covers essentially every
+# result but leaves whoever is posting stuck on the night it does not — and that is
+# the night nobody wants to be opening a design tool. 121 scorelines a game.
+MAX_GOALS = int(os.environ.get('CCFC_MAX_GOALS', 10))
 OUT = os.path.expanduser('~/Downloads/CCFC Score Cards/')
 # Same names the matchday graphics use, so both sets read the same way on disk.
 TEAM_DIR = {'mens': "Men's First Team", 'reserves': "Men's Reserves",

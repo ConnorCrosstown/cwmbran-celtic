@@ -95,7 +95,11 @@ def check_card(canvas, overflow, g):
 def main():
     every = '--all' in sys.argv
     allfx = json.load(open(scores.HERE + 'fixtures.json'))
-    scorelines = ([(u, t) for u in range(6) for t in range(6)] if every
+    # From scores.py, not a second copy of the number: this said range(6) while the
+    # cards went to 10-10, so --all measured every scoreline it knew about and none
+    # of the two-digit ones — the only ones whose width had ever changed the layout.
+    from scores import MAX_GOALS
+    scorelines = ([(u, t) for u in range(MAX_GOALS + 1) for t in range(MAX_GOALS + 1)] if every
                   else [(0, 0), (2, 1), (5, 5)])
 
     total, bad = 0, 0
