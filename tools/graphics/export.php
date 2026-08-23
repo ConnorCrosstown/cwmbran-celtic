@@ -28,9 +28,17 @@ function comp_lines($comp, $league) {
         'Welsh Cup QR2' => array('WELSH CUP', 'QUALIFYING ROUND TWO'),
         'League Cup R1' => array('LEAGUE CUP', 'ROUND ONE'),
         'League Cup R2' => array('LEAGUE CUP', 'ROUND TWO'),
+        // A friendly is not a league game, so it must not borrow the league's name
+        // for its second line — the default below would have read "ADRAN SOUTH".
+        'Friendly'      => array('PRE-SEASON', 'FRIENDLY'),
     );
     return $map[$comp] ?? array(strtoupper($comp), $league);
 }
+
+// Away grounds worth printing on the card, keyed like the kick-off overrides.
+$away_venues = array(
+    '2026-08-23|Cardiff City Women' => 'CARDIFF INTERNATIONAL SPORTS CAMPUS',
+);
 
 $ov = cc25_kickoff_overrides();
 $out = array(); $nocrest = array();
@@ -61,7 +69,10 @@ foreach (array('mens', 'reserves', 'womens') as $t) {
             'dateline' => strtoupper($dt->format('l j F')),
             'kotext' => 'KICK-OFF ' . strtolower(DateTime::createFromFormat('H:i', $ko)->format('g:ia')),
             'pill' => $home ? 'HOME' : 'AWAY',
-            'venue' => $home ? 'MOTAZONE ARENA' : null,
+            // Away venues are named when we know them. Blank is right for a league
+            // trip everyone can look up; a one-off friendly at a ground the team has
+            // never been to is exactly when people need telling.
+            'venue' => $home ? 'MOTAZONE ARENA' : (isset($away_venues[$ymd . '|' . $opp]) ? $away_venues[$ymd . '|' . $opp] : null),
             // Kit-led: green frame for the green-and-white away, navy/yellow for
             // the yellow-and-blue home.
             'frame' => $home ? 'Men Navy Insta New.psd' : 'Men Green Insta New.psd',

@@ -1,5 +1,25 @@
 [
     {
+        "team": "womens",
+        "label": "WOMEN'S TEAM",
+        "us": "CWMBRAN CELTIC WOMEN",
+        "date": "2026-08-23",
+        "opp": "Cardiff City Women",
+        "them": "CARDIFF CITY WOMEN",
+        "home": false,
+        "comp": "Friendly",
+        "kicker": "PRE-SEASON",
+        "sub": "FRIENDLY",
+        "crest": "cardiff-city.webp",
+        "confirmed": true,
+        "dateline": "SUNDAY 23 AUGUST",
+        "kotext": "KICK-OFF 2:00pm",
+        "pill": "AWAY",
+        "venue": "CARDIFF INTERNATIONAL SPORTS CAMPUS",
+        "frame": "Men Green Insta New.psd",
+        "out": "2026-08-23 CCFC Women (A) v Cardiff City Women.png"
+    },
+    {
         "team": "mens",
         "label": "MEN'S TEAM",
         "us": "CWMBRAN CELTIC",

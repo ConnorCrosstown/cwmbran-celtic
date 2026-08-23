@@ -89,13 +89,15 @@ def main():
         fixtures = [f for f in allfx if f['team'] == only]
     elif only == 'all':
         fixtures = allfx
+    elif only:
+        # A date, an opponent or a filename — searched across every team. It used to
+        # narrow the men's list only, so asking for a Reserves or Women's game by its
+        # date got "no matching fixtures" for a game that was right there.
+        fixtures = [f for f in allfx if only in f['out'] or only in f['date'] or only in f['opp']]
     else:
-        # Defaults to the men's first team; a date or an opponent narrows it further.
-        fixtures = [f for f in allfx if f['team'] == 'mens']
-        if only:
-            fixtures = [f for f in fixtures if only in f['out'] or only in f['date'] or only in f['opp']]
+        fixtures = [f for f in allfx if f['team'] == 'mens']   # the default set
     if not fixtures:
-        print('No matching men\'s fixtures.')
+        print(f'No fixture matches {only!r}. Try a date (2026-08-23), an opponent, a team, or "all".')
         return 1
 
     total, overflows = 0, []

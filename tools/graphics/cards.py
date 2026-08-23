@@ -346,7 +346,14 @@ def build(fx, size, middle, kicker, sub, extra_line=None):
     y += ph
     if fx.get('venue'):
         y += 26 if not story else 34
-        draw_tracked(d, (CX, y), fx['venue'], body(27 if not story else 33, 600), MUTED, tracking=6, centre=True)
+        # Shrink to fit, the way the team names already do. At a fixed size
+        # "CARDIFF INTERNATIONAL SPORTS CAMPUS" ran 6px outside the panel — the
+        # first away ground long enough to find this, because away venues were
+        # never printed until there was a friendly worth naming one for.
+        vs = 27 if not story else 33
+        while vs > 15 and text_w(d, fx['venue'], body(vs, 600), 6) > row_w:
+            vs -= 1
+        draw_tracked(d, (CX, y), fx['venue'], body(vs, 600), MUTED, tracking=6, centre=True)
 
     # Centre the drawn block in the panel, measured off the ink so a card with one
     # line fewer does not sit high.

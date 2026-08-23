@@ -62,7 +62,14 @@ check('empty content is safe', strip_prose('') === '');
 
 $games = cc25_mr_recent_games();
 check('games are offered to attach a report to', count($games) > 0);
-check('the keys are team|date', (bool) preg_match('/^(mens|reserves|womens)\|\d{4}-\d{2}-\d{2}$/', array_key_first($games)));
+// Any team in the registry, not a hardcoded three: the club had seven sides by
+// Aug 2026, and which one sorts first depends on what is being played this week —
+// so naming them here made the assertion a statement about the calendar.
+$cc25_team_keys = implode('|', array_map('preg_quote', array_keys(cc25_fx_teams())));
+check('the keys are team|date', (bool) preg_match('/^(' . $cc25_team_keys . ')\|\d{4}-\d{2}-\d{2}$/', array_key_first($games)));
+check('and every key is, not just the first', count(array_filter(array_keys($games), function ($k) use ($cc25_team_keys) {
+    return !preg_match('/^(' . $cc25_team_keys . ')\|\d{4}-\d{2}-\d{2}$/', $k);
+})) === 0);
 check('the newest game is first', strcmp(
     substr(array_key_first($games), strpos(array_key_first($games), '|') + 1),
     substr(array_keys($games)[count($games) - 1], strpos(array_keys($games)[count($games) - 1], '|') + 1)

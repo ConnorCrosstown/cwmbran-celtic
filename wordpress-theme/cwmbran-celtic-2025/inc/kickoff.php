@@ -51,6 +51,7 @@ function cc25_kickoff_overrides_static() {
          * game moved to Friday 21 August and is noted "(6:30)". The midweek default of
          * 7:30pm would put it an hour late. */
         '2026-08-21|Rogerstone' => '18:30',
+        '2026-08-23|Cardiff City Women'   => '14:00',  // W Sun pre-season friendly — confirmed by the club
         '2026-07-28|Cwmbran Town'         => '19:00',  // M Tue
         '2026-08-01|Tredegar Town'        => '14:30',  // M Sat POSTPONED
         '2026-08-07|New Inn'              => '18:30',  // M Fri — confirmed, COMET

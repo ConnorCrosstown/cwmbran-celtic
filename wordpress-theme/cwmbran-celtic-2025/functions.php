@@ -1308,6 +1308,7 @@ function cc25_crest($feed, $name, $px) {
  * the image in assets/img/opponents/ and add a line to the map. */
 function cc25_opp_crest_file($name) {
     $map = array(
+        'Cardiff City Women' => 'cardiff-city.webp',
         'Croesyceiliog' => 'croesyceiliog.webp',
         'Tata Steel United' => 'tata-steel-united.webp',
         'Abercarn United' => 'abercarn-united.webp',
@@ -1532,6 +1533,8 @@ function cc25_static_fixtures_static() {
             'title'  => "Women's First Team",
             'badge'  => array('W', 'tk-team-w'),
             'list'   => array(
+                // Pre-season, before the Adran South campaign starts on 27 September.
+                array('2026-08-23', 'Cardiff City Women', false, 'Friendly'),
                 array('2026-09-27', 'Llanrumney United', false, 'League'),
                 array('2026-10-11', 'Pontypridd United', true, 'League'),
                 array('2026-11-01', 'Carmarthen Town', true, 'League'),
