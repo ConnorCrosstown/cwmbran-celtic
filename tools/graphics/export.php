@@ -1,7 +1,15 @@
 <?php
 /** Export every upcoming fixture, kick-off resolved, ready for the graphics. */
 if (PHP_SAPI !== 'cli') exit;
-function add_action() {} function add_filter() {}
+// The theme keeps growing hooks; this list is what it needs to load from the CLI.
+function add_action() {} function remove_action() {}
+$GLOBALS['wp_filters'] = array();
+function add_filter($tag, $cb, $prio = 10, $args = 1) { $GLOBALS['wp_filters'][$tag][] = $cb; return true; }
+function apply_filters($tag, $value) {
+    $args = array_slice(func_get_args(), 1);
+    foreach ($GLOBALS['wp_filters'][$tag] ?? array() as $cb) { $args[0] = call_user_func_array($cb, $args); }
+    return $args[0];
+}
 function get_transient() { return false; } function set_transient() {}
 define('ABSPATH', __DIR__);
 require __DIR__ . '/../../wordpress-theme/cwmbran-celtic-2025/functions.php';
