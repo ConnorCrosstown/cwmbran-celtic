@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) exit;
    Split out of this file, which is long enough already. */
 // __DIR__, not get_stylesheet_directory(): this file knows where it lives, and
 // the CLI tests load it without WordPress present.
-foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'report-draft', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'sponsor-clicks', 'people', 'gallery', 'tickets') as $cc25_mod) {
+foreach (array('hardening', 'bond-draws', 'fixtures', 'match-reports', 'comet', 'report-draft', 'players', 'health', 'seo', 'programmes', 'kickoff', 'sponsors', 'sponsor-clicks', 'people', 'gallery', 'tickets') as $cc25_mod) {
     $cc25_f = __DIR__ . '/inc/' . $cc25_mod . '.php';
     if (file_exists($cc25_f)) require_once $cc25_f;
 }
@@ -2740,7 +2740,7 @@ function cc25_season_matches_static() {
  * record doesn't place — an invented position would look exactly as authoritative
  * as a real one.
  */
-function cc25_reserves_squad() {
+function cc25_reserves_squad_static() {
     return array(
         array('name' => 'Joe Barber',            'pos' => ''),
         array('name' => 'Luke Betts',            'pos' => ''),
@@ -2778,7 +2778,7 @@ function cc25_reserves_squad() {
  * section while this returns none, so adding players here is the only step — same
  * shape as cc25_reserves_squad(): ['no' => int, 'name' => string, 'pos' => string].
  */
-function cc25_u18s_squad() {
+function cc25_u18s_squad_static() {
     return array();
 }
 
@@ -2799,7 +2799,7 @@ function cc25_u18s_squad() {
  * spelling, are what identifies the player. Michael Phillips (31745) came from a
  * team sheet rather than the registration list, which had never listed him.
  */
-function cc25_vets_squad() {
+function cc25_vets_squad_static() {
     return array(
         array('id' => 669586,  'name' => 'Jonathan Behr'),
         array('id' => 1062929, 'name' => 'Paul Dummett'),
@@ -2836,7 +2836,7 @@ function cc25_vets_squad() {
 /** Who has captained the Reserves. Marked on the squad cards. */
 function cc25_reserves_captain() { return 'Ethan Hooper'; }
 
-function cc25_squad_players() {
+function cc25_squad_players_static() {
     return array(
         'Management' => array(
             array('Stephen Muir', 'stephen-muir'), array('Sam Lewis', 'sam-lewis'),
